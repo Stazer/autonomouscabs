@@ -39,6 +39,6 @@ typedef struct {
     uint64_t y;
 } location_data_payload;
 ```
-- Although coordinates are floating point numbers, the data is transmitted using 64-Bit unsigned integers. Marshalling and unmarshalling converts the integer into the appropriate floating point number with paying attention to host and network order. This is for avoiding any type differences with platforms, architectures and compilers.
+- Although coordinates are floating point numbers, the data is transmitted using 64-Bit unsigned integers. All payloads should use fixed sized integers only. Marshalling and unmarshalling converts the integer into the appropriate floating point number with paying attention to host and network order. This is for avoiding any type differences with platforms, architectures and compilers.
 - Whenever data is available on TCP stream the application copies incoming data into a buffer
 - The buffer is processed by reading a packet id and reading a packet id dependent payload

@@ -24,7 +24,7 @@
 ### ADA
 - [GNAT](https://www.adacore.com/gnatpro/toolsuite/gnatstudio) as IDE
 - [GNATtest](https://www.adacore.com/gnatpro/toolsuite/gnattest) for unit testing
-### C++
+### C and C++
 - [CMake](https://cmake.org/) as build system
 - [Boost](https://www.boost.org/) for unit testing and networking
 

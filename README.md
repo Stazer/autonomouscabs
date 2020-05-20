@@ -30,7 +30,8 @@
 
 ## Protocol
 ### General
-- Binary protocol consisting of packet id and payload
+- Binary protocol consisting of packet size, packet id and payload
+- Packet size is a 32-Bit unsigned integer, defining the size of the next receiving packet
 - The packet id (32-Bit) defines what type of packet is handled and what kind of payload is expected
 - Example: For the location data packet with id 3 the payload for transmitting the 2D location data could look like this:
 ```
@@ -41,4 +42,5 @@ typedef struct {
 ```
 - Although coordinates are floating point numbers, the data is transmitted using 64-Bit unsigned integers. All payloads should use fixed sized integers only. Marshalling and unmarshalling converts the integer into the appropriate floating point number with paying attention to host and network order. This is for avoiding any type differences with platforms, architectures and compilers.
 - Whenever data is available on TCP stream the application copies incoming data into a buffer
-- The buffer is processed by reading a packet id and reading a packet id dependent payload
+- The buffer is processed by firstly reading the packet size
+- If the buffer is at least so large as the received packet size, processing is continued by reading the packet id and the packet id dependent payload

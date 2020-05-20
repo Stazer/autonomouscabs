@@ -30,9 +30,8 @@
 
 ## Protocol
 ### General
-- Binary protocol consisting of packet size, packet id and payload
-- Packet size is a 32-Bit unsigned integer, defining the size of the next receiving packet
-- The packet id (32-Bit) defines what type of packet is handled and what kind of payload is expected
+- Binary protocol consisting of packet size (32-bit unsigned integer), packet id (32-bit unsigned integer) and payload
+- The packet size defines the size of the next receiving packet and the packet id defines what type of packet is handled and what kind of payload was sent and is received
 - Example: For the location data packet with id 3 the payload for transmitting the 2D location data could look like this:
 ```
 typedef struct {

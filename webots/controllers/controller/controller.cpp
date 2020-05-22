@@ -26,8 +26,8 @@ using namespace webots;
 
 typedef enum message_id{
   DISTANCE_SENSOR_MESSAGE = 1,
-  CAMERA_MESSAGE = 2,
-  LIGHT_SENSOR_MESSAGE = 3,
+  LIGHT_SENSOR_MESSAGE = 2,
+  CAMERA_MESSAGE = 3,
 }message_id;
 
 typedef struct ds_message{

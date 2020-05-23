@@ -23,6 +23,10 @@ BOOST_AUTO_TEST_CASE(buffer_write_read)
     buffer_reader reader(buffer);
     reader >> ruint8 >> ruint16 >> ruint32 >> ruint64;
 
+    BOOST_TEST(ruint8 != 0);
+    BOOST_TEST(ruint16 != 0);
+    BOOST_TEST(ruint32 != 0);
+    BOOST_TEST(ruint64 != 0);
     BOOST_TEST(wuint8 == ruint8);
     BOOST_TEST(wuint16 == ruint16);
     BOOST_TEST(wuint32 == ruint32);

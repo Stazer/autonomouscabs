@@ -3,8 +3,8 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation 0.8711048401578944 0.2300971115964692 -0.4338567467361218 6.121045936677734
-  position -1.327951909756223 4.7836515022428685 21.892376493997563
+  orientation 0.3739464137498712 0.8661780826108709 0.33151109913269156 4.488281828202722
+  position -41.31441489027957 47.92746306689655 23.255971826157463
 }
 TexturedBackground {
   texture "factory"
@@ -12,7 +12,7 @@ TexturedBackground {
   reflections FALSE
 }
 Robot {
-  translation -0.0241286 0.7 20.15
+  translation -0.242312 0.7 44.6917
   rotation 0 1 0 3.14
   children [
     DEF cam_f Camera {
@@ -481,7 +481,8 @@ Robot {
   recognitionColors [
     0 0 0
   ]
-  controller "webots_controller"
+  controller "controller"
+  controllerArgs "9999"
 }
 DEF environment Solid {
   children [

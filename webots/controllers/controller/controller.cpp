@@ -36,17 +36,17 @@ typedef struct ds_message{
   uint64_t payload[N_DISTANCE_SENSORS];
 }ds_message;
 
-typedef struct img_message{
-  uint32_t id;
-  uint32_t size;
-  unsigned char payload[N_LIGHT_SENSORS];
-}img_message;
-
 typedef struct ls_message{
   uint32_t id;
   uint32_t size;
-  uint64_t payload[];
+  uint64_t payload[N_LIGHT_SENSORS];
 }ls_message;
+
+typedef struct img_message{
+  uint32_t id;
+  uint32_t size;
+  unsigned char payload[];
+}img_message;
 
 void close_socket(int sock){
   if(sock < 0){
@@ -169,6 +169,18 @@ ls_message ls_message_marshall(double payload[N_LIGHT_SENSORS]){
   return message;
 }
 
+img_message *img_message_prepare(uint32_t size){
+  img_message *message = (img_message *) malloc(sizeof(img_message) + size);
+  if(message == NULL){
+    std::cerr << "failed to allocate memory" << std::endl;
+    return NULL;
+  }
+
+  message->id = htonl(CAMERA_MESSAGE);
+  message->size = htonl(size);
+  return message;
+}
+
 int main(int argc, char **argv) {
   if(argc != 2){
     std::cerr << "port missing" << std::endl;
@@ -176,12 +188,14 @@ int main(int argc, char **argv) {
   }
   
   // setup server socket
+  std::cout << "creating server socket on port " << atoi(argv[1]) << std::endl;
   int sock = create_socket(atoi(argv[1]));
   if(sock == -1){
     return EXIT_FAILURE;
   }
 
   // wait for external controller to connect
+  std::cout << "waiting for external controller" << std::endl;
   int client = accept_client(sock);
   if(client == -1){
     close_socket(sock);
@@ -198,6 +212,7 @@ int main(int argc, char **argv) {
   int timeStep = (int) robot->getBasicTimeStep();
 
   // setup sensors
+  std::cout << "setting up sensors" << std::endl;
   std::string ds_names[N_DISTANCE_SENSORS] = {"ds_fc", "ds_fcr", "ds_fr", "ds_rf", "ds_rc", "ds_lc", "ds_lf", "ds_fl", "ds_fcl"};
   DistanceSensor *ds_sensors[N_DISTANCE_SENSORS];
   for(int i = 0; i<N_DISTANCE_SENSORS; i++){
@@ -216,6 +231,7 @@ int main(int argc, char **argv) {
   camera->enable(timeStep);
   int image_height = camera->getHeight();
   int image_width = camera->getWidth();
+  int image_size = image_width * image_height * 4  * sizeof(unsigned char);
 
   // setup motors
   std::string m_names[4] = {"wheelFR", "wheelRR", "wheelRL", "wheelFL"};
@@ -223,8 +239,17 @@ int main(int argc, char **argv) {
   for(int i = 0; i<4; i++){
     m_motors[i] = robot->getMotor(m_names[i]);
     m_motors[i]->setPosition(INFINITY);
+    //m_motors[i]->setVelocity(0);
   }
-
+  
+  // setup img_message (allocate memory once)
+  img_message *img_msg = img_message_prepare(image_size);
+  if(img_msg == NULL){
+    close_socket(sock);
+    close_socket(client);
+    delete robot;
+    return EXIT_FAILURE;
+  }
   struct timeval tv = {0, 0};
   while (robot->step(timeStep) != -1) {
     // read sensor data
@@ -243,7 +268,7 @@ int main(int argc, char **argv) {
     // marshall sensor data
     ds_message ds_msg = ds_message_marshall(ds_values);
     ls_message ls_msg = ls_message_marshall(ls_values);
-    /* img_message img_msg = img_message_marshall(image); */
+    memcpy(img_msg->payload, image, image_size); 
 
     int err = send(client, (const char *) &ds_msg, sizeof(ds_message), 0);
     if(err < 0){
@@ -256,12 +281,12 @@ int main(int argc, char **argv) {
       break;
     }
 
-    /* err = send(client, (const char *) &img_msg, sizeof(img_message), 0); 
+    err = send(client, (const char *) img_msg, sizeof(img_message) + image_size, 0); 
       if(err < 0){
         std::cerr << "failed to send image data to external controller" << std::endl << "quitting... " << std::endl;
         break;
       }
-    */
+   
 
     int number = select(client + 1, &rfds, NULL, NULL, &tv);
     if(number == 0){
@@ -274,10 +299,15 @@ int main(int argc, char **argv) {
       m_motors[i]->setVelocity(0);
     } */
   };
+  
+  for(int i = 0; i<4; i++){
+    m_motors[i]->setVelocity(0);
+  }
 
   // Enter here exit cleanup code.
   close_socket(sock);
   close_socket(client);
+  free(img_msg);
   delete robot;
   return 0;
 }

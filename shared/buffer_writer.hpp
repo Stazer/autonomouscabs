@@ -6,55 +6,64 @@ class buffer_writer {
     public:
         buffer_writer(buffer& buffer);
 
-        buffer_writer& operator<<(uint8_t data);
-        buffer_writer& operator<<(uint16_t data);
-        buffer_writer& operator<<(uint32_t data);
-        buffer_writer& operator<<(uint64_t data);
+        std::size_t written() const;
+
+        buffer_writer& operator<<(std::uint8_t data);
+        buffer_writer& operator<<(std::uint16_t data);
+        buffer_writer& operator<<(std::uint32_t data);
+        buffer_writer& operator<<(std::uint64_t data);
 
     private:
         ::buffer& buffer;
+        std::size_t start = 0;
 };
 
 buffer_writer::buffer_writer(::buffer& buffer):
-    buffer(buffer)
+    buffer(buffer),
+    start(buffer.size())
 {
 }
 
-buffer_writer& buffer_writer::operator<<(uint8_t data)
+std::size_t buffer_writer::written() const
+{
+    return buffer.size() - start;
+}
+
+buffer_writer& buffer_writer::operator<<(std::uint8_t data)
 {
     buffer.push_back(data);
 
     return *this;
 }
 
-buffer_writer& buffer_writer::operator<<(uint16_t data)
+buffer_writer& buffer_writer::operator<<(std::uint16_t data)
 {
-    *this << static_cast<uint8_t>(data)
-          << static_cast<uint8_t>(data >> 8);
+    *this << static_cast<std::uint8_t>(data)
+          << static_cast<std::uint8_t>(data >> 8);
 
     return *this;
 }
 
-buffer_writer& buffer_writer::operator<<(uint32_t data)
+buffer_writer& buffer_writer::operator<<(std::uint32_t data)
 {
-    *this << static_cast<uint8_t>(data)
-          << static_cast<uint8_t>(data >> 8)
-          << static_cast<uint8_t>(data >> 16)
-          << static_cast<uint8_t>(data >> 24);
+    *this << static_cast<std::uint8_t>(data)
+          << static_cast<std::uint8_t>(data >> 8)
+          << static_cast<std::uint8_t>(data >> 16)
+          << static_cast<std::uint8_t>(data >> 24);
 
     return *this;
 }
 
-buffer_writer& buffer_writer::operator<<(uint64_t data)
+buffer_writer& buffer_writer::operator<<(std::uint64_t data)
 {
-    *this << static_cast<uint8_t>(data)
-          << static_cast<uint8_t>(data >> 8)
-          << static_cast<uint8_t>(data >> 16)
-          << static_cast<uint8_t>(data >> 24)
-          << static_cast<uint8_t>(data >> 32)
-          << static_cast<uint8_t>(data >> 40)
-          << static_cast<uint8_t>(data >> 48)
-          << static_cast<uint8_t>(data >> 56);
+    *this << static_cast<std::uint8_t>(data)
+          << static_cast<std::uint8_t>(data >> 8)
+          << static_cast<std::uint8_t>(data >> 16)
+          << static_cast<std::uint8_t>(data >> 24)
+          << static_cast<std::uint8_t>(data >> 32)
+          << static_cast<std::uint8_t>(data >> 40)
+          << static_cast<std::uint8_t>(data >> 48)
+          << static_cast<std::uint8_t>(data >> 56);
 
     return *this;
 }

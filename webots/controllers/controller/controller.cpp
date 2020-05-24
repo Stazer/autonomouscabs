@@ -10,6 +10,7 @@
   #include <sys/socket.h>
   #include <sys/time.h>
   #include <unistd.h>
+  #include <errno.h>
 #endif
 
 #include <webots/Robot.hpp>
@@ -18,6 +19,10 @@
 #include <webots/DistanceSensor.hpp>
 #include <webots/LightSensor.hpp>
 
+#include "../../../shared/buffer.hpp"
+#include "../../../shared/buffer_reader.hpp"
+#include "../../../shared/buffer_writer.hpp"
+
 #define N_DISTANCE_SENSORS 9
 #define N_LIGHT_SENSORS 1
 
@@ -25,9 +30,11 @@
 using namespace webots;
 
 typedef enum message_id{
-  DISTANCE_SENSOR_MESSAGE = 1,
-  LIGHT_SENSOR_MESSAGE = 2,
-  CAMERA_MESSAGE = 3,
+  OUT_MESSAGE_DISTANCE_SENSOR = 1,
+  OUT_MESSAGE_LIGHT_SENSOR = 2,
+  OUT_MESSAGE_IMAGE = 3,
+  IN_MESSAGE_VELOCITY = 4,
+  IN_MESSAGE_STEERING = 5,
 }message_id;
 
 typedef struct ds_message{
@@ -119,6 +126,20 @@ int accept_client(int server) {
   return client;
 }
 
+int is_socket_error(int error){
+#ifdef _WIN32
+    if(error == SOCKET_ERROR){
+      return 1;
+    }
+#else
+    if(error == -1){
+      return 1;
+    }
+#endif
+
+  return 0;
+}
+
 uint64_t host_to_net_64(uint64_t val){
   int num = 1;
   /* check endianness */
@@ -149,7 +170,7 @@ uint64_t net_to_host_64(uint64_t val){
 
 ds_message ds_message_marshall(double payload[N_DISTANCE_SENSORS]){
   ds_message message = {0};
-  message.id = htonl(DISTANCE_SENSOR_MESSAGE);
+  message.id = htonl(OUT_MESSAGE_DISTANCE_SENSOR);
   message.size = htonl(N_DISTANCE_SENSORS * sizeof(uint64_t));
   for(int i = 0; i<N_DISTANCE_SENSORS; i++){
     message.payload[i] = *(uint64_t *) &payload[i];
@@ -160,7 +181,7 @@ ds_message ds_message_marshall(double payload[N_DISTANCE_SENSORS]){
 
 ls_message ls_message_marshall(double payload[N_LIGHT_SENSORS]){
   ls_message message = {0};
-  message.id = htonl(LIGHT_SENSOR_MESSAGE);
+  message.id = htonl(OUT_MESSAGE_LIGHT_SENSOR);
   message.size = htonl(N_LIGHT_SENSORS * sizeof(uint64_t));
   for(int i = 0; i<N_LIGHT_SENSORS; i++){
     message.payload[i] = *(uint64_t *) &payload[i];
@@ -176,9 +197,76 @@ img_message *img_message_prepare(uint32_t size){
     return NULL;
   }
 
-  message->id = htonl(CAMERA_MESSAGE);
+  message->id = htonl(OUT_MESSAGE_IMAGE);
   message->size = htonl(size);
   return message;
+}
+
+int send_sensor_data(int client, ds_message ds_msg, ls_message ls_msg, img_message *img_msg, int image_size){
+  int err = send(client, (const char *) &ds_msg, sizeof(ds_message), 0);
+  if(is_socket_error(err) == 1){
+    std::cerr << "failed to send distance sensor data to external controller" << std::endl << "quitting... " << std::endl;
+    return -1;
+  }
+  err = send(client, (const char *) &ls_msg, sizeof(ls_message), 0);
+  if(is_socket_error(err) == 1){
+    std::cerr << "failed to send light sensor data to external controller" << std::endl << "quitting... " << std::endl;
+    return -1;
+  }
+
+  err = send(client, (const char *) img_msg, sizeof(img_message) + image_size, 0); 
+  if(is_socket_error(err) == 1){
+    std::cerr << "failed to send image data to external controller" << std::endl << "quitting... " << std::endl;
+    return -1;
+  }
+
+  return 0;
+}
+
+int select_call(int client){
+  struct timeval tv = {0, 0};
+  struct fd_set rfds;
+  FD_ZERO(&rfds);
+  FD_SET(client, &rfds);
+  int number = select(client + 1, &rfds, NULL, NULL, &tv);
+  return number;
+}
+
+void incoming_message_unmarshall(buffer_reader reader, double *right_speed, double *left_speed){
+    uint32_t id = 0, size = 0;
+    uint64_t payload = 0;
+    reader >> id;
+    reader >> size;
+    reader >> payload;
+
+    id = ntohl(id);
+    size = ntohl(size);
+    payload = net_to_host_64(payload);
+
+    if(id == IN_MESSAGE_VELOCITY){
+      *left_speed =  *left_speed < 0 : -(*(double *) &payload) : *(double *) &payload;
+      *right_speed = *right_speed < 0 : -(*(double *) &payload) : *(double *) &payload;
+    }
+
+    if(id == IN_MESSAGE_STEERING){
+      double value = *(double *) &payload;
+      if(value < 0){
+        (*left_speed) *= value;
+        *right_speed = *right_speed < 0 ? -(*right_speed) : *right_speed;
+      }
+
+      if(value > 0){
+        (*right_speed) *= -value;
+        *left_speed = *left_speed < 0 ? -(*left_speed) : *left_speed;
+      }
+
+      if(value == 0 && *right_speed != *left_speed){
+        *right_speed = *right_speed < 0 ? -(*right_speed) : *right_speed;
+        *left_speed = *left_speed < 0 ? -(*left_speed) : *left_speed;
+      }
+    }
+    
+    std::cout << "left: " << *left_speed << ", right: " << *right_speed << std::endl;
 }
 
 int main(int argc, char **argv) {
@@ -191,6 +279,9 @@ int main(int argc, char **argv) {
   std::cout << "creating server socket on port " << atoi(argv[1]) << std::endl;
   int sock = create_socket(atoi(argv[1]));
   if(sock == -1){
+#ifdef _WIN32
+    WSACleanup();
+#endif
     return EXIT_FAILURE;
   }
 
@@ -199,19 +290,18 @@ int main(int argc, char **argv) {
   int client = accept_client(sock);
   if(client == -1){
     close_socket(sock);
+#ifdef _WIN32
+    WSACleanup();
+#endif
     return EXIT_FAILURE;
   }
-
-  fd_set rfds;
-  FD_ZERO(&rfds);
-  FD_SET(client, &rfds);
   
   Robot *robot = new Robot();
 
   // get the time step of the current world.
   int timeStep = (int) robot->getBasicTimeStep();
 
-  // setup sensors
+  // setup distance sensors
   std::cout << "setting up sensors" << std::endl;
   std::string ds_names[N_DISTANCE_SENSORS] = {"ds_fc", "ds_fcr", "ds_fr", "ds_rf", "ds_rc", "ds_lc", "ds_lf", "ds_fl", "ds_fcl"};
   DistanceSensor *ds_sensors[N_DISTANCE_SENSORS];
@@ -220,6 +310,7 @@ int main(int argc, char **argv) {
     ds_sensors[i]->enable(timeStep);
   }
 
+  // setup light sensors
   std::string ls_names[N_LIGHT_SENSORS] = {"ls_front"};
   LightSensor *ls_sensors[N_LIGHT_SENSORS];
   for(int i = 0; i<N_LIGHT_SENSORS; i++){
@@ -227,6 +318,7 @@ int main(int argc, char **argv) {
     ls_sensors[i]->enable(timeStep);
   }
 
+  // setup camera
   Camera *camera = robot->getCamera("camera");
   camera->enable(timeStep);
   int image_height = camera->getHeight();
@@ -239,18 +331,26 @@ int main(int argc, char **argv) {
   for(int i = 0; i<4; i++){
     m_motors[i] = robot->getMotor(m_names[i]);
     m_motors[i]->setPosition(INFINITY);
-    //m_motors[i]->setVelocity(0);
+    m_motors[i]->setVelocity(0);
   }
-  
+  double left_speed = 0;
+  double right_speed = 0;
+
   // setup img_message (allocate memory once)
   img_message *img_msg = img_message_prepare(image_size);
   if(img_msg == NULL){
     close_socket(sock);
     close_socket(client);
+#ifdef _WIN32
+    WSACleanup();
+#endif
     delete robot;
     return EXIT_FAILURE;
   }
-  struct timeval tv = {0, 0};
+
+  buffer incoming;
+  size_t size = 2 * sizeof(uint32_t) + sizeof(uint64_t);
+  uint8_t dummy[2 * sizeof(uint32_t) + sizeof(uint64_t)] = {0};
   while (robot->step(timeStep) != -1) {
     // read sensor data
     double ds_values[N_DISTANCE_SENSORS];
@@ -270,34 +370,48 @@ int main(int argc, char **argv) {
     ls_message ls_msg = ls_message_marshall(ls_values);
     memcpy(img_msg->payload, image, image_size); 
 
-    int err = send(client, (const char *) &ds_msg, sizeof(ds_message), 0);
-    if(err < 0){
-      std::cerr << "failed to send distance sensor data to external controller" << std::endl << "quitting... " << std::endl;
+    int err = send_sensor_data(client, ds_msg, ls_msg, img_msg, image_size);
+    if(err == -1){
       break;
     }
-    err = send(client, (const char *) &ls_msg, sizeof(ls_message), 0);
-    if(err < 0){
-      std::cerr << "failed to send light sensor data to external controller" << std::endl << "quitting... " << std::endl;
-      break;
-    }
-
-    err = send(client, (const char *) img_msg, sizeof(img_message) + image_size, 0); 
-      if(err < 0){
-        std::cerr << "failed to send image data to external controller" << std::endl << "quitting... " << std::endl;
+    
+    int count = 0;
+    do{
+      err = select_call(client);
+      if(err == 0){
         break;
       }
-   
 
-    int number = select(client + 1, &rfds, NULL, NULL, &tv);
-    if(number == 0){
-      continue;
-    }
-    // read data from external controller
-    // read_data(client);
-    // aply data to motors
-    /* for(int i = 0; i<4; i++){
-      m_motors[i]->setVelocity(0);
-    } */
+      if(is_socket_error(err) == 1){
+        std::cout << "select failed" << std::endl << "quitting... " << std::endl;
+        break;
+      }
+      std::cout << "select: " << err << std::endl;
+
+      auto recbytes = recv(client, (char *) dummy, size, 0);
+      buffer_writer writer(incoming);
+      for(auto i = 0; i<recbytes; i++){
+        writer << dummy[i];
+      }
+
+      if(writer.written() < size){
+        break;
+      }
+      
+      buffer_reader reader(incoming);
+      incoming_message_unmarshall(reader, &right_speed, &left_speed);
+
+      // reset buffer
+      incoming.clear();
+      count += 1;
+    }while(err > 0 && count < 16);
+
+    // std::cout << "right_speed: " << right_speed << ", left_speed: " << left_speed << std::endl;
+
+    m_motors[0]->setVelocity(right_speed);
+    m_motors[1]->setVelocity(right_speed);
+    m_motors[2]->setVelocity(left_speed);
+    m_motors[3]->setVelocity(left_speed);
   };
   
   for(int i = 0; i<4; i++){
@@ -307,6 +421,9 @@ int main(int argc, char **argv) {
   // Enter here exit cleanup code.
   close_socket(sock);
   close_socket(client);
+#ifdef _WIN32
+  WSACleanup();
+#endif
   free(img_msg);
   delete robot;
   return 0;

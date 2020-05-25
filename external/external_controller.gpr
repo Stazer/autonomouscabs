@@ -1,0 +1,13 @@
+project external_controller is
+
+   for Source_Dirs use ("src/**", "src/tcp_client/**", "src/backend_thread/**", "src/webots_thread/**");
+   for Object_Dir use "obj";
+   for Main use ("main.adb");
+   for Exec_Dir use ".";
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g");
+   end Compiler;
+
+end external_controller;
+

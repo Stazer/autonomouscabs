@@ -1,17 +1,12 @@
 // File:          controller.cpp
 // Author:        Henrik Classen
 
-#ifdef _WIN32
-  #include <winsock.h>
-#else
-  #include <arpa/inet.h>
-  #include <netdb.h>
-  #include <netinet/in.h>
-  #include <sys/socket.h>
-  #include <sys/time.h>
-  #include <unistd.h>
-  #include <errno.h>
-#endif
+#include <cstdlib>
+#include <iostream>
+#include <boost/bind/bind.hpp>
+#include <boost/smart_ptr.hpp>
+#include <boost/asio.hpp>
+#include <boost/endian/conversion.hpp>
 
 #include <webots/Robot.hpp>
 #include <webots/Motor.hpp>
@@ -28,6 +23,8 @@
 
 // All the webots classes are defined in the "webots" namespace
 using namespace webots;
+
+using boost::asio::ip::tcp;
 
 typedef enum message_id{
   OUT_MESSAGE_DISTANCE_SENSOR = 1,
@@ -55,137 +52,26 @@ typedef struct img_message{
   unsigned char payload[];
 }img_message;
 
-void close_socket(int sock){
-  if(sock < 0){
-    return;
-  }
-
-#ifdef _WIN32
-  closesocket(sock);
-#else
-  close(sock);
-#endif
-}
-
-int create_socket(int port){
-  int err = 0;
-#ifdef _WIN32
-  WSADATA info;
-  err = WSAStartup(MAKEWORD(1, 1), &info);
-  if(err != 0){
-    std::cerr << "cannot initialize Winsock" << std::endl;
-    return -1;
-  }
-#endif
-
-  int sock = socket(AF_INET, SOCK_STREAM, 0);
-  if(sock < 0){
-    std::cerr << "cannot create socket" << std::endl;
-    return -1;
-  }
-
-  sockaddr_in hints;
-  memset(&hints, 0, sizeof(sockaddr_in));
-  hints.sin_family = AF_INET;
-  hints.sin_port = htons(port);
-  hints.sin_addr.S_un.S_addr = INADDR_ANY;
-
-  err = bind(sock, (sockaddr *) &hints, sizeof(sockaddr));
-  if(err != 0){
-    close_socket(sock);
-    std::cerr << "cannot bind socket" << std::endl;
-    return -1;
-  }
-
-  err = listen(sock, 1);
-  if(err != 0){
-    close_socket(sock);
-    std::cerr << "cannot listen on socket" << std::endl;
-    return -1;
-  }
-
-  return sock;
-}
-
-int accept_client(int server) {
-#ifdef _WIN32
-  int asize;
-#else
-  socklen_t asize;
-#endif
-  asize = sizeof(struct sockaddr_in);
-  
-  int client;
-  struct sockaddr_in addr;
-
-  client = accept(server, (struct sockaddr *) &addr, &asize);
-  if (client == -1) {
-    std::cerr << "cannot accept external controller connection" << std::endl;
-    return -1;
-  }
-  return client;
-}
-
-int is_socket_error(int error){
-#ifdef _WIN32
-    if(error == SOCKET_ERROR){
-      return 1;
-    }
-#else
-    if(error == -1){
-      return 1;
-    }
-#endif
-
-  return 0;
-}
-
-uint64_t host_to_net_64(uint64_t val){
-  int num = 1;
-  /* check endianness */
-  if(*(char *) &num != 1){
-    /* already big endian */
-    return val;
-  }
-
-  /* convert to big endian */
-  uint32_t high = htonl((uint32_t) ((uint64_t) val >> 32));
-  uint32_t low = htonl((uint32_t) val & 0xFFFFFFFFLL);
-  return (uint64_t) low << 32 | high;
-}
-
-uint64_t net_to_host_64(uint64_t val){
-  int num = 1;
-  /* check endianness */
-  if(*(char *) &num != 1){
-    /* already big endian */
-    return val;
-  }
-
-  /* convert to little endian */
-  uint32_t high = ntohl((uint32_t) ((uint64_t) val >> 32));
-  uint32_t low = ntohl((uint32_t) val & 0xFFFFFFFFLL);
-  return (uint64_t) low << 32 | high;
-}
-
-ds_message ds_message_marshall(double payload[N_DISTANCE_SENSORS]){
+ds_message marshall_ds_message(double payload[N_DISTANCE_SENSORS]){
   ds_message message = {0};
-  message.id = htonl(OUT_MESSAGE_DISTANCE_SENSOR);
-  message.size = htonl(N_DISTANCE_SENSORS * sizeof(uint64_t));
+  uint32_t id = OUT_MESSAGE_DISTANCE_SENSOR;
+  message.id = boost::endian::native_to_big(id);
+  message.size = boost::endian::native_to_big((uint32_t) (N_DISTANCE_SENSORS * sizeof(uint64_t)));
   for(int i = 0; i<N_DISTANCE_SENSORS; i++){
     message.payload[i] = *(uint64_t *) &payload[i];
-    message.payload[i] = host_to_net_64(message.payload[i]);
+    message.payload[i] = boost::endian::native_to_big(message.payload[i]);
   }
   return message;
 }
 
-ls_message ls_message_marshall(double payload[N_LIGHT_SENSORS]){
+ls_message marshall_ls_message(double payload[N_LIGHT_SENSORS]){
   ls_message message = {0};
-  message.id = htonl(OUT_MESSAGE_LIGHT_SENSOR);
-  message.size = htonl(N_LIGHT_SENSORS * sizeof(uint64_t));
+  uint32_t id = OUT_MESSAGE_LIGHT_SENSOR;
+  message.id = boost::endian::native_to_big(id);
+  message.size = boost::endian::native_to_big((uint32_t) (N_LIGHT_SENSORS * sizeof(uint64_t)));
   for(int i = 0; i<N_LIGHT_SENSORS; i++){
     message.payload[i] = *(uint64_t *) &payload[i];
-    message.payload[i] = host_to_net_64(message.payload[i]);
+    message.payload[i] = boost::endian::native_to_big(message.payload[i]);
   }
   return message;
 }
@@ -196,56 +82,27 @@ img_message *img_message_prepare(uint32_t size){
     std::cerr << "failed to allocate memory" << std::endl;
     return NULL;
   }
-
-  message->id = htonl(OUT_MESSAGE_IMAGE);
-  message->size = htonl(size);
+  
+  uint32_t id = OUT_MESSAGE_IMAGE;
+  message->id = boost::endian::native_to_big(id);
+  message->size = boost::endian::native_to_big(size);
   return message;
 }
 
-int send_sensor_data(int client, ds_message ds_msg, ls_message ls_msg, img_message *img_msg, int image_size){
-  int err = send(client, (const char *) &ds_msg, sizeof(ds_message), 0);
-  if(is_socket_error(err) == 1){
-    std::cerr << "failed to send distance sensor data to external controller" << std::endl << "quitting... " << std::endl;
-    return -1;
-  }
-  err = send(client, (const char *) &ls_msg, sizeof(ls_message), 0);
-  if(is_socket_error(err) == 1){
-    std::cerr << "failed to send light sensor data to external controller" << std::endl << "quitting... " << std::endl;
-    return -1;
-  }
-
-  err = send(client, (const char *) img_msg, sizeof(img_message) + image_size, 0); 
-  if(is_socket_error(err) == 1){
-    std::cerr << "failed to send image data to external controller" << std::endl << "quitting... " << std::endl;
-    return -1;
-  }
-
-  return 0;
-}
-
-int select_call(int client){
-  struct timeval tv = {0, 0};
-  struct fd_set rfds;
-  FD_ZERO(&rfds);
-  FD_SET(client, &rfds);
-  int number = select(client + 1, &rfds, NULL, NULL, &tv);
-  return number;
-}
-
-void incoming_message_unmarshall(buffer_reader reader, double *right_speed, double *left_speed){
+void unmarshall_incoming_message(buffer_reader reader, double *right_speed, double *left_speed){
     uint32_t id = 0, size = 0;
     uint64_t payload = 0;
     reader >> id;
     reader >> size;
     reader >> payload;
 
-    id = ntohl(id);
-    size = ntohl(size);
-    payload = net_to_host_64(payload);
+    id = boost::endian::big_to_native(id);
+    size = boost::endian::big_to_native(size);
+    payload = boost::endian::big_to_native(payload);
 
     if(id == IN_MESSAGE_VELOCITY){
-      *left_speed =  *left_speed < 0 : -(*(double *) &payload) : *(double *) &payload;
-      *right_speed = *right_speed < 0 : -(*(double *) &payload) : *(double *) &payload;
+      *left_speed =  *left_speed < 0 ? -(*(double *) &payload) : *(double *) &payload;
+      *right_speed = *right_speed < 0 ? -(*(double *) &payload) : *(double *) &payload;
     }
 
     if(id == IN_MESSAGE_STEERING){
@@ -269,6 +126,13 @@ void incoming_message_unmarshall(buffer_reader reader, double *right_speed, doub
     std::cout << "left: " << *left_speed << ", right: " << *right_speed << std::endl;
 }
 
+boost::shared_ptr<tcp::socket> server(boost::asio::io_service& io_service, unsigned short port){
+  tcp::acceptor acceptor(io_service, tcp::endpoint(tcp::v4(), port));
+  boost::shared_ptr<tcp::socket> client(new tcp::socket(io_service));
+  acceptor.accept(*client);
+  return client;
+}
+
 int main(int argc, char **argv) {
   if(argc != 2){
     std::cerr << "port missing" << std::endl;
@@ -276,23 +140,12 @@ int main(int argc, char **argv) {
   }
   
   // setup server socket
-  std::cout << "creating server socket on port " << atoi(argv[1]) << std::endl;
-  int sock = create_socket(atoi(argv[1]));
-  if(sock == -1){
-#ifdef _WIN32
-    WSACleanup();
-#endif
-    return EXIT_FAILURE;
-  }
-
-  // wait for external controller to connect
-  std::cout << "waiting for external controller" << std::endl;
-  int client = accept_client(sock);
-  if(client == -1){
-    close_socket(sock);
-#ifdef _WIN32
-    WSACleanup();
-#endif
+  boost::shared_ptr<tcp::socket> client = NULL;
+  try{
+    boost::asio::io_service io_service;
+    client = server(io_service, std::atoi(argv[1]));
+  }catch(std::exception& e){
+    std::cerr << "Exception: " << e.what() << "\n";
     return EXIT_FAILURE;
   }
   
@@ -339,73 +192,60 @@ int main(int argc, char **argv) {
   // setup img_message (allocate memory once)
   img_message *img_msg = img_message_prepare(image_size);
   if(img_msg == NULL){
-    close_socket(sock);
-    close_socket(client);
-#ifdef _WIN32
-    WSACleanup();
-#endif
+    client->close();
     delete robot;
     return EXIT_FAILURE;
   }
 
   buffer incoming;
-  size_t size = 2 * sizeof(uint32_t) + sizeof(uint64_t);
-  uint8_t dummy[2 * sizeof(uint32_t) + sizeof(uint64_t)] = {0};
+  const size_t size = 2 * sizeof(uint32_t) + sizeof(uint64_t);
   while (robot->step(timeStep) != -1) {
-    // read sensor data
+    // read distance sensor data
     double ds_values[N_DISTANCE_SENSORS];
     for(int i = 0; i<N_DISTANCE_SENSORS; i++){
       ds_values[i] = ds_sensors[i]->getValue();
     }
+    ds_message ds_msg = marshall_ds_message(ds_values);
+    boost::asio::write(*client, boost::asio::buffer(&ds_msg, sizeof(ds_message)));
 
+    // read light sensor data
     double ls_values[N_LIGHT_SENSORS];
     for(int i = 0; i<N_LIGHT_SENSORS; i++){
       ls_values[i] = ls_sensors[i]->getValue();
     }
+    ls_message ls_msg = marshall_ls_message(ls_values);
+    boost::asio::write(*client, boost::asio::buffer(&ls_msg, sizeof(ls_message)));
 
+    // read image data
     const unsigned char *image = camera->getImage();
-
-    // marshall sensor data
-    ds_message ds_msg = ds_message_marshall(ds_values);
-    ls_message ls_msg = ls_message_marshall(ls_values);
     memcpy(img_msg->payload, image, image_size); 
-
-    int err = send_sensor_data(client, ds_msg, ls_msg, img_msg, image_size);
-    if(err == -1){
+    boost::asio::write(*client, boost::asio::buffer(&img_msg, sizeof(img_message) + image_size));
+    
+    if(client->available() < 1){
+      continue;
+    }
+    uint8_t data[size] = {0};
+    boost::system::error_code error;
+    size_t length = client->read_some(boost::asio::buffer(data), error);
+    if(error == boost::asio::error::eof){
+      break;
+    }else if (error){
+      std::cerr << "Error: " << error << std::endl;
       break;
     }
-    
-    int count = 0;
-    do{
-      err = select_call(client);
-      if(err == 0){
-        break;
-      }
 
-      if(is_socket_error(err) == 1){
-        std::cout << "select failed" << std::endl << "quitting... " << std::endl;
-        break;
-      }
-      std::cout << "select: " << err << std::endl;
+    buffer_writer writter(incoming);
+    for(auto part : data){
+      writter << part;
+    }
 
-      auto recbytes = recv(client, (char *) dummy, size, 0);
-      buffer_writer writer(incoming);
-      for(auto i = 0; i<recbytes; i++){
-        writer << dummy[i];
-      }
+    if(length != size){
+      continue;
+    }
 
-      if(writer.written() < size){
-        break;
-      }
-      
-      buffer_reader reader(incoming);
-      incoming_message_unmarshall(reader, &right_speed, &left_speed);
-
-      // reset buffer
-      incoming.clear();
-      count += 1;
-    }while(err > 0 && count < 16);
-
+    buffer_reader reader(incoming);
+    unmarshall_incoming_message(reader, &right_speed, &left_speed);
+    incoming.clear();
     // std::cout << "right_speed: " << right_speed << ", left_speed: " << left_speed << std::endl;
 
     m_motors[0]->setVelocity(right_speed);
@@ -419,11 +259,7 @@ int main(int argc, char **argv) {
   }
 
   // Enter here exit cleanup code.
-  close_socket(sock);
-  close_socket(client);
-#ifdef _WIN32
-  WSACleanup();
-#endif
+  client->close();
   free(img_msg);
   delete robot;
   return 0;

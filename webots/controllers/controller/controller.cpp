@@ -3,7 +3,6 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <boost/bind/bind.hpp>
 #include <boost/smart_ptr.hpp>
 #include <boost/asio.hpp>
 #include <boost/endian/conversion.hpp>
@@ -76,17 +75,11 @@ ls_message marshall_ls_message(double payload[N_LIGHT_SENSORS]){
   return message;
 }
 
-img_message *img_message_prepare(uint32_t size){
-  img_message *message = (img_message *) malloc(sizeof(img_message) + size);
-  if(message == NULL){
-    std::cerr << "failed to allocate memory" << std::endl;
-    return NULL;
-  }
-  
+void marshall_img_message(img_message *message, const unsigned char *payload, uint32_t image_size){
   uint32_t id = OUT_MESSAGE_IMAGE;
   message->id = boost::endian::native_to_big(id);
-  message->size = boost::endian::native_to_big(size);
-  return message;
+  message->size = boost::endian::native_to_big(image_size);
+  memcpy(message->payload, payload, image_size); 
 }
 
 void unmarshall_incoming_message(buffer_reader reader, double *right_speed, double *left_speed){
@@ -126,13 +119,6 @@ void unmarshall_incoming_message(buffer_reader reader, double *right_speed, doub
     std::cout << "left: " << *left_speed << ", right: " << *right_speed << std::endl;
 }
 
-boost::shared_ptr<tcp::socket> server(boost::asio::io_service& io_service, unsigned short port){
-  tcp::acceptor acceptor(io_service, tcp::endpoint(tcp::v4(), port));
-  boost::shared_ptr<tcp::socket> client(new tcp::socket(io_service));
-  acceptor.accept(*client);
-  return client;
-}
-
 int main(int argc, char **argv) {
   if(argc != 2){
     std::cerr << "port missing" << std::endl;
@@ -140,10 +126,11 @@ int main(int argc, char **argv) {
   }
   
   // setup server socket
-  boost::shared_ptr<tcp::socket> client = NULL;
+  boost::asio::io_service io_service;
+  tcp::socket client(io_service);
   try{
-    boost::asio::io_service io_service;
-    client = server(io_service, std::atoi(argv[1]));
+    tcp::acceptor acceptor(io_service, tcp::endpoint(tcp::v4(), std::atoi(argv[1])));
+    acceptor.accept(client);
   }catch(std::exception& e){
     std::cerr << "Exception: " << e.what() << "\n";
     return EXIT_FAILURE;
@@ -190,9 +177,10 @@ int main(int argc, char **argv) {
   double right_speed = 0;
 
   // setup img_message (allocate memory once)
-  img_message *img_msg = img_message_prepare(image_size);
+  img_message *img_msg = (img_message *) malloc(sizeof(img_message) + image_size * sizeof(char));
   if(img_msg == NULL){
-    client->close();
+    std::cerr << "failed to allocating memory" << std::endl;
+    client.close();
     delete robot;
     return EXIT_FAILURE;
   }
@@ -205,28 +193,35 @@ int main(int argc, char **argv) {
     for(int i = 0; i<N_DISTANCE_SENSORS; i++){
       ds_values[i] = ds_sensors[i]->getValue();
     }
-    ds_message ds_msg = marshall_ds_message(ds_values);
-    boost::asio::write(*client, boost::asio::buffer(&ds_msg, sizeof(ds_message)));
 
     // read light sensor data
     double ls_values[N_LIGHT_SENSORS];
     for(int i = 0; i<N_LIGHT_SENSORS; i++){
       ls_values[i] = ls_sensors[i]->getValue();
     }
-    ls_message ls_msg = marshall_ls_message(ls_values);
-    boost::asio::write(*client, boost::asio::buffer(&ls_msg, sizeof(ls_message)));
 
     // read image data
     const unsigned char *image = camera->getImage();
     memcpy(img_msg->payload, image, image_size); 
-    boost::asio::write(*client, boost::asio::buffer(&img_msg, sizeof(img_message) + image_size));
     
-    if(client->available() < 1){
+    ds_message ds_msg = marshall_ds_message(ds_values);
+    ls_message ls_msg = marshall_ls_message(ls_values);
+    marshall_img_message(img_msg, image, image_size);
+    try{
+      boost::asio::write(client, boost::asio::buffer(&ds_msg, sizeof(ds_message)));
+      boost::asio::write(client, boost::asio::buffer(&ls_msg, sizeof(ls_message)));
+      boost::asio::write(client, boost::asio::buffer(img_msg, sizeof(img_message)));
+    }catch(std::exception& e){
+      std::cerr << "Exception: " << e.what() << std::endl;
+      break;
+    }  
+
+    if(client.available() < 1){
       continue;
     }
     uint8_t data[size] = {0};
     boost::system::error_code error;
-    size_t length = client->read_some(boost::asio::buffer(data), error);
+    size_t length = client.read_some(boost::asio::buffer(data), error);
     if(error == boost::asio::error::eof){
       break;
     }else if (error){
@@ -259,7 +254,7 @@ int main(int argc, char **argv) {
   }
 
   // Enter here exit cleanup code.
-  client->close();
+  client.close();
   free(img_msg);
   delete robot;
   return 0;

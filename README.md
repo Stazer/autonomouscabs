@@ -10,8 +10,8 @@
 - Solve issue by making changes
 - Push changes
 - Create pull request
-- Pull request is reviewed by at least two people in order to ensure code quality, structure, requirements and succeeded unit tests.
-- Branch is merged into master and deleted
+- Pull request is reviewed by at least two people in order to ensure code quality, structure, requirements and succeeded unit tests
+- Branch gets merged into master and gets deleted
 
 ## Quality Assurance
 - Unit tests are written for most components

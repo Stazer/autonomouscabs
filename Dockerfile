@@ -1,4 +1,4 @@
-FROM debian:stable
+FROM debian:testing
 
 RUN useradd -m user && \
     apt-get update && \

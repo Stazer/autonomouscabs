@@ -6,7 +6,7 @@ RUN useradd -m user && \
 
 USER user
 
-COPY Stazer/autonomouscabs /home/user/repository
+COPY $TRAVIS_BUILD_DIR /home/user/repository
 
 RUN cd /home/user/repository && \
     mkdir build && \

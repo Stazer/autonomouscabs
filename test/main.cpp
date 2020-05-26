@@ -3,7 +3,7 @@
 
 #include "../shared/buffer_reader.hpp"
 #include "../shared/buffer_writer.hpp"
-#include "../shared/protocol.hpp"
+#include "../shared/message.hpp"
 
 BOOST_AUTO_TEST_CASE(buffer_write_read)
 {
@@ -39,10 +39,10 @@ BOOST_AUTO_TEST_CASE(buffer_write_read)
     BOOST_TEST(reader.read() == total);
 }
 
-BOOST_AUTO_TEST_CASE(protocol_message_header_write_read)
+BOOST_AUTO_TEST_CASE(message_header_write_read)
 {
     const uint32_t size = 0xFF55;
-    const uint32_t id = 0xFF50;
+    const message_id id = message_id::PING;
     buffer buffer;
 
     message_header write_header;

@@ -4,7 +4,7 @@
 
 class buffer_writer {
     public:
-        buffer_writer(buffer& buffer);
+        buffer_writer(::buffer& buffer);
 
     std::size_t written() const;
 

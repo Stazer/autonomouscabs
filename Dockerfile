@@ -2,7 +2,7 @@ FROM debian:testing
 
 RUN useradd -m user && \
     apt-get update && \
-    apt-get install -y cmake g++ libboost-dev
+    apt-get install -y cmake g++ libboost-all-dev
 
 COPY $TRAVIS_BUILD_DIR /home/user/repository
 

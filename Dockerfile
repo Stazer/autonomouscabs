@@ -1,4 +1,4 @@
 FROM debian:stable
 
-RUN apt update && \
-    apt install -Y cmake g++ libboost-dev
+RUN apt-get update && \
+    apt-get install -y cmake g++ libboost-dev

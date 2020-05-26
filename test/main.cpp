@@ -3,6 +3,7 @@
 
 #include "../shared/buffer_reader.hpp"
 #include "../shared/buffer_writer.hpp"
+#include "../shared/protocol.hpp"
 
 BOOST_AUTO_TEST_CASE(buffer_write_read)
 {
@@ -36,4 +37,25 @@ BOOST_AUTO_TEST_CASE(buffer_write_read)
 
     BOOST_TEST(writer.written() == total);
     BOOST_TEST(reader.read() == total);
+}
+
+BOOST_AUTO_TEST_CASE(protocol_message_header_write_read)
+{
+    const uint32_t size = 0xFF55;
+    const uint32_t id = 0xFF50;
+    buffer buffer;
+
+    message_header write_header;
+    write_header.id = id;
+    write_header.size = size;
+
+    buffer_writer writer(buffer);
+    writer << write_header;
+
+    buffer_reader reader(buffer);
+    message_header read_header;
+    reader >> read_header;
+
+    BOOST_TEST(read_header.id == id);
+    BOOST_TEST(read_header.size == size);
 }

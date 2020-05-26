@@ -15,6 +15,9 @@ class buffer_reader {
         buffer_reader& operator>>(std::uint32_t& data);
         buffer_reader& operator>>(std::uint64_t& data);
 
+        template <typename T>
+        buffer_reader& operator>>(T& data);
+
     private:
         const ::buffer& buffer;
         std::size_t start = 0;
@@ -78,6 +81,17 @@ buffer_reader& buffer_reader::operator>>(std::uint64_t& data)
     data |= static_cast<std::uint64_t>(buffer[index++]) << 40;
     data |= static_cast<std::uint64_t>(buffer[index++]) << 48;
     data |= static_cast<std::uint64_t>(buffer[index++]) << 56;
+
+    return *this;
+}
+
+template <typename T>
+buffer_reader& buffer_reader::operator>>(T& data)
+{
+    for(std::size_t i = 0; i < sizeof(data); ++i)
+    {
+        *this >> *(reinterpret_cast<std::uint8_t*>(&data) + i);
+    }
 
     return *this;
 }

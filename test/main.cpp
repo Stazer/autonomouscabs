@@ -46,8 +46,8 @@ BOOST_AUTO_TEST_CASE(message_header_write_read)
     buffer buffer;
 
     message_header write_header;
-    write_header.id = id;
     write_header.size = size;
+    write_header.id = id;
 
     buffer_writer writer(buffer);
     writer << write_header;

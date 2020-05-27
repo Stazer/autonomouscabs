@@ -6,16 +6,19 @@ class buffer_writer {
     public:
         buffer_writer(buffer& buffer);
 
-        std::size_t written() const;
+    std::size_t written() const;
 
-        buffer_writer& operator<<(std::uint8_t data);
-        buffer_writer& operator<<(std::uint16_t data);
-        buffer_writer& operator<<(std::uint32_t data);
-        buffer_writer& operator<<(std::uint64_t data);
+    buffer_writer& operator<<(std::uint8_t data);
+    buffer_writer& operator<<(std::uint16_t data);
+    buffer_writer& operator<<(std::uint32_t data);
+    buffer_writer& operator<<(std::uint64_t data);
 
-    private:
-        ::buffer& buffer;
-        std::size_t start = 0;
+    template <typename T>
+    buffer_writer& operator<<(const T& data);
+
+  private:
+    ::buffer& buffer;
+    std::size_t start = 0;
 };
 
 buffer_writer::buffer_writer(::buffer& buffer):
@@ -64,6 +67,17 @@ buffer_writer& buffer_writer::operator<<(std::uint64_t data)
           << static_cast<std::uint8_t>(data >> 40)
           << static_cast<std::uint8_t>(data >> 48)
           << static_cast<std::uint8_t>(data >> 56);
+
+    return *this;
+}
+
+template <typename T>
+buffer_writer& buffer_writer::operator<<(const T& data)
+{
+    for(std::size_t i = 0; i < sizeof(T); ++i)
+    {
+        *this << *(reinterpret_cast<const std::uint8_t*>(&data) + i);
+    }
 
     return *this;
 }

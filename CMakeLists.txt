@@ -8,7 +8,7 @@ find_package(Boost REQUIRED COMPONENTS system)
 
 include_directories(${Boost_INCLUDE_DIR})
 
-add_executable(backend.bin backend/main.cpp)
+add_executable(backend.bin backend/main.cpp backend/tcp_server.cpp backend/tcp_session.cpp)
 target_include_directories(backend.bin PRIVATE ${Boost_INCLUDE_DIR})
 target_link_libraries(backend.bin ${Boost_LIBRARIES} pthread)
 

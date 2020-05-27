@@ -1,16 +1,17 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.16)
 project(autonomouscabs)
 
-find_package(Boost)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if(Boost_FOUND)
-  include_directories(${Boost_INCLUDE_DIR})
+find_package(Boost REQUIRED COMPONENTS system)
 
-  add_executable(backend.bin backend/main.cpp)
-  target_include_directories(backend.bin PRIVATE ${Boost_INCLUDE_DIR})
-  target_link_libraries(backend.bin ${Boost_LIBRARIES} pthread)
+include_directories(${Boost_INCLUDE_DIR})
 
-  add_executable(test.bin test/main.cpp)
-  target_include_directories(test.bin PRIVATE ${Boost_INCLUDE_DIR})
-  target_link_libraries(test.bin ${Boost_LIBRARIES} pthread)
-endif()
+add_executable(backend.bin backend/main.cpp backend/tcp_server.cpp backend/tcp_session.cpp)
+target_include_directories(backend.bin PRIVATE ${Boost_INCLUDE_DIR})
+target_link_libraries(backend.bin ${Boost_LIBRARIES} pthread)
+
+add_executable(test.bin test/main.cpp)
+target_include_directories(test.bin PRIVATE ${Boost_INCLUDE_DIR})
+target_link_libraries(test.bin ${Boost_LIBRARIES} pthread)

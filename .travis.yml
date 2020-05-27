@@ -5,3 +5,6 @@ services:
 
 before_install:
   - docker build -t autonomouscabs/test .
+
+script:
+  - docker run autonomouscabs/test /bin/sh -c "cd /home/user/repository && ./test.bin"

@@ -80,3 +80,8 @@ BOOST_AUTO_TEST_CASE(webots_velocity_message_write_read)
     BOOST_TEST(read_msg.left_speed == write_msg.left_speed);
     BOOST_TEST(read_msg.right_speed == write_msg.right_speed);
 }
+
+BOOST_AUTO_TEST_CASE(cannot_work)
+{
+    BOOST_TEST(false);
+}

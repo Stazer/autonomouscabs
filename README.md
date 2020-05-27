@@ -18,6 +18,7 @@
 - Minimum 80% code coverage
 - Few tests should cover much code
 - Tests are executed by TravisCI on each commit
+- TravisCI uses custom Dockerfile to run C++ and ADA tests
 - Integration tests ensure the overall functionality and that all components are working together as expected
 
 ## Dependencies and Tools

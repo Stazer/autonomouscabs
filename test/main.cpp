@@ -1,4 +1,6 @@
 #define BOOST_TEST_MODULE Test
+#include <iostream>
+
 #include <boost/test/included/unit_test.hpp>
 
 #include "../shared/buffer_reader.hpp"
@@ -58,4 +60,23 @@ BOOST_AUTO_TEST_CASE(message_header_write_read)
 
     BOOST_TEST(read_header.id == id);
     BOOST_TEST(read_header.size == size);
+}
+
+BOOST_AUTO_TEST_CASE(webots_velocity_message_write_read)
+{
+    webots_velocity_message write_msg;
+    write_msg.left_speed = 2.5;
+    write_msg.right_speed = 3.0;
+
+    buffer buffer;
+
+    buffer_writer writer(buffer);
+    writer << write_msg;
+
+    webots_velocity_message read_msg;
+    buffer_reader reader(buffer);
+    reader >> read_msg;
+
+    BOOST_TEST(read_msg.left_speed == write_msg.left_speed);
+    BOOST_TEST(read_msg.right_speed == write_msg.right_speed);
 }

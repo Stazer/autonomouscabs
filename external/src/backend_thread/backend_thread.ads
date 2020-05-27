@@ -1,6 +1,5 @@
 with GNAT.Sockets; use GNAT.Sockets;
 with Ada.Streams; use Ada.Streams;
-with Ada.Text_IO; use Ada.Text_IO;
 with tcp_client; use tcp_client;
 
 package backend_thread is

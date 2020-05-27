@@ -6,9 +6,6 @@ with webots_thread; use webots_thread;
 
 procedure Main is
 
-   -- Client1  : Socket_Type; -- stores the socket
-   --Address1 : Sock_Addr_Type; -- stores the server address
-   --Channel1 : Stream_Access; -- socket I/O interface
    task webots_thread;
    task backend_thread;
 
@@ -27,7 +24,7 @@ procedure Main is
 
 begin
 
-   -- only use of main so far is to start the backend and webots threads
+   -- start threads
 
    null;
 

@@ -1,7 +1,3 @@
-with GNAT.Sockets; use GNAT.Sockets;
-with Ada.Streams; use Ada.Streams;
-with tcp_client; use tcp_client;
-
 package body webots_thread is
 
    procedure webots_main is

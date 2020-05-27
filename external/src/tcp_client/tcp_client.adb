@@ -1,6 +1,3 @@
-with GNAT.Sockets; use GNAT.Sockets;
-with Ada.Streams; use Ada.Streams;
-
 package body tcp_client is
 
    task body listen_task is

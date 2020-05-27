@@ -1,8 +1,8 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Sockets; use GNAT.Sockets;
 with tcp_client; use tcp_client;
-with backend_communication; use backend_communication;
-with webots_communication; use webots_communication;
+with backend_thread; use backend_thread;
+with webots_thread; use webots_thread;
 
 procedure Main is
 

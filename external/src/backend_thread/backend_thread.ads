@@ -1,6 +1,11 @@
 with GNAT.Sockets; use GNAT.Sockets;
 with Ada.Streams; use Ada.Streams;
 with tcp_client; use tcp_client;
+with Ada.Real_Time; use Ada.Real_Time;
+with Ada.Text_IO;
+with communication_queues; use communication_queues;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
 
 package backend_thread is
 

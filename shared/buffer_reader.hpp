@@ -1,8 +1,12 @@
 #pragma once
 
+#include <string>
+#include <array>
+
 #include "buffer.hpp"
 
-class buffer_reader {
+class buffer_reader
+{
     public:
         buffer_reader(const ::buffer& buffer, ::buffer::const_iterator iterator);
         buffer_reader(const ::buffer& buffer);
@@ -14,6 +18,14 @@ class buffer_reader {
         buffer_reader& operator>>(std::uint16_t& data);
         buffer_reader& operator>>(std::uint32_t& data);
         buffer_reader& operator>>(std::uint64_t& data);
+
+        buffer_reader& operator>>(std::string& string);
+
+        template <typename T, std::size_t N>
+        buffer_reader& operator>>(std::array<T, N>& array);
+
+        template <typename T>
+        buffer_reader& operator>>(std::vector<T>& vector);
 
         template <typename T>
         buffer_reader& operator>>(T& data);
@@ -81,6 +93,46 @@ buffer_reader& buffer_reader::operator>>(std::uint64_t& data)
     data |= static_cast<std::uint64_t>(buffer[index++]) << 40;
     data |= static_cast<std::uint64_t>(buffer[index++]) << 48;
     data |= static_cast<std::uint64_t>(buffer[index++]) << 56;
+
+    return *this;
+}
+
+buffer_reader& buffer_reader::operator>>(std::string& string)
+{
+    std::size_t size = 0;
+    *this >> size;
+    string.resize(size);
+
+    for(std::size_t i = 0; i < size; ++i)
+    {
+        *this >> string[i];
+    }
+
+    return *this;
+}
+
+template <typename T, std::size_t N>
+buffer_reader& buffer_reader::operator>>(std::array<T, N>& array)
+{
+    for(std::size_t i = 0; i < N; ++i)
+    {
+        *this >> array[i];
+    }
+
+    return *this;
+}
+
+template <typename T>
+buffer_reader& buffer_reader::operator>>(std::vector<T>& vector)
+{
+    std::size_t size = 0;
+    *this >> size;
+    vector.resize(size);
+
+    for(std::size_t i = 0; i < size; ++i)
+    {
+        *this >> vector[i];
+    }
 
     return *this;
 }

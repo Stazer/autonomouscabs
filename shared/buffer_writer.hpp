@@ -1,10 +1,14 @@
 #pragma once
 
+#include <string>
+#include <array>
+
 #include "buffer.hpp"
 
-class buffer_writer {
-    public:
-        buffer_writer(::buffer& buffer);
+class buffer_writer
+{
+  public:
+    buffer_writer(::buffer& buffer);
 
     std::size_t written() const;
 
@@ -12,6 +16,14 @@ class buffer_writer {
     buffer_writer& operator<<(std::uint16_t data);
     buffer_writer& operator<<(std::uint32_t data);
     buffer_writer& operator<<(std::uint64_t data);
+
+    buffer_writer& operator<<(const std::string& string);
+
+    template <typename T, std::size_t N>
+    buffer_writer& operator<<(const std::array<T, N>& array);
+
+    template <typename T>
+    buffer_writer& operator<<(const std::vector<T>& vector);
 
     template <typename T>
     buffer_writer& operator<<(const T& data);
@@ -67,6 +79,40 @@ buffer_writer& buffer_writer::operator<<(std::uint64_t data)
           << static_cast<std::uint8_t>(data >> 40)
           << static_cast<std::uint8_t>(data >> 48)
           << static_cast<std::uint8_t>(data >> 56);
+
+    return *this;
+}
+
+buffer_writer& buffer_writer::operator<<(const std::string& string)
+{
+    *this << string.size();
+    for(auto element:string)
+    {
+        *this << element;
+    }
+
+    return *this;
+}
+
+template <typename T, std::size_t N>
+buffer_writer& buffer_writer::operator<<(const std::array<T, N>& array)
+{
+    for(std::size_t i = 0; i < N; ++i)
+    {
+        *this << array[i];
+    }
+
+    return *this;
+}
+
+template <typename T>
+buffer_writer& buffer_writer::operator<<(const std::vector<T>& vector)
+{
+    *this << vector.size();
+    for(auto element:vector)
+    {
+        *this << element;
+    }
 
     return *this;
 }

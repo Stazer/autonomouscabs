@@ -7,7 +7,7 @@
 #include "../shared/buffer_writer.hpp"
 #include "../shared/message.hpp"
 
-BOOST_AUTO_TEST_CASE(buffer_write_read)
+BOOST_AUTO_TEST_CASE(buffer_write_read_integer)
 {
     const uint8_t wuint8 = 0xFF - 1;
     const uint16_t wuint16 = 0xFFFF - 1;
@@ -21,6 +21,7 @@ BOOST_AUTO_TEST_CASE(buffer_write_read)
     auto total = sizeof(uint8_t) + sizeof(uint16_t) + sizeof(uint32_t) + sizeof(uint64_t);
 
     buffer buffer;
+
     buffer_writer writer(buffer);
     writer << wuint8 << wuint16 << wuint32 << wuint64;
 
@@ -39,6 +40,51 @@ BOOST_AUTO_TEST_CASE(buffer_write_read)
 
     BOOST_TEST(writer.written() == total);
     BOOST_TEST(reader.read() == total);
+}
+
+BOOST_AUTO_TEST_CASE(buffer_write_read_string)
+{
+    buffer buffer;
+
+    std::string wstring = "Hello World";
+    buffer_writer writer(buffer);
+    writer << wstring;
+
+    std::string rstring;
+    buffer_reader reader(buffer);
+    reader >> rstring;
+
+    BOOST_TEST(wstring == rstring);
+}
+
+BOOST_AUTO_TEST_CASE(buffer_write_read_array)
+{
+    buffer buffer;
+
+    std::array<uint32_t, 10> warray = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    buffer_writer writer(buffer);
+    writer << warray;
+
+    std::array<uint32_t, 10> rarray;
+    buffer_reader reader(buffer);
+    reader >> rarray;
+
+    BOOST_TEST(warray == rarray);
+}
+
+BOOST_AUTO_TEST_CASE(buffer_write_read_vector)
+{
+    buffer buffer;
+
+    std::vector<uint32_t> wvector = {0, 2, 4, 6, 8};
+    buffer_writer writer(buffer);
+    writer << wvector;
+
+    std::vector<uint32_t> rvector;
+    buffer_reader reader(buffer);
+    reader >> rvector;
+
+    BOOST_TEST(wvector == rvector);
 }
 
 BOOST_AUTO_TEST_CASE(message_header_write_read)

@@ -17,16 +17,18 @@ class buffer_writer
     buffer_writer& operator<<(std::uint32_t data);
     buffer_writer& operator<<(std::uint64_t data);
 
+    buffer_writer& operator<<(double data);
+
     buffer_writer& operator<<(const std::string& string);
 
     template <typename T, std::size_t N>
     buffer_writer& operator<<(const std::array<T, N>& array);
 
-    template <typename T>
-    buffer_writer& operator<<(const std::vector<T>& vector);
+    template <std::size_t N>
+    buffer_writer& operator<<(std::array<std::uint8_t, N>& array);
 
     template <typename T>
-    buffer_writer& operator<<(const T& data);
+    buffer_writer& operator<<(const std::vector<T>& vector);
 
   private:
     ::buffer& buffer;
@@ -83,12 +85,19 @@ buffer_writer& buffer_writer::operator<<(std::uint64_t data)
     return *this;
 }
 
+buffer_writer& buffer_writer::operator<<(double data)
+{
+    *this << *reinterpret_cast<std::uint64_t*>(&data);
+
+    return *this;
+}
+
 buffer_writer& buffer_writer::operator<<(const std::string& string)
 {
     *this << string.size();
     for(auto element:string)
     {
-        *this << element;
+        //*this << element;
     }
 
     return *this;
@@ -105,11 +114,10 @@ buffer_writer& buffer_writer::operator<<(const std::array<T, N>& array)
     return *this;
 }
 
-template <typename T>
-buffer_writer& buffer_writer::operator<<(const std::vector<T>& vector)
+template <std::size_t N>
+buffer_writer& buffer_writer::operator<<(std::array<std::uint8_t, N>& array)
 {
-    *this << vector.size();
-    for(auto element:vector)
+    for(auto& element:array)
     {
         *this << element;
     }
@@ -118,11 +126,12 @@ buffer_writer& buffer_writer::operator<<(const std::vector<T>& vector)
 }
 
 template <typename T>
-buffer_writer& buffer_writer::operator<<(const T& data)
+buffer_writer& buffer_writer::operator<<(const std::vector<T>& vector)
 {
-    for(std::size_t i = 0; i < sizeof(T); ++i)
+    *this << vector.size();
+    for(auto element:vector)
     {
-        *this << *(reinterpret_cast<const std::uint8_t*>(&data) + i);
+        *this << element;
     }
 
     return *this;

@@ -1,4 +1,4 @@
-project external_controller is
+project External_Controller is
 
    for Source_Dirs use ("src/**", "src/tcp_client/**", "src/backend_thread/**", "src/webots_thread/**");
    for Object_Dir use "obj";
@@ -9,5 +9,5 @@ project external_controller is
       for Default_Switches ("ada") use ("-g");
    end Compiler;
 
-end external_controller;
+end External_Controller;
 

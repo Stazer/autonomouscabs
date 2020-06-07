@@ -2,11 +2,13 @@ with Ada.Containers.Synchronized_Queue_Interfaces;
 with Ada.Containers.Unbounded_Priority_Queues;
 with tcp_client; use tcp_client;
 with Ada.Real_Time; use Ada.Real_Time;
+with Interfaces; use Interfaces;
+
 
 package communication_queues is
 
    type Communication_Packet is record
-      Identifier : Byte;
+      Identifier : Interfaces.Unsigned_8;
       Header : Command;
       Priority : Natural;
       Packet_Payload : Payload;

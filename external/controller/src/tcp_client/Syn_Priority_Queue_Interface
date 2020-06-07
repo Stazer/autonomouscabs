@@ -1,0 +1,15 @@
+with Ada.Containers.Synchronized_Queue_Interfaces;
+with Ada.Containers.Unbounded_Synchronized_Queues;
+with tcp_client; use tcp_client;
+
+package Syn_Priority_Queue_Interface is
+  new A.C.Synchronized_Queue_Interfaces
+    (Element_Type => Communication_Packet);
+
+   package Syn_Priority_Queues is
+     new Ada.Containers.Unbounded_Synchronized_Queues
+    (Queue_Interfaces => Syn_Priority_Queue_Interface);
+
+   Queue : Syn_Priority_Queues.Queue;
+
+end Syn_Priority_Queue_Interface;

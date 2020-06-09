@@ -1,8 +1,12 @@
 with Ada.Text_IO; use Ada.Text_IO;
-with GNAT.Sockets; use GNAT.Sockets;
 with tcp_client; use tcp_client;
 with backend_thread; use backend_thread;
 with webots_thread; use webots_thread;
+with Ada.Real_Time; use Ada.Real_Time;
+with Ada.Containers.Synchronized_Queue_Interfaces;
+with Ada.Containers.Unbounded_Priority_Queues;
+with communication_queues; use communication_queues;
+
 
 procedure Main is
 
@@ -20,12 +24,9 @@ procedure Main is
    end backend_thread;
 
 
-
-
 begin
 
-   -- start threads
-
+   -- threads have started here
    null;
 
 end Main;

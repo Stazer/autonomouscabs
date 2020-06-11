@@ -1,6 +1,7 @@
 with AUnit; use AUnit;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
 with tcp_client; use tcp_client;
+with types; use types;
 
 package tcp_tests is
 
@@ -13,6 +14,6 @@ package tcp_tests is
   -- Provide name identifying the test case
 
   -- Test Routines:
-   procedure Test_To_Unsigned_32 (T : in out Test_Cases.Test_Case'Class);
+   procedure Test_Net_To_Host_32 (T : in out Test_Cases.Test_Case'Class);
 
 end tcp_tests;

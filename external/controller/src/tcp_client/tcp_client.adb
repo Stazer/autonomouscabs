@@ -1,3 +1,5 @@
+with types;
+
 package body tcp_client is
 
 
@@ -36,10 +38,10 @@ package body tcp_client is
 
    task body listen_task is --  not finished
 
-      raw_package_ID : Octets_4;
-      conv_package_ID : uint32;
-      raw_package_Value_Length : Octets_4;
-      conv_package_Value_Length : uint32;
+      raw_package_ID : types.Octets_4;
+      conv_package_ID : types.uint32;
+      raw_package_Value_Length : types.Octets_4;
+      conv_package_Value_Length : types.uint32;
    begin
       accept Start( server_stream : Stream_Access; stream_buffer : out Stream_Element_Array; stream_offset : in out Stream_Element_Count ) do -- Waiting for somebody to call the entry
          --  should ada maybe be listening on a port??
@@ -53,10 +55,10 @@ package body tcp_client is
          --  read package_ID
          Read(server_stream.All, stream_buffer, stream_offset);
          for I in 0 .. stream_offset loop
-            raw_package_ID(Integer(I)) := uint8(stream_buffer (I));
+            raw_package_ID(Integer(I)) := types.uint8(stream_buffer (I));
             Ada.Text_IO.Put_Line(Integer'Image(Integer(raw_package_ID(Integer(I)))));
          end loop;
-         conv_package_ID := To_Unsigned_32(raw_package_ID);
+         conv_package_ID := Net_To_Host_32(raw_package_ID);
          Ada.Text_IO.Put_Line(Integer'Image(Integer(conv_package_ID)));
 
 
@@ -64,9 +66,9 @@ package body tcp_client is
          --  read package_length
          Read(server_stream.All, stream_buffer, stream_offset);
          for I in 0 .. stream_offset loop
-            raw_package_Value_Length(Integer(I)) := uint8(stream_buffer (I));
+            raw_package_Value_Length(Integer(I)) := types.uint8(stream_buffer (I));
          end loop;
-         conv_package_Value_Length := To_Unsigned_32(raw_package_Value_Length);
+         conv_package_Value_Length := Net_To_Host_32(raw_package_Value_Length);
          Ada.Text_IO.Put_Line (Integer'Image(Integer(conv_package_Value_Length)));
 
 
@@ -78,30 +80,24 @@ package body tcp_client is
       end Start;
    end listen_task;
 
-   function Unchecked_To_Unsigned_32 is
-      new Ada.Unchecked_Conversion (Octets_4, uint32);
-
-   function Unchecked_To_Unsigned_64 is
-     new Ada.Unchecked_Conversion (Octets_8, uint64);
-
-   function To_Unsigned_32 (X : Octets_4) return uint32 is
+   function Net_To_Host_32 (X : types.Octets_4) return types.uint32 is
    begin
       --wrong way around?
       if System.Default_Bit_Order = System.High_Order_First then
-         return Unchecked_To_Unsigned_32 ((X (3), X (2), X (1), X (0)));
+         return types.octets_to_uint32 ((X (3), X (2), X (1), X (0)));
       else
-         return Unchecked_To_Unsigned_32 ((X (0), X (1), X (2), X (3)));
+         return types.octets_to_uint32 ((X (0), X (1), X (2), X (3)));
       end if;
-   end To_Unsigned_32;
+   end Net_To_Host_32;
 
-   function To_Unsigned_64 (X : Octets_8) return uint64 is
+   function Net_To_Host_64 (X : types.Octets_8) return types.uint64 is
    begin
       if System.Default_Bit_Order = System.High_Order_First then
-         return Unchecked_To_Unsigned_64 (X);
+         return types.octets_to_uint64 (X);
       else
-         return Unchecked_To_Unsigned_64 ((X (7), X (6), X (5), X (4), X (3),
+         return types.octets_to_uint64 ((X (7), X (6), X (5), X (4), X (3),
                                           X (2), X (1), X (0)));
       end if;
-   end To_Unsigned_64;
+   end Net_To_Host_64;
 
 end tcp_client;

@@ -70,6 +70,8 @@ ifeq ($(OS),Windows_NT)
 LIBRARIES=-lws2_32
 endif
 
+INCLUDE = -I"${BOOST_ROOT}"
+
 CFLAGS = -Wno-strict-aliasing -Wno-unused-variable
 
 ### Do not modify: this includes Webots global Makefile.include

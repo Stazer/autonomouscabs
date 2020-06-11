@@ -77,5 +77,10 @@ package body byte_buffer is
       Val := types.octets_to_uint64 (o8);
       Self.Index := Self.Index + 8;
    end read_uint64; 
+   
+   function size (Self : in out Buffer) return Integer is
+   begin
+      return Integer (Self.Buffer.Length);
+   end Size;
 
 end byte_buffer;

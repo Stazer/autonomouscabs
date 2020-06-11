@@ -21,5 +21,7 @@ package byte_buffer is
    procedure read_uint16 (Self : in out Buffer; Val : out types.uint16);
    procedure read_uint32 (Self : in out Buffer; Val : out types.uint32);
    procedure read_uint64 (Self : in out Buffer; Val : out types.uint64);
+   
+   function size (Self : in out Buffer) return Integer;
 
 end byte_buffer;

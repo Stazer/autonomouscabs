@@ -9,7 +9,7 @@ package byte_buffer is
    
    type Buffer is tagged record
       Buffer : Byte_Vector.Vector;
-      Index : Integer;     
+      Index : Integer := 0;     
    end record;
    
    procedure write_uint8 (Self : in out Buffer; Val : in types.uint8);

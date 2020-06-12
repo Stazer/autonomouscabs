@@ -7,7 +7,7 @@ package body tcp_tests is
       use AUnit.Test_Cases.Registration;
    begin
       -- Repeat for each test routine:
-      Register_Routine (T, Test_To_Unsigned_32'Access, "Test Conversion");
+      Register_Routine (T, Test_Net_To_Host_32'Access, "Test Conversion");
    end Register_Tests;
 
    -- Identifier of test case
@@ -17,12 +17,12 @@ package body tcp_tests is
    end Name;
 
    -- Test routines:
-   procedure Test_To_Unsigned_32 (T : in out Test_Cases.Test_Case'Class) is
+   procedure Test_Net_To_Host_32 (T : in out Test_Cases.Test_Case'Class) is
       X : Octets_4;
    begin
       X := (1, 0, 0, 0);
-      Assert (To_Unsigned_32 (X) = 1, "To_Unsigned_32 does not work.");
+      Assert (Net_To_Host_32 (X) = 1, "To_Unsigned_32 does not work.");
       return;
-   end Test_To_Unsigned_32;
+   end Test_Net_To_Host_32;
 
 end tcp_tests;

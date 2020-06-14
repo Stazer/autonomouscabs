@@ -2,10 +2,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with tcp_client; use tcp_client;
 with backend_thread; use backend_thread;
 with webots_thread; use webots_thread;
-with Ada.Real_Time; use Ada.Real_Time;
-with Ada.Containers.Synchronized_Queue_Interfaces;
-with Ada.Containers.Unbounded_Priority_Queues;
-with communication_queues; use communication_queues;
+with types; use types;
 
 
 procedure Main is
@@ -24,9 +21,16 @@ procedure Main is
    end backend_thread;
 
 
+   current_packet : types.Communication_Packet;
+
 begin
 
    -- threads have started here
-   null;
+   while true loop
+      check_mailbox(Backend_Mailbox,Webots_Mailbox,current_packet);
+
+      -- do calculations with current packet
+
+   end loop;
 
 end Main;

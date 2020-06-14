@@ -1,7 +1,5 @@
 package body webots_thread is
 
-   name  : Unbounded_String := To_Unbounded_String("webots");
-
    procedure webots_main is
 
       --webots_elem : Communication_Packet;
@@ -14,6 +12,9 @@ package body webots_thread is
 
       send_bytes(Webots_Channel, Webots_Cmd);
 
+      while true loop
+         listen( Webots_Channel, Webots_Vector_Buffer, Webots_Mailbox );
+      end loop;
 
    end webots_main;
 

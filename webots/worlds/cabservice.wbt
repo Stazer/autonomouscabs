@@ -3,8 +3,8 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation -0.5122800083008567 0.661359634384303 0.5478801211052792 1.8948868777524672
-  position 92.25286849156008 332.1898383760014 26.982564836651193
+  orientation -0.45893807299654416 0.6895793896922969 0.5602286233903243 1.977886256107264
+  position 104.63419708595264 164.4368769811193 -5.924752168038056
 }
 TexturedBackground {
   luminosity 2
@@ -2079,6 +2079,21 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+    }
+    Solid {
+      translation 51.48 0 -15.5
+      rotation 0 1 0 -0.2617996938995747
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
     }
   ]
   name "environment"

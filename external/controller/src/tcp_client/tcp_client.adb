@@ -44,7 +44,7 @@ package body tcp_client is
 
       while bytes_received < bytes_wanted loop
          types.uint8'Read(server_stream, new_byte);
-         byte_buffer.write_uint8(dynamic_buffer,new_byte);
+         dynamic_buffer.write_uint8(new_byte);
          bytes_received := bytes_received + 1;
       end loop;
 
@@ -76,28 +76,7 @@ package body tcp_client is
 
    end listen;
 
-   function Net_To_Host_32 (X : types.Octets_4) return types.uint32 is
-   begin
-      if System.Default_Bit_Order = System.High_Order_First then
-         return types.octets_to_uint32 ((X (3), X (2), X (1), X (0)));
-      else
-         return types.octets_to_uint32 ((X (0), X (1), X (2), X (3)));
-      end if;
-   end Net_To_Host_32;
-
-   function Net_To_Host_64 (X : types.Octets_8) return types.uint64 is
-   begin
-      if System.Default_Bit_Order = System.High_Order_First then
-         return types.octets_to_uint64 (X);
-      else
-         return types.octets_to_uint64 ((X (7), X (6), X (5), X (4), X (3),
-                                          X (2), X (1), X (0)));
-      end if;
-   end Net_To_Host_64;
-
    procedure read_payload(dynamic_buffer : in out byte_buffer.Buffer; payload_length : types.uint32; package_ID : types.uint8; mailbox : in out types.Mailbox) is
-
-      uint64_count : uint32 := payload_length/8;
 
    begin
 
@@ -105,10 +84,10 @@ package body tcp_client is
       begin
          new_packet.package_ID := package_ID;
          new_packet.payload_length := payload_length;
-         new_packet.local_payload := new payload(0..(uint64_count - 1));
+         new_packet.local_payload := new payload(0..(payload_length - 1));
 
          for I in new_packet.local_payload'Range loop
-            byte_buffer.read_uint64(dynamic_buffer, new_packet.local_payload(I));
+            dynamic_buffer.read_uint8(new_packet.local_payload(I));
          end loop;
 
          select

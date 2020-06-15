@@ -11,7 +11,7 @@ package types is
    type Octets_4 is array (0 .. 3) of uint8;
    type Octets_8 is array (0 .. 7) of uint8;
    
-   type payload is array(uint32 range <>) of uint64 with
+   type payload is array(uint32 range <>) of uint8 with
      Default_Component_Value => 0;
    
    type Communication_Packet is record

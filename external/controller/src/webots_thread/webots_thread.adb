@@ -2,8 +2,6 @@ package body webots_thread is
 
    procedure webots_main is
 
-      --webots_elem : Communication_Packet;
-
    begin
 
       Webots_Channel := build_connection (Webots_Client, 2000, Webots_Address);
@@ -17,6 +15,5 @@ package body webots_thread is
       end loop;
 
    end webots_main;
-
 
 end webots_thread;

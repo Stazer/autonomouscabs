@@ -1,12 +1,7 @@
 with GNAT.Sockets; use GNAT.Sockets;
 with Ada.Streams; use Ada.Streams;
 with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Real_Time; use Ada.Real_Time;
-with Ada.Unchecked_Conversion;
-with Interfaces;
-with System; use type System.Bit_Order;
 with byte_buffer;
-
 with types;
 
 package tcp_client is
@@ -16,12 +11,6 @@ package tcp_client is
    --defines the length of protocol header (package_length + package_ID)
    protocol_package_length : types.uint32 := 4;
    protocol_ID_length : types.uint32 := 1;
-
-   function Net_To_Host_32 (X : types.Octets_4) return types.uint32;
-   pragma Inline (Net_To_Host_32);
-
-   function Net_To_Host_64 (X : types.Octets_8) return types.uint64;
-   pragma Inline (Net_To_Host_64);
 
    function build_connection ( client : in out Socket_Type; port : Port_Type; address : in out Sock_Addr_Type) return Stream_Access; --builds the connection and then return the socket
 

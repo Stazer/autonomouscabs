@@ -1,6 +1,5 @@
 package body backend_thread is
 
-
    procedure backend_main is
 
    begin
@@ -18,6 +17,5 @@ package body backend_thread is
 
 
    end backend_main;
-
 
 end backend_thread;

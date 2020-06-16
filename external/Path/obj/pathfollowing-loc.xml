@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<Locations >
+  <Project>
+    <vfs_file />
+    <file_marker column=" 25" line=" 123" >
+      <vfs_project>/home/kingmoon/Downloads/EESPro/Path/pathfollowing.gpr</vfs_project>
+      <vfs_file>/home/kingmoon/Downloads/EESPro/Path/src/main.adb</vfs_file>
+    </file_marker>
+    <file_marker current="true" column=" 29" line=" 4" >
+      <vfs_project>/home/kingmoon/Downloads/EESPro/Path/pathfollowing.gpr</vfs_project>
+      <vfs_file>/home/kingmoon/Downloads/EESPro/Path/pathfollowing.gpr</vfs_file>
+    </file_marker>
+  </Project>
+</Locations>

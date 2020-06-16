@@ -1,0 +1,147 @@
+V "GNAT Lib v9"
+M P W=b
+A -gnatA
+A -mtune=generic
+A -march=x86-64
+P ZX
+
+RN
+RV NO_DIRECT_BOOLEAN_OPERATORS
+RV NO_EXCEPTIONS
+RV NO_FLOATING_POINT
+RV NO_IO
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_DEFAULT_INITIALIZATION
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_IMPLEMENTATION_PRAGMAS
+RV SPARK_05
+
+U main%b		main.adb		3e8b3a6e NE OO SU
+W ada%s			ada.ads			ada.ali
+W ada.float_text_io%s	a-flteio.ads		a-flteio.ali
+W ada.numerics%s	a-numeri.ads		a-numeri.ali
+W ada.numerics.discrete_random%s
+Z ada.tags%s		a-tags.adb		a-tags.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W system%s		system.ads		system.ali
+Z system.concat_4%s	s-conca4.adb		s-conca4.ali
+Z system.img_int%s	s-imgint.adb		s-imgint.ali
+Z system.img_real%s	s-imgrea.adb		s-imgrea.ali
+Z system.random_numbers%s  s-rannum.adb		s-rannum.ali
+
+D ada.ads		20200312110721 76789da1 ada%s
+D a-except.ads		20200312110721 291912d5 ada.exceptions%s
+D a-flteio.ads		20200312110721 e18a47a0 ada.float_text_io%s
+D a-ioexce.ads		20200312110721 e4a01f64 ada.io_exceptions%s
+D a-numeri.ads		20200312110721 bb51c45a ada.numerics%s
+D a-nudira.ads		20200312110721 71e55def ada.numerics.discrete_random%s
+D a-nudira.adb		20200312110721 72908cdb ada.numerics.discrete_random%b
+D a-stream.ads		20200312110721 119b8fb3 ada.streams%s
+D a-tags.ads		20200312110721 491b781d ada.tags%s
+D a-textio.ads		20200312110721 881db35a ada.text_io%s
+D a-tiflio.ads		20200312110721 56fbda09 ada.text_io.float_io%s
+D a-unccon.ads		20200312110721 0e9b276f ada.unchecked_conversion%s
+D interfac.ads		20200312110721 5ab55268 interfaces%s
+D i-cstrea.ads		20200312110721 e53d8b8e interfaces.c_streams%s
+D main.adb		20200616230445 26f9937b main%b
+D system.ads		20200312110721 4635ec04 system%s
+D s-conca4.ads		20200312110721 7e642b20 system.concat_4%s
+D s-crtl.ads		20200312110721 0ebbdb71 system.crtl%s
+D s-exctab.ads		20200312110721 54135002 system.exception_table%s
+D s-ficobl.ads		20200312110721 078245e4 system.file_control_block%s
+D s-imgint.ads		20200312110721 02dbe0c2 system.img_int%s
+D s-imgrea.ads		20200312110721 c7a851e2 system.img_real%s
+D s-imguns.ads		20200312110721 9ff43cf7 system.img_uns%s
+D s-parame.ads		20200312110721 48ec542b system.parameters%s
+D s-rannum.ads		20200312110721 99ade2f2 system.random_numbers%s
+D s-rannum.adb		20200312110721 20ba1217 system.random_numbers%b
+D s-ransee.ads		20200312110721 01a57b33 system.random_seed%s
+D s-secsta.ads		20200312110721 20bbe636 system.secondary_stack%s
+D s-soflin.ads		20200312110721 a7318a92 system.soft_links%s
+D s-stache.ads		20200312110721 a37c21ec system.stack_checking%s
+D s-stalib.ads		20200312110721 09bd3940 system.standard_library%s
+D s-stoele.ads		20200312110721 2dc34a04 system.storage_elements%s
+D s-traent.ads		20200312110721 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20200312110721 34867c83 system.unsigned_types%s
+D s-valuns.ads		20200312110721 10a8ed3b system.val_uns%s
+D s-wchcon.ads		20200312110721 1b7d22d2 system.wch_con%s
+X 1 ada.ads
+16K9*Ada 20e8 15|1r6 1r23 2r6 3r6 3r29 22r28
+X 3 a-flteio.ads
+20K13*Float_Text_IO[11|46] 15|3w10 3r33
+X 5 a-numeri.ads
+16K13*Numerics 32e17 15|2r10 22r32
+X 6 a-nudira.ads
+44k22*Discrete_Random 75e33 15|2w19 22r41
+50R9 Generator<25|63R9> 15|25r10[22]
+52V13 Random{15|11I9} 15|55s12[22]
+55U14 Reset<25|100p14> 15|53s4[22]
+X 7 a-nudira.adb
+53V16 Random[25|83]{15|11I9} 26|392b13[15|22]
+X 10 a-textio.ads
+49K13*Text_IO 471e16 15|1w10 1r27
+242U14*Put 15|83s10
+263U14*Put_Line 15|86s10 149s4 178s4
+X 13 interfac.ads
+74M9*Unsigned_32
+77M9*Unsigned_64
+X 15 main.adb
+5U11*Main 5b11 195l5 195t9
+7i4 width{integer} 9r31 13r36 61r49 125r31 130r31 166r33 174r31
+8i4 height{integer} 9r39 14r33 100r25 106r25 154r60 156r61 162r47 174r53
+9i4 size{integer} 16r35
+11I9 Value<short_integer> 12r35 17r44 19r49 22r57 30r8 72r26 83r14
+12A9 Pixel(11I9)<integer>
+13I9 Column_Index<short_short_integer> 19r32 60r16 77r16 99r13 105r21 112r13
+. 117r21 125r18 130r18
+14I9 Row_Index<short_short_integer> 20r32 59r13 76r13 100r15 106r15 118r15
+. 124r13 129r21 137r13 142r21
+16I9 Image_Index<short_integer> 17r28 28r12 54r13 61r19
+17A9 Image_Raw(11I9)<16I9> 27r10
+19A9 Colour_Column(11I9)<13I9> 20r46
+20A9 Colour_Matrix(19A9)<14I9> 45r10 46r11 47r12 48r11 49r16
+22K12 Rand_Int[6|44] 23r8
+25r4 gen{6|50R9[22]} 53r10 55r19
+27a4 raw{17A9} 56m7 62r26 63r27 64r25
+28i4 index{16I9} 61m10 62r31 63r32 64r30
+30i4 v{11I9} 55m7 56r18
+31i4 colour{integer} 66m10 72r32
+32i4 r{integer}
+33i4 g{integer}
+34i4 b{integer}
+35i4 bottomPoint{integer} 101m10 110m4 110r20 149r27 152r7 153r21 154r45
+. 155r24 156r46 161r7 162r32 165r45 169r43 173r7 174r37
+36i4 topPoint{integer} 114m10 122m4 122r17 149r56 152r28 153r10 154r34 155r13
+. 156r35 161r46 165r7 166r41 169r7 170r30 173r47
+37i4 leftPoint{integer} 139m11 147m4 147r18 149r110 152r65 161r28 162r56
+. 165r65 169r25 170r41 173r63 174r62
+38i4 rightPoint{integer} 126m11 134m4 134r19 149r82 152r46 161r63 165r25
+. 166r53 169r63 173r27
+39i4 bottomPoint1{integer} 107m10 110r34
+40i4 topPoint1{integer} 119m10 122r28
+41i4 leftPoint1{integer} 144m11 147r30
+42i4 rightPoint1{integer} 131m11 134r32
+43f4 steeringAngle{float} 154m10 156m10 157m12 162m7 166m7 170m7 174m7 178r26
+45a4 red{20A9} 64m10 66r96
+46a4 blue{20A9} 62m10 66r28
+47a4 green{20A9} 63m10 66r61
+48a4 grey{20A9} 72m10 78r13 100r10 106r10 113r10 118r10 125r10 130r10 138r10
+. 143r10
+49a4 binaImage{20A9} 79m13 81m13 83r27
+54i8 I{16I9} 56r12
+59i8 I{14I9} 61r44 62r16 63r17 64r15 66r34 66r68 66r101 72r16
+60i11 J{13I9} 61r65 62r20 63r21 64r19 66r38 66r72 66r105 72r20
+76i8 I{14I9} 78r19 79r24 81r24 83r38
+77i11 J{13I9} 78r22 79r27 81r27 83r42
+99i8 J{13I9} 100r36 101r33
+105i8 J{13I9} 106r36 107r34
+112i8 J{13I9} 113r18 114r30
+117i8 J{13I9} 118r29 119r31
+124i8 I{14I9} 125r15 126r32
+129i8 I{14I9} 130r15 131r33
+137i8 I{14I9} 138r15 139r31
+142i8 I{14I9} 143r15 144r33
+X 25 s-rannum.ads
+75V13*Random{13|74M9} 26|221i21
+76V13*Random{13|77M9} 26|221i21
+

@@ -1,5 +1,6 @@
 with Ada.Unchecked_Conversion;
 with System; use type System.Bit_Order;
+with Ada.Text_IO;
 
 package body types is
 
@@ -128,5 +129,22 @@ package body types is
       end if;
       return X;
    end ntoh64;
+   
+   protected body Mailbox is
+      procedure Clear is
+      begin
+         Full := False;
+      end Clear;
+      entry Deposit(X: in Communication_Packet) when Full = False is
+      begin
+         A := X;
+         Full := True;
+      end Deposit;
+      entry Collect(X: out Communication_Packet) when Full = True is
+      begin
+         X := A;
+         Clear;
+      end Collect;
+   end Mailbox;
    
 end types;

@@ -11,15 +11,11 @@ package body backend_thread is
 
       send_bytes(Backend_Channel, Backend_Cmd);
 
-      -- listen not finished and as is will block the socket
-      -- listen_task.Start(Backend_Channel, Backend_Header, Backend_Offset);
+      while true loop
+         listen( Backend_Channel, Backend_Vector_Buffer, Backend_Mailbox );
+      end loop;
 
-      -- test send function
-      Backend_Cmd :=(2,2,2,2,2,2,2,2);
-
-      send_bytes(Backend_Channel, Backend_Cmd);
 
    end backend_main;
-
 
 end backend_thread;

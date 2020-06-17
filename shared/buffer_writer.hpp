@@ -1,10 +1,14 @@
 #pragma once
 
+#include <string>
+#include <array>
+
 #include "buffer.hpp"
 
-class buffer_writer {
-    public:
-        buffer_writer(::buffer& buffer);
+class buffer_writer
+{
+  public:
+    buffer_writer(::buffer& buffer);
 
     std::size_t written() const;
 
@@ -13,8 +17,18 @@ class buffer_writer {
     buffer_writer& operator<<(std::uint32_t data);
     buffer_writer& operator<<(std::uint64_t data);
 
+    buffer_writer& operator<<(double data);
+
+    buffer_writer& operator<<(const std::string& string);
+
+    template <typename T, std::size_t N>
+    buffer_writer& operator<<(const std::array<T, N>& array);
+
+    template <std::size_t N>
+    buffer_writer& operator<<(std::array<std::uint8_t, N>& array);
+
     template <typename T>
-    buffer_writer& operator<<(const T& data);
+    buffer_writer& operator<<(const std::vector<T>& vector);
 
   private:
     ::buffer& buffer;
@@ -71,12 +85,53 @@ buffer_writer& buffer_writer::operator<<(std::uint64_t data)
     return *this;
 }
 
-template <typename T>
-buffer_writer& buffer_writer::operator<<(const T& data)
+buffer_writer& buffer_writer::operator<<(double data)
 {
-    for(std::size_t i = 0; i < sizeof(T); ++i)
+    *this << *reinterpret_cast<std::uint64_t*>(&data);
+
+    return *this;
+}
+
+buffer_writer& buffer_writer::operator<<(const std::string& string)
+{
+    *this << string.size();
+    for(auto element:string)
     {
-        *this << *(reinterpret_cast<const std::uint8_t*>(&data) + i);
+        //*this << element;
+    }
+
+    return *this;
+}
+
+template <typename T, std::size_t N>
+buffer_writer& buffer_writer::operator<<(const std::array<T, N>& array)
+{
+    for(std::size_t i = 0; i < N; ++i)
+    {
+        *this << array[i];
+    }
+
+    return *this;
+}
+
+template <std::size_t N>
+buffer_writer& buffer_writer::operator<<(std::array<std::uint8_t, N>& array)
+{
+    for(auto& element:array)
+    {
+        *this << element;
+    }
+
+    return *this;
+}
+
+template <typename T>
+buffer_writer& buffer_writer::operator<<(const std::vector<T>& vector)
+{
+    *this << vector.size();
+    for(auto element:vector)
+    {
+        *this << element;
     }
 
     return *this;

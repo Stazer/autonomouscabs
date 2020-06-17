@@ -1,8 +1,9 @@
 with Ada.Text_IO; use Ada.Text_IO;
-with GNAT.Sockets; use GNAT.Sockets;
 with tcp_client; use tcp_client;
 with backend_thread; use backend_thread;
 with webots_thread; use webots_thread;
+with types; use types;
+
 
 procedure Main is
 
@@ -20,12 +21,16 @@ procedure Main is
    end backend_thread;
 
 
-
+   current_packet : types.Communication_Packet;
 
 begin
 
-   -- start threads
+   -- threads have started here
+   while true loop
+      check_mailbox(Backend_Mailbox,Webots_Mailbox,current_packet);
 
-   null;
+      -- do calculations with current packet
+
+   end loop;
 
 end Main;

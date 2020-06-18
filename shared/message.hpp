@@ -25,7 +25,6 @@ enum class message_id : message_id_base
     EXTERNAL_LAST,
 
     WEBOTS_FIRST = 0x80,
-    WEBOTS_STEERING,
     WEBOTS_VELOCITY,
     WEBOTS_LAST,
 
@@ -199,25 +198,86 @@ struct webots_velocity_message : public basic_message<webots_velocity_message, m
 {
     double left_speed;
     double right_speed;
+
+    std::size_t body_size() const;
+    void write_body(buffer_writer& writer) const;
+    void read_body(buffer_reader& reader);
 };
 
-struct webots_steering_message : public basic_message<webots_steering_message, message_id::WEBOTS_STEERING>
+std::size_t webots_velocity_message::body_size() const
 {
-    double left_speed;
-    double right_speed;
+    return 2 * sizeof(double);
+}
+
+void webots_velocity_message::write_body(buffer_writer& writer) const
+{
+    writer << right_speed << left_speed;
+}
+
+void webots_velocity_message::read_body(buffer_reader& reader)
+{
+    reader >> right_speed >> left_speed;
+}
+
+template <std::size_t N>
+struct external_distance_sensor_message : public basic_message<external_distance_sensor_message<N>, message_id::EXTERNAL_DISTANCE_SENSOR>
+{
+    std::array<double, N> data;
+
+    std::size_t body_size() const;
+    void write_body(buffer_writer& writer) const;
+    void read_body(buffer_reader& reader);
 };
 
-struct external_distance_sensor_message : public basic_message<external_distance_sensor_message, message_id::EXTERNAL_DISTANCE_SENSOR>
+template <std::size_t N>
+std::size_t external_distance_sensor_message<N>::body_size() const
 {
+    return N * sizeof(double);
+}
+
+template <std::size_t N>
+void external_distance_sensor_message<N>::write_body(buffer_writer& writer) const
+{
+    writer << data;
+}
+
+template <std::size_t N>
+void external_distance_sensor_message<N>::read_body(buffer_reader& reader)
+{
+    reader >> data;
+}
+
+template <std::size_t N>
+struct external_light_sensor_message : public basic_message<external_light_sensor_message<N>, message_id::EXTERNAL_LIGHT_SENSOR>
+{
+    std::array<double, N> data;
+
+    std::size_t body_size() const;
+    void write_body(buffer_writer& writer) const;
+    void read_body(buffer_reader& reader);
 };
 
-struct external_light_sensor_message : public basic_message<external_light_sensor_message, message_id::EXTERNAL_LIGHT_SENSOR>
+template <std::size_t N>
+std::size_t external_light_sensor_message<N>::body_size() const
 {
-};
+    return N * sizeof(double);
+}
+
+template <std::size_t N>
+void external_light_sensor_message<N>::write_body(buffer_writer& writer) const
+{
+    writer << data;
+}
+
+template <std::size_t N>
+void external_light_sensor_message<N>::read_body(buffer_reader& reader)
+{
+    reader >> data;
+}
 
 struct external_image_data_message : public basic_message<external_image_data_message, message_id::EXTERNAL_IMAGE_DATA>
 {
-    std::vector<std::uint8_t> pixel;
+    std::vector<std::uint8_t> image;
 
     std::size_t body_size() const;
     void write_body(buffer_writer& writer) const;
@@ -226,15 +286,15 @@ struct external_image_data_message : public basic_message<external_image_data_me
 
 std::size_t external_image_data_message::body_size() const
 {
-    return sizeof(std::uint32_t) + pixel.size() * sizeof(std::uint8_t);
+    return sizeof(std::uint32_t) + image.size() * sizeof(std::uint8_t);
 }
 
 void external_image_data_message::write_body(buffer_writer& writer) const
 {
-    writer << pixel;
+    writer << image;
 }
 
 void external_image_data_message::read_body(buffer_reader& reader)
 {
-    reader >> pixel;
+    reader >> image;
 }

@@ -91,12 +91,7 @@ package body tcp_client is
 
    procedure read_payload(dynamic_buffer : in out byte_buffer.Buffer; payload_length : types.uint32; package_ID : types.uint8; mailbox : in out types.Mailbox) is
 
-      payload_buffer : types.Octets_8;
-      uint64_payload_length : types.uint32;
-
    begin
-
-      uint64_payload_length := payload_length / 8;
 
       declare new_packet : Communication_Packet;
       begin
@@ -104,23 +99,10 @@ package body tcp_client is
          new_packet.payload_length := payload_length;
          new_packet.local_payload := new payload(0..(payload_length - 1));
          new_packet.TTL := Ada.Real_Time.Clock;
-         -- case: payload element length is uint8
-         if package_ID = 3 then
-            for I in new_packet.local_payload'Range loop
-               dynamic_buffer.read_uint8(new_packet.local_payload(I));
-            end loop;
-         else
-         -- case: payload element length is uint64 --> ntoh64
-            for I in 0..(uint64_payload_length-1) loop
-               for J in payload_buffer'Range loop
-                  dynamic_buffer.read_uint8(payload_buffer(J));
-               end loop;
-               payload_buffer := uint64_to_octets(ntoh64(octets_to_uint64(payload_buffer)));
-               for J in payload_buffer'Range loop
-                  new_packet.local_payload(8*I+J) := payload_buffer(J);
-               end loop;
-            end loop;
-         end if;
+
+         for I in new_packet.local_payload'Range loop
+            dynamic_buffer.read_uint8(new_packet.local_payload(I));
+         end loop;
 
 
          select

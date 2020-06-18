@@ -2,7 +2,7 @@ FROM debian:testing
 
 RUN useradd -m user && \
     apt-get update && \
-    apt-get install -y cmake g++ libboost-all-dev
+    apt-get install -y cmake g++ libboost-all-dev gnat gprbuild libaunit19-dev
 
 COPY $TRAVIS_BUILD_DIR /home/user/repository
 
@@ -14,4 +14,6 @@ RUN cd /home/user/repository && \
     mkdir build && \
     cd build && \
     cmake .. && \
+    make && \
+    cd /home/user/repository/external/harness && \
     make

@@ -79,15 +79,17 @@ buffer_reader& operator>>(buffer_reader& reader, message_header& header)
 template <typename T, message_id U>
 struct basic_message
 {
+    virtual ~basic_message() = default;
+
     std::size_t size() const;
     message_id id() const;
 
-    std::size_t body_size() const;
-
     message_header header() const;
 
-    void write_body(buffer_writer& writer) const;
-    void read_body(buffer_reader& reader);
+    virtual std::size_t body_size() const;
+
+    virtual void write_body(buffer_writer& writer) const;
+    virtual void read_body(buffer_reader& reader);
 };
 
 template <typename T, message_id U>
@@ -103,12 +105,6 @@ message_id basic_message<T, U>::id() const
 }
 
 template <typename T, message_id U>
-std::size_t basic_message<T, U>::body_size() const
-{
-    return sizeof(T);
-}
-
-template <typename T, message_id U>
 message_header basic_message<T, U>::header() const
 {
     message_header header;
@@ -116,6 +112,12 @@ message_header basic_message<T, U>::header() const
     header.id = id();
 
     return header;
+}
+
+template <typename T, message_id U>
+std::size_t basic_message<T, U>::body_size() const
+{
+    return sizeof(T);
 }
 
 template <typename T, message_id U>
@@ -165,8 +167,8 @@ template <message_id U>
 struct empty_message : public basic_message<empty_message<U>, U>
 {
     virtual std::size_t body_size() const final;
-    virtual void write_payload(buffer_writer& writer) const final;
-    virtual void read_payload(buffer_reader& reader) final;
+    virtual void write_body(buffer_writer& writer) const final;
+    virtual void read_body(buffer_reader& reader) final;
 };
 
 template <message_id U>
@@ -176,12 +178,12 @@ std::size_t empty_message<U>::body_size() const
 }
 
 template <message_id U>
-void empty_message<U>::write_payload(buffer_writer& writer) const
+void empty_message<U>::write_body(buffer_writer& writer) const
 {
 }
 
 template <message_id U>
-void empty_message<U>::read_payload(buffer_reader& reader)
+void empty_message<U>::read_body(buffer_reader& reader)
 {
 }
 
@@ -215,4 +217,24 @@ struct external_light_sensor_message : public basic_message<external_light_senso
 
 struct external_image_data_message : public basic_message<external_image_data_message, message_id::EXTERNAL_IMAGE_DATA>
 {
+    std::vector<std::uint8_t> pixel;
+
+    std::size_t body_size() const;
+    void write_body(buffer_writer& writer) const;
+    void read_body(buffer_reader& reader);
 };
+
+std::size_t external_image_data_message::body_size() const
+{
+    return sizeof(std::uint32_t) + pixel.size() * sizeof(std::uint8_t);
+}
+
+void external_image_data_message::write_body(buffer_writer& writer) const
+{
+    writer << pixel;
+}
+
+void external_image_data_message::read_body(buffer_reader& reader)
+{
+    reader >> pixel;
+}

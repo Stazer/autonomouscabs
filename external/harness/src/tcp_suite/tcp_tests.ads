@@ -13,7 +13,7 @@ package tcp_tests is
    function Name (T : tcp_test) return Message_String;
   -- Provide name identifying the test case
 
-  -- Test Routines:
-   procedure Test_Net_To_Host_32 (T : in out Test_Cases.Test_Case'Class);
+   -- Test Routines:
+   procedure Sample_Test (T : in out Test_Cases.Test_Case'Class);
 
 end tcp_tests;

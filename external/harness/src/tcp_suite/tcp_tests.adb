@@ -7,7 +7,7 @@ package body tcp_tests is
       use AUnit.Test_Cases.Registration;
    begin
       -- Repeat for each test routine:
-      Register_Routine (T, Test_Net_To_Host_32'Access, "Test Conversion");
+      Register_Routine (T, Sample_Test'Access, "This is an empty sample test, because Ada wants at least one test per suite to compile.");
    end Register_Tests;
 
    -- Identifier of test case
@@ -16,13 +16,12 @@ package body tcp_tests is
       return Format ("TCP Tests");
    end Name;
 
-   -- Test routines:
-   procedure Test_Net_To_Host_32 (T : in out Test_Cases.Test_Case'Class) is
-      X : Octets_4;
+   procedure Sample_Test (T : in out Test_Cases.Test_Case'Class) is
+      local : Integer;
    begin
-      X := (1, 0, 0, 0);
-      Assert (Net_To_Host_32 (X) = 1, "To_Unsigned_32 does not work.");
-      return;
-   end Test_Net_To_Host_32;
+      local := 1;
+
+      Assert (local = 1, "This should never happen.");
+   end Sample_Test;
 
 end tcp_tests;

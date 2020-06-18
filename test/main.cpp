@@ -154,3 +154,54 @@ BOOST_AUTO_TEST_CASE(message_unmatching_ids)
     BOOST_CHECK_THROW(reader >> nop, std::runtime_error);
     BOOST_CHECK_NO_THROW(reader >> ping);
 }
+
+BOOST_AUTO_TEST_CASE(message_header_size)
+{
+    BOOST_TEST(sizeof(message_header) == 5);
+}
+
+BOOST_AUTO_TEST_CASE(empty_message_size)
+{
+    BOOST_TEST((empty_message<message_id::UNDEFINED>{}).body_size() == 0);
+}
+
+BOOST_AUTO_TEST_CASE(test_message_sizes)
+{
+    DEFINE_MESSAGE(test_message, message_id::UNDEFINED)
+    {
+    };
+
+    const auto msg = test_message{};
+
+    BOOST_TEST(msg.body_size() == 0);
+    BOOST_TEST(msg.size() == sizeof(message_header));
+}
+
+BOOST_AUTO_TEST_CASE(test_message2_sizes)
+{
+    DEFINE_MESSAGE(test_message2, message_id::UNDEFINED)
+    {
+        std::uint8_t a;
+        uint32_t b;
+        uint8_t c;
+        float d;
+        std::array<uint8_t, 27> e;
+        double f;
+        uint8_t g;
+        std::array<uint32_t, 3> h;
+    };
+
+    const auto size = sizeof(test_message2::a)
+        + sizeof(test_message2::b)
+        + sizeof(test_message2::c)
+        + sizeof(test_message2::d)
+        + sizeof(test_message2::e)
+        + sizeof(test_message2::f)
+        + sizeof(test_message2::g)
+        + sizeof(test_message2::h);
+
+    const auto msg = test_message2{};
+
+    BOOST_TEST(msg.body_size() == size);
+    BOOST_TEST(msg.size() == sizeof(message_header) + size);
+}

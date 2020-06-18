@@ -14,6 +14,7 @@ enum class message_id : message_id_base
     FIRST = 0x0,
 
     GENERAL_FIRST = 0x0,
+    UNDEFINED,
     NOP,
     PING,
     GENERAL_LAST,
@@ -56,7 +57,7 @@ buffer_reader& operator>>(buffer_reader& reader, message_id& id)
     return reader;
 }
 
-struct message_header
+struct __attribute__((packed)) message_header
 {
     message_size size;
     message_id id;
@@ -77,7 +78,7 @@ buffer_reader& operator>>(buffer_reader& reader, message_header& header)
 }
 
 template <typename T, message_id U>
-struct basic_message
+struct __attribute__((packed)) basic_message
 {
     virtual ~basic_message() = default;
 
@@ -117,7 +118,8 @@ message_header basic_message<T, U>::header() const
 template <typename T, message_id U>
 message_size basic_message<T, U>::body_size() const
 {
-    return sizeof(T);
+    // subtracting the size overhead of virtual functions
+    return sizeof(T) - sizeof(basic_message<T, U>);
 }
 
 template <typename T, message_id U>
@@ -163,6 +165,9 @@ buffer_reader& operator>>(buffer_reader& reader, T& message)
     return reader;
 }
 
+#define DEFINE_MESSAGE(name, id)                \
+    struct __attribute__((packed)) name final : public basic_message<name, id>
+
 template <message_id U>
 struct empty_message : public basic_message<empty_message<U>, U>
 {
@@ -187,54 +192,53 @@ void empty_message<U>::read_body(buffer_reader& reader)
 {
 }
 
-struct nop_message final : public empty_message<message_id::NOP>
+#define DEFINE_EMPTY_MESSAGE(name, id)                \
+    struct __attribute__((packed)) name final : public empty_message<id>
+
+DEFINE_EMPTY_MESSAGE(nop_message, message_id::NOP)
 {
 };
 
-struct ping_message final : public empty_message<message_id::PING>
+DEFINE_EMPTY_MESSAGE(ping_message, message_id::PING)
 {
 };
 
-struct webots_velocity_message final : public basic_message<webots_velocity_message, message_id::WEBOTS_VELOCITY>
-{
-    double left_speed;
-    double right_speed;
-};
-
-struct webots_steering_message final : public basic_message<webots_steering_message, message_id::WEBOTS_STEERING>
+DEFINE_MESSAGE(webots_velocity_message, message_id::WEBOTS_VELOCITY)
 {
     double left_speed;
     double right_speed;
 };
 
-struct external_distance_sensor_message final : public basic_message<external_distance_sensor_message, message_id::EXTERNAL_DISTANCE_SENSOR>
+DEFINE_MESSAGE(webots_steering_message, message_id::WEBOTS_VELOCITY)
+{
+    double left_speed;
+    double right_speed;
+};
+
+DEFINE_MESSAGE(external_distance_sensor_message, message_id::EXTERNAL_DISTANCE_SENSOR)
 {
 };
 
-struct external_light_sensor_message final : public basic_message<external_light_sensor_message, message_id::EXTERNAL_LIGHT_SENSOR>
+DEFINE_MESSAGE(external_light_sensor_message, message_id::EXTERNAL_LIGHT_SENSOR)
 {
 };
 
-struct external_image_data_message final : public basic_message<external_image_data_message, message_id::EXTERNAL_IMAGE_DATA>
+DEFINE_MESSAGE(external_image_data_message, message_id::EXTERNAL_IMAGE_DATA)
 {
     std::vector<std::uint8_t> pixel;
 
-    message_size body_size() const;
-    void write_body(buffer_writer& writer) const;
-    void read_body(buffer_reader& reader);
+    message_size body_size() const
+    {
+        return sizeof(buffer_collection_size) + pixel.size() * sizeof(std::uint8_t);
+    }
+
+    void write_body(buffer_writer& writer) const
+    {
+        writer << pixel;
+    }
+
+    void read_body(buffer_reader& reader)
+    {
+        reader >> pixel;
+    }
 };
-
-message_size external_image_data_message::body_size() const
-{
-    return sizeof(std::uint32_t) + pixel.size() * sizeof(std::uint8_t);
-}
-
-void external_image_data_message::write_body(buffer_writer& writer) const
-{
-    writer << pixel;
-}
-
-void external_image_data_message::read_body(buffer_reader& reader)
-{
-    reader >> pixel;
-}

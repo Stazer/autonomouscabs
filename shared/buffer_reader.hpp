@@ -152,7 +152,7 @@ buffer_reader& buffer_reader::operator>>(std::array<std::uint8_t, N>& array)
 template <typename T>
 buffer_reader& buffer_reader::operator>>(std::vector<T>& vector)
 {
-    std::size_t size = 0;
+    buffer_collection_size size = 0;
     *this >> size;
     vector.resize(size);
 

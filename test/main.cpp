@@ -167,9 +167,11 @@ BOOST_AUTO_TEST_CASE(empty_message_size)
 
 BOOST_AUTO_TEST_CASE(test_message_sizes)
 {
-    DEFINE_MESSAGE(test_message, message_id::UNDEFINED)
+    #pragma pack(push, 1)
+    struct test_message final : public basic_message<test_message, message_id::UNDEFINED>
     {
     };
+    #pragma pack(pop)
 
     const auto msg = test_message{};
 
@@ -179,7 +181,8 @@ BOOST_AUTO_TEST_CASE(test_message_sizes)
 
 BOOST_AUTO_TEST_CASE(test_message2_sizes)
 {
-    DEFINE_MESSAGE(test_message2, message_id::UNDEFINED)
+    #pragma pack(push, 1)
+    struct test_message2 final : public basic_message<test_message2, message_id::UNDEFINED>
     {
         std::uint8_t a;
         uint32_t b;
@@ -190,6 +193,7 @@ BOOST_AUTO_TEST_CASE(test_message2_sizes)
         uint8_t g;
         std::array<uint32_t, 3> h;
     };
+    #pragma pack(pop)
 
     const auto size = sizeof(test_message2::a)
         + sizeof(test_message2::b)

@@ -6,6 +6,8 @@
 #include "buffer_reader.hpp"
 #include "buffer_writer.hpp"
 
+#pragma pack(push, 1)
+
 using message_size = std::uint32_t;
 using message_id_base = std::uint8_t;
 
@@ -57,11 +59,13 @@ buffer_reader& operator>>(buffer_reader& reader, message_id& id)
     return reader;
 }
 
-struct __attribute__((packed)) message_header
+#pragma pack(push, 1)
+struct message_header
 {
     message_size size;
     message_id id;
 };
+#pragma pack(pop)
 
 buffer_writer& operator<<(buffer_writer& writer, const message_header& header)
 {
@@ -78,7 +82,7 @@ buffer_reader& operator>>(buffer_reader& reader, message_header& header)
 }
 
 template <typename T, message_id U>
-struct __attribute__((packed)) basic_message
+struct basic_message
 {
     virtual ~basic_message() = default;
 
@@ -165,9 +169,6 @@ buffer_reader& operator>>(buffer_reader& reader, T& message)
     return reader;
 }
 
-#define DEFINE_MESSAGE(name, id)                \
-    struct __attribute__((packed)) name final : public basic_message<name, id>
-
 template <message_id U>
 struct empty_message : public basic_message<empty_message<U>, U>
 {
@@ -192,38 +193,35 @@ void empty_message<U>::read_body(buffer_reader& reader)
 {
 }
 
-#define DEFINE_EMPTY_MESSAGE(name, id)                \
-    struct __attribute__((packed)) name final : public empty_message<id>
-
-DEFINE_EMPTY_MESSAGE(nop_message, message_id::NOP)
+struct nop_message final : public empty_message<message_id::NOP>
 {
 };
 
-DEFINE_EMPTY_MESSAGE(ping_message, message_id::PING)
+struct ping_message final : public empty_message<message_id::PING>
 {
 };
 
-DEFINE_MESSAGE(webots_velocity_message, message_id::WEBOTS_VELOCITY)
+struct webots_steering_message final : public basic_message<webots_steering_message, message_id::WEBOTS_STEERING>
 {
     double left_speed;
     double right_speed;
 };
 
-DEFINE_MESSAGE(webots_steering_message, message_id::WEBOTS_VELOCITY)
+struct webots_velocity_message final : public basic_message<webots_velocity_message, message_id::WEBOTS_VELOCITY>
 {
     double left_speed;
     double right_speed;
 };
 
-DEFINE_MESSAGE(external_distance_sensor_message, message_id::EXTERNAL_DISTANCE_SENSOR)
+struct external_distance_sensor_message final : public basic_message<external_distance_sensor_message, message_id::EXTERNAL_DISTANCE_SENSOR>
 {
 };
 
-DEFINE_MESSAGE(external_light_sensor_message, message_id::EXTERNAL_LIGHT_SENSOR)
+struct external_light_sensor_message final : public basic_message<external_light_sensor_message, message_id::EXTERNAL_LIGHT_SENSOR>
 {
 };
 
-DEFINE_MESSAGE(external_image_data_message, message_id::EXTERNAL_IMAGE_DATA)
+struct external_image_data_message final : public basic_message<external_image_data_message, message_id::EXTERNAL_IMAGE_DATA>
 {
     std::vector<std::uint8_t> pixel;
 
@@ -242,3 +240,5 @@ DEFINE_MESSAGE(external_image_data_message, message_id::EXTERNAL_IMAGE_DATA)
         reader >> pixel;
     }
 };
+
+#pragma pack(pop)

@@ -214,7 +214,7 @@ struct external_distance_sensor_message : public basic_message<external_distance
     std::size_t body_size() const;
 };
 
-std::size_t external_distance_sensor_message<N>::body_size() const
+std::size_t external_distance_sensor_message::body_size() const
 {
     return 9 * sizeof(double);
 }
@@ -226,7 +226,7 @@ struct external_light_sensor_message : public basic_message<external_light_senso
     std::size_t body_size() const;
 };
 
-std::size_t external_light_sensor_message<N>::body_size() const
+std::size_t external_light_sensor_message::body_size() const
 {
     return 1 * sizeof(double);
 }

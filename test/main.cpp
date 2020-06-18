@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(external_distance_sensor_message_write_read)
     buffer_writer writer(buffer);
     writer << write_msg;
 
-    external_distance_sensor_message<9> read_msg;
+    external_distance_sensor_message read_msg;
     buffer_reader reader(buffer);
     reader >> read_msg;
 
@@ -185,7 +185,7 @@ BOOST_AUTO_TEST_CASE(external_light_sensor_message_write_read)
     buffer_writer writer(buffer);
     writer << write_msg;
 
-    external_light_sensor_message<3> read_msg;
+    external_light_sensor_message read_msg;
     buffer_reader reader(buffer);
     reader >> read_msg;
 

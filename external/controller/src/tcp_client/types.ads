@@ -1,4 +1,5 @@
 with Interfaces;
+with Ada.Real_Time;
 
 package types is
 
@@ -7,9 +8,9 @@ package types is
    type uint32 is new Interfaces.Unsigned_32;
    type uint64 is new Interfaces.Unsigned_64;
    type float64 is new Interfaces.IEEE_Float_64;
-   type Octets_2 is array(0 .. 1) of uint8;
-   type Octets_4 is array (0 .. 3) of uint8;
-   type Octets_8 is array (0 .. 7) of uint8;
+   type Octets_2 is array(uint32 range 0 .. 1) of uint8;
+   type Octets_4 is array (uint32 range 0 .. 3) of uint8;
+   type Octets_8 is array (uint32 range 0 .. 7) of uint8;
    
    type payload is array(uint32 range <>) of uint8 with
      Default_Component_Value => 0;
@@ -18,6 +19,7 @@ package types is
       package_ID : uint8;
       payload_length : uint32;
       local_payload : access payload;
+      TTL : Ada.Real_Time.Time;
    end record;
    
    protected type Mailbox is

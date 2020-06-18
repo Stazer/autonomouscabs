@@ -12,7 +12,7 @@ package backend_thread is
    Backend_Client: Socket_Type; -- stores the socket for the backend
    Backend_Channel : Stream_Access; -- socket I/O interface
    Backend_Address : Sock_Addr_Type; -- stores the server address
-   Backend_Cmd : Command; -- command to send over socket
+   Backend_Cmd : types.Communication_Packet; -- command to send over socket
    Backend_Vector_Buffer : byte_buffer.Buffer;
    Backend_Mailbox : types.Mailbox;
 

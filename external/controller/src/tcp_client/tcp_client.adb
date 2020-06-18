@@ -23,14 +23,27 @@ package body tcp_client is
    end build_connection;
 
 
-   procedure send_bytes( server_stream : Stream_Access; cmd : Command) is
+   procedure send_bytes( server_stream : Stream_Access; outgoing_packet : types.Communication_Packet) is
+
+      uint8_payload_length : types.Octets_4;
 
    begin
 
-      --  write full command to stream
-      for I in cmd'Range loop
-         Character'Write(server_stream, Character'Val(cmd(I)));
+      -- send payload_length
+      uint8_payload_length := uint32_to_octets(hton32(outgoing_packet.payload_length));
+      for I in uint8_payload_length'Range loop
+         types.uint8'Write(server_stream, uint8_payload_length(I));
       end loop;
+
+      -- send package_ID
+      types.uint8'Write(server_stream, outgoing_packet.package_ID);
+
+      --  write full payload to stream
+      if outgoing_packet.payload_length > 0 then
+         for I in outgoing_packet.local_payload'Range loop
+            types.uint8'Write(server_stream, outgoing_packet.local_payload(I));
+         end loop;
+      end if;
 
    end send_bytes;
 
@@ -85,10 +98,12 @@ package body tcp_client is
          new_packet.package_ID := package_ID;
          new_packet.payload_length := payload_length;
          new_packet.local_payload := new payload(0..(payload_length - 1));
+         new_packet.TTL := Ada.Real_Time.Clock;
 
          for I in new_packet.local_payload'Range loop
             dynamic_buffer.read_uint8(new_packet.local_payload(I));
          end loop;
+
 
          select
             mailbox.Deposit(new_packet);

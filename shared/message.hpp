@@ -200,23 +200,11 @@ struct webots_velocity_message : public basic_message<webots_velocity_message, m
     double right_speed;
 
     std::size_t body_size() const;
-    void write_body(buffer_writer& writer) const;
-    void read_body(buffer_reader& reader);
 };
 
 std::size_t webots_velocity_message::body_size() const
 {
     return 2 * sizeof(double);
-}
-
-void webots_velocity_message::write_body(buffer_writer& writer) const
-{
-    writer << right_speed << left_speed;
-}
-
-void webots_velocity_message::read_body(buffer_reader& reader)
-{
-    reader >> right_speed >> left_speed;
 }
 
 template <std::size_t N>
@@ -225,8 +213,6 @@ struct external_distance_sensor_message : public basic_message<external_distance
     std::array<double, N> data;
 
     std::size_t body_size() const;
-    void write_body(buffer_writer& writer) const;
-    void read_body(buffer_reader& reader);
 };
 
 template <std::size_t N>
@@ -236,43 +222,17 @@ std::size_t external_distance_sensor_message<N>::body_size() const
 }
 
 template <std::size_t N>
-void external_distance_sensor_message<N>::write_body(buffer_writer& writer) const
-{
-    writer << data;
-}
-
-template <std::size_t N>
-void external_distance_sensor_message<N>::read_body(buffer_reader& reader)
-{
-    reader >> data;
-}
-
-template <std::size_t N>
 struct external_light_sensor_message : public basic_message<external_light_sensor_message<N>, message_id::EXTERNAL_LIGHT_SENSOR>
 {
     std::array<double, N> data;
 
     std::size_t body_size() const;
-    void write_body(buffer_writer& writer) const;
-    void read_body(buffer_reader& reader);
 };
 
 template <std::size_t N>
 std::size_t external_light_sensor_message<N>::body_size() const
 {
     return N * sizeof(double);
-}
-
-template <std::size_t N>
-void external_light_sensor_message<N>::write_body(buffer_writer& writer) const
-{
-    writer << data;
-}
-
-template <std::size_t N>
-void external_light_sensor_message<N>::read_body(buffer_reader& reader)
-{
-    reader >> data;
 }
 
 struct external_image_data_message : public basic_message<external_image_data_message, message_id::EXTERNAL_IMAGE_DATA>

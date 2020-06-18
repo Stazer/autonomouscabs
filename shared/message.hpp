@@ -207,32 +207,28 @@ std::size_t webots_velocity_message::body_size() const
     return 2 * sizeof(double);
 }
 
-template <std::size_t N>
 struct external_distance_sensor_message : public basic_message<external_distance_sensor_message<N>, message_id::EXTERNAL_DISTANCE_SENSOR>
 {
-    std::array<double, N> data;
+    std::array<double, 9> data;
 
     std::size_t body_size() const;
 };
 
-template <std::size_t N>
 std::size_t external_distance_sensor_message<N>::body_size() const
 {
-    return N * sizeof(double);
+    return 9 * sizeof(double);
 }
 
-template <std::size_t N>
 struct external_light_sensor_message : public basic_message<external_light_sensor_message<N>, message_id::EXTERNAL_LIGHT_SENSOR>
 {
-    std::array<double, N> data;
+    std::array<double, 1> data;
 
     std::size_t body_size() const;
 };
 
-template <std::size_t N>
 std::size_t external_light_sensor_message<N>::body_size() const
 {
-    return N * sizeof(double);
+    return 1 * sizeof(double);
 }
 
 struct external_image_data_message : public basic_message<external_image_data_message, message_id::EXTERNAL_IMAGE_DATA>

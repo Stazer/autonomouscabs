@@ -156,7 +156,7 @@ BOOST_AUTO_TEST_CASE(webots_velocity_message_write_read)
 
 BOOST_AUTO_TEST_CASE(external_distance_sensor_message_write_read)
 {
-    external_distance_sensor_message<9> write_msg;
+    external_distance_sensor_message write_msg;
     for(int i = 0; i<9; i++){
       write_msg.data[i] = static_cast<double>(i) + 0.3;
     }
@@ -176,8 +176,8 @@ BOOST_AUTO_TEST_CASE(external_distance_sensor_message_write_read)
 
 BOOST_AUTO_TEST_CASE(external_light_sensor_message_write_read)
 {
-    external_light_sensor_message<3> write_msg;
-    for(int i = 0; i<3; i++){
+    external_light_sensor_message write_msg;
+    for(int i = 0; i<1; i++){
       write_msg.data[i] = static_cast<double>(i) + 0.6;
     }
 
@@ -189,7 +189,7 @@ BOOST_AUTO_TEST_CASE(external_light_sensor_message_write_read)
     buffer_reader reader(buffer);
     reader >> read_msg;
 
-    for(int i = 0; i<3; i++){
+    for(int i = 0; i<1; i++){
       BOOST_TEST(read_msg.data[i] == write_msg.data[i]);
     }
 }

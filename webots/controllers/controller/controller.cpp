@@ -95,14 +95,14 @@ int main(int argc, char **argv)
   while (robot->step(timeStep) != -1) 
   {
     // read distance sensor data
-    external_distance_sensor_message<N_DISTANCE_SENSORS> ds_msg;
+    external_distance_sensor_message ds_msg;
     for(int i = 0; i<N_DISTANCE_SENSORS; i++)
     {
       ds_msg.data[i] = ds_sensors[i]->getValue();
     }
 
     // read light sensor data
-    external_light_sensor_message<N_LIGHT_SENSORS> ls_msg;
+    external_light_sensor_message ls_msg;
     for(int i = 0; i<N_LIGHT_SENSORS; i++)
     {
       ls_msg.data[i] = ls_sensors[i]->getValue();

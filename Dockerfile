@@ -14,6 +14,6 @@ RUN cd /home/user/repository && \
     mkdir build && \
     cd build && \
     cmake .. && \
-    make && \
+    make test.bin && \
     cd /home/user/repository/external/harness && \
     make

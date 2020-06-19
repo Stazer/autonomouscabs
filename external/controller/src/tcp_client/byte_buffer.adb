@@ -111,7 +111,7 @@ package body byte_buffer is
    
    procedure unwind (Self : in out Buffer; Bytes : in types.uint32) is
    begin
-      Self.Index := Integer (types.uint32'Max(Self.bytes_read - Bytes, 0));
+      Self.Index := Integer'Max (Self.Index - Integer (Bytes), 0);
    end unwind;
       
 

@@ -1,4 +1,3 @@
-with Ada.Unchecked_Conversion;
 with types;
 
 package body byte_buffer is      
@@ -35,8 +34,15 @@ package body byte_buffer is
       Self.Buffer.Append (o8 (5));
       Self.Buffer.Append (o8 (6));
       Self.Buffer.Append (o8 (7));
-   end write_uint64;
+   end write_uint64; 
    
+   procedure write_payload (Self : in out Buffer; Val : access types.payload) is
+   begin
+      for I in Val'Range loop
+         Self.Buffer.Append (Val (I));
+      end loop;
+   end write_payload;
+      
    procedure read_uint8 (Self : in out Buffer; Val : out types.uint8) is
    begin
       Val := Self.Buffer.Element (Self.Index);
@@ -78,9 +84,35 @@ package body byte_buffer is
       Self.Index := Self.Index + 8;
    end read_uint64; 
    
-   function size (Self : in out Buffer) return Integer is
+   procedure read_payload (Self : in out Buffer; Val : access types.payload) is
+      count : Integer := 0;
    begin
-      return Integer (Self.Buffer.Length);
-   end Size;
+      for I in Val'Range loop
+         Val (I) := Self.Buffer.Element (Self.Index + count);
+         count := count + 1;
+      end loop;
+      Self.Index := Self.Index + count; 
+   end read_payload;
+   
+   function size (Self : in out Buffer) return types.uint32 is
+   begin
+      return types.uint32 (Self.Buffer.Length);
+   end size;
+   
+   function remaining (Self : in out Buffer) return types.uint32 is
+   begin
+      return Self.size - Self.bytes_read;
+   end remaining;
+      
+   function bytes_read (Self : in out Buffer) return types.uint32 is
+   begin
+      return types.uint32 (Self.Index);
+   end bytes_read;
+   
+   procedure unwind (Self : in out Buffer; Bytes : in types.uint32) is
+   begin
+      Self.Index := Integer (types.uint32'Max(Self.bytes_read - Bytes, 0));
+   end unwind;
+      
 
 end byte_buffer;

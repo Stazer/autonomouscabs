@@ -1,7 +1,7 @@
 with AUnit.Test_Suites;
 
-package tcp_suite is
+package types_suite is
 
    function Suite return AUnit.Test_Suites.Access_Test_Suite;
 
-end tcp_suite;
+end types_suite;

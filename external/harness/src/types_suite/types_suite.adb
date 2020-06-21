@@ -1,6 +1,6 @@
-with tcp_tests;
+with types_tests;
 
-package body tcp_suite is
+package body types_suite is
 
    use AUnit.Test_Suites;
 
@@ -8,7 +8,7 @@ package body tcp_suite is
    Result : aliased Test_Suite;
 
    --  Statically allocate test cases:
-   Test_1 : aliased tcp_tests.tcp_test;
+   Test_1 : aliased types_tests.types_test;
 
    function Suite return Access_Test_Suite is
    begin
@@ -16,4 +16,4 @@ package body tcp_suite is
       return Result'Access;
    end Suite;
 
-end tcp_suite;
+end types_suite;

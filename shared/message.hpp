@@ -6,6 +6,8 @@
 #include "buffer_reader.hpp"
 #include "buffer_writer.hpp"
 
+#pragma pack(push, 1)
+
 using message_size = std::uint32_t;
 using message_id_base = std::uint8_t;
 
@@ -14,6 +16,7 @@ enum class message_id : message_id_base
     FIRST = 0x0,
 
     GENERAL_FIRST = 0x0,
+    UNDEFINED,
     NOP,
     PING,
     GENERAL_LAST,
@@ -55,11 +58,13 @@ buffer_reader& operator>>(buffer_reader& reader, message_id& id)
     return reader;
 }
 
+#pragma pack(push, 1)
 struct message_header
 {
     message_size size;
     message_id id;
 };
+#pragma pack(pop)
 
 buffer_writer& operator<<(buffer_writer& writer, const message_header& header)
 {
@@ -80,19 +85,19 @@ struct basic_message
 {
     virtual ~basic_message() = default;
 
-    std::size_t size() const;
+    message_size size() const;
     message_id id() const;
 
     message_header header() const;
 
-    virtual std::size_t body_size() const;
+    virtual message_size body_size() const;
 
     virtual void write_body(buffer_writer& writer) const;
     virtual void read_body(buffer_reader& reader);
 };
 
 template <typename T, message_id U>
-std::size_t basic_message<T, U>::size() const
+message_size basic_message<T, U>::size() const
 {
     return sizeof(message_header) + body_size();
 }
@@ -114,9 +119,10 @@ message_header basic_message<T, U>::header() const
 }
 
 template <typename T, message_id U>
-std::size_t basic_message<T, U>::body_size() const
+message_size basic_message<T, U>::body_size() const
 {
-    return sizeof(T);
+    // subtracting the size overhead of virtual functions
+    return sizeof(T) - sizeof(basic_message<T, U>);
 }
 
 template <typename T, message_id U>
@@ -165,13 +171,13 @@ buffer_reader& operator>>(buffer_reader& reader, T& message)
 template <message_id U>
 struct empty_message : public basic_message<empty_message<U>, U>
 {
-    virtual std::size_t body_size() const final;
+    virtual message_size body_size() const final;
     virtual void write_body(buffer_writer& writer) const final;
     virtual void read_body(buffer_reader& reader) final;
 };
 
 template <message_id U>
-std::size_t empty_message<U>::body_size() const
+message_size empty_message<U>::body_size() const
 {
     return 0;
 }
@@ -186,71 +192,48 @@ void empty_message<U>::read_body(buffer_reader& reader)
 {
 }
 
-struct nop_message : public empty_message<message_id::NOP>
+struct nop_message final : public empty_message<message_id::NOP>
 {
 };
 
-struct ping_message : public empty_message<message_id::PING>
+struct ping_message final : public empty_message<message_id::PING>
 {
 };
 
-struct webots_velocity_message : public basic_message<webots_velocity_message, message_id::WEBOTS_VELOCITY>
+struct webots_velocity_message final : public basic_message<webots_velocity_message, message_id::WEBOTS_VELOCITY>
 {
     double left_speed;
     double right_speed;
-
-    std::size_t body_size() const;
 };
 
-std::size_t webots_velocity_message::body_size() const
-{
-    return 2 * sizeof(double);
-}
-
-struct external_distance_sensor_message : public basic_message<external_distance_sensor_message, message_id::EXTERNAL_DISTANCE_SENSOR>
+struct external_distance_sensor_message final : public basic_message<external_distance_sensor_message, message_id::EXTERNAL_DISTANCE_SENSOR>
 {
     std::array<double, 9> data;
-
-    std::size_t body_size() const;
 };
 
-std::size_t external_distance_sensor_message::body_size() const
-{
-    return 9 * sizeof(double);
-}
-
-struct external_light_sensor_message : public basic_message<external_light_sensor_message, message_id::EXTERNAL_LIGHT_SENSOR>
+struct external_light_sensor_message final : public basic_message<external_light_sensor_message, message_id::EXTERNAL_LIGHT_SENSOR>
 {
     std::array<double, 1> data;
-
-    std::size_t body_size() const;
 };
 
-std::size_t external_light_sensor_message::body_size() const
+struct external_image_data_message final : public basic_message<external_image_data_message, message_id::EXTERNAL_IMAGE_DATA>
 {
-    return 1 * sizeof(double);
-}
+    std::vector<std::uint8_t> pixel;
 
-struct external_image_data_message : public basic_message<external_image_data_message, message_id::EXTERNAL_IMAGE_DATA>
-{
-    std::vector<std::uint8_t> image;
+    message_size body_size() const
+    {
+        return sizeof(buffer_collection_size) + pixel.size() * sizeof(std::uint8_t);
+    }
 
-    std::size_t body_size() const;
-    void write_body(buffer_writer& writer) const;
-    void read_body(buffer_reader& reader);
+    void write_body(buffer_writer& writer) const
+    {
+        writer << pixel;
+    }
+
+    void read_body(buffer_reader& reader)
+    {
+        reader >> pixel;
+    }
 };
 
-std::size_t external_image_data_message::body_size() const
-{
-    return sizeof(std::uint32_t) + image.size() * sizeof(std::uint8_t);
-}
-
-void external_image_data_message::write_body(buffer_writer& writer) const
-{
-    writer << image;
-}
-
-void external_image_data_message::read_body(buffer_reader& reader)
-{
-    reader >> image;
-}
+#pragma pack(pop)

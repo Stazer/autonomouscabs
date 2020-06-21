@@ -67,7 +67,7 @@ package body tcp_client is
 
 
 
-   procedure listen( server_stream : Stream_Access; dynamic_buffer : in out byte_buffer.Buffer; mailbox : in out types.Mailbox ) is --  not finished
+   procedure listen( server_stream : Stream_Access; dynamic_buffer : in out byte_buffer.Buffer; local_mailbox : in out mailbox.Mailbox ) is --  not finished
 
       bytes_received : types.uint32 := 0;
       conv_package_ID : types.uint8;
@@ -85,11 +85,11 @@ package body tcp_client is
 
       --  read payload
       bytes_received := recv_bytes(server_stream, conv_package_value_length, dynamic_buffer);
-      read_payload(dynamic_buffer, conv_package_value_length, conv_package_ID,mailbox);
+      read_payload(dynamic_buffer, conv_package_value_length, conv_package_ID,local_mailbox);
 
    end listen;
 
-   procedure read_payload(dynamic_buffer : in out byte_buffer.Buffer; payload_length : types.uint32; package_ID : types.uint8; mailbox : in out types.Mailbox) is
+   procedure read_payload(dynamic_buffer : in out byte_buffer.Buffer; payload_length : types.uint32; package_ID : types.uint8; local_mailbox : in out mailbox.Mailbox) is
 
    begin
 
@@ -104,54 +104,11 @@ package body tcp_client is
             dynamic_buffer.read_uint8(new_packet.local_payload(I));
          end loop;
 
-
-         select
-            mailbox.Deposit(new_packet);
-         else
-            delay(0.05);
-            mailbox.Clear;
-            mailbox.Deposit(new_packet);
-         end select;
+         local_mailbox.Clear;
+         local_mailbox.Deposit(new_packet);
 
       end;
 
    end read_payload;
-
-   procedure check_mailbox ( first : in out types.Mailbox; second : in out types.Mailbox; new_packet : out types.Communication_Packet; alternator: types.uint8 ) is
-   begin
-      if alternator = 1 then
-         select
-            first.Collect(new_packet);
-         else
-            delay(0.05);
-            check_mailbox(second,first,new_packet,alternator);
-         end select;
-      else
-         select
-            second.Collect(new_packet);
-         else
-            delay(0.05);
-            check_mailbox(second,first,new_packet,alternator);
-         end select;
-      end if;
-   end check_mailbox;
-
-   procedure update_alternator (alternator: in out types.uint8) is
-   begin
-      if alternator = 1 then
-         alternator := 2;
-      else
-         alternator := 1;
-      end if;
-   end update_alternator;
-
-   function check_time_to_live(Time_In_Question: in Ada.Real_Time.Time) return Boolean is
-   begin
-      if (Ada.Real_Time.Clock - Time_In_Question) >= Ada.Real_Time.Milliseconds(6000) then
-         return True;
-      else
-         return False;
-      end if;
-   end check_time_to_live;
 
 end tcp_client;

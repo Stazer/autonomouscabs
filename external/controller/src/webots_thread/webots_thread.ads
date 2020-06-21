@@ -4,6 +4,7 @@ with tcp_client; use tcp_client;
 with Ada.Text_IO;
 with types;
 with byte_buffer;
+with mailbox;
 
 package webots_thread is
 
@@ -13,7 +14,7 @@ package webots_thread is
    Webots_Address : Sock_Addr_Type; -- stores the server address
    Webots_Cmd : types.Communication_Packet; -- command to send over socket
    Webots_Vector_Buffer : byte_buffer.Buffer;
-   Webots_Mailbox : types.Mailbox(Size => 5);
+   Webots_Mailbox : mailbox.Mailbox(Size => 5);
 
    procedure webots_main;
 

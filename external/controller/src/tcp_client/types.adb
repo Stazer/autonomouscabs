@@ -131,34 +131,4 @@ package body types is
       return X;
    end ntoh64;
    
-   protected body Mailbox is
-      procedure Clear is -- throws out all the old items and updates Last
-      begin
-         if Last > 0 then
-            for I in Items'Range loop
-               exit when Last = 0 or I = Last;
-               if tcp_client.check_time_to_live(Items(I).TTL) = True then
-                  Last := Last - 1;
-                  Items(1..Last) := Items(2..Last+1);
-               end if;
-            end loop;
-         end if;
-      end Clear;
-      entry Deposit(X: in Communication_Packet) when Last < Size is
-      begin
-         Items(Last + 1) := X;
-         Last := Last + 1;
-      end Deposit;
-      entry Collect(X: out Communication_Packet) when Last > 0 is
-      begin
-         X := Items(1);
-         Last := Last - 1;
-         Items(1..Last) := Items(2..Last+1);
-      end Collect;
-      procedure View_Inbox(Remaining_Items: out uint8) is
-      begin
-         Remaining_Items:= Last;
-      end View_Inbox;
-   end Mailbox;
-   
    end types;

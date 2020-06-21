@@ -117,14 +117,41 @@ package body tcp_client is
 
    end read_payload;
 
-   procedure check_mailbox ( first : in out types.Mailbox; second : in out types.Mailbox; new_packet : out types.Communication_Packet ) is
+   procedure check_mailbox ( first : in out types.Mailbox; second : in out types.Mailbox; new_packet : out types.Communication_Packet; alternator: types.uint8 ) is
    begin
-      select
-         first.Collect(new_packet);
+      if alternator = 1 then
+         select
+            first.Collect(new_packet);
+         else
+            delay(0.05);
+            check_mailbox(second,first,new_packet,alternator);
+         end select;
       else
-         delay(0.05);
-         check_mailbox(second,first,new_packet);
-      end select;
+         select
+            second.Collect(new_packet);
+         else
+            delay(0.05);
+            check_mailbox(second,first,new_packet,alternator);
+         end select;
+      end if;
    end check_mailbox;
+
+   procedure update_alternator (alternator: in out types.uint8) is
+   begin
+      if alternator = 1 then
+         alternator := 2;
+      else
+         alternator := 1;
+      end if;
+   end update_alternator;
+
+   function check_time_to_live(Time_In_Question: in Ada.Real_Time.Time) return Boolean is
+   begin
+      if (Ada.Real_Time.Clock - Time_In_Question) >= Ada.Real_Time.Milliseconds(6000) then
+         return True;
+      else
+         return False;
+      end if;
+   end check_time_to_live;
 
 end tcp_client;

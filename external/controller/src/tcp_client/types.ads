@@ -22,15 +22,18 @@ package types is
       TTL : Ada.Real_Time.Time;
    end record;
    
-   protected type Mailbox is
+   type Mail_List is array (uint8 range <>) of Communication_Packet;
+   
+   protected type Mailbox (Size : uint8) is
       procedure Clear;
       entry Deposit(X: in Communication_Packet);
       entry Collect(X: out Communication_Packet);
+      procedure View_Inbox(Remaining_Items: out uint8);
    private
-      Full: Boolean := False;
-      A: Communication_Packet;
+      Items: Mail_List(1..Size);
+      Last : uint8 := 0;
    end Mailbox;
-   
+      
    function uint16_to_octets (X : uint16) return Octets_2;
    function uint32_to_octets (X : uint32) return Octets_4;
    function uint64_to_octets (X : uint64) return Octets_8;

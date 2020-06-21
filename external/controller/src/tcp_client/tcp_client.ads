@@ -3,7 +3,7 @@ with Ada.Streams; use Ada.Streams;
 with Ada.Text_IO; use Ada.Text_IO;
 with byte_buffer;
 with types;
-with Ada.Real_Time;
+with Ada.Real_Time; use Ada.Real_Time;
 
 package tcp_client is
 
@@ -22,6 +22,10 @@ package tcp_client is
 
    procedure read_payload(dynamic_buffer : in out byte_buffer.Buffer; payload_length : types.uint32; package_ID : types.uint8; mailbox : in out types.Mailbox);
 
-   procedure check_mailbox ( first : in out types.Mailbox; second : in out types.Mailbox; new_packet : out types.Communication_Packet );
+   procedure check_mailbox ( first : in out types.Mailbox; second : in out types.Mailbox; new_packet : out types.Communication_Packet; alternator: types.uint8 ) ;
+
+   procedure update_alternator(alternator: in out types.uint8);
+
+   function check_time_to_live(Time_In_Question: in Ada.Real_Time.Time) return Boolean;
 
 end tcp_client;

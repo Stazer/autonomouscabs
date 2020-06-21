@@ -14,7 +14,7 @@ package backend_thread is
    Backend_Address : Sock_Addr_Type; -- stores the server address
    Backend_Cmd : types.Communication_Packet; -- command to send over socket
    Backend_Vector_Buffer : byte_buffer.Buffer;
-   Backend_Mailbox : types.Mailbox;
+   Backend_Mailbox : types.Mailbox(Size => 5); -- queue that holds at max 5 items
 
    procedure backend_main;
 

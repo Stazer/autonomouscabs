@@ -202,7 +202,7 @@ BOOST_AUTO_TEST_CASE(external_image_data_message_write_read)
       test[i] = 65 + i;
     }
     std::vector<unsigned char> vec(test, test + 26);
-    write_msg.image = vec;
+    write_msg.pixel = vec;
 
     buffer buffer;
     buffer_writer writer(buffer);
@@ -213,7 +213,7 @@ BOOST_AUTO_TEST_CASE(external_image_data_message_write_read)
     reader >> read_msg;
 
     for(int i = 0; i<26; i++){
-      BOOST_TEST(read_msg.image[i] == write_msg.image[i]);
+      BOOST_TEST(read_msg.pixel[i] == write_msg.pixel[i]);
     }
 }
 

@@ -12,6 +12,7 @@ package body buffer_tests is
       Register_Routine (T, Test_Read_Write_Uint16'Access, "Test write and read uint16 from buffer.");
       Register_Routine (T, Test_Read_Write_Uint32'Access, "Test write and read uint32 from buffer.");
       Register_Routine (T, Test_Read_Write_Uint64'Access, "Test write and read uint64 from buffer.");
+      Register_Routine (T, Test_Read_Write_Payload'Access, "Test write and read payload from buffer.");
    end Register_Tests;
 
    -- Identifier of test case
@@ -67,5 +68,23 @@ package body buffer_tests is
       
       Assert (u64 = u64t, "Writing and reading uint64 does not work");
    end Test_Read_Write_Uint64;
-
+   
+   procedure Test_Read_Write_Payload (T : in out Test_Cases.Test_Case'Class) is
+      b : Buffer;
+      p_in, p_out : access payload := new payload (0 .. 31);
+      u8 : uint8 := 0;
+   begin
+      for I in p_in'Range loop
+         p_in (I) := u8;
+         u8 := u8 + 1;
+      end loop;
+      
+      b.write_payload (p_in);
+      b.read_payload (p_out);
+      
+      for I in p_out'Range loop
+         Assert (p_out (I) = p_in (I), "Writing and reading payload does not work");
+      end loop;
+   end Test_Read_Write_Payload;
+   
 end buffer_tests;

@@ -112,7 +112,7 @@ int main(int argc, char **argv)
     external_image_data_message img_msg;
     const unsigned char *image = camera->getImage();
     std::vector<unsigned char> vec(image, image + image_size);
-    img_msg.image = vec;
+    img_msg.pixel = vec;
 
     try
     {

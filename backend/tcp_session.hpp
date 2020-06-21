@@ -1,18 +1,12 @@
 #pragma once
 
-#include <boost/asio.hpp>
 #include <memory>
 
-class tcp_session : public std::enable_shared_from_this<tcp_session>
+template<typename T>
+class tcp_session : public std::enable_shared_from_this<T>
 {
     public:
-        tcp_session(boost::asio::ip::tcp::socket socket);
-        ~tcp_session();
+        ~tcp_session() = default;
 
-        void run();
-
-    private:
-        boost::asio::ip::tcp::socket socket;
-
-        void handle_receive();
+        virtual void run() = 0;
 };

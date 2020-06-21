@@ -6,6 +6,8 @@
 #include "buffer_reader.hpp"
 #include "buffer_writer.hpp"
 
+#pragma pack(push, 1)
+
 using message_size = std::uint32_t;
 using message_id_base = std::uint8_t;
 
@@ -14,6 +16,7 @@ enum class message_id : message_id_base
     FIRST = 0x0,
 
     GENERAL_FIRST = 0x0,
+    UNDEFINED,
     NOP,
     PING,
     GENERAL_LAST,
@@ -56,11 +59,13 @@ buffer_reader& operator>>(buffer_reader& reader, message_id& id)
     return reader;
 }
 
+#pragma pack(push, 1)
 struct message_header
 {
     message_size size;
     message_id id;
 };
+#pragma pack(pop)
 
 buffer_writer& operator<<(buffer_writer& writer, const message_header& header)
 {
@@ -79,19 +84,21 @@ buffer_reader& operator>>(buffer_reader& reader, message_header& header)
 template <typename T, message_id U>
 struct basic_message
 {
-    std::size_t size() const;
-    message_id id() const;
+    virtual ~basic_message() = default;
 
-    std::size_t body_size() const;
+    message_size size() const;
+    message_id id() const;
 
     message_header header() const;
 
-    void write_body(buffer_writer& writer) const;
-    void read_body(buffer_reader& reader);
+    virtual message_size body_size() const;
+
+    virtual void write_body(buffer_writer& writer) const;
+    virtual void read_body(buffer_reader& reader);
 };
 
 template <typename T, message_id U>
-std::size_t basic_message<T, U>::size() const
+message_size basic_message<T, U>::size() const
 {
     return sizeof(message_header) + body_size();
 }
@@ -103,12 +110,6 @@ message_id basic_message<T, U>::id() const
 }
 
 template <typename T, message_id U>
-std::size_t basic_message<T, U>::body_size() const
-{
-    return sizeof(T);
-}
-
-template <typename T, message_id U>
 message_header basic_message<T, U>::header() const
 {
     message_header header;
@@ -116,6 +117,13 @@ message_header basic_message<T, U>::header() const
     header.id = id();
 
     return header;
+}
+
+template <typename T, message_id U>
+message_size basic_message<T, U>::body_size() const
+{
+    // subtracting the size overhead of virtual functions
+    return sizeof(T) - sizeof(basic_message<T, U>);
 }
 
 template <typename T, message_id U>
@@ -164,55 +172,73 @@ buffer_reader& operator>>(buffer_reader& reader, T& message)
 template <message_id U>
 struct empty_message : public basic_message<empty_message<U>, U>
 {
-    virtual std::size_t body_size() const final;
-    virtual void write_payload(buffer_writer& writer) const final;
-    virtual void read_payload(buffer_reader& reader) final;
+    virtual message_size body_size() const final;
+    virtual void write_body(buffer_writer& writer) const final;
+    virtual void read_body(buffer_reader& reader) final;
 };
 
 template <message_id U>
-std::size_t empty_message<U>::body_size() const
+message_size empty_message<U>::body_size() const
 {
     return 0;
 }
 
 template <message_id U>
-void empty_message<U>::write_payload(buffer_writer& writer) const
+void empty_message<U>::write_body(buffer_writer& writer) const
 {
 }
 
 template <message_id U>
-void empty_message<U>::read_payload(buffer_reader& reader)
+void empty_message<U>::read_body(buffer_reader& reader)
 {
 }
 
-struct nop_message : public empty_message<message_id::NOP>
+struct nop_message final : public empty_message<message_id::NOP>
 {
 };
 
-struct ping_message : public empty_message<message_id::PING>
+struct ping_message final : public empty_message<message_id::PING>
 {
 };
 
-struct webots_velocity_message : public basic_message<webots_velocity_message, message_id::WEBOTS_VELOCITY>
+struct webots_steering_message final : public basic_message<webots_steering_message, message_id::WEBOTS_STEERING>
 {
     double left_speed;
     double right_speed;
 };
 
-struct webots_steering_message : public basic_message<webots_steering_message, message_id::WEBOTS_STEERING>
+struct webots_velocity_message final : public basic_message<webots_velocity_message, message_id::WEBOTS_VELOCITY>
 {
     double left_speed;
     double right_speed;
 };
 
-struct external_distance_sensor_message : public basic_message<external_distance_sensor_message, message_id::EXTERNAL_DISTANCE_SENSOR>
+struct external_distance_sensor_message final : public basic_message<external_distance_sensor_message, message_id::EXTERNAL_DISTANCE_SENSOR>
 {
 };
 
-struct external_light_sensor_message : public basic_message<external_light_sensor_message, message_id::EXTERNAL_LIGHT_SENSOR>
+struct external_light_sensor_message final : public basic_message<external_light_sensor_message, message_id::EXTERNAL_LIGHT_SENSOR>
 {
 };
 
-struct external_image_data_message : public basic_message<external_image_data_message, message_id::EXTERNAL_IMAGE_DATA>
+struct external_image_data_message final : public basic_message<external_image_data_message, message_id::EXTERNAL_IMAGE_DATA>
 {
+    std::vector<std::uint8_t> pixel;
+
+    message_size body_size() const
+    {
+        return sizeof(buffer_collection_size) + pixel.size() * sizeof(std::uint8_t);
+    }
+
+    void write_body(buffer_writer& writer) const
+    {
+        writer << pixel;
+    }
+
+    void read_body(buffer_reader& reader)
+    {
+        reader >> pixel;
+    }
 };
+
+#pragma pack(pop)

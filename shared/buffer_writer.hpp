@@ -128,7 +128,7 @@ buffer_writer& buffer_writer::operator<<(std::array<std::uint8_t, N>& array)
 template <typename T>
 buffer_writer& buffer_writer::operator<<(const std::vector<T>& vector)
 {
-    *this << vector.size();
+    *this << buffer_collection_size(vector.size());
     for(auto element:vector)
     {
         *this << element;

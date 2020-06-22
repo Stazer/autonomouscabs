@@ -1,0 +1,76 @@
+V "GNAT Lib v9"
+M P W=b
+A -gnatA
+A -mtune=generic
+A -march=x86-64
+P ZX
+
+RN
+RV NO_IO
+RV NO_DEFAULT_INITIALIZATION
+RV NO_IMPLEMENTATION_PRAGMAS
+RV SPARK_05
+
+U input%b		input.adb		7a2ddb15 NE OO SU IL
+W ada%s			ada.ads			ada.ali
+W ada.integer_text_io%s	a-inteio.ads		a-inteio.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+Z system.img_int%s	s-imgint.adb		s-imgint.ali
+
+D ada.ads		20200312110721 76789da1 ada%s
+D a-except.ads		20200312110721 291912d5 ada.exceptions%s
+D a-inteio.ads		20200312110721 f64b89a4 ada.integer_text_io%s
+D a-ioexce.ads		20200312110721 e4a01f64 ada.io_exceptions%s
+D a-stream.ads		20200312110721 119b8fb3 ada.streams%s
+D a-tags.ads		20200312110721 491b781d ada.tags%s
+D a-textio.ads		20200312110721 881db35a ada.text_io%s
+D a-tiinio.ads		20200312110721 aa04e5d6 ada.text_io.integer_io%s
+D a-unccon.ads		20200312110721 0e9b276f ada.unchecked_conversion%s
+D input.adb		20200622171647 047be1eb input%b
+D interfac.ads		20200312110721 5ab55268 interfaces%s
+D i-cstrea.ads		20200312110721 e53d8b8e interfaces.c_streams%s
+D system.ads		20200312110721 4635ec04 system%s
+D s-crtl.ads		20200312110721 0ebbdb71 system.crtl%s
+D s-exctab.ads		20200312110721 54135002 system.exception_table%s
+D s-ficobl.ads		20200312110721 078245e4 system.file_control_block%s
+D s-imgint.ads		20200312110721 02dbe0c2 system.img_int%s
+D s-parame.ads		20200312110721 48ec542b system.parameters%s
+D s-secsta.ads		20200312110721 20bbe636 system.secondary_stack%s
+D s-soflin.ads		20200312110721 a7318a92 system.soft_links%s
+D s-stache.ads		20200312110721 a37c21ec system.stack_checking%s
+D s-stalib.ads		20200312110721 09bd3940 system.standard_library%s
+D s-stoele.ads		20200312110721 2dc34a04 system.storage_elements%s
+D s-traent.ads		20200312110721 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20200312110721 34867c83 system.unsigned_types%s
+D s-wchcon.ads		20200312110721 1b7d22d2 system.wch_con%s
+X 1 ada.ads
+16K9*Ada 20e8 10|1r6 1r23 2r6 2r31 16r41
+X 3 a-inteio.ads
+18K13*Integer_Text_IO[8|46] 10|2w10 2r35
+X 7 a-textio.ads
+49K13*Text_IO 471e16 10|1w10 1r27 16r45
+52P9*File_Type 10|6r20
+53n23*In_File{53E9} 10|16r53
+92U14*Open 10|16s7
+93p7 File{52P9} 10|16r13
+94e7 Mode{53E9} 10|16r33
+95a7 Name{string} 10|16r62
+98U14*Close 10|25s7
+98p22 File{52P9} 10|25r14
+166U14*New_Line 10|23s7
+183V13*End_Of_File{boolean} 10|18s17
+242U14*Put 10|21s7
+X 8 a-tiinio.ads
+51U14*Get 10|19s7[3|18]
+52p7 File{7|52P9} 10|19r11[3|18]
+53i7 Item{integer} 10|19r31[3|18]
+66U14*Put 10|26s7[3|18]
+X 10 input.adb
+4U11*input 4b11 27l5 27t10
+6p4 Input_File{7|52P9} 16m21 16r21 18r30 19r19 25m22 25r22
+7i4 value{integer} 19m39 20r24
+8i4 rangeIndex{integer}
+9i4 I{integer} 20r18 21r37 22m7 22r12 26r12
+11A9 pixelMatrix(integer)<integer> 12r17
+12a4 wholeImage{11A9} 20m7 21r26
+

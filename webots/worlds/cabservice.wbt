@@ -3,8 +3,8 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation -0.45893807299654416 0.6895793896922969 0.5602286233903243 1.977886256107264
-  position 57.733720818394886 264.5677101417807 -4.8407166789764435
+  orientation 0.03808682417150016 0.7714041274115354 0.635204743399305 3.119688131672871
+  position 6.409620980680648 139.501828724283 -82.55227138078858
 }
 TexturedBackground {
   luminosity 2
@@ -1573,6 +1573,8 @@ DEF environment Solid {
           width 0.3
         }
         RoadLine {
+          type "continuous"
+          width -1.73472e-18
         }
       ]
       rightBarrier TRUE
@@ -1646,6 +1648,8 @@ DEF environment Solid {
           width 0.3
         }
         RoadLine {
+          type "continuous"
+          width -1.73472e-18
         }
       ]
       rightBarrier TRUE
@@ -1676,10 +1680,10 @@ DEF environment Solid {
       name "solid(4)"
     }
     CurvedRoadSegment {
-      translation 20 0 -36.6
+      translation 20 0 -36.8
       rotation 0 1 0 1.571
       name "road(33)"
-      width 6
+      width 5.8
       numberOfForwardLanes 2
       lines [
         RoadLine {
@@ -1704,10 +1708,10 @@ DEF environment Solid {
       }
     }
     StraightRoadSegment {
-      translation -20 0 -26.6
+      translation -20 0 -26.8
       rotation 0 1 0 1.571
       name "road(35)"
-      width 6
+      width 5.8
       numberOfForwardLanes 2
       lines [
         RoadLine {
@@ -1728,10 +1732,10 @@ DEF environment Solid {
       }
     }
     CurvedRoadSegment {
-      translation -20 0 -36.6
+      translation -20 0 -36.8
       rotation 0 1 0 -1.571
       name "road(34)"
-      width 6
+      width 5.8
       numberOfForwardLanes 2
       lines [
         RoadLine {
@@ -2207,6 +2211,38 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+    }
+    Solid {
+      translation -15 0 -48.41
+      rotation 0 1 0 -1.26
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 10.67
+          }
+        }
+      ]
+      name "solid(9)"
+    }
+    Solid {
+      translation 15 0 -48.39
+      rotation 0 1 0 -1.88
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 10.67
+          }
+        }
+      ]
+      name "solid(10)"
     }
   ]
   name "environment"

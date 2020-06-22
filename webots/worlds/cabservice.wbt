@@ -4,7 +4,7 @@ WorldInfo {
 }
 Viewpoint {
   orientation -0.45893807299654416 0.6895793896922969 0.5602286233903243 1.977886256107264
-  position 104.63419708595264 164.4368769811193 -5.924752168038056
+  position 57.733720818394886 264.5677101417807 -4.8407166789764435
 }
 TexturedBackground {
   luminosity 2
@@ -448,7 +448,7 @@ DEF Cab1 Robot {
     }
     DEF wheelFR HingeJoint {
       jointParameters HingeJointParameters {
-        anchor -0.55 -0.1 0.5
+        anchor -0.55 -0.1 0.55
       }
       device [
         DEF wheelFR RotationalMotor {
@@ -457,7 +457,7 @@ DEF Cab1 Robot {
         }
       ]
       endPoint DEF wheelFR Solid {
-        translation -0.55 -0.1 0.5
+        translation -0.55 -0.1 0.55
         rotation 0 0 1 1.5699999999999956
         children [
           DEF wheel Shape {
@@ -935,7 +935,7 @@ DEF Cab2 Robot {
     }
     DEF wheelFR HingeJoint {
       jointParameters HingeJointParameters {
-        anchor -0.55 -0.1 0.5
+        anchor -0.55 -0.1 0.55
       }
       device [
         DEF wheelFR RotationalMotor {
@@ -944,7 +944,7 @@ DEF Cab2 Robot {
         }
       ]
       endPoint DEF wheelFR Solid {
-        translation -0.55 -0.1 0.5
+        translation -0.55 -0.1 0.55
         rotation 0 0 1 1.5699999999999956
         children [
           DEF wheel Shape {
@@ -1307,7 +1307,7 @@ DEF environment Solid {
       startRoadBorderWidth 0.5
       bottom TRUE
       appearance Asphalt {
-        colorOverride 0 1 0.5
+        colorOverride 0.5 0.5 0
       }
     }
     RoadIntersection {
@@ -1331,7 +1331,7 @@ DEF environment Solid {
       startRoadBorderWidth 0.5
       bottom TRUE
       appearance Asphalt {
-        colorOverride 1 0 0.5
+        colorOverride 0.5 0.5 0
       }
     }
     RoadIntersection {
@@ -1379,7 +1379,7 @@ DEF environment Solid {
       startRoadBorderWidth 0.5
       bottom TRUE
       appearance Asphalt {
-        colorOverride 0.5 0.5 1
+        colorOverride 0.5 0.5 0
       }
     }
     StraightRoadSegment {
@@ -1428,6 +1428,22 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+    }
+    Solid {
+      translation -51.48 0 15.5
+      rotation 0 1 0 -0.2617996938995747
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(1)"
     }
     StraightRoadSegment {
       translation -51.5 0 -10
@@ -1479,6 +1495,22 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+    }
+    Solid {
+      translation -51.48 0 -15.5
+      rotation 0 1 0 0.2618
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(2)"
     }
     StraightRoadSegment {
       translation -53 0 -50
@@ -1554,6 +1586,22 @@ DEF environment Solid {
         colorOverride 0 0 0
       }
     }
+    Solid {
+      translation 15.5 0 -51.48
+      rotation 0 1 0 1.8326
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(3)"
+    }
     StraightRoadSegment {
       translation -10 0 -51.5
       rotation 0 1 0 1.571
@@ -1610,6 +1658,22 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+    }
+    Solid {
+      translation -15.5 0 -51.48
+      rotation 0 1 0 -1.8326
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(4)"
     }
     CurvedRoadSegment {
       translation 20 0 -36.6
@@ -1762,6 +1826,22 @@ DEF environment Solid {
         colorOverride 0 0 0
       }
     }
+    Solid {
+      translation 51.48 0 -15.5
+      rotation 0 1 0 -0.2617996938995747
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(5)"
+    }
     StraightRoadSegment {
       translation 51.5 0 -10
       name "road(24)"
@@ -1813,6 +1893,22 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+    }
+    Solid {
+      translation 51.48 0 15.5
+      rotation 0 1 0 0.2618
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(6)"
     }
     StraightRoadSegment {
       translation 53 0 20
@@ -1886,6 +1982,22 @@ DEF environment Solid {
         colorOverride 0 0 0
       }
     }
+    Solid {
+      translation 15.5 0 51.48
+      rotation 0 1 0 -1.8326
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(7)"
+    }
     StraightRoadSegment {
       translation -10 0 51.5
       rotation 0 1 0 1.57
@@ -1938,6 +2050,22 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+    }
+    Solid {
+      translation -15.5 0 51.48
+      rotation 0 1 0 1.8326
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(8)"
     }
     StraightRoadSegment {
       translation -50 0 53
@@ -2079,21 +2207,6 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
-    }
-    Solid {
-      translation 51.48 0 -15.5
-      rotation 0 1 0 -0.2617996938995747
-      children [
-        Shape {
-          appearance PBRAppearance {
-            roughness 1
-            metalness 0
-          }
-          geometry Box {
-            size 0.2 0.01 11.6
-          }
-        }
-      ]
     }
   ]
   name "environment"

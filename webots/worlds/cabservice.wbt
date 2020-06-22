@@ -3,8 +3,8 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation -0.5122800083008567 0.661359634384303 0.5478801211052792 1.8948868777524672
-  position 92.25286849156008 332.1898383760014 26.982564836651193
+  orientation 0.03808682417150016 0.7714041274115354 0.635204743399305 3.119688131672871
+  position 6.409620980680648 139.501828724283 -82.55227138078858
 }
 TexturedBackground {
   luminosity 2
@@ -448,7 +448,7 @@ DEF Cab1 Robot {
     }
     DEF wheelFR HingeJoint {
       jointParameters HingeJointParameters {
-        anchor -0.55 -0.1 0.5
+        anchor -0.55 -0.1 0.55
       }
       device [
         DEF wheelFR RotationalMotor {
@@ -457,7 +457,7 @@ DEF Cab1 Robot {
         }
       ]
       endPoint DEF wheelFR Solid {
-        translation -0.55 -0.1 0.5
+        translation -0.55 -0.1 0.55
         rotation 0 0 1 1.5699999999999956
         children [
           DEF wheel Shape {
@@ -935,7 +935,7 @@ DEF Cab2 Robot {
     }
     DEF wheelFR HingeJoint {
       jointParameters HingeJointParameters {
-        anchor -0.55 -0.1 0.5
+        anchor -0.55 -0.1 0.55
       }
       device [
         DEF wheelFR RotationalMotor {
@@ -944,7 +944,7 @@ DEF Cab2 Robot {
         }
       ]
       endPoint DEF wheelFR Solid {
-        translation -0.55 -0.1 0.5
+        translation -0.55 -0.1 0.55
         rotation 0 0 1 1.5699999999999956
         children [
           DEF wheel Shape {
@@ -1307,7 +1307,7 @@ DEF environment Solid {
       startRoadBorderWidth 0.5
       bottom TRUE
       appearance Asphalt {
-        colorOverride 0 1 0.5
+        colorOverride 0.5 0.5 0
       }
     }
     RoadIntersection {
@@ -1331,7 +1331,7 @@ DEF environment Solid {
       startRoadBorderWidth 0.5
       bottom TRUE
       appearance Asphalt {
-        colorOverride 1 0 0.5
+        colorOverride 0.5 0.5 0
       }
     }
     RoadIntersection {
@@ -1379,7 +1379,7 @@ DEF environment Solid {
       startRoadBorderWidth 0.5
       bottom TRUE
       appearance Asphalt {
-        colorOverride 0.5 0.5 1
+        colorOverride 0.5 0.5 0
       }
     }
     StraightRoadSegment {
@@ -1428,6 +1428,22 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+    }
+    Solid {
+      translation -51.48 0 15.5
+      rotation 0 1 0 -0.2617996938995747
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(1)"
     }
     StraightRoadSegment {
       translation -51.5 0 -10
@@ -1479,6 +1495,22 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+    }
+    Solid {
+      translation -51.48 0 -15.5
+      rotation 0 1 0 0.2618
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(2)"
     }
     StraightRoadSegment {
       translation -53 0 -50
@@ -1541,6 +1573,8 @@ DEF environment Solid {
           width 0.3
         }
         RoadLine {
+          type "continuous"
+          width -1.73472e-18
         }
       ]
       rightBarrier TRUE
@@ -1553,6 +1587,22 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+    }
+    Solid {
+      translation 15.5 0 -51.48
+      rotation 0 1 0 1.8326
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(3)"
     }
     StraightRoadSegment {
       translation -10 0 -51.5
@@ -1598,6 +1648,8 @@ DEF environment Solid {
           width 0.3
         }
         RoadLine {
+          type "continuous"
+          width -1.73472e-18
         }
       ]
       rightBarrier TRUE
@@ -1611,11 +1663,27 @@ DEF environment Solid {
         colorOverride 0 0 0
       }
     }
+    Solid {
+      translation -15.5 0 -51.48
+      rotation 0 1 0 -1.8326
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(4)"
+    }
     CurvedRoadSegment {
-      translation 20 0 -36.6
+      translation 20 0 -36.8
       rotation 0 1 0 1.571
       name "road(33)"
-      width 6
+      width 5.8
       numberOfForwardLanes 2
       lines [
         RoadLine {
@@ -1640,10 +1708,10 @@ DEF environment Solid {
       }
     }
     StraightRoadSegment {
-      translation -20 0 -26.6
+      translation -20 0 -26.8
       rotation 0 1 0 1.571
       name "road(35)"
-      width 6
+      width 5.8
       numberOfForwardLanes 2
       lines [
         RoadLine {
@@ -1664,10 +1732,10 @@ DEF environment Solid {
       }
     }
     CurvedRoadSegment {
-      translation -20 0 -36.6
+      translation -20 0 -36.8
       rotation 0 1 0 -1.571
       name "road(34)"
-      width 6
+      width 5.8
       numberOfForwardLanes 2
       lines [
         RoadLine {
@@ -1762,6 +1830,22 @@ DEF environment Solid {
         colorOverride 0 0 0
       }
     }
+    Solid {
+      translation 51.48 0 -15.5
+      rotation 0 1 0 -0.2617996938995747
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(5)"
+    }
     StraightRoadSegment {
       translation 51.5 0 -10
       name "road(24)"
@@ -1813,6 +1897,22 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+    }
+    Solid {
+      translation 51.48 0 15.5
+      rotation 0 1 0 0.2618
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(6)"
     }
     StraightRoadSegment {
       translation 53 0 20
@@ -1886,6 +1986,22 @@ DEF environment Solid {
         colorOverride 0 0 0
       }
     }
+    Solid {
+      translation 15.5 0 51.48
+      rotation 0 1 0 -1.8326
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(7)"
+    }
     StraightRoadSegment {
       translation -10 0 51.5
       rotation 0 1 0 1.57
@@ -1938,6 +2054,22 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+    }
+    Solid {
+      translation -15.5 0 51.48
+      rotation 0 1 0 1.8326
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(8)"
     }
     StraightRoadSegment {
       translation -50 0 53
@@ -2079,6 +2211,38 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+    }
+    Solid {
+      translation -15 0 -48.41
+      rotation 0 1 0 -1.26
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 10.67
+          }
+        }
+      ]
+      name "solid(9)"
+    }
+    Solid {
+      translation 15 0 -48.39
+      rotation 0 1 0 -1.88
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 10.67
+          }
+        }
+      ]
+      name "solid(10)"
     }
   ]
   name "environment"

@@ -67,7 +67,7 @@ package body tcp_client is
 
 
 
-   procedure listen( server_stream : Stream_Access; dynamic_buffer : in out byte_buffer.Buffer; mailbox : in out types.Mailbox ) is --  not finished
+   procedure listen( server_stream : Stream_Access; dynamic_buffer : in out byte_buffer.Buffer; local_mailbox : in out mailbox.Mailbox ) is --  not finished
 
       bytes_received : types.uint32 := 0;
       conv_package_ID : types.uint8;
@@ -85,11 +85,11 @@ package body tcp_client is
 
       --  read payload
       bytes_received := recv_bytes(server_stream, conv_package_value_length, dynamic_buffer);
-      read_payload(dynamic_buffer, conv_package_value_length, conv_package_ID,mailbox);
+      read_payload(dynamic_buffer, conv_package_value_length, conv_package_ID,local_mailbox);
 
    end listen;
 
-   procedure read_payload(dynamic_buffer : in out byte_buffer.Buffer; payload_length : types.uint32; package_ID : types.uint8; mailbox : in out types.Mailbox) is
+   procedure read_payload(dynamic_buffer : in out byte_buffer.Buffer; payload_length : types.uint32; package_ID : types.uint8; local_mailbox : in out mailbox.Mailbox) is
 
    begin
 
@@ -104,27 +104,11 @@ package body tcp_client is
             dynamic_buffer.read_uint8(new_packet.local_payload(I));
          end loop;
 
-
-         select
-            mailbox.Deposit(new_packet);
-         else
-            delay(0.05);
-            mailbox.Clear;
-            mailbox.Deposit(new_packet);
-         end select;
+         local_mailbox.Clear;
+         local_mailbox.Deposit(new_packet);
 
       end;
 
    end read_payload;
-
-   procedure check_mailbox ( first : in out types.Mailbox; second : in out types.Mailbox; new_packet : out types.Communication_Packet ) is
-   begin
-      select
-         first.Collect(new_packet);
-      else
-         delay(0.05);
-         check_mailbox(second,first,new_packet);
-      end select;
-   end check_mailbox;
 
 end tcp_client;

@@ -6,9 +6,10 @@ package body webots_thread is
 
       Webots_Channel := build_connection (Webots_Client, 2000, Webots_Address);
 
-      --Webots_Cmd :=(1,1,1,1,1,1,1,1);
-
-     -- send_bytes(Webots_Channel, Webots_Cmd);
+      Webots_Cmd.package_ID := protocol_join_ID;
+      Webots_Cmd.payload_length := 0;
+      --Backend_Cmd.local_payload := new types.payload(0..1);
+      send_bytes(Webots_Channel, Webots_Cmd);
 
       while true loop
          listen( Webots_Channel, Webots_Vector_Buffer, Webots_Mailbox );

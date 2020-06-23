@@ -128,17 +128,21 @@ message_size basic_message<T, U>::body_size() const
 template <typename T, message_id U>
 void basic_message<T, U>::write_body(buffer_writer& writer) const
 {
-    std::array<std::uint8_t, sizeof(T)> array;
-    std::memcpy(array.data(), static_cast<const void*>(this), sizeof(T));
+    std::array<std::uint8_t, sizeof(T) - sizeof(basic_message<T, U>)> array;
+    const std::uint8_t *ptr = reinterpret_cast<const std::uint8_t *>(this);
+    ptr += sizeof(basic_message<T, U>);
+    std::memcpy(array.data(), static_cast<const void*>(ptr), sizeof(T) - sizeof(basic_message<T, U>));
     writer << array;
 }
 
 template <typename T, message_id U>
 void basic_message<T, U>::read_body(buffer_reader& reader)
 {
-    std::array<std::uint8_t, sizeof(T)> array;
+    std::array<std::uint8_t, sizeof(T) - sizeof(basic_message<T, U>)> array;
     reader >> array;
-    std::memcpy(static_cast<void*>(this), array.data(), sizeof(T));
+    std::uint8_t *ptr = reinterpret_cast<std::uint8_t *>(this);
+    ptr += sizeof(basic_message<T, U>);
+    std::memcpy(static_cast<void*>(ptr), array.data(), sizeof(T) - sizeof(basic_message<T, U>));
 }
 
 template <typename T>

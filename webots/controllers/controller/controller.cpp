@@ -119,7 +119,7 @@ int main(int argc, char **argv)
       buffer out;
       buffer_writer writer(out);
       writer << ds_msg << ls_msg << img_msg; 
-      boost::asio::write(client, boost::asio::buffer(out));
+      std::size_t t = boost::asio::write(client, boost::asio::buffer(out));
     }
     catch(std::exception& e)
     {
@@ -133,7 +133,7 @@ int main(int argc, char **argv)
     }
     std::array<std::uint8_t, 256> data;
     boost::system::error_code error;
-    size_t length = client.read_some(boost::asio::buffer(data), error);
+    std::size_t length = client.read_some(boost::asio::buffer(data), error);
     if(error == boost::asio::error::eof)
     {
       break;
@@ -145,7 +145,7 @@ int main(int argc, char **argv)
     }
 
     buffer_writer writer(in);
-    for(size_t i = 0; i<length; i++)
+    for(std::size_t i = 0; i<length; i++)
     {
       writer << data[i];
     }
@@ -161,12 +161,12 @@ int main(int argc, char **argv)
       reader >> vl_msg;
       right_speed = vl_msg.right_speed;
       left_speed = vl_msg.left_speed;
+      // std::cout << "recieved rs: " << vl_msg.right_speed << ", ls: " << vl_msg.left_speed << '\n';
     }
     catch(const std::runtime_error& e)
     {
       std::cerr << e.what() << '\n';
     }
-    // std::cout << "right_speed: " << right_speed << ", left_speed: " << left_speed << std::endl;
 
     m_motors[0]->setVelocity(right_speed);
     m_motors[1]->setVelocity(right_speed);

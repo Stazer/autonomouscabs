@@ -8,7 +8,7 @@
 
 int main(int argc, char *argv[])
 {
-    std::cout << "Autonomoues Cabs Backend\n";
+    std::cout << "Autonomous Cabs Backend\n";
 
     try
     {

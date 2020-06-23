@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <exception>
+#include <sstream>
 
 #include "buffer_reader.hpp"
 #include "buffer_writer.hpp"
@@ -25,6 +26,7 @@ enum class message_id : message_id_base
     EXTERNAL_LIGHT_SENSOR,
     EXTERNAL_DISTANCE_SENSOR,
     EXTERNAL_IMAGE_DATA,
+    EXTERNAL_JOIN_SUCCESS,
     EXTERNAL_LAST,
 
     WEBOTS_FIRST = 0x80,
@@ -32,6 +34,7 @@ enum class message_id : message_id_base
     WEBOTS_LAST,
 
     BACKEND_FIRST = 0xC0,
+    BACKEND_JOIN_CHALLENGE,
     BACKEND_LAST,
 
     LAST,
@@ -116,6 +119,30 @@ struct external_image_data_message final : public basic_message<external_image_d
     void read_body(buffer_reader& reader)
     {
         reader >> pixel;
+    }
+};
+
+struct backend_join_challenge_message final : public basic_message<backend_join_challenge_message, message_id::BACKEND_JOIN_CHALLENGE>
+{
+};
+
+struct external_join_success_message final : public basic_message<external_join_success_message, message_id::EXTERNAL_JOIN_SUCCESS>
+{
+    std::string uuid;
+
+    message_size body_size() const
+    {
+        return sizeof(buffer_collection_size) + uuid.size() * sizeof(std::string::value_type);
+    }
+
+    void write_body(buffer_writer& writer) const
+    {
+        writer << uuid;
+    }
+
+    void read_body(buffer_reader& reader)
+    {
+        reader >> uuid;
     }
 };
 

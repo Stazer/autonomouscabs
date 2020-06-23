@@ -92,6 +92,7 @@ int main(int argc, char **argv)
 
   buffer in;
   buffer_reader reader(in);
+  buffer_writer writer(in);
   while (robot->step(timeStep) != -1) 
   {
     // read distance sensor data
@@ -144,14 +145,13 @@ int main(int argc, char **argv)
       break;
     }
 
-    buffer_writer writer(in);
     for(std::size_t i = 0; i<length; i++)
     {
       writer << data[i];
     }
-    webots_velocity_message vl_msg;
 
-    if(writer.written () < vl_msg.size())
+    webots_velocity_message vl_msg;
+    if(writer.written() - reader.read() < vl_msg.size())
     {
       continue;
     }

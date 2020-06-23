@@ -66,11 +66,17 @@
 ###-----------------------------------------------------------------------------
 
 # on Windows, need to link with WinSock2
+UNAME_S := $(shell uname -s)
+
 ifeq ($(OS),Windows_NT)
 LIBRARIES=-lws2_32
 endif
 
 INCLUDE = -I"${BOOST_ROOT}"
+
+ifeq ($(UNAME_S),Linux)
+LIBRARIES += -lpthread -lboost_system
+endif
 
 CFLAGS = -Wno-strict-aliasing -Wno-unused-variable
 

@@ -3,9 +3,9 @@
 
 #include <boost/test/included/unit_test.hpp>
 
-#include "../shared/buffer_reader.hpp"
-#include "../shared/buffer_writer.hpp"
-#include "../shared/message.hpp"
+#include "../../shared/buffer_reader.hpp"
+#include "../../shared/buffer_writer.hpp"
+#include "../../shared/message.hpp"
 
 BOOST_AUTO_TEST_CASE(buffer_write_read_integer)
 {

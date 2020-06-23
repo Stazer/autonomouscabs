@@ -128,17 +128,17 @@ message_size basic_message<T, U>::body_size() const
 template <typename T, message_id U>
 void basic_message<T, U>::write_body(buffer_writer& writer) const
 {
-    std::array<std::uint8_t, sizeof(T)> array;
-    std::memcpy(array.data(), static_cast<const void*>(this), sizeof(T));
+    std::array<std::uint8_t, sizeof(T) - sizeof(basic_message<T, U>)> array;
+    std::memcpy(array.data(), static_cast<const void*>(this), sizeof(T) - sizeof(basic_message<T, U>));
     writer << array;
 }
 
 template <typename T, message_id U>
 void basic_message<T, U>::read_body(buffer_reader& reader)
 {
-    std::array<std::uint8_t, sizeof(T)> array;
+    std::array<std::uint8_t, sizeof(T) - sizeof(basic_message<T, U>)> array;
     reader >> array;
-    std::memcpy(static_cast<void*>(this), array.data(), sizeof(T));
+    std::memcpy(static_cast<void*>(this), array.data(), sizeof(T) - sizeof(basic_message<T, U>));
 }
 
 template <typename T>
@@ -160,7 +160,11 @@ buffer_reader& operator>>(buffer_reader& reader, T& message)
     if(header.id != message.id())
     {
         reader.unwind(reader.read() - read);
-        throw std::runtime_error("Message ids do not match");
+        std::string error = "Message ids do not match. Expected: ";
+        error.append(std::to_string(static_cast<std::uint32_t>(message.id())));
+        error.append(", got: ");
+        error.append(std::to_string(static_cast<std::uint32_t>(header.id)));
+        throw std::runtime_error(error);
     }
 
     message.read_body(reader);

@@ -39,7 +39,6 @@ begin
       mailbox.update_alternator(alternator);
 
       -- do calculations with current packet
-      Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.package_ID)));
 
    end loop;
 

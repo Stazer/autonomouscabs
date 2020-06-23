@@ -28,7 +28,6 @@ enum class message_id : message_id_base
     EXTERNAL_LAST,
 
     WEBOTS_FIRST = 0x80,
-    WEBOTS_STEERING,
     WEBOTS_VELOCITY,
     WEBOTS_LAST,
 
@@ -201,12 +200,6 @@ struct ping_message final : public empty_message<message_id::PING>
 {
 };
 
-struct webots_steering_message final : public basic_message<webots_steering_message, message_id::WEBOTS_STEERING>
-{
-    double left_speed;
-    double right_speed;
-};
-
 struct webots_velocity_message final : public basic_message<webots_velocity_message, message_id::WEBOTS_VELOCITY>
 {
     double left_speed;
@@ -215,10 +208,12 @@ struct webots_velocity_message final : public basic_message<webots_velocity_mess
 
 struct external_distance_sensor_message final : public basic_message<external_distance_sensor_message, message_id::EXTERNAL_DISTANCE_SENSOR>
 {
+    std::array<double, 9> data;
 };
 
 struct external_light_sensor_message final : public basic_message<external_light_sensor_message, message_id::EXTERNAL_LIGHT_SENSOR>
 {
+    std::array<double, 1> data;
 };
 
 struct external_image_data_message final : public basic_message<external_image_data_message, message_id::EXTERNAL_IMAGE_DATA>

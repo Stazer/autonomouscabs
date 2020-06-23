@@ -16,6 +16,7 @@
 #include "../../../shared/buffer.hpp"
 #include "../../../shared/buffer_reader.hpp"
 #include "../../../shared/buffer_writer.hpp"
+#include "../../../shared/message.hpp"
 
 #define N_DISTANCE_SENSORS 9
 #define N_LIGHT_SENSORS 1
@@ -23,115 +24,25 @@
 // All the webots classes are defined in the "webots" namespace
 using namespace webots;
 
-using boost::asio::ip::tcp;
-
-typedef enum message_id{
-  OUT_MESSAGE_DISTANCE_SENSOR = 1,
-  OUT_MESSAGE_LIGHT_SENSOR = 2,
-  OUT_MESSAGE_IMAGE = 3,
-  IN_MESSAGE_VELOCITY = 4,
-  IN_MESSAGE_STEERING = 5,
-}message_id;
-
-typedef struct ds_message{
-  uint32_t id;
-  uint32_t size;
-  uint64_t payload[N_DISTANCE_SENSORS];
-}ds_message;
-
-typedef struct ls_message{
-  uint32_t id;
-  uint32_t size;
-  uint64_t payload[N_LIGHT_SENSORS];
-}ls_message;
-
-typedef struct img_message{
-  uint32_t id;
-  uint32_t size;
-  unsigned char payload[];
-}img_message;
-
-ds_message marshall_ds_message(double payload[N_DISTANCE_SENSORS]){
-  ds_message message = {0};
-  uint32_t id = OUT_MESSAGE_DISTANCE_SENSOR;
-  message.id = boost::endian::native_to_big(id);
-  message.size = boost::endian::native_to_big((uint32_t) (N_DISTANCE_SENSORS * sizeof(uint64_t)));
-  for(int i = 0; i<N_DISTANCE_SENSORS; i++){
-    message.payload[i] = *(uint64_t *) &payload[i];
-    message.payload[i] = boost::endian::native_to_big(message.payload[i]);
-  }
-  return message;
-}
-
-ls_message marshall_ls_message(double payload[N_LIGHT_SENSORS]){
-  ls_message message = {0};
-  uint32_t id = OUT_MESSAGE_LIGHT_SENSOR;
-  message.id = boost::endian::native_to_big(id);
-  message.size = boost::endian::native_to_big((uint32_t) (N_LIGHT_SENSORS * sizeof(uint64_t)));
-  for(int i = 0; i<N_LIGHT_SENSORS; i++){
-    message.payload[i] = *(uint64_t *) &payload[i];
-    message.payload[i] = boost::endian::native_to_big(message.payload[i]);
-  }
-  return message;
-}
-
-void marshall_img_message(img_message *message, const unsigned char *payload, uint32_t image_size){
-  uint32_t id = OUT_MESSAGE_IMAGE;
-  message->id = boost::endian::native_to_big(id);
-  message->size = boost::endian::native_to_big(image_size);
-  memcpy(message->payload, payload, image_size); 
-}
-
-void unmarshall_incoming_message(buffer_reader reader, double *right_speed, double *left_speed){
-    uint32_t id = 0, size = 0;
-    uint64_t payload = 0;
-    reader >> id;
-    reader >> size;
-    reader >> payload;
-
-    id = boost::endian::big_to_native(id);
-    size = boost::endian::big_to_native(size);
-    payload = boost::endian::big_to_native(payload);
-
-    if(id == IN_MESSAGE_VELOCITY){
-      *left_speed =  *left_speed < 0 ? -(*(double *) &payload) : *(double *) &payload;
-      *right_speed = *right_speed < 0 ? -(*(double *) &payload) : *(double *) &payload;
-    }
-
-    if(id == IN_MESSAGE_STEERING){
-      double value = *(double *) &payload;
-      if(value < 0){
-        (*left_speed) *= value;
-        *right_speed = *right_speed < 0 ? -(*right_speed) : *right_speed;
-      }
-
-      if(value > 0){
-        (*right_speed) *= -value;
-        *left_speed = *left_speed < 0 ? -(*left_speed) : *left_speed;
-      }
-
-      if(value == 0 && *right_speed != *left_speed){
-        *right_speed = *right_speed < 0 ? -(*right_speed) : *right_speed;
-        *left_speed = *left_speed < 0 ? -(*left_speed) : *left_speed;
-      }
-    }
-    
-    std::cout << "left: " << *left_speed << ", right: " << *right_speed << std::endl;
-}
-
-int main(int argc, char **argv) {
-  if(argc != 2){
+int main(int argc, char **argv) 
+{
+  if(argc != 2)
+  {
     std::cerr << "port missing" << std::endl;
     return EXIT_FAILURE;
   }
   
   // setup server socket
+  using boost::asio::ip::tcp;
   boost::asio::io_service io_service;
   tcp::socket client(io_service);
-  try{
+  try
+  {
     tcp::acceptor acceptor(io_service, tcp::endpoint(tcp::v4(), std::atoi(argv[1])));
     acceptor.accept(client);
-  }catch(std::exception& e){
+  }
+  catch(std::exception& e)
+  {
     std::cerr << "Exception: " << e.what() << "\n";
     return EXIT_FAILURE;
   }
@@ -145,7 +56,8 @@ int main(int argc, char **argv) {
   std::cout << "setting up sensors" << std::endl;
   std::string ds_names[N_DISTANCE_SENSORS] = {"ds_fc", "ds_fcr", "ds_fr", "ds_rf", "ds_rc", "ds_lc", "ds_lf", "ds_fl", "ds_fcl"};
   DistanceSensor *ds_sensors[N_DISTANCE_SENSORS];
-  for(int i = 0; i<N_DISTANCE_SENSORS; i++){
+  for(int i = 0; i<N_DISTANCE_SENSORS; i++)
+  {
     ds_sensors[i] = robot->getDistanceSensor(ds_names[i]);
     ds_sensors[i]->enable(timeStep);
   }
@@ -153,7 +65,8 @@ int main(int argc, char **argv) {
   // setup light sensors
   std::string ls_names[N_LIGHT_SENSORS] = {"ls_front"};
   LightSensor *ls_sensors[N_LIGHT_SENSORS];
-  for(int i = 0; i<N_LIGHT_SENSORS; i++){
+  for(int i = 0; i<N_LIGHT_SENSORS; i++)
+  {
     ls_sensors[i] = robot->getLightSensor(ls_names[i]);
     ls_sensors[i]->enable(timeStep);
   }
@@ -168,7 +81,8 @@ int main(int argc, char **argv) {
   // setup motors
   std::string m_names[4] = {"wheelFR", "wheelRR", "wheelRL", "wheelFL"};
   Motor *m_motors[4];
-  for(int i = 0; i<4; i++){
+  for(int i = 0; i<4; i++)
+  {
     m_motors[i] = robot->getMotor(m_names[i]);
     m_motors[i]->setPosition(INFINITY);
     m_motors[i]->setVelocity(0);
@@ -176,71 +90,79 @@ int main(int argc, char **argv) {
   double left_speed = 0;
   double right_speed = 0;
 
-  // setup img_message (allocate memory once)
-  img_message *img_msg = (img_message *) malloc(sizeof(img_message) + image_size * sizeof(char));
-  if(img_msg == NULL){
-    std::cerr << "failed to allocating memory" << std::endl;
-    client.close();
-    delete robot;
-    return EXIT_FAILURE;
-  }
-
-  buffer incoming;
-  const size_t size = 2 * sizeof(uint32_t) + sizeof(uint64_t);
-  while (robot->step(timeStep) != -1) {
+  buffer in;
+  buffer_reader reader(in);
+  while (robot->step(timeStep) != -1) 
+  {
     // read distance sensor data
-    double ds_values[N_DISTANCE_SENSORS];
-    for(int i = 0; i<N_DISTANCE_SENSORS; i++){
-      ds_values[i] = ds_sensors[i]->getValue();
+    external_distance_sensor_message ds_msg;
+    for(int i = 0; i<N_DISTANCE_SENSORS; i++)
+    {
+      ds_msg.data[i] = ds_sensors[i]->getValue();
     }
 
     // read light sensor data
-    double ls_values[N_LIGHT_SENSORS];
-    for(int i = 0; i<N_LIGHT_SENSORS; i++){
-      ls_values[i] = ls_sensors[i]->getValue();
+    external_light_sensor_message ls_msg;
+    for(int i = 0; i<N_LIGHT_SENSORS; i++)
+    {
+      ls_msg.data[i] = ls_sensors[i]->getValue();
     }
 
     // read image data
+    external_image_data_message img_msg;
     const unsigned char *image = camera->getImage();
-    memcpy(img_msg->payload, image, image_size); 
-    
-    ds_message ds_msg = marshall_ds_message(ds_values);
-    ls_message ls_msg = marshall_ls_message(ls_values);
-    marshall_img_message(img_msg, image, image_size);
-    try{
-      boost::asio::write(client, boost::asio::buffer(&ds_msg, sizeof(ds_message)));
-      boost::asio::write(client, boost::asio::buffer(&ls_msg, sizeof(ls_message)));
-      boost::asio::write(client, boost::asio::buffer(img_msg, sizeof(img_message)));
-    }catch(std::exception& e){
+    std::vector<unsigned char> vec(image, image + image_size);
+    img_msg.pixel = vec;
+
+    try
+    {
+      buffer out;
+      buffer_writer writer(out);
+      writer << ds_msg << ls_msg << img_msg; 
+      boost::asio::write(client, boost::asio::buffer(out));
+    }
+    catch(std::exception& e)
+    {
       std::cerr << "Exception: " << e.what() << std::endl;
       break;
     }  
 
-    if(client.available() < 1){
+    if(client.available() < 1)
+    {
       continue;
     }
-    uint8_t data[size] = {0};
+    std::array<std::uint8_t, 256> data;
     boost::system::error_code error;
     size_t length = client.read_some(boost::asio::buffer(data), error);
-    if(error == boost::asio::error::eof){
+    if(error == boost::asio::error::eof)
+    {
       break;
-    }else if (error){
+    }
+    else if (error)
+    {
       std::cerr << "Error: " << error << std::endl;
       break;
     }
 
-    buffer_writer writter(incoming);
-    for(auto part : data){
-      writter << part;
-    }
+    buffer_writer writer(in);
+    writer << data;
 
-    if(length != size){
+    if(length != sizeof(message_size) + sizeof(message_id))
+    {
       continue;
     }
 
-    buffer_reader reader(incoming);
-    unmarshall_incoming_message(reader, &right_speed, &left_speed);
-    incoming.clear();
+    try
+    {
+      webots_velocity_message vl_msg;
+      reader >> vl_msg;
+      right_speed = vl_msg.right_speed;
+      left_speed = vl_msg.left_speed;
+    }
+    catch(const std::runtime_error& e)
+    {
+      std::cerr << e.what() << '\n';
+    }
     // std::cout << "right_speed: " << right_speed << ", left_speed: " << left_speed << std::endl;
 
     m_motors[0]->setVelocity(right_speed);
@@ -249,13 +171,13 @@ int main(int argc, char **argv) {
     m_motors[3]->setVelocity(left_speed);
   };
   
-  for(int i = 0; i<4; i++){
+  for(int i = 0; i<4; i++)
+  {
     m_motors[i]->setVelocity(0);
   }
 
   // Enter here exit cleanup code.
   client.close();
-  free(img_msg);
   delete robot;
   return 0;
 }

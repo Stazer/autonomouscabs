@@ -121,25 +121,6 @@ BOOST_AUTO_TEST_CASE(empty_messages_empty)
     BOOST_TEST(ping.body_size() == 0);
 }
 
-BOOST_AUTO_TEST_CASE(webots_velocity_message_write_read)
-{
-    webots_velocity_message write_msg;
-    write_msg.left_speed = 2.5;
-    write_msg.right_speed = 3.0;
-
-    buffer buffer;
-
-    buffer_writer writer(buffer);
-    writer << write_msg;
-
-    webots_velocity_message read_msg;
-    buffer_reader reader(buffer);
-    reader >> read_msg;
-
-    BOOST_TEST(read_msg.left_speed == write_msg.left_speed);
-    BOOST_TEST(read_msg.right_speed == write_msg.right_speed);
-}
-
 BOOST_AUTO_TEST_CASE(message_unmatching_ids)
 {
     buffer buffer;
@@ -153,6 +134,87 @@ BOOST_AUTO_TEST_CASE(message_unmatching_ids)
 
     BOOST_CHECK_THROW(reader >> nop, std::runtime_error);
     BOOST_CHECK_NO_THROW(reader >> ping);
+}
+
+BOOST_AUTO_TEST_CASE(webots_velocity_message_write_read)
+{
+    webots_velocity_message write_msg;
+    write_msg.right_speed = 2.5;
+    write_msg.left_speed = 4.1;
+
+    buffer buffer;
+    buffer_writer writer(buffer);
+    writer << write_msg;
+
+    webots_velocity_message read_msg;
+    buffer_reader reader(buffer);
+    reader >> read_msg;
+
+    BOOST_TEST(read_msg.right_speed == write_msg.right_speed);
+    BOOST_TEST(read_msg.left_speed == write_msg.left_speed);
+}
+
+BOOST_AUTO_TEST_CASE(external_distance_sensor_message_write_read)
+{
+    external_distance_sensor_message write_msg;
+    for(int i = 0; i<9; i++){
+      write_msg.data[i] = static_cast<double>(i) + 0.3;
+    }
+
+    buffer buffer;
+    buffer_writer writer(buffer);
+    writer << write_msg;
+
+    external_distance_sensor_message read_msg;
+    buffer_reader reader(buffer);
+    reader >> read_msg;
+
+    for(int i = 0; i<9; i++){
+      BOOST_TEST(read_msg.data[i] == write_msg.data[i]);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(external_light_sensor_message_write_read)
+{
+    external_light_sensor_message write_msg;
+    for(int i = 0; i<1; i++){
+      write_msg.data[i] = static_cast<double>(i) + 0.6;
+    }
+
+    buffer buffer;
+    buffer_writer writer(buffer);
+    writer << write_msg;
+
+    external_light_sensor_message read_msg;
+    buffer_reader reader(buffer);
+    reader >> read_msg;
+
+    for(int i = 0; i<1; i++){
+      BOOST_TEST(read_msg.data[i] == write_msg.data[i]);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(external_image_data_message_write_read)
+{
+    external_image_data_message write_msg;
+    unsigned char test[26]; 
+    for(int i = 0; i<26; i++){
+      test[i] = 65 + i;
+    }
+    std::vector<unsigned char> vec(test, test + 26);
+    write_msg.pixel = vec;
+
+    buffer buffer;
+    buffer_writer writer(buffer);
+    writer << write_msg;
+
+    external_image_data_message read_msg;
+    buffer_reader reader(buffer);
+    reader >> read_msg;
+
+    for(int i = 0; i<26; i++){
+      BOOST_TEST(read_msg.pixel[i] == write_msg.pixel[i]);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(message_header_size)

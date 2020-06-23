@@ -145,16 +145,19 @@ int main(int argc, char **argv)
     }
 
     buffer_writer writer(in);
-    writer << data;
+    for(size_t i = 0; i<length; i++)
+    {
+      writer << data[i];
+    }
+    webots_velocity_message vl_msg;
 
-    if(length != sizeof(message_size) + sizeof(message_id))
+    if(writer.written () < vl_msg.size())
     {
       continue;
     }
 
     try
     {
-      webots_velocity_message vl_msg;
       reader >> vl_msg;
       right_speed = vl_msg.right_speed;
       left_speed = vl_msg.left_speed;

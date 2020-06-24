@@ -49,7 +49,16 @@ inline void basic_message<T, U>::read_body(buffer_reader& reader)
 template <typename T, message_id U>
 inline bool basic_message<T, U>::readable(const buffer& buffer) const
 {
-    return buffer.size() >= static_cast<const T*>(this)->size();
+    if(buffer.size() >= sizeof(message_header))
+    {
+        buffer_reader reader(buffer);
+        message_header header;
+        reader >> header;
+
+        return header.id == id() && buffer.size() >= header.size;
+    }
+
+    return false;
 }
 
 template <typename T, message_id U>

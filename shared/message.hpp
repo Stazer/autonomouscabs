@@ -57,8 +57,6 @@ buffer_reader& operator>>(buffer_reader& reader, message_header& header);
 template <typename T, message_id U>
 struct basic_message
 {
-    //~basic_message() = default;
-
     message_size size() const;
     message_id id() const;
 

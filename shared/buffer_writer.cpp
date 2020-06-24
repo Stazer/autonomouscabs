@@ -1,19 +1,19 @@
 #include "buffer_writer.hpp"
 
 buffer_writer::buffer_writer(::buffer& buffer):
-    buffer(buffer),
-    start(buffer.size())
+    _buffer(buffer),
+    _start(buffer.size())
 {
 }
 
 std::size_t buffer_writer::written() const
 {
-    return buffer.size() - start;
+    return _buffer.size() - _start;
 }
 
 buffer_writer& buffer_writer::operator<<(std::uint8_t data)
 {
-    buffer.push_back(data);
+    _buffer.push_back(data);
 
     return *this;
 }

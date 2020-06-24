@@ -66,6 +66,11 @@ struct basic_message
 
     void write_body(buffer_writer& writer) const;
     void read_body(buffer_reader& reader);
+
+    bool readable(const buffer& buffer) const;
+
+    void from_buffer(buffer& buffer);
+    buffer to_buffer() const;
 };
 
 template <message_id U>
@@ -127,22 +132,7 @@ struct backend_join_challenge_message final : public empty_message<message_id::B
 
 struct external_join_success_message final : public basic_message<external_join_success_message, message_id::EXTERNAL_JOIN_SUCCESS>
 {
-    std::string uuid;
-
-    message_size body_size() const
-    {
-        return sizeof(buffer_collection_size) + uuid.size() * sizeof(std::string::value_type);
-    }
-
-    void write_body(buffer_writer& writer) const
-    {
-        writer << uuid;
-    }
-
-    void read_body(buffer_reader& reader)
-    {
-        reader >> uuid;
-    }
+    std::uint32_t id;
 };
 
 #include "message.inl"

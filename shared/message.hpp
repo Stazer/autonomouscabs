@@ -57,26 +57,26 @@ buffer_reader& operator>>(buffer_reader& reader, message_header& header);
 template <typename T, message_id U>
 struct basic_message
 {
-    virtual ~basic_message() = default;
+    //~basic_message() = default;
 
     message_size size() const;
     message_id id() const;
 
     message_header header() const;
 
-    virtual message_size body_size() const;
+    message_size body_size() const;
 
-    virtual void write_body(buffer_writer& writer) const;
-    virtual void read_body(buffer_reader& reader);
+    void write_body(buffer_writer& writer) const;
+    void read_body(buffer_reader& reader);
 };
 
 template <message_id U>
 struct empty_message : public basic_message<empty_message<U>, U>
 {
-    virtual message_size body_size() const final;
+    message_size body_size() const;
 
-    virtual void write_body(buffer_writer& writer) const final;
-    virtual void read_body(buffer_reader& reader) final;
+    void write_body(buffer_writer& writer) const;
+    void read_body(buffer_reader& reader);
 };
 
 struct nop_message final : public empty_message<message_id::NOP>
@@ -123,7 +123,7 @@ struct external_image_data_message final : public basic_message<external_image_d
     }
 };
 
-struct backend_join_challenge_message final : public basic_message<backend_join_challenge_message, message_id::BACKEND_JOIN_CHALLENGE>
+struct backend_join_challenge_message final : public empty_message<message_id::BACKEND_JOIN_CHALLENGE>
 {
 };
 

@@ -213,7 +213,7 @@ BOOST_AUTO_TEST_CASE(external_image_data_message_write_read)
     reader >> read_msg;
 
     for(int i = 0; i<26; i++){
-      BOOST_TEST(read_msg.pixel[i] == write_msg.pixel[i]);
+        BOOST_TEST(read_msg.pixel[i] == write_msg.pixel[i]);
     }
 }
 
@@ -230,7 +230,7 @@ BOOST_AUTO_TEST_CASE(empty_message_size)
 BOOST_AUTO_TEST_CASE(test_message_sizes)
 {
     #pragma pack(push, 1)
-    struct test_message final : public basic_message<test_message, message_id::UNDEFINED>
+    struct test_message final : public empty_message<message_id::UNDEFINED>
     {
     };
     #pragma pack(pop)
@@ -247,27 +247,33 @@ BOOST_AUTO_TEST_CASE(test_message2_sizes)
     struct test_message2 final : public basic_message<test_message2, message_id::UNDEFINED>
     {
         std::uint8_t a;
-        uint32_t b;
-        uint8_t c;
+        std::uint32_t b;
+        std::uint8_t c;
         float d;
-        std::array<uint8_t, 27> e;
+        std::array<std::uint8_t, 27> e;
         double f;
-        uint8_t g;
-        std::array<uint32_t, 3> h;
+        std::uint8_t g;
+        std::array<std::uint32_t, 3> h;
     };
     #pragma pack(pop)
 
-    const auto size = sizeof(test_message2::a)
-        + sizeof(test_message2::b)
-        + sizeof(test_message2::c)
-        + sizeof(test_message2::d)
-        + sizeof(test_message2::e)
-        + sizeof(test_message2::f)
-        + sizeof(test_message2::g)
-        + sizeof(test_message2::h);
+    const auto size = sizeof(std::uint8_t)
+        + sizeof(std::uint32_t)
+        + sizeof(std::uint8_t)
+        + sizeof(float)
+        + sizeof(std::array<std::uint8_t, 27>)
+        + sizeof(double)
+        + sizeof(std::uint8_t)
+        + sizeof(std::array<std::uint32_t, 3>);
 
     const auto msg = test_message2{};
 
     BOOST_TEST(msg.body_size() == size);
     BOOST_TEST(msg.size() == sizeof(message_header) + size);
+}
+
+BOOST_AUTO_TEST_CASE(webots_velocity_message_size)
+{
+    webots_velocity_message msg;
+    BOOST_TEST(msg.body_size() == 2 * sizeof(double));
 }

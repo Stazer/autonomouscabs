@@ -1,28 +1,5 @@
-with Ada.Text_IO; use Ada.Text_IO;
-with ada.numerics.discrete_random;
-with Ada.Float_Text_Io; use Ada.Float_Text_Io;
+package body pathfollowing is
 
-procedure Main is
-
-   width : constant Integer := 10;
-   height : constant Integer := 10;
-   size : constant Integer := width * height * 4;
-
-   type Value is range 0 .. 255;
-   type Pixel is array(0 .. 3) of Value;
-   type Column_Index is range 0 .. width - 1;
-   type Row_Index is range 0 .. height - 1;
-
-   type Image_Index is range 0 .. size - 1;
-   type Image_Raw is array(Image_Index) of Value;
-
-   type Colour_Column is array(Column_Index) of Value;
-   type Colour_Matrix is array(Row_Index) of Colour_Column;
-
-   package Rand_Int is new ada.numerics.discrete_random(Value);
-   use Rand_Int;
-
-   gen : Generator;
 
    raw : Image_Raw := (others => 0);
    index : Image_Index := 0;
@@ -32,6 +9,7 @@ procedure Main is
    r : Integer := 0;
    g : Integer := 0;
    b : Integer := 0;
+
    bottomPoint : Integer := 0;
    topPoint : Integer := 0;
    leftPoint : Integer := 0;
@@ -48,30 +26,31 @@ procedure Main is
    grey : Colour_Matrix := (others => (others => 0));
    binaImage : Colour_Matrix := (others => (others => 0));
 
+   wheehlvelocity : Wheehl_velocity :=(others => 0);
+   axleTrack : Float := 1.1;
+   basicVelocity : Float := 1.0;
 
-begin
-   Reset(gen);
-   for I in Image_Index loop
-      v := Random(gen);
-      raw (I) := v;
-   end loop;
+   function path_following (ImageData : in Communication_Packet) return Wheehl_velocity is
+      begin
 
-   for I in Row_Index loop
-      for J in Column_Index loop
-         index := Image_Index(4 * (Integer(I) * width + Integer(J)));
-         blue (I) (J) := raw (index);
-         green (I) (J) := raw (index + 1);
-         red (I) (J) := raw (index + 2);
-         --colour := Integer((Integer(blue (I) (J)*50) + Integer(green (I) (J)*59)+ Integer(red (I) (J)*30) + 50)/100);
-         colour := Integer(blue (I) (J))*114/1000 + Integer(green (I) (J)) *587/1000 + Integer(red (I) (J))*299/1000;
-         --colour := colour / 3;
-         --r := Integer(red(I)(J) * 30);
-         --g := Integer(green(I)(J) * 59);
-         --b := Integer(blue(I)(J) * 50);
-         --colour := (r + g +b + 50) / 100;
+      raw : = Image_Raw(ImageData.local_payload);
+
+      for I in Row_Index loop
+         for J in Column_Index loop
+            index := Image_Index(4 * (Integer(I) * width + Integer(J)));
+            blue (I) (J) := raw (index);
+            green (I) (J) := raw (index + 1);
+            red (I) (J) := raw (index + 2);
+            --colour := Integer((Integer(blue (I) (J)*50) + Integer(green (I) (J)*59)+ Integer(red (I) (J)*30) + 50)/100);
+            colour := Integer(blue (I) (J))*114/1000 + Integer(green (I) (J)) *587/1000 + Integer(red (I) (J))*299/1000;
+            --colour := colour / 3;
+            --r := Integer(red(I)(J) * 30);
+            --g := Integer(green(I)(J) * 59);
+            --b := Integer(blue(I)(J) * 50);
+            --colour := (r + g +b + 50) / 100;
          grey (I) (J) := Value(colour);
+         end loop;
       end loop;
-   end loop;
    --Binarized
    for I in Row_Index loop
       for J in Column_Index loop
@@ -175,21 +154,18 @@ begin
    end if;
 
 
-   Put_Line (Float'Image(steeringAngle));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      Put_Line (Float'Image(steeringAngle));
+      --turn right
+      if steeringAngle > 0 then
+         wheehlvelocity(0) = basicVelocity + steeringAngle * axleTrack;
+         wheehlvelocity(1) = basicVelocity;
+      --turn left
+      elsif steeringAngle < 0 then
+         wheehlvelocity(0) = basicVelocity;
+         wheehlvelocity(1) = basicVelocity - steeringAngle * axleTrack;
+      end if;
+      return wheehlvelocity;
+   end path_following;
 
    null;
-end Main;
+end pathfollowing;

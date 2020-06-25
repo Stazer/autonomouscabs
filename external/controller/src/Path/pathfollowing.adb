@@ -4,7 +4,7 @@ package body pathfollowing is
    raw : Image_Raw := (others => 0);
    index : Image_Index := 0;
 
-   v : Value;
+
    colour : Integer := 0;
    r : Integer := 0;
    g : Integer := 0;
@@ -30,7 +30,7 @@ package body pathfollowing is
    axleTrack : Float := 1.1;
    basicVelocity : Float := 1.0;
 
-   function path_following (ImageData : in Communication_Packet) return Wheehl_velocity is
+   function path_following (ImageData : in Communication_Packet) return Communication_Packet is
       begin
 
       raw : = Image_Raw(ImageData.local_payload);
@@ -48,7 +48,7 @@ package body pathfollowing is
             --g := Integer(green(I)(J) * 59);
             --b := Integer(blue(I)(J) * 50);
             --colour := (r + g +b + 50) / 100;
-         grey (I) (J) := Value(colour);
+         grey (I) (J) := uint8(colour);
          end loop;
       end loop;
    --Binarized
@@ -59,7 +59,7 @@ package body pathfollowing is
          else
             binaImage (I)(j) := 0;
          end if;
-         Put(Value'Image (binaImage (I) (J)));
+         Put(uint8'Image (binaImage (I) (J)));
 
       end loop;
          Put_Line("");
@@ -164,8 +164,8 @@ package body pathfollowing is
          wheehlvelocity(0) = basicVelocity;
          wheehlvelocity(1) = basicVelocity - steeringAngle * axleTrack;
       end if;
-      return wheehlvelocity;
+      ImageData.local_payload := wheehlvelocity;
+      return ImageData;
    end path_following;
 
-   null;
 end pathfollowing;

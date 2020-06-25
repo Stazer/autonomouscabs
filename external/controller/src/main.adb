@@ -39,7 +39,7 @@ begin
       mailbox.check_mailbox(Backend_Mailbox,Webots_Mailbox,current_packet,alternator);
       mailbox.update_alternator(alternator);
       --path following
-      wheelvelocity := path_following(current_packet);
+      current_packet := path_following(current_packet);
       -- do calculations with current packet
       Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.package_ID)));
 

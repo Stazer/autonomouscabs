@@ -1,6 +1,6 @@
 project External_Controller is
 
-   for Source_Dirs use ("src/**", "src/tcp_client/**", "src/backend_thread/**", "src/webots_thread/**");
+   for Source_Dirs use ("src/**", "src/tcp_client/**", "src/backend_thread/**", "src/webots_thread/**", "src/knowledge/**");
    for Object_Dir use "obj";
    for Main use ("main.adb");
    for Exec_Dir use ".";

@@ -4,7 +4,7 @@ package body webots_thread is
 
    begin
 
-      Webots_Channel := build_connection (Webots_Client, 2000, Webots_Address);
+      Webots_Channel := build_connection (Webots_Client, 10000, Webots_Address);
 
       Webots_Cmd.package_ID := protocol_join_ID;
       Webots_Cmd.payload_length := 0;

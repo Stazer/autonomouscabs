@@ -26,11 +26,11 @@ using namespace webots;
 
 int main(int argc, char **argv) 
 {
-  if(argc != 2)
-  {
-    std::cerr << "port missing" << std::endl;
-    return EXIT_FAILURE;
-  }
+  // if(argc != 2)
+  // {
+    // std::cerr << "port missing" << std::endl;
+    // return EXIT_FAILURE;
+  // }
   
   // setup server socket
   using boost::asio::ip::tcp;
@@ -38,7 +38,7 @@ int main(int argc, char **argv)
   tcp::socket client(io_service);
   try
   {
-    tcp::acceptor acceptor(io_service, tcp::endpoint(tcp::v4(), std::atoi(argv[1])));
+    tcp::acceptor acceptor(io_service, tcp::endpoint(tcp::v4(), 10000));
     acceptor.accept(client);
   }
   catch(std::exception& e)
@@ -161,7 +161,7 @@ int main(int argc, char **argv)
       reader >> vl_msg;
       right_speed = vl_msg.right_speed;
       left_speed = vl_msg.left_speed;
-      // std::cout << "recieved rs: " << vl_msg.right_speed << ", ls: " << vl_msg.left_speed << '\n';
+      std::cout << "recieved rs: " << vl_msg.right_speed << ", ls: " << vl_msg.left_speed << '\n';
     }
     catch(const std::runtime_error& e)
     {

@@ -68,10 +68,13 @@ package Graph is
    -- returns wether V is on the inner edge
    function Vertex_Is_Inner (V : VID) return Boolean;
    
+   -- return wether V comes before W given position Start
    function Vertex_Comes_Before (V, W, Start : VID) return Boolean;
    
+   -- returns the next action to take
    function Next_Action (R : in Route) return Action;
    
+   -- updates the internal position
    procedure Update_Position (R : in out Route);
       
 private

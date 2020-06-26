@@ -32,6 +32,8 @@ package body Graph is
       return E = F;
    end Same_Edge;
    
+   -- Graph Methods
+   
    procedure Create_Graph is
    begin
       Road_Network := Create (13, 26);
@@ -143,7 +145,7 @@ package body Graph is
       -- taking I4 -> P1 -> I1, otherwise we would take an unecessary detour
       Edges (EP0D) := 55.0;
       Edges (EDP0) := 55.0; 
-         end Create_Graph;
+   end Create_Graph;
             
    procedure Destroy_Graph is
    begin
@@ -163,7 +165,7 @@ package body Graph is
       end loop;
    end Clear_Nodes;
    
-   procedure Put_Nodes is
+   procedure Put_Vertices is
       Iter : All_Vertex_Iterator := Iterate_All_Vertices (Road_Network);
       V : VID;
    begin
@@ -172,7 +174,7 @@ package body Graph is
          
          Put_Line ("Id: " & V'Image & ", Cost: " & Vertices (V).Cost'Image);
       end loop;
-   end Put_Nodes;
+   end Put_Vertices;
    
    procedure Put_Graph is
       V_Iter : All_Vertex_Iterator := Iterate_All_Vertices (Road_Network);
@@ -239,8 +241,64 @@ package body Graph is
    
    function Vertex_Is_Pickup (V : VID) return Boolean is
    begin
-      return VID'Pos (V) > 0 and VID'Pos (V) < 9;
+      return V > EV and V < I1;
    end Vertex_Is_Pickup;
+   
+   function Vertex_Is_Intersection (V : VID) return Boolean is
+   begin
+      return V > P7 and V < D;
+   end Vertex_Is_Intersection;
+      
+   function Vertex_Is_Outer (V : VID) return Boolean is
+   begin
+      return V > P3 and V < I1;
+   end Vertex_Is_Outer;
+      
+   -- returns wether V is on the outer edge
+   function Vertex_Is_Inner (V : VID) return Boolean is
+   begin
+      return V > EV and V < P4;
+   end Vertex_Is_Inner;
+   
+   function Get_Inner_Sibling (V : VID) return VID is
+   begin
+      case V is
+         when P4 => return P0;
+         when P5 => return P1;
+         when P6 => return P2;
+         when P7 => return P3;
+         when others => return V;
+      end case;
+   end Get_Inner_Sibling;
+      
+   function Vertex_Comes_Before (V, W, Start : VID) return Boolean is
+      VI : VID := Get_Inner_Sibling (V);
+      WI : VID := Get_Inner_Sibling (W);
+      SI : VID := Get_Inner_Sibling (Start);
+   begin
+      
+      if V = Start then return
+           True;
+      end if;
+      
+      if VI > SI and WI > SI then
+         if WI > VI then
+            return True;
+         end if;
+         return False;
+      end if;
+      
+      if VI < SI and WI < SI then
+         if VI < WI then
+            return True;
+         end if;
+         return False;
+      end if;
+            
+      return False;
+   end Vertex_Comes_Before;
+         
+   -- Route Methods
         
    function In_Order (R : in Route; 
                       F, L : VID) return Boolean is
@@ -279,8 +337,9 @@ package body Graph is
    
    procedure Put_Route (R : in Route) is
    begin
+      Put_Line ("current position: " & Position'Image);
       for E of R loop
-         Put_Line (E'Image);
+         Put_Line ("next: " & E'Image);
       end loop;
    end Put_Route;
    
@@ -288,60 +347,117 @@ package body Graph is
       Contains_Src : Boolean := A.Contains (Src);
       Contains_Dst : Boolean := A.Contains (Dst);
       
-      C1, C2 : Cursor;
+      C : Cursor;
+      Index : Integer := 0;
       Copy, Tmp : Route;
-      Min : Integer;
-      Min_C : Cursor;
-      Min_R : Route;
       Start : VID := Position;
-      Length : Integer;
+      Length : Integer := Integer (A.Length);
    begin
       
       if Contains_Src and Contains_Dst and In_Order (A, Src, Dst) then
          return;
       end if;
       
-      if not Contains_Src then
-         A.Append (Src);
-      end if;
+      C := A.First;
+      for I in 0 .. Length - 1 loop
+         if not Contains_Src and Src /= Position then
+            if Vertex_Comes_Before (Src, Element (C), Position) then
+               exit;
+            else
+               Copy.Append (Element (C));
+               Next (C);
+               Index := Index + 1;
+            end if;
+         end if;
+      end loop;
       
-      if not Contains_Dst then
-         A.Append (Dst);
-      end if;
+      Copy.Append (Src);
+      
+      for I in Index .. Length - 1 loop
+         if not Contains_Dst and Dst /= Position then
+            if Vertex_Comes_Before (Dst, Element (C), Position) then
+               exit;
+            else
+               Copy.Append (Element (C));
+               Next (C);
+               Index := Index + 1;
+            end if;
+         end if;
+      end loop;
+      
+      Copy.Append (Dst);
+      
+      for I in Index .. Length - 1 loop
+         Copy.Append (Element (C));
+         Next (C);
+      end loop;
+            
+      A.Clear;
+      A.Move (Copy);
       
       R.Clear;
-      Copy := A.Copy;
-      C1 := Copy.First;
-      Length := Integer (Copy.Length);
-            
+      Length := Integer (A.Length);
+      C := A.First;
+      
       for I in 0 .. Length - 1 loop
-         C2 := Copy.First;
-         Min := Integer'Last;
+         Dijkstra (Start, Element (C), Tmp);
          
-         while Has_Element (C2) loop
-            Dijkstra (Start, Element (C2), Tmp);
-            if Integer (tmp.Length) < Min then
-               Min := Integer (tmp.Length);
-               Min_C := C2;
-               Min_R := Tmp;
-            end if;
-            Next (C2);
-         end loop;
-         
-         if Start /= Position then
-            R.Delete_Last;
-         end if;
-                  
-         for E of Min_R loop
+         Tmp.Delete_First;
+         for E of Tmp loop
             R.Append (E);
          end loop;
          
-         
-         --Next (C1);
-         Start := Element (Min_C);
-         Copy.Delete (Min_C);
-         
+         Start := Element (C);
+         Next (C);
       end loop;
+      
    end Add;
+   
+   function Next_Action (R : in Route) return Action is
+      First : VID := R.First_Element;
+   begin
+      if Vertex_Is_Intersection (Position) then
+         if Vertex_Is_Intersection (First) then
+            return RIGHT;
+         end if;
+         
+         if Turned_Right then
+            Turned_Right := False;
+            return STOP;
+         end if;
+                  
+         if Is_Behind_Inter then
+            Is_Behind_Inter := False;
+            Turned_Right := True;
+            return RIGHT;
+         else
+            Is_Behind_Inter := True;
+            if Vertex_Is_Inner (First) then
+               return RIGHT;
+            elsif Vertex_Is_Outer (First) then
+               return STRAIGHT;
+            end if;
+         end if;
+         
+      elsif Vertex_Is_Pickup (Position) then
+         if Turned_Left then
+            Turned_Left := False;
+            return STRAIGHT;
+         end if;
+         
+         Turned_Left := True;
+         return LEFT;
+      elsif Position = D then
+         return LEFT;
+      end if;
+            
+      return NOTHING;
+   end Next_Action;
+   
+   procedure Update_Position (R : in out Route) is
+   begin
+      Position := R.First_Element;
+      R.Delete_First;
+   end Update_Position;
    
 end Graph;

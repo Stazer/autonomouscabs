@@ -3,8 +3,8 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation 1 0 0 4.71238898038469
-  position 0 83.65412380594717 -9.717398068528238e-15
+  orientation 0.02643982992243649 0.8979635112707056 0.43927493420414737 3.0841448003884673
+  position 9.031625236597803 100.48814975406532 -141.3390248253598
 }
 TexturedBackground {
   luminosity 2
@@ -2247,9 +2247,6 @@ DEF environment Solid {
   ]
   name "environment"
 }
-WoodenBox {
-  translation -6.76988 0.3 -29.2667
-}
 Floor {
   size 176 176
   tileSize 0.1 0.1
@@ -2258,4 +2255,7 @@ Floor {
     transparency 0.9
     metalness 0
   }
+}
+WoodenBox {
+  translation -6.71273 0.3 -29.7562
 }

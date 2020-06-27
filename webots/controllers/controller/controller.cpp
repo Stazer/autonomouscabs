@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <unistd.h>
 #include <boost/smart_ptr.hpp>
 #include <boost/asio.hpp>
 #include <boost/endian/conversion.hpp>
@@ -87,8 +88,8 @@ int main(int argc, char **argv)
     m_motors[i]->setPosition(INFINITY);
     m_motors[i]->setVelocity(1.5);
   }
-  double left_speed = 0;
-  double right_speed = 0;
+  double left_speed = 1.5;
+  double right_speed = 1.5;
 
   buffer in;
   buffer_reader reader(in);
@@ -100,6 +101,7 @@ int main(int argc, char **argv)
     for(int i = 0; i<N_DISTANCE_SENSORS; i++)
     {
       ds_msg.data[i] = ds_sensors[i]->getValue();
+     // ds_msg.data[i] = 10.0;
       std::cout<< ds_msg.data[i] << " " ;
     }
     std::cout<< " " << std::endl;
@@ -115,7 +117,6 @@ int main(int argc, char **argv)
     // const unsigned char *image = camera->getImage();
     // std::vector<unsigned char> vec(image, image + image_size);
     // img_msg.pixel = vec;
-
     try
     {
       buffer out;
@@ -123,6 +124,7 @@ int main(int argc, char **argv)
       writer << ds_msg; 
       std::size_t t = boost::asio::write(client, boost::asio::buffer(out));
     }
+    
     catch(std::exception& e)
     {
       std::cerr << "Exception: " << e.what() << std::endl;
@@ -163,16 +165,19 @@ int main(int argc, char **argv)
       right_speed = vl_msg.right_speed;
       left_speed = vl_msg.left_speed;
       std::cout << "recieved rs: " << vl_msg.right_speed << ", ls: " << vl_msg.left_speed << '\n';
+        
+      m_motors[0]->setVelocity(right_speed);
+      m_motors[1]->setVelocity(right_speed);
+      m_motors[2]->setVelocity(left_speed);
+      m_motors[3]->setVelocity(left_speed);
     }
     catch(const std::runtime_error& e)
     {
       std::cerr << e.what() << '\n';
     }
 
-    m_motors[0]->setVelocity(right_speed);
-    m_motors[1]->setVelocity(right_speed);
-    m_motors[2]->setVelocity(left_speed);
-    m_motors[3]->setVelocity(left_speed);
+    
+    
   };
   
   for(int i = 0; i<4; i++)

@@ -3,8 +3,10 @@ with Ada.Integer_Text_IO;
 with tcp_client; use tcp_client;
 with backend_thread; use backend_thread;
 with webots_thread; use webots_thread;
+with collision_detection; use collision_detection;
 with types; use types;
 with mailbox;
+with Ada.Float_Text_IO;
 
 
 procedure Main is
@@ -22,8 +24,12 @@ procedure Main is
       backend_main;
    end backend_thread;
 
+
    current_packet : types.Communication_Packet;
    alternator : types.uint8 := 1;
+   dist: types.Octets_8;
+   distance_sensor_data: collision_detection.Dtype;
+
 
 begin
 
@@ -40,13 +46,15 @@ begin
       mailbox.update_alternator(alternator);
 
       -- do calculations with current packet
-      Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.package_ID)));
-      Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.payload_length)));
-      for I in current_packet.local_payload'Range loop
-            Ada.Integer_Text_IO.Put(Integer(current_packet.local_payload(I)));
+--      Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.package_ID)));
+--        Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.payload_length)));
+      for J in uint32 range 0..8 loop
+         for I in uint32 range 0..7 loop
+            dist(I) := current_packet.local_payload(I+J*8);
+         end loop;
+         distance_sensor_data(Integer(J)) := Types.uint64_to_float64(octets_to_uint64(dist));
       end loop;
-      Ada.Text_IO.Put_Line("\n");
-      delay 10.0;
+      detect(distance_sensor_data);
    end loop;
 
 end Main;

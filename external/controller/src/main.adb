@@ -1,4 +1,5 @@
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Integer_Text_IO;
 with tcp_client; use tcp_client;
 with backend_thread; use backend_thread;
 with webots_thread; use webots_thread;
@@ -40,7 +41,12 @@ begin
 
       -- do calculations with current packet
       Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.package_ID)));
-
+      Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.payload_length)));
+      for I in current_packet.local_payload'Range loop
+            Ada.Integer_Text_IO.Put(Integer(current_packet.local_payload(I)));
+      end loop;
+      Ada.Text_IO.Put_Line("\n");
+      delay 10.0;
    end loop;
 
 end Main;

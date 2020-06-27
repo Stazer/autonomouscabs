@@ -99,27 +99,29 @@ int main(int argc, char **argv)
     external_distance_sensor_message ds_msg;
     for(int i = 0; i<N_DISTANCE_SENSORS; i++)
     {
-      ds_msg.data[i] = ds_sensors[i]->getValue();
+      //ds_msg.data[i] = ds_sensors[i]->getValue();
+      ds_msg.data[i] = 10;
+      std::cout<< ds_msg.data[i] << " " ;
     }
+    std::cout<< " " << std::endl;
+    //read light sensor data
+    // external_light_sensor_message ls_msg;
+    // for(int i = 0; i<N_LIGHT_SENSORS; i++)
+    // {
+      // ls_msg.data[i] = ls_sensors[i]->getValue();
+    // }
 
-    // read light sensor data
-    external_light_sensor_message ls_msg;
-    for(int i = 0; i<N_LIGHT_SENSORS; i++)
-    {
-      ls_msg.data[i] = ls_sensors[i]->getValue();
-    }
-
-    // read image data
-    external_image_data_message img_msg;
-    const unsigned char *image = camera->getImage();
-    std::vector<unsigned char> vec(image, image + image_size);
-    img_msg.pixel = vec;
+    //read image data
+    // external_image_data_message img_msg;
+    // const unsigned char *image = camera->getImage();
+    // std::vector<unsigned char> vec(image, image + image_size);
+    // img_msg.pixel = vec;
 
     try
     {
       buffer out;
       buffer_writer writer(out);
-      writer << ds_msg << ls_msg << img_msg; 
+      writer << ds_msg; 
       std::size_t t = boost::asio::write(client, boost::asio::buffer(out));
     }
     catch(std::exception& e)

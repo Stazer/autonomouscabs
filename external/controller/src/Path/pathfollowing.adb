@@ -18,7 +18,7 @@ package body pathfollowing is
    topPoint1 : Integer := 0;
    leftPoint1 : Integer := 0;
    rightPoint1 : Integer:= 0;
-   steeringAngle : Float:= 0.0;
+   steeringAngle : uint8:= 0.0;
 
    red : Colour_Matrix := (others => (others => 0));
    blue : Colour_Matrix := (others => (others => 0));
@@ -27,8 +27,8 @@ package body pathfollowing is
    binaImage : Colour_Matrix := (others => (others => 0));
 
    wheehlvelocity : Wheehl_velocity :=(others => 0);
-   axleTrack : Float := 1.1;
-   basicVelocity : Float := 1.0;
+   axleTrack : uint8 := 1.1;
+   basicVelocity : uint8 := 1.0;
 
    function path_following (ImageData : in Communication_Packet) return Communication_Packet is
       begin
@@ -54,7 +54,7 @@ package body pathfollowing is
    --Binarized
    for I in Row_Index loop
       for J in Column_Index loop
-         if grey (I)(J) > 200 then
+         if grey (I)(J) > 100 then
             binaImage (I)(J) := 255;
          else
             binaImage (I)(j) := 0;

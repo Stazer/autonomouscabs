@@ -18,7 +18,7 @@ package pathfollowing is
 
    type Colour_Column is array(Column_Index) of uint8;
    type Colour_Matrix is array(Row_Index) of Colour_Column;
-   type Wheehl_velocity is array(0..1) of float64;
+   type Wheehl_velocity is array(0..1) of uint8;
 
    function path_following(imageInput : in Communication_Packt) return Communication_Packt;
 

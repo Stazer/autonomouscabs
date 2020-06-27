@@ -85,7 +85,7 @@ int main(int argc, char **argv)
   {
     m_motors[i] = robot->getMotor(m_names[i]);
     m_motors[i]->setPosition(INFINITY);
-    m_motors[i]->setVelocity(0);
+    m_motors[i]->setVelocity(1.5);
   }
   double left_speed = 0;
   double right_speed = 0;
@@ -99,8 +99,7 @@ int main(int argc, char **argv)
     external_distance_sensor_message ds_msg;
     for(int i = 0; i<N_DISTANCE_SENSORS; i++)
     {
-      //ds_msg.data[i] = ds_sensors[i]->getValue();
-      ds_msg.data[i] = 10;
+      ds_msg.data[i] = ds_sensors[i]->getValue();
       std::cout<< ds_msg.data[i] << " " ;
     }
     std::cout<< " " << std::endl;

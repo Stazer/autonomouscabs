@@ -1,0 +1,6 @@
+https://towardsdatascience.com/color-identification-in-images-machine-learning-application-b26e770c4c71
+
+https://de.wikipedia.org/wiki/Delta_E
+
+https://de.wikipedia.org/wiki/Lab-Farbraum
+

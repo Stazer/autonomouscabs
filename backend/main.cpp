@@ -1,31 +1,26 @@
 #include <iostream>
+#include <exception>
 
-#include <boost/asio.hpp>
+#include "application.hpp"
 
-#include "tcp_server.hpp"
-#include "cab_session.hpp"
-#include "web_session.hpp"
-
-int main(int argc, char *argv[])
+int main(int argc, char** argv)
 {
-    std::cout << "Autonomoues Cabs Backend\n";
+    std::cout << "Autonomous Cabs Backend\n";
+
+    int return_value = 0;
 
     try
     {
-        boost::asio::io_context io_context;
-        tcp_server<cab_session> cab_session_server(io_context, 9875);
-        tcp_server<web_session> web_session_server(io_context, 9876);
-
-        cab_session_server.run();
-        web_session_server.run();
-
-        io_context.run();
+        application application;
+        return_value = application.run(argc, argv);
     }
     catch(std::exception& e)
     {
         std::cerr << "Critital error\n" << e.what() << std::endl;
         std::cerr << "Program terminated" << std::endl;
+
+        return_value = -1;
     }
 
-    return 0;
+    return return_value;
 }

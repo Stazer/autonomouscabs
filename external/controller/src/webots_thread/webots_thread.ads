@@ -2,7 +2,7 @@ with GNAT.Sockets; use GNAT.Sockets;
 with Ada.Streams; use Ada.Streams;
 with tcp_client; use tcp_client;
 with Ada.Text_IO;
-with types;
+with types; use types;
 with byte_buffer;
 with mailbox;
 

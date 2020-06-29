@@ -6,4 +6,8 @@ build/release/controller.o: controller.cpp \
  /usr/local/webots/include/controller/cpp/webots/Camera.hpp \
  /usr/local/webots/include/controller/cpp/webots/../../c/webots/camera_recognition_object.h \
  /usr/local/webots/include/controller/cpp/webots/DistanceSensor.hpp \
- /usr/local/webots/include/controller/cpp/webots/LightSensor.hpp
+ /usr/local/webots/include/controller/cpp/webots/LightSensor.hpp \
+ ../../../shared/buffer.hpp ../../../shared/buffer_reader.hpp \
+ ../../../shared/buffer_reader.inl ../../../shared/buffer_writer.hpp \
+ ../../../shared/buffer_writer.inl ../../../shared/message.hpp \
+ ../../../shared/message.inl

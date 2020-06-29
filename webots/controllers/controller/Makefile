@@ -75,7 +75,7 @@ endif
 INCLUDE = -I"${BOOST_ROOT}"
 
 ifeq ($(UNAME_S),Linux)
-//LIBRARIES += -lpthread -lboost_system
+LIBRARIES += -lpthread -lboost_system
 endif
 
 CFLAGS = -Wno-strict-aliasing -Wno-unused-variable

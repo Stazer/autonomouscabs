@@ -4,7 +4,7 @@ with backend_thread; use backend_thread;
 with webots_thread; use webots_thread;
 with types; use types;
 with mailbox;
-with pathfollowing;
+with pathfollowing;use pathfollowing;
 
 
 procedure Main is
@@ -23,8 +23,9 @@ procedure Main is
    end backend_thread;
 
    current_packet : types.Communication_Packet;
+   send_packet : types.Communication_Packet;
    alternator : types.uint8 := 1;
-   wheehvelocity : types.Octets_2 := (other => 0); --wheelvelocity
+   --wheehvelocity : types.Octets_2 := (other => 0); --wheelvelocity
 begin
 
    -- threads have started here
@@ -39,9 +40,13 @@ begin
       mailbox.check_mailbox(Backend_Mailbox,Webots_Mailbox,current_packet,alternator);
       mailbox.update_alternator(alternator);
       --path following
-      current_packet := path_following(current_packet);
+      if(current_packet.package_ID = 67) then
+         send_packet := pathfollowing.path_following(current_packet);
+         send_bytes(Webots_Channel,send_packet);
+      end if;
+
       -- do calculations with current packet
-      Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.package_ID)));
+      --Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.package_ID)));
 
    end loop;
 

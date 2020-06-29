@@ -5,11 +5,11 @@ with mailbox;
 
 package pathfollowing is
 
-   width : constant Integer := 100;
-   height : constant Integer := 100;
+   width : constant Integer := 50;
+   height : constant Integer := 50;
    size : constant Integer := width * height * 4;
 
-   type Pixel is array(0 .. 3) of uint84;
+   type Pixel is array(0 .. 3) of uint8;
    type Column_Index is range 0 .. width - 1;
    type Row_Index is range 0 .. height - 1;
 
@@ -18,8 +18,8 @@ package pathfollowing is
 
    type Colour_Column is array(Column_Index) of uint8;
    type Colour_Matrix is array(Row_Index) of Colour_Column;
-   type Wheehl_velocity is array(0..1) of uint8;
+   type Wheehl_velocity is array(0..1) of float64;
 
-   function path_following(imageInput : in Communication_Packt) return Communication_Packt;
+   function path_following(imageInput : in Communication_Packet) return Communication_Packet;
 
 end pathfollowing;

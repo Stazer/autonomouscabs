@@ -1,11 +1,11 @@
  // File:          controller.cpp
 // Author:        Henrik Classen
-
+#include <pthread.h>
 #include <cstdlib>
 #include <iostream>
-//#include <boost/smart_ptr.hpp>
-//#include <boost/asio.hpp>
-//#include <boost/endian/conversion.hpp>
+#include <boost/smart_ptr.hpp>
+#include <boost/asio.hpp>
+#include <boost/endian/conversion.hpp>
 
 #include <webots/Robot.hpp>
 #include <webots/Motor.hpp>
@@ -13,10 +13,10 @@
 #include <webots/DistanceSensor.hpp>
 #include <webots/LightSensor.hpp>
 
-//#include "../../../shared/buffer.hpp"
-//#include "../../../shared/buffer_reader.hpp"
-//#include "../../../shared/buffer_writer.hpp"
-//#include "../../../shared/message.hpp"
+#include "../../../shared/buffer.hpp"
+#include "../../../shared/buffer_reader.hpp"
+#include "../../../shared/buffer_writer.hpp"
+#include "../../../shared/message.hpp"
 
 #define N_DISTANCE_SENSORS 9
 #define N_LIGHT_SENSORS 1
@@ -26,7 +26,7 @@ using namespace webots;
 
 int main(int argc, char **argv) 
 {
-  /* if(argc != 2)
+  if(argc != 2)
   {
     std::cerr << "port missing" << std::endl;
     return EXIT_FAILURE;
@@ -45,7 +45,7 @@ int main(int argc, char **argv)
   {
     std::cerr << "Exception: " << e.what() << "\n";
     return EXIT_FAILURE;
-  } */
+  } 
   
   Robot *robot = new Robot();
 
@@ -93,7 +93,7 @@ int main(int argc, char **argv)
   robot->step(timeStep);
   camera->saveImage("picture.png", 100);
 
-  /* buffer in;
+  buffer in;
   buffer_reader reader(in);
   while (robot->step(timeStep) != -1) 
   {
@@ -180,7 +180,7 @@ int main(int argc, char **argv)
   }
 
   // Enter here exit cleanup code.
-  client.close(); */
+  client.close(); 
   delete robot;
   return 0;
 }

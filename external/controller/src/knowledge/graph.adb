@@ -197,7 +197,8 @@ package body Graph is
          
       end loop;
    end Put_Graph;
-      
+   
+   -- see https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm for reference
    procedure Dijkstra (Src, Dst : VID; R : out Route) is
       PQ : Priotity_Q.Implementation.List_Type (32);
       
@@ -241,23 +242,49 @@ package body Graph is
    
    function Vertex_Is_Pickup (V : VID) return Boolean is
    begin
-      return V > EV and V < I1;
+      case V is
+         when EV => return False;
+         when I1 => return False;
+         when I2 => return False;
+         when I3 => return False;
+         when I4 => return False;
+         when D => return False;
+         others => return True;
+      end case;
    end Vertex_Is_Pickup;
    
    function Vertex_Is_Intersection (V : VID) return Boolean is
    begin
-      return V > P7 and V < D;
+      case V is
+         when I1 => return True;
+         when I2 => return True;
+         when I3 => return True;
+         when I4 => return True;
+         others => return False;
+      end case;
    end Vertex_Is_Intersection;
       
    function Vertex_Is_Outer (V : VID) return Boolean is
    begin
-      return V > P3 and V < I1;
+      case V is
+         when P4 => return True;
+         when P5 => return True;
+         when P6 => return True;
+         when P7 => return True;
+         others => return False;
+      end case;
    end Vertex_Is_Outer;
       
    -- returns wether V is on the outer edge
    function Vertex_Is_Inner (V : VID) return Boolean is
    begin
-      return V > EV and V < P4;
+      case V is
+         when P0 => return True;
+         when P1 => return True;
+         when P2 => return True;
+         when P3 => return True;
+         others => return False;
+      end case;
    end Vertex_Is_Inner;
    
    function Get_Inner_Sibling (V : VID) return VID is
@@ -270,13 +297,25 @@ package body Graph is
          when others => return V;
       end case;
    end Get_Inner_Sibling;
-      
+   
+   -- compare values of vertecies V and W given the current position Start
+   -- for every inner/outer pair of pickup locations the outcome is the same
+   -- only edge case when Start = D and V or W is P4
+   -- if V, W are an inner/outer pair the return value is false as no before-after
+   -- relationship can be made
    function Vertex_Comes_Before (V, W, Start : VID) return Boolean is
       VI : VID := Get_Inner_Sibling (V);
       WI : VID := Get_Inner_Sibling (W);
       SI : VID := Get_Inner_Sibling (Start);
    begin
       
+      -- edge case
+      if Start = D and V = P4 then
+         return False;
+      elsif Start = D and W = P4 then
+         return True;
+      end if;
+            
       if V = Start then return
            True;
       end if;
@@ -343,6 +382,11 @@ package body Graph is
       end loop;
    end Put_Route;
    
+   -- expects A to be list of only pickup locations which the cab drives to
+   -- expects A to be ordered
+   -- inserts Src and Dst into A and preserves the ordering
+   -- uses Dijkstra to calculate the shortest path between each i and i+1 in A
+   -- starting with i is the current position
    procedure Add (R, A : in out Route; Src, Dst : VID) is
       Contains_Src : Boolean := A.Contains (Src);
       Contains_Dst : Boolean := A.Contains (Dst);
@@ -359,22 +403,26 @@ package body Graph is
       end if;
       
       C := A.First;
-      for I in 0 .. Length - 1 loop
-         if not Contains_Src and Src /= Position then
+      if not Contains_Src and Src /= Position then
+         for I in 0 .. Length - 1 loop
             if Vertex_Comes_Before (Src, Element (C), Position) then
                exit;
             else
+               if Element (C) = Dst then
+                  Contains_Dst := False;
+               end if;
+               
                Copy.Append (Element (C));
                Next (C);
                Index := Index + 1;
             end if;
-         end if;
-      end loop;
+         end loop;
+         
+         Copy.Append (Src);
+      end if;
       
-      Copy.Append (Src);
-      
-      for I in Index .. Length - 1 loop
-         if not Contains_Dst and Dst /= Position then
+      if not Contains_Dst then
+         for I in Index .. Length - 1 loop
             if Vertex_Comes_Before (Dst, Element (C), Position) then
                exit;
             else
@@ -382,11 +430,11 @@ package body Graph is
                Next (C);
                Index := Index + 1;
             end if;
-         end if;
-      end loop;
+         end loop;
       
-      Copy.Append (Dst);
-      
+         Copy.Append (Dst);
+      end if;
+            
       for I in Index .. Length - 1 loop
          Copy.Append (Element (C));
          Next (C);

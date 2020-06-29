@@ -249,7 +249,7 @@ package body Graph is
          when I3 => return False;
          when I4 => return False;
          when D => return False;
-         others => return True;
+         when others => return True;
       end case;
    end Vertex_Is_Pickup;
    
@@ -260,7 +260,7 @@ package body Graph is
          when I2 => return True;
          when I3 => return True;
          when I4 => return True;
-         others => return False;
+         when others => return False;
       end case;
    end Vertex_Is_Intersection;
       
@@ -271,7 +271,7 @@ package body Graph is
          when P5 => return True;
          when P6 => return True;
          when P7 => return True;
-         others => return False;
+         when others => return False;
       end case;
    end Vertex_Is_Outer;
       
@@ -283,7 +283,7 @@ package body Graph is
          when P1 => return True;
          when P2 => return True;
          when P3 => return True;
-         others => return False;
+         when others => return False;
       end case;
    end Vertex_Is_Inner;
    
@@ -307,8 +307,7 @@ package body Graph is
       VI : VID := Get_Inner_Sibling (V);
       WI : VID := Get_Inner_Sibling (W);
       SI : VID := Get_Inner_Sibling (Start);
-   begin
-      
+   begin      
       -- edge case
       if Start = D and V = P4 then
          return False;
@@ -316,10 +315,18 @@ package body Graph is
          return True;
       end if;
             
-      if V = Start then return
-           True;
+      if V = Start then 
+         return True;
       end if;
       
+      if WI = Start then
+         return False;
+      end if;
+            
+      if V = W then
+         return True;
+      end if;
+            
       if VI > SI and WI > SI then
          if WI > VI then
             return True;
@@ -333,7 +340,17 @@ package body Graph is
          end if;
          return False;
       end if;
-            
+      
+      -- VI and SI are outer/inner siblings and therefore VI can't come before WI
+      if VI = SI then
+         return False;
+      end if;
+      
+      -- WI and SI are outer/inner siblings and therefore WI can't come before VI
+      if WI = SI then
+         return True;
+      end if;
+                  
       return False;
    end Vertex_Comes_Before;
          
@@ -394,7 +411,7 @@ package body Graph is
       C : Cursor;
       Index : Integer := 0;
       Copy, Tmp : Route;
-      Start : VID := Position;
+      W, Start : VID := Position;
       Length : Integer := Integer (A.Length);
    begin
       
@@ -403,37 +420,41 @@ package body Graph is
       end if;
       
       C := A.First;
+      W := Position;
       if not Contains_Src and Src /= Position then
          for I in 0 .. Length - 1 loop
-            if Vertex_Comes_Before (Src, Element (C), Position) then
+            if Vertex_Comes_Before (Src, Element (C), W) then
                exit;
-            else
+            else   
                if Element (C) = Dst then
                   Contains_Dst := False;
                end if;
                
                Copy.Append (Element (C));
+               W := Element (C);
                Next (C);
                Index := Index + 1;
             end if;
          end loop;
          
          Copy.Append (Src);
+         W := Src;
       end if;
       
       if not Contains_Dst then
          for I in Index .. Length - 1 loop
-            if Vertex_Comes_Before (Dst, Element (C), Position) then
+            if Vertex_Comes_Before (Dst, Element (C), W) then
                exit;
             else
                Copy.Append (Element (C));
+               W := Element (C);
                Next (C);
                Index := Index + 1;
             end if;
          end loop;
       
          Copy.Append (Dst);
-      end if;
+      end if; 
             
       for I in Index .. Length - 1 loop
          Copy.Append (Element (C));

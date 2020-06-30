@@ -15,5 +15,5 @@ RUN cd /home/user/repository && \
     cd build && \
     cmake .. && \
     make test.bin && \
-    cd /home/user/repository/external/harness && \
+    cd /home/user/repository/test/ada && \
     make

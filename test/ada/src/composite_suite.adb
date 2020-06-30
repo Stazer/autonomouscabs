@@ -1,6 +1,7 @@
 with tcp_suite;
 with buffer_suite;
 with types_suite;
+with mailbox_suite;
 with AUnit.Tests;
 
 
@@ -16,6 +17,7 @@ package body composite_suite is
       Result.Add_Test (tcp_suite.Suite);
       Result.Add_Test (buffer_suite.Suite);
       Result.Add_Test (types_suite.Suite);
+      Result.Add_Test (mailbox_suite.Suite);
       return Result;
    end Suite;
    

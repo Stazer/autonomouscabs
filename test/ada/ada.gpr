@@ -2,7 +2,7 @@ with "aunit.gpr";
 
 project Ada is
 
-   for Source_Dirs use ("src/**", "../../../external/controller/src/backend_thread/**", "../../../external/controller/src/tcp_client/**", "../../../external/controller/src/webots_thread/**", "src/mailbox_suite/**");
+   for Source_Dirs use ("src/**", "../../external/controller/src/backend_thread/**", "../../external/controller/src/tcp_client/**", "../../external/controller/src/webots_thread/**", "src/mailbox_suite/**");
    for Object_Dir use "obj";
    for Main use ("test_main.adb");
    for Exec_Dir use ".";

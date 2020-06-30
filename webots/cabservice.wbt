@@ -1,0 +1,2258 @@
+#VRML_SIM R2020a utf8
+WorldInfo {
+  basicTimeStep 16
+}
+Viewpoint {
+  orientation 0.03808682417150016 0.7714041274115354 0.635204743399305 3.119688131672871
+  position 6.409620980680648 139.501828724283 -82.55227138078858
+}
+TexturedBackground {
+  luminosity 2
+  reflections FALSE
+}
+DEF Cab1 Robot {
+  translation 0 0.4 -29.2
+  rotation 0 1 0 -1.5723853071795864
+  children [
+    DEF cam_f Camera {
+      translation 0 0.1 1
+      rotation 0 1 0 3.14
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.4 0 0
+          }
+          geometry Cylinder {
+            height 0.1
+            radius 0.05
+          }
+        }
+      ]
+      boundingObject Cylinder {
+        height 0.1
+        radius 0.05
+      }
+      physics Physics {
+        density 1
+      }
+      fieldOfView 0.75
+      width 18
+      height 10
+      far 10
+    }
+    DEF ls_f LightSensor {
+      translation 0 0 1
+      rotation 0 1 0 -1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            metalness 0
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ls_front"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Cylinder {
+          height 0.1
+          radius 0.05
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_fl DistanceSensor {
+      translation 0.45 0.2 1
+      rotation 0 1 0 -1.047
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_fl"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_lf DistanceSensor {
+      translation 0.5 0.2 0.95
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_lf"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_lc DistanceSensor {
+      translation 0.5 0.2 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_lc"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_fr DistanceSensor {
+      translation -0.45 0.2 1
+      rotation 0 1 0 -2.09
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_fr"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_rf DistanceSensor {
+      translation -0.5 0.2 0.95
+      rotation 0 1 0 -3.14
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_rf"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_rc DistanceSensor {
+      translation -0.5 0.2 0
+      rotation 0 1 0 -3.14
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_rc"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_fc DistanceSensor {
+      translation 0 0.2 1
+      rotation 0 1 0 -1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_fc"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_fcr DistanceSensor {
+      translation -0.225 0.2 1
+      rotation 0 1 0 -1.833
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_fcr"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_fcl DistanceSensor {
+      translation 0.225 0.2 1
+      rotation 0 1 0 -1.309
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_fcl"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    Transform {
+      translation 0 0.5 -0.3
+      rotation 1 0 0 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.5 0.5 0.5
+            transparency 0.3
+          }
+          geometry Box {
+            size 0.9 0.5 1.2
+          }
+        }
+      ]
+    }
+    Transform {
+      translation 0 0.8 -0.3
+      rotation 1 0 0 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+          }
+          geometry Box {
+            size 1 0.1 1.3
+          }
+        }
+      ]
+    }
+    DEF wheelFL HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor 0.55 -0.1 0.55
+      }
+      device [
+        DEF wheelFL RotationalMotor {
+          name "wheelFL"
+          maxTorque 30
+        }
+      ]
+      endPoint DEF wheelFL Solid {
+        translation 0.55 -0.1 0.55
+        rotation 0 0 1 1.5699999999999963
+        children [
+          DEF wheel Shape {
+            appearance PBRAppearance {
+              baseColor 0 0 0
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.1
+              radius 0.3
+            }
+          }
+        ]
+        name "wheelFL"
+        boundingObject USE wheel
+        physics DEF physics_wheel Physics {
+          density 10
+        }
+      }
+    }
+    DEF wheelRL HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor 0.55 -0.1 -0.7
+      }
+      device [
+        DEF wheelRL RotationalMotor {
+          name "wheelRL"
+          maxTorque 30
+        }
+      ]
+      endPoint DEF wheelRL Solid {
+        translation 0.55 -0.1 -0.7
+        rotation 0 0 1 1.5699999999999963
+        children [
+          DEF wheel Shape {
+            appearance PBRAppearance {
+              baseColor 0 0 0
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.1
+              radius 0.3
+            }
+          }
+        ]
+        name "wheelRL"
+        boundingObject USE wheel
+        physics DEF physics_wheel Physics {
+          density 10
+        }
+      }
+    }
+    DEF wheelRR HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor -0.55 -0.1 -0.7
+      }
+      device [
+        DEF wheelRR RotationalMotor {
+          name "wheelRR"
+          maxTorque 30
+        }
+      ]
+      endPoint DEF wheelRR Solid {
+        translation -0.55 -0.1 -0.7
+        rotation 0 0 1 1.5699999999999963
+        children [
+          DEF wheel Shape {
+            appearance PBRAppearance {
+              baseColor 0 0 0
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.1
+              radius 0.3
+            }
+          }
+        ]
+        name "wheelRR"
+        boundingObject USE wheel
+        physics DEF physics_wheel Physics {
+          density 10
+        }
+      }
+    }
+    DEF wheelFR HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor -0.55 -0.1 0.55
+      }
+      device [
+        DEF wheelFR RotationalMotor {
+          name "wheelFR"
+          maxTorque 30
+        }
+      ]
+      endPoint DEF wheelFR Solid {
+        translation -0.55 -0.1 0.55
+        rotation 0 0 1 1.5699999999999956
+        children [
+          DEF wheel Shape {
+            appearance PBRAppearance {
+              baseColor 0 0 0
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.1
+              radius 0.3
+            }
+          }
+        ]
+        name "wheelFR"
+        boundingObject USE wheel
+        physics DEF physics_wheel Physics {
+          density 10
+        }
+      }
+    }
+    DEF car_body Shape {
+      appearance PBRAppearance {
+        baseColor 1 1 0
+      }
+      geometry Box {
+        size 1 0.6 2
+      }
+    }
+  ]
+  name "Cab1"
+  boundingObject USE car_body
+  physics Physics {
+    density 10
+  }
+  recognitionColors [
+    0 0 0
+  ]
+  controller "controller"
+}
+DEF Cab2 Robot {
+  translation 10 0.4 -29.1
+  rotation 0 1 0 -1.5723853071795864
+  children [
+    DEF cam_f Camera {
+      translation 0 0.1 1
+      rotation 0 1 0 3.14
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.4 0 0
+          }
+          geometry Cylinder {
+            height 0.1
+            radius 0.05
+          }
+        }
+      ]
+      boundingObject Cylinder {
+        height 0.1
+        radius 0.05
+      }
+      physics Physics {
+        density 1
+      }
+      fieldOfView 0.75
+      width 18
+      height 10
+      far 10
+    }
+    DEF ls_f LightSensor {
+      translation 0 0 1
+      rotation 0 1 0 -1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            metalness 0
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ls_front"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Cylinder {
+          height 0.1
+          radius 0.05
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_fl DistanceSensor {
+      translation 0.45 0.2 1
+      rotation 0 1 0 -1.047
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_fl"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_lf DistanceSensor {
+      translation 0.5 0.2 0.95
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_lf"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_lc DistanceSensor {
+      translation 0.5 0.2 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_lc"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_fr DistanceSensor {
+      translation -0.45 0.2 1
+      rotation 0 1 0 -2.09
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_fr"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_rf DistanceSensor {
+      translation -0.5 0.2 0.95
+      rotation 0 1 0 -3.14
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_rf"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_rc DistanceSensor {
+      translation -0.5 0.2 0
+      rotation 0 1 0 -3.14
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_rc"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_fc DistanceSensor {
+      translation 0 0.2 1
+      rotation 0 1 0 -1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_fc"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_fcr DistanceSensor {
+      translation -0.225 0.2 1
+      rotation 0 1 0 -1.833
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_fcr"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_fcl DistanceSensor {
+      translation 0.225 0.2 1
+      rotation 0 1 0 -1.309
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_fcl"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    Transform {
+      translation 0 0.5 -0.3
+      rotation 1 0 0 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.5 0.5 0.5
+            transparency 0.3
+          }
+          geometry Box {
+            size 0.9 0.5 1.2
+          }
+        }
+      ]
+    }
+    Transform {
+      translation 0 0.8 -0.3
+      rotation 1 0 0 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+          }
+          geometry Box {
+            size 1 0.1 1.3
+          }
+        }
+      ]
+    }
+    DEF wheelFL HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor 0.55 -0.1 0.55
+      }
+      device [
+        DEF wheelFL RotationalMotor {
+          name "wheelFL"
+          maxTorque 30
+        }
+      ]
+      endPoint DEF wheelFL Solid {
+        translation 0.55 -0.1 0.55
+        rotation 0 0 1 1.5699999999999963
+        children [
+          DEF wheel Shape {
+            appearance PBRAppearance {
+              baseColor 0 0 0
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.1
+              radius 0.3
+            }
+          }
+        ]
+        name "wheelFL"
+        boundingObject USE wheel
+        physics DEF physics_wheel Physics {
+          density 10
+        }
+      }
+    }
+    DEF wheelRL HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor 0.55 -0.1 -0.7
+      }
+      device [
+        DEF wheelRL RotationalMotor {
+          name "wheelRL"
+          maxTorque 30
+        }
+      ]
+      endPoint DEF wheelRL Solid {
+        translation 0.55 -0.1 -0.7
+        rotation 0 0 1 1.5699999999999963
+        children [
+          DEF wheel Shape {
+            appearance PBRAppearance {
+              baseColor 0 0 0
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.1
+              radius 0.3
+            }
+          }
+        ]
+        name "wheelRL"
+        boundingObject USE wheel
+        physics DEF physics_wheel Physics {
+          density 10
+        }
+      }
+    }
+    DEF wheelRR HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor -0.55 -0.1 -0.7
+      }
+      device [
+        DEF wheelRR RotationalMotor {
+          name "wheelRR"
+          maxTorque 30
+        }
+      ]
+      endPoint DEF wheelRR Solid {
+        translation -0.55 -0.1 -0.7
+        rotation 0 0 1 1.5699999999999963
+        children [
+          DEF wheel Shape {
+            appearance PBRAppearance {
+              baseColor 0 0 0
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.1
+              radius 0.3
+            }
+          }
+        ]
+        name "wheelRR"
+        boundingObject USE wheel
+        physics DEF physics_wheel Physics {
+          density 10
+        }
+      }
+    }
+    DEF wheelFR HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor -0.55 -0.1 0.55
+      }
+      device [
+        DEF wheelFR RotationalMotor {
+          name "wheelFR"
+          maxTorque 30
+        }
+      ]
+      endPoint DEF wheelFR Solid {
+        translation -0.55 -0.1 0.55
+        rotation 0 0 1 1.5699999999999956
+        children [
+          DEF wheel Shape {
+            appearance PBRAppearance {
+              baseColor 0 0 0
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.1
+              radius 0.3
+            }
+          }
+        ]
+        name "wheelFR"
+        boundingObject USE wheel
+        physics DEF physics_wheel Physics {
+          density 10
+        }
+      }
+    }
+    DEF car_body Shape {
+      appearance PBRAppearance {
+        baseColor 1 1 0
+      }
+      geometry Box {
+        size 1 0.6 2
+      }
+    }
+  ]
+  name "Cab2"
+  boundingObject USE car_body
+  physics Physics {
+    density 10
+  }
+  recognitionColors [
+    0 0 0
+  ]
+  controller "controller"
+}
+DEF environment Solid {
+  scale 1.09819 1.09819 1.09819
+  children [
+    DEF PickUp1 BusStop {
+      translation 0 0 -45
+      rotation 0 1 0 3.14159
+      name "PickUp1"
+      bench FALSE
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 0.5
+        metalness 0
+      }
+      internalAdvertisingTexture []
+      externalAdvertisingTexture []
+    }
+    DEF PickUp2 BusStop {
+      translation 45 0 0
+      rotation 0 -1 0 -1.5707953071795862
+      name "PickUp2"
+      bench FALSE
+      appearance PBRAppearance {
+        baseColor 1 0 0
+        roughness 0.5
+        metalness 0
+      }
+      internalAdvertisingTexture []
+      externalAdvertisingTexture []
+      advertisingLightOn FALSE
+    }
+    DEF PickUp3 BusStop {
+      translation 0 0 45
+      rotation 0 1 0 -5.307179586466759e-06
+      name "PickUp3"
+      bench FALSE
+      appearance PBRAppearance {
+        baseColor 0 1 0
+        roughness 0.5
+        metalness 0
+      }
+      internalAdvertisingTexture []
+      externalAdvertisingTexture []
+      advertisingLightOn FALSE
+    }
+    DEF PickUp4 BusStop {
+      translation -45 0 0
+      rotation 0 1 0 -1.5707953071795862
+      name "PickUp4"
+      bench FALSE
+      appearance PBRAppearance {
+        baseColor 0 0 1
+        roughness 0.5
+        metalness 0
+      }
+      internalAdvertisingTexture []
+      externalAdvertisingTexture []
+      advertisingLightOn FALSE
+    }
+    DEF PickUp5 BusStop {
+      translation 0 0 -71
+      rotation 0 1 0 3.14159
+      name "PickUp5"
+      bench FALSE
+      appearance PBRAppearance {
+        baseColor 1 1 0
+        roughness 0.5
+        metalness 0
+      }
+      internalAdvertisingTexture []
+      externalAdvertisingTexture []
+      advertisingLightOn FALSE
+    }
+    DEF PickUp6 BusStop {
+      translation 71 0 0
+      rotation 0 -1 0 -1.5707953071795862
+      name "PickUp6"
+      bench FALSE
+      appearance PBRAppearance {
+        baseColor 1 0 1
+        roughness 0.5
+        metalness 0
+      }
+      internalAdvertisingTexture []
+      externalAdvertisingTexture []
+      advertisingLightOn FALSE
+    }
+    DEF PickUp7 BusStop {
+      translation 0 0 71
+      rotation 0 1 0 -5.307179586466759e-06
+      name "PickUp7"
+      bench FALSE
+      appearance PBRAppearance {
+        baseColor 0 1 1
+        roughness 0.5
+        metalness 0
+      }
+      internalAdvertisingTexture []
+      externalAdvertisingTexture []
+      advertisingLightOn FALSE
+    }
+    DEF PickUp8 BusStop {
+      translation -71 0 0
+      rotation 0 1 0 -1.5707953071795862
+      name "PickUp8"
+      bench FALSE
+      appearance PBRAppearance {
+        roughness 0.5
+        metalness 0
+      }
+      internalAdvertisingTexture []
+      externalAdvertisingTexture []
+      advertisingLightOn FALSE
+    }
+    CurvedRoadSegment {
+      translation -56 0 33
+      rotation 0 1 0 -1.570796
+      name "road(1)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      curvatureRadius 20
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    CurvedRoadSegment {
+      translation -56 0 -33
+      rotation 0 1 0 3.14
+      name "road(7)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      curvatureRadius 20
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    CurvedRoadSegment {
+      translation -33 0 -56
+      rotation 0 1 0 3.14
+      name "road(8)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      curvatureRadius 20
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    CurvedRoadSegment {
+      translation 33 0 -56
+      rotation 0 1 0 1.57
+      name "road(9)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      curvatureRadius 20
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    CurvedRoadSegment {
+      translation 56 0 -33
+      rotation 0 1 0 1.57
+      name "road(10)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      curvatureRadius 20
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    CurvedRoadSegment {
+      translation 56 0 33
+      name "road(11)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      curvatureRadius 20
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    CurvedRoadSegment {
+      translation 33 0 56
+      name "road(12)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      curvatureRadius 20
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    CurvedRoadSegment {
+      translation -33 0 56
+      rotation 0 1 0 -1.57
+      name "road(13)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      curvatureRadius 20
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    RoadIntersection {
+      translation -53 0 53
+      rotation 0 1 0 0.785
+      roadsWidth 6
+      startRoadsLength [
+        -0.1
+      ]
+      startRoadsStartLine [
+        ""
+        ""
+      ]
+      startRoadsLine [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      startRoadBorderWidth 0.5
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0.5 0.5 0
+      }
+    }
+    RoadIntersection {
+      translation 53 0 53
+      rotation 0 1 0 0.785
+      name "road intersection(1)"
+      roadsWidth 6
+      startRoadsLength [
+        -0.1
+      ]
+      startRoadsStartLine [
+        ""
+        ""
+      ]
+      startRoadsLine [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      startRoadBorderWidth 0.5
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0.5 0.5 0
+      }
+    }
+    RoadIntersection {
+      translation 53 0 -53
+      rotation 0 1 0 0.785
+      name "road intersection(2)"
+      roadsWidth 6
+      startRoadsLength [
+        -0.1
+      ]
+      startRoadsStartLine [
+        ""
+        ""
+      ]
+      startRoadsLine [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      startRoadBorderWidth 0.5
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0.5 0.5 0
+      }
+    }
+    RoadIntersection {
+      translation -53 0 -53
+      rotation 0 1 0 0.785
+      name "road intersection(3)"
+      roadsWidth 6
+      startRoadsLength [
+        -0.1
+      ]
+      startRoadsStartLine [
+        ""
+        ""
+      ]
+      startRoadsLine [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      startRoadBorderWidth 0.5
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0.5 0.5 0
+      }
+    }
+    StraightRoadSegment {
+      translation -53 0 20
+      name "road(20)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 30
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    AddLanesRoadSegment {
+      translation -53 0 20
+      rotation 0 1 0 3.14
+      width 6
+      length 10
+      numberOfNewLanes 1
+      newLaneLeft FALSE
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    Solid {
+      translation -51.48 0 15.5
+      rotation 0 1 0 -0.2617996938995747
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(1)"
+    }
+    StraightRoadSegment {
+      translation -51.5 0 -10
+      name "road(17)"
+      width 9
+      numberOfLanes 3
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 20
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    AddLanesRoadSegment {
+      translation -53 0 -20
+      name "road(3)"
+      width 6
+      length 10
+      numberOfNewLanes 1
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    Solid {
+      translation -51.48 0 -15.5
+      rotation 0 1 0 0.2618
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(2)"
+    }
+    StraightRoadSegment {
+      translation -53 0 -50
+      name "road(5)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 30
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    StraightRoadSegment {
+      translation -50 0 -53
+      rotation 0 1 0 1.57
+      name "road(4)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 30
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    AddLanesRoadSegment {
+      translation -10 0 -51.5
+      rotation 0 1 0 -1.57
+      name "road(2)"
+      width 9
+      length 10
+      numberOfLanes 3
+      numberOfNewLanes 1
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+        RoadLine {
+          type "continuous"
+          width -1.73472e-18
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    Solid {
+      translation 15.5 0 -51.48
+      rotation 0 1 0 1.8326
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(3)"
+    }
+    StraightRoadSegment {
+      translation -10 0 -51.5
+      rotation 0 1 0 1.571
+      name "road(18)"
+      width 9
+      numberOfLanes 3
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 20
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    AddLanesRoadSegment {
+      translation 10 0 -51.5
+      rotation 0 1 0 1.57
+      name "road(19)"
+      width 9
+      length 10
+      numberOfLanes 3
+      numberOfNewLanes 1
+      newLaneLeft FALSE
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+        RoadLine {
+          type "continuous"
+          width -1.73472e-18
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    Solid {
+      translation -15.5 0 -51.48
+      rotation 0 1 0 -1.8326
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(4)"
+    }
+    CurvedRoadSegment {
+      translation 20 0 -36.8
+      rotation 0 1 0 1.571
+      name "road(33)"
+      width 5.8
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      roadBorderWidth [
+        0
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      totalAngle 3.14
+      subdivision 21
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    StraightRoadSegment {
+      translation -20 0 -26.8
+      rotation 0 1 0 1.571
+      name "road(35)"
+      width 5.8
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 40
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    CurvedRoadSegment {
+      translation -20 0 -36.8
+      rotation 0 1 0 -1.571
+      name "road(34)"
+      width 5.8
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      roadBorderWidth [
+        0
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      totalAngle 3.14
+      subdivision 21
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    StraightRoadSegment {
+      translation 20 0 -53
+      rotation 0 1 0 1.57
+      name "road(21)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 30
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    StraightRoadSegment {
+      translation 53 0 -50
+      name "road(22)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 30
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    AddLanesRoadSegment {
+      translation 53 0 -20
+      name "road(23)"
+      width 6
+      length 10
+      numberOfNewLanes 1
+      newLaneLeft FALSE
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    Solid {
+      translation 51.48 0 -15.5
+      rotation 0 1 0 -0.2617996938995747
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(5)"
+    }
+    StraightRoadSegment {
+      translation 51.5 0 -10
+      name "road(24)"
+      width 9
+      numberOfLanes 3
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 20
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    AddLanesRoadSegment {
+      translation 53 0 20
+      rotation 0 1 0 3.14
+      name "road(25)"
+      width 6
+      length 10
+      numberOfNewLanes 1
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    Solid {
+      translation 51.48 0 15.5
+      rotation 0 1 0 0.2618
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(6)"
+    }
+    StraightRoadSegment {
+      translation 53 0 20
+      name "road(26)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 30
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    StraightRoadSegment {
+      translation 20 0 53
+      rotation 0 1 0 1.57
+      name "road(27)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 30
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    AddLanesRoadSegment {
+      translation 20 0 53
+      rotation 0 1 0 -1.57
+      name "road(28)"
+      width 6
+      length 10
+      numberOfNewLanes 1
+      newLaneLeft FALSE
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    Solid {
+      translation 15.5 0 51.48
+      rotation 0 1 0 -1.8326
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(7)"
+    }
+    StraightRoadSegment {
+      translation -10 0 51.5
+      rotation 0 1 0 1.57
+      name "road(29)"
+      width 9
+      numberOfLanes 3
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 20
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    AddLanesRoadSegment {
+      translation -20 0 53
+      rotation 0 1 0 1.57
+      name "road(30)"
+      width 6
+      length 10
+      numberOfNewLanes 1
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    Solid {
+      translation -15.5 0 51.48
+      rotation 0 1 0 1.8326
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(8)"
+    }
+    StraightRoadSegment {
+      translation -50 0 53
+      rotation 0 1 0 1.57
+      name "road(32)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 30
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    StraightRoadSegment {
+      translation 53 0 20
+      name "road(31)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 30
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    StraightRoadSegment {
+      translation -76 0 -33
+      name "road(6)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 66
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    StraightRoadSegment {
+      translation -33 0 -76
+      rotation 0 1 0 1.57
+      name "road(14)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 66
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    StraightRoadSegment {
+      translation 76 0 -33
+      name "road(15)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 66
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    StraightRoadSegment {
+      translation -33 0 76
+      rotation 0 1 0 1.57
+      name "road(16)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 66
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    Solid {
+      translation -15 0 -48.41
+      rotation 0 1 0 -1.26
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 10.67
+          }
+        }
+      ]
+      name "solid(9)"
+    }
+    Solid {
+      translation 15 0 -48.39
+      rotation 0 1 0 -1.88
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 10.67
+          }
+        }
+      ]
+      name "solid(10)"
+    }
+  ]
+  name "environment"
+}
+Floor {
+  size 176 176
+  tileSize 0.1 0.1
+  appearance PBRAppearance {
+    baseColor 0.5 0.5 0.5
+    transparency 0.9
+    metalness 0
+  }
+}

@@ -6,62 +6,62 @@ buffer_reader::buffer_reader(const ::buffer& buffer):
 }
 
 buffer_reader::buffer_reader(const ::buffer& buffer, ::buffer::const_iterator iterator):
-    buffer(buffer),
-    start(iterator - buffer.begin()),
-    index(iterator - buffer.begin())
+    _buffer(buffer),
+    _start(iterator - buffer.begin()),
+    _index(iterator - buffer.begin())
 {
 }
 
 std::size_t buffer_reader::available() const
 {
-    return buffer.size () - index;
+    return _buffer.size () - _index;
 }
 
 std::size_t buffer_reader::read() const
 {
-    return index - start;
+    return _index - _start;
 }
 
 void buffer_reader::unwind(std::size_t bytes)
 {
-    index -= bytes;
+    _index -= bytes;
 }
 
 buffer_reader& buffer_reader::operator>>(std::uint8_t& data)
 {
-    data = buffer[index++];
+    data = _buffer[_index++];
 
     return *this;
 }
 
 buffer_reader& buffer_reader::operator>>(std::uint16_t& data)
 {
-    data = static_cast<std::uint16_t>(buffer[index++]);
-    data |= static_cast<std::uint16_t>(buffer[index++]) << 8;
+    data = static_cast<std::uint16_t>(_buffer[_index++]);
+    data |= static_cast<std::uint16_t>(_buffer[_index++]) << 8;
 
     return *this;
 }
 
 buffer_reader& buffer_reader::operator>>(std::uint32_t& data)
 {
-    data = static_cast<std::uint32_t>(buffer[index++]);
-    data |= static_cast<std::uint32_t>(buffer[index++]) << 8;
-    data |= static_cast<std::uint32_t>(buffer[index++]) << 16;
-    data |= static_cast<std::uint32_t>(buffer[index++]) << 24;
+    data = static_cast<std::uint32_t>(_buffer[_index++]);
+    data |= static_cast<std::uint32_t>(_buffer[_index++]) << 8;
+    data |= static_cast<std::uint32_t>(_buffer[_index++]) << 16;
+    data |= static_cast<std::uint32_t>(_buffer[_index++]) << 24;
 
     return *this;
 }
 
 buffer_reader& buffer_reader::operator>>(std::uint64_t& data)
 {
-    data = static_cast<std::uint64_t>(buffer[index++]);
-    data |= static_cast<std::uint64_t>(buffer[index++]) << 8;
-    data |= static_cast<std::uint64_t>(buffer[index++]) << 16;
-    data |= static_cast<std::uint64_t>(buffer[index++]) << 24;
-    data |= static_cast<std::uint64_t>(buffer[index++]) << 32;
-    data |= static_cast<std::uint64_t>(buffer[index++]) << 40;
-    data |= static_cast<std::uint64_t>(buffer[index++]) << 48;
-    data |= static_cast<std::uint64_t>(buffer[index++]) << 56;
+    data = static_cast<std::uint64_t>(_buffer[_index++]);
+    data |= static_cast<std::uint64_t>(_buffer[_index++]) << 8;
+    data |= static_cast<std::uint64_t>(_buffer[_index++]) << 16;
+    data |= static_cast<std::uint64_t>(_buffer[_index++]) << 24;
+    data |= static_cast<std::uint64_t>(_buffer[_index++]) << 32;
+    data |= static_cast<std::uint64_t>(_buffer[_index++]) << 40;
+    data |= static_cast<std::uint64_t>(_buffer[_index++]) << 48;
+    data |= static_cast<std::uint64_t>(_buffer[_index++]) << 56;
 
     return *this;
 }

@@ -31,8 +31,8 @@ class buffer_writer
     buffer_writer& operator<<(const std::vector<T>& vector);
 
   private:
-    ::buffer& buffer;
-    std::size_t start = 0;
+    ::buffer& _buffer;
+    std::size_t _start = 0;
 };
 
 #include "buffer_writer.inl"

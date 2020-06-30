@@ -46,6 +46,39 @@ inline void basic_message<T, U>::read_body(buffer_reader& reader)
     }
 }
 
+template <typename T, message_id U>
+inline bool basic_message<T, U>::readable(const buffer& buffer) const
+{
+    if(buffer.size() >= sizeof(message_header))
+    {
+        buffer_reader reader(buffer);
+        message_header header;
+        reader >> header;
+
+        return header.id == id() && buffer.size() >= header.size;
+    }
+
+    return false;
+}
+
+template <typename T, message_id U>
+inline void basic_message<T, U>::from_buffer(buffer& buffer)
+{
+    buffer_reader reader(buffer);
+    reader >> *static_cast<T*>(this);
+    buffer.erase(buffer.begin(), buffer.begin() + reader.read());
+}
+
+template <typename T, message_id U>
+inline buffer basic_message<T, U>::to_buffer() const
+{
+    buffer write_buffer;
+    buffer_writer writer(write_buffer);
+    writer << *static_cast<const T*>(this);
+
+    return write_buffer;
+}
+
 template <typename T>
 inline buffer_writer& operator<<(buffer_writer& writer, const T& message)
 {

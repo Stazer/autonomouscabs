@@ -9,7 +9,7 @@
 class web_session : public tcp_session<web_session>
 {
     public:
-        web_session(boost::asio::ip::tcp::socket&& socket);
+        web_session(boost::asio::ip::tcp::socket&& socket, class application& application);
         ~web_session();
 
         void run();

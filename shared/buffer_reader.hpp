@@ -35,9 +35,9 @@ class buffer_reader
         buffer_reader& operator>>(std::vector<T>& vector);
 
     private:
-        const ::buffer& buffer;
-        std::size_t start = 0;
-        std::size_t index = 0;
+        const ::buffer& _buffer;
+        std::size_t _start = 0;
+        std::size_t _index = 0;
 };
 
 #include "buffer_reader.inl"

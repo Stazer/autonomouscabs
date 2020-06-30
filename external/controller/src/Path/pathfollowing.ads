@@ -5,8 +5,8 @@ with mailbox;
 
 package pathfollowing is
 
-   width : constant Integer := 50;
-   height : constant Integer := 50;
+   width : constant Integer := 64;
+   height : constant Integer := 64;
    size : constant Integer := width * height * 4;
 
    type Pixel is array(0 .. 3) of uint8;

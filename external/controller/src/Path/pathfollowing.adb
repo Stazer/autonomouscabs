@@ -21,8 +21,18 @@ package body pathfollowing is
    binaImage : Colour_Matrix := (others => (others => 0));
 
    wheehlvelocity : Wheehl_velocity := (others => 0.0);
-   axleTrack : float64 := 1.1;
+   --axleTrack : float64 := 1.1;
    basicVelocity : float64 := 1.0;
+   offsetImage : Integer := 32;
+   V_turn : float64 :=0.0;
+   --PID Parameter
+   Kp : float64 :=0.05;
+   Ki : float64 :=0.05;
+   Kd : float64 :=0.05;
+   Error : float64 := 0.0;
+   lastError : float64 :=0.0;
+   integral : float64 := 0.0;
+   derivative : float64 :=0.0;
 
    function path_following (imageInput : in Communication_Packet) return Communication_Packet is
       raw : access types.payload := imageInput.local_payload;
@@ -118,42 +128,47 @@ package body pathfollowing is
       --Put_Line(Integer'Image(bottomPoint) & Integer'Image(topPoint) & Integer'Image(rightPoint) & Integer'Image(leftPoint));
       --calculate steering angle
       -- top and bottom
-      if bottomPoint /= 0 and topPoint /= 0 and rightPoint = 0 and leftPoint = 0 then
-         if topPoint - bottomPoint > 0 then
-            steeringAngle := float64((topPoint - bottomPoint) / height) ;
-         elsif topPoint - bottomPoint < 0 then
-            steeringAngle := -float64((topPoint - bottomPoint) / height);
-         else steeringAngle := 0.0;
-         end if;
-      end if;
+      --PID control the left and right velocity
+      Error := float64(bottomPoint - offsetImage);
+      integral := integral + Error;
+      derivative := Error - lastError;
+      V_turn := Kp * Error + Ki* integral + Kd * derivative;
+      --if bottomPoint /= 0 and topPoint /= 0 and rightPoint = 0 and leftPoint = 0 then
+         --if topPoint - bottomPoint > 0 then
+            --steeringAngle := float64((topPoint - bottomPoint) / height) ;
+        --elsif topPoint - bottomPoint < 0 then
+            --steeringAngle := -float64((topPoint - bottomPoint) / height);
+         --else steeringAngle := 0.0;
+         --end if;
+      --end if;
       -- bottom and left
-      if bottomPoint /= 0 and leftPoint/= 0 and topPoint = 0 and rightPoint = 0 then
-         steeringAngle := - float64(bottomPoint / (height - leftPoint));
-      end if;
+      --if bottomPoint /= 0 and leftPoint/= 0 and topPoint = 0 and rightPoint = 0 then
+         --steeringAngle := - float64(bottomPoint / (height - leftPoint));
+      --end if;
       -- top and right
-      if topPoint /= 0 and rightPoint /= 0 and bottomPoint = 0 and leftPoint= 0 then
-         steeringAngle := - float64((width - topPoint) / rightPoint);
-      end if;
+      --if topPoint /= 0 and rightPoint /= 0 and bottomPoint = 0 and leftPoint= 0 then
+         --steeringAngle := - float64((width - topPoint) / rightPoint);
+      --end if;
       --top and left
-      if topPoint /= 0 and leftPoint /=0 and bottomPoint = 0 and rightPoint = 0 then
-         steeringAngle := float64(topPoint / leftPoint);
-      end if;
+      --if topPoint /= 0 and leftPoint /=0 and bottomPoint = 0 and rightPoint = 0 then
+         --steeringAngle := float64(topPoint / leftPoint);
+      --end if;
       -- bottom and right
-      if bottomPoint/= 0 and rightPoint /= 0 and topPoint =0 and leftPoint = 0 then
-         steeringAngle := float64((width-bottomPoint) / (height - leftPoint));
-      end if;
+      --if bottomPoint/= 0 and rightPoint /= 0 and topPoint =0 and leftPoint = 0 then
+         --steeringAngle := float64((width-bottomPoint) / (height - leftPoint));
+      --end if;
 
 
-      Put_Line (steeringAngle'Image);
+      --Put_Line (steeringAngle'Image);
       --turn right
-      if steeringAngle > 0.0 then
-         wheehlvelocity(0) := basicVelocity + steeringAngle * axleTrack;
-         wheehlvelocity(1) := basicVelocity;
+      --if steeringAngle > 0.0 then
+         wheehlvelocity(0) := basicVelocity + V_turn;
+         wheehlvelocity(1) := basicVelocity - V_turn;
       --turn left
-      elsif steeringAngle < 0.0 then
-         wheehlvelocity(0) := basicVelocity;
-         wheehlvelocity(1) := basicVelocity - steeringAngle * axleTrack;
-      end if;
+      --elsif steeringAngle < 0.0 then
+         --wheehlvelocity(0) := basicVelocity;
+         --wheehlvelocity(1) := basicVelocity - steeringAngle * axleTrack;
+      --end if;
 
       Put_Line (wheehlvelocity (0)'Image & ", " & wheehlvelocity (1)'Image);
 

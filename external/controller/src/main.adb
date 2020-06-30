@@ -40,7 +40,7 @@ begin
       mailbox.check_mailbox(Backend_Mailbox,Webots_Mailbox,current_packet,alternator);
       mailbox.update_alternator(alternator);
       --path following
-      if(current_packet.package_ID = 67) then
+      if(current_packet.package_ID = 129) then
          send_packet := pathfollowing.path_following(current_packet);
          send_bytes(Webots_Channel,send_packet);
       end if;

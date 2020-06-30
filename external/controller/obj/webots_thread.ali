@@ -93,8 +93,8 @@ D s-unstyp.ads		20200312110721 34867c83 system.unsigned_types%s
 D s-wchcon.ads		20200312110721 1b7d22d2 system.wch_con%s
 D tcp_client.ads	20200624154551 b98992a8 tcp_client%s
 D types.ads		20200624154551 a8aa7ce8 types%s
-D webots_thread.ads	20200628143123 beb3494b webots_thread%s
-D webots_thread.adb	20200628143123 9341cb38 webots_thread%b
+D webots_thread.ads	20200630092914 beb3494b webots_thread%s
+D webots_thread.adb	20200630092914 9341cb38 webots_thread%b
 X 1 ada.ads
 16K9*Ada 20e8 58|2r6 2r23 4r6
 X 8 a-iteint.ads

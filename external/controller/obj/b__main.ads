@@ -37,7 +37,7 @@ package ada_main is
    pragma Export (C, main, "main");
 
    type Version_32 is mod 2 ** 32;
-   u00001 : constant Version_32 := 16#b5077dfc#;
+   u00001 : constant Version_32 := 16#409cd94a#;
    pragma Export (C, u00001, "mainB");
    u00002 : constant Version_32 := 16#050ff2f0#;
    pragma Export (C, u00002, "system__standard_libraryB");
@@ -485,9 +485,9 @@ package ada_main is
    pragma Export (C, u00223, "system__storage_pools__subpools__finalizationB");
    u00224 : constant Version_32 := 16#fe2f4b3a#;
    pragma Export (C, u00224, "system__storage_pools__subpools__finalizationS");
-   u00225 : constant Version_32 := 16#232e2b88#;
+   u00225 : constant Version_32 := 16#0768e467#;
    pragma Export (C, u00225, "pathfollowingB");
-   u00226 : constant Version_32 := 16#be52b532#;
+   u00226 : constant Version_32 := 16#930898fb#;
    pragma Export (C, u00226, "pathfollowingS");
    u00227 : constant Version_32 := 16#8aa4f090#;
    pragma Export (C, u00227, "system__img_realB");

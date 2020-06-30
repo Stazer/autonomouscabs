@@ -3,16 +3,16 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation 0.03808682417150016 0.7714041274115354 0.635204743399305 3.119688131672871
-  position 6.409620980680648 139.501828724283 -82.55227138078858
+  orientation -0.2750011256145541 0.9094555883940861 0.31187323330079975 1.5259684864812857
+  position 89.32252541478907 70.45215362448228 1.7990004277641631
 }
 TexturedBackground {
   luminosity 2
   reflections FALSE
 }
 DEF Cab1 Robot {
-  translation 0 0.4 -29.2
-  rotation 0 1 0 -1.5723853071795864
+  translation -9.316827388543823e-05 0.39866967958006416 -29.20000239112985
+  rotation -0.00011349065787361909 0.9999999864428141 -0.00011930734334201739 -1.5723853221373987
   children [
     DEF cam_f Camera {
       translation 0 0.1 1
@@ -352,6 +352,7 @@ DEF Cab1 Robot {
     }
     DEF wheelFL HingeJoint {
       jointParameters HingeJointParameters {
+        position 3.2787444654715636e-08
         anchor 0.55 -0.1 0.55
       }
       device [
@@ -362,7 +363,7 @@ DEF Cab1 Robot {
       ]
       endPoint DEF wheelFL Solid {
         translation 0.55 -0.1 0.55
-        rotation 0 0 1 1.5699999999999963
+        rotation 1.640678228840386e-08 -1.6393722327357814e-08 0.9999999999999998 1.5699999999999965
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -384,6 +385,7 @@ DEF Cab1 Robot {
     }
     DEF wheelRL HingeJoint {
       jointParameters HingeJointParameters {
+        position 3.431396371056691e-08
         anchor 0.55 -0.1 -0.7
       }
       device [
@@ -394,7 +396,7 @@ DEF Cab1 Robot {
       ]
       endPoint DEF wheelRL Solid {
         translation 0.55 -0.1 -0.7
-        rotation 0 0 1 1.5699999999999963
+        rotation 1.7170649862476898e-08 -1.7156981855283452e-08 0.9999999999999998 1.5699999999999965
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -416,6 +418,7 @@ DEF Cab1 Robot {
     }
     DEF wheelRR HingeJoint {
       jointParameters HingeJointParameters {
+        position 3.427814402086691e-08
         anchor -0.55 -0.1 -0.7
       }
       device [
@@ -426,7 +429,7 @@ DEF Cab1 Robot {
       ]
       endPoint DEF wheelRR Solid {
         translation -0.55 -0.1 -0.7
-        rotation 0 0 1 1.5699999999999963
+        rotation 1.7152725749855894e-08 -1.7139072010433453e-08 0.9999999999999998 1.5699999999999965
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -448,6 +451,7 @@ DEF Cab1 Robot {
     }
     DEF wheelFR HingeJoint {
       jointParameters HingeJointParameters {
+        position 3.2801768761024795e-08
         anchor -0.55 -0.1 0.55
       }
       device [
@@ -458,7 +462,7 @@ DEF Cab1 Robot {
       ]
       endPoint DEF wheelFR Solid {
         translation -0.55 -0.1 0.55
-        rotation 0 0 1 1.5699999999999956
+        rotation 1.6413950047165347e-08 -1.6400884380512394e-08 0.9999999999999998 1.5699999999999958
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -496,10 +500,12 @@ DEF Cab1 Robot {
     0 0 0
   ]
   controller "controller"
+  linearVelocity -9.629704177784108e-08 -4.1635382322116705e-09 -7.95251217589515e-11
+  angularVelocity 2.0539907064848833e-10 -2.479705605310184e-11 -9.952676362958886e-09
 }
 DEF Cab2 Robot {
-  translation 10 0.4 -29.1
-  rotation 0 1 0 -1.5723853071795864
+  translation 9.999906831726113 0.3986696795800642 -29.100002391129856
+  rotation -0.00011349065787375742 0.9999999864428141 -0.00011930734334192542 -1.572385322137397
   children [
     DEF cam_f Camera {
       translation 0 0.1 1
@@ -839,6 +845,7 @@ DEF Cab2 Robot {
     }
     DEF wheelFL HingeJoint {
       jointParameters HingeJointParameters {
+        position 3.278744493984078e-08
         anchor 0.55 -0.1 0.55
       }
       device [
@@ -849,7 +856,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelFL Solid {
         translation 0.55 -0.1 0.55
-        rotation 0 0 1 1.5699999999999963
+        rotation 1.6406782431080004e-08 -1.639372246992039e-08 0.9999999999999998 1.5699999999999965
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -871,6 +878,7 @@ DEF Cab2 Robot {
     }
     DEF wheelRL HingeJoint {
       jointParameters HingeJointParameters {
+        position 3.4313963951444856e-08
         anchor 0.55 -0.1 -0.7
       }
       device [
@@ -881,7 +889,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelRL Solid {
         translation 0.55 -0.1 -0.7
-        rotation 0 0 1 1.5699999999999963
+        rotation 1.7170649983011818e-08 -1.7156981975722425e-08 0.9999999999999998 1.5699999999999965
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -903,6 +911,7 @@ DEF Cab2 Robot {
     }
     DEF wheelRR HingeJoint {
       jointParameters HingeJointParameters {
+        position 3.427814402976184e-08
         anchor -0.55 -0.1 -0.7
       }
       device [
@@ -913,7 +922,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelRR Solid {
         translation -0.55 -0.1 -0.7
-        rotation 0 0 1 1.5699999999999963
+        rotation 1.71527257543069e-08 -1.7139072014880918e-08 0.9999999999999998 1.5699999999999965
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -935,6 +944,7 @@ DEF Cab2 Robot {
     }
     DEF wheelFR HingeJoint {
       jointParameters HingeJointParameters {
+        position 3.2801768420202845e-08
         anchor -0.55 -0.1 0.55
       }
       device [
@@ -945,7 +955,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelFR Solid {
         translation -0.55 -0.1 0.55
-        rotation 0 0 1 1.5699999999999956
+        rotation 1.6413949876618615e-08 -1.640088421010142e-08 0.9999999999999998 1.5699999999999958
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -983,6 +993,8 @@ DEF Cab2 Robot {
     0 0 0
   ]
   controller "controller"
+  linearVelocity -9.629703274243128e-08 -4.163539008387993e-09 -7.954536038044923e-11
+  angularVelocity 2.053981444258579e-10 -2.477681695856947e-11 -9.952676064697886e-09
 }
 DEF environment Solid {
   scale 1.09819 1.09819 1.09819

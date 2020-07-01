@@ -1,5 +1,6 @@
 with types; use types;
 with Ada.Real_Time; use Ada.Real_Time;
+with Ada.Text_IO;
 
 package mailbox is
 
@@ -10,6 +11,7 @@ package mailbox is
       entry Deposit(X: in types.Communication_Packet);
       entry Collect(X: out types.Communication_Packet);
       procedure View_Inbox(Remaining_Items: out types.uint8);
+      procedure Empty;
    private
       Items: Mail_List(1..Size);
       Last : types.uint8 := 0;

@@ -5,13 +5,13 @@ package body mailbox is
       begin
          if Last > 0 then
             for I in Items'Range loop
-               exit when Last = 0 or I = Last;
                if isExpired(Items(I).TTL) = True then
-                  Last := Last - 1;
-                  Items(1..Last) := Items(2..Last+1);
+                     Last := Last - 1;
+                     Items(1..Last) := Items(2..Last+1);
                end if;
+               exit when Last = 0 or I = Last;
             end loop;
-         end if;
+         end if;   
       end Clear;
       entry Deposit(X: in types.Communication_Packet) when Last < Size is
       begin
@@ -28,6 +28,10 @@ package body mailbox is
       begin
          Remaining_Items:= Last;
       end View_Inbox;
+      procedure Empty is
+      begin
+         Last := 0;
+      end Empty;
    end Mailbox;
    
    procedure check_mailbox ( first : in out Mailbox; second : in out Mailbox; new_packet : out types.Communication_Packet; alternator: types.uint8 ) is
@@ -62,7 +66,7 @@ package body mailbox is
    begin
       if (Ada.Real_Time.Clock - Time_In_Question) >= Ada.Real_Time.Milliseconds(6000) then
          return True;
-      else 
+      else
          return False;
       end if;  
    end isExpired;

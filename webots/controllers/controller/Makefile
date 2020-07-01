@@ -69,7 +69,7 @@
 UNAME_S := $(shell uname -s)
 
 ifeq ($(OS),Windows_NT)
-LIBRARIES=-lws2_32
+LIBRARIES += -lws2_32
 endif
 
 INCLUDE = -I"${BOOST_ROOT}"
@@ -77,6 +77,8 @@ INCLUDE = -I"${BOOST_ROOT}"
 ifeq ($(UNAME_S),Linux)
 LIBRARIES += -lpthread -lboost_system
 endif
+
+CXX_SOURCES = controller.cpp ../../../shared/buffer_reader.cpp ../../../shared/buffer_writer.cpp ../../../shared/message.cpp
 
 CFLAGS = -Wno-strict-aliasing -Wno-unused-variable
 

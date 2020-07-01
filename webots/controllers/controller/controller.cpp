@@ -92,6 +92,7 @@ int main(int argc, char **argv)
 
   buffer in;
   buffer_reader reader(in);
+  buffer_writer writer(in);
   while (robot->step(timeStep) != -1) 
   {
     // read distance sensor data
@@ -119,7 +120,7 @@ int main(int argc, char **argv)
       buffer out;
       buffer_writer writer(out);
       writer << ds_msg << ls_msg << img_msg; 
-      boost::asio::write(client, boost::asio::buffer(out));
+      std::size_t t = boost::asio::write(client, boost::asio::buffer(out));
     }
     catch(std::exception& e)
     {
@@ -133,7 +134,7 @@ int main(int argc, char **argv)
     }
     std::array<std::uint8_t, 256> data;
     boost::system::error_code error;
-    size_t length = client.read_some(boost::asio::buffer(data), error);
+    std::size_t length = client.read_some(boost::asio::buffer(data), error);
     if(error == boost::asio::error::eof)
     {
       break;
@@ -144,26 +145,28 @@ int main(int argc, char **argv)
       break;
     }
 
-    buffer_writer writer(in);
-    writer << data;
+    for(std::size_t i = 0; i<length; i++)
+    {
+      writer << data[i];
+    }
 
-    if(length != sizeof(message_size) + sizeof(message_id))
+    webots_velocity_message vl_msg;
+    if(writer.written() - reader.read() < vl_msg.size())
     {
       continue;
     }
 
     try
     {
-      webots_velocity_message vl_msg;
       reader >> vl_msg;
       right_speed = vl_msg.right_speed;
       left_speed = vl_msg.left_speed;
+      // std::cout << "recieved rs: " << vl_msg.right_speed << ", ls: " << vl_msg.left_speed << '\n';
     }
     catch(const std::runtime_error& e)
     {
       std::cerr << e.what() << '\n';
     }
-    // std::cout << "right_speed: " << right_speed << ", left_speed: " << left_speed << std::endl;
 
     m_motors[0]->setVelocity(right_speed);
     m_motors[1]->setVelocity(right_speed);

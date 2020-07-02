@@ -6,7 +6,8 @@ project Ada is
                         "../../external/controller/src/backend_thread/**", 
                         "../../external/controller/src/tcp_client/**", 
                         "../../external/controller/src/webots_thread/**",
-                        "../../external/controller/src/knowledge/**");
+                        "../../external/controller/src/knowledge/**",
+                        "../../external/controller/src/vendor/**");
    for Object_Dir use "obj";
    for Main use ("test_main.adb");
    for Exec_Dir use ".";

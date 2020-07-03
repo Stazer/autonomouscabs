@@ -16,7 +16,7 @@ int main(int argc, char **argv)
   
   robot_container container;
   container.wait_for_connection(argv[1]);
-  container.setup_robot();
+  container.setup_robot(-1);
   container.run();
   return 0;
 }

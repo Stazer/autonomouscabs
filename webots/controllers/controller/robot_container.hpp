@@ -26,6 +26,7 @@ class robot_container
         std::array<webots::LightSensor *, 1> _light_sensors;
         webots::Camera *_camera;
         int _image_size;
+        int _wait_time;
 
         std::chrono::milliseconds _last;
 
@@ -40,7 +41,7 @@ class robot_container
         void fill_image_data_message(buffer_writer& writer);
     public:
         robot_container();
-        void setup_robot();
+        void setup_robot(int n_images);
         int wait_for_connection(char *port);
         void run();
 };

@@ -83,6 +83,8 @@ package body tcp_client is
       bytes_received := recv_bytes(server_stream, protocol_ID_length, dynamic_buffer);
       byte_buffer.read_uint8(dynamic_buffer, conv_package_ID);
 
+      conv_package_value_length := conv_package_value_length - 5;
+
       --  read payload
       bytes_received := recv_bytes(server_stream, conv_package_value_length, dynamic_buffer);
       read_payload(dynamic_buffer, conv_package_value_length, conv_package_ID,local_mailbox);

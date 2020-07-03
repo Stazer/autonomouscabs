@@ -4,6 +4,7 @@ with backend_thread; use backend_thread;
 with webots_thread; use webots_thread;
 with types; use types;
 with mailbox;
+with pathfollowing;
 
 
 procedure Main is
@@ -21,7 +22,7 @@ procedure Main is
       backend_main;
    end backend_thread;
 
-   current_packet : types.Communication_Packet;
+   current_packet, out_packet : types.Communication_Packet;
    alternator : types.uint8 := 1;
 
 begin
@@ -39,6 +40,10 @@ begin
       mailbox.update_alternator(alternator);
 
       -- do calculations with current packet
+      if current_packet.package_ID = 67 then
+         out_packet := pathfollowing.path_following (current_packet);
+         tcp_client.send_bytes (Webots_Channel, out_packet);
+      end if;
 
    end loop;
 

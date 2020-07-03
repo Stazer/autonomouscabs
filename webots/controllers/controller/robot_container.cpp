@@ -98,7 +98,7 @@ void robot_container::fill_image_data_message(buffer_writer& writer)
     std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds>
                 (std::chrono::system_clock::now().time_since_epoch());
     // turn on camera at least _basic_time_step millieconds before _wait_time
-    if((now - _last).count() > (_wait_time - 20)){
+    if((now - _last).count() > (_wait_time - (_basic_time_step + 4))){
         _camera->enable(_basic_time_step);
     }
 

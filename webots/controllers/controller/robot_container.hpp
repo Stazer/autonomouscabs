@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <chrono>
 
 #include <webots/Robot.hpp>
 #include <webots/Motor.hpp>
@@ -25,6 +26,8 @@ class robot_container
         std::array<webots::LightSensor *, 1> _light_sensors;
         webots::Camera *_camera;
         int _image_size;
+
+        std::chrono::milliseconds _last;
 
         boost::asio::io_service _io_service;
         boost::asio::ip::tcp::socket _external;

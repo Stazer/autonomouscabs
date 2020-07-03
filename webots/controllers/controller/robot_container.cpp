@@ -9,6 +9,8 @@ robot_container::robot_container()
     : _external(_io_service), _reader(_in), _writer(_in)
 {
     _basic_time_step = (int) _robot.getBasicTimeStep();
+    _last = std::chrono::duration_cast<std::chrono::milliseconds>
+                (std::chrono::system_clock::now().time_since_epoch());
 }
 
 void robot_container::setup_robot()
@@ -32,7 +34,6 @@ void robot_container::setup_robot()
 
     std::cout << "setting up camera" << '\n';
     _camera = _robot.getCamera("camera");
-    _camera->enable(_basic_time_step);
     _image_size =  _camera->getHeight() * _camera->getWidth() * 4  * sizeof(unsigned char);
 
     std::cout << "setting up motor" << '\n';
@@ -84,11 +85,25 @@ void robot_container::fill_light_sensor_message(buffer_writer& writer)
 
 void robot_container::fill_image_data_message(buffer_writer& writer)
 {
+    std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds>
+                (std::chrono::system_clock::now().time_since_epoch());
+    if((now - _last).count() > 65){
+        _camera->enable(_basic_time_step);
+    }
+
+    if((now - _last).count() < 86){
+        return;
+    }
+    std::cout << (now - _last).count()  << '\n';
+    
     const unsigned char *image = _camera->getImage();
     std::vector<unsigned char> vec(image, image + _image_size);
     external_image_data_message message;
     message.pixel = vec;
     writer << message;
+
+    _last = now;
+    _camera->disable();
 }
 
 void robot_container::run()

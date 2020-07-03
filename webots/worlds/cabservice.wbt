@@ -36,8 +36,8 @@ DEF Cab1 Robot {
         density 1
       }
       fieldOfView 0.75
-      width 18
-      height 10
+      width 50
+      height 50
       far 10
     }
     DEF ls_f LightSensor {
@@ -496,6 +496,7 @@ DEF Cab1 Robot {
     0 0 0
   ]
   controller "controller"
+  controllerArgs "9999"
 }
 DEF Cab2 Robot {
   translation 10 0.4 -29.1

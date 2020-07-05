@@ -12,7 +12,7 @@ package body pathfollowing is
    topPoint1 : Integer := 0;
    leftPoint1 : Integer := 0;
    rightPoint1 : Integer:= 0;
-   steeringAngle : float64 := 0.0;
+   --steeringAngle : float64 := 0.0;
 
    red : Colour_Matrix := (others => (others => 0));
    blue : Colour_Matrix := (others => (others => 0));
@@ -22,17 +22,9 @@ package body pathfollowing is
 
    wheehlvelocity : Wheehl_velocity := (others => 0.0);
    --axleTrack : float64 := 1.1;
-   basicVelocity : float64 := 1.0;
-   offsetImage : Integer := 32;
-   V_turn : float64 :=0.0;
-   --PID Parameter
-   Kp : float64 :=0.05;
-   Ki : float64 :=0.05;
-   Kd : float64 :=0.05;
-   Error : float64 := 0.0;
-   lastError : float64 :=0.0;
-   integral : float64 := 0.0;
-   derivative : float64 :=0.0;
+   basicVelocity : float64 :=1.0 ;
+   --ratio : float64 := 8.0;
+   V_turn : float64 := 0.0;
 
    function path_following (imageInput : in Communication_Packet) return Communication_Packet is
       raw : access types.payload := imageInput.local_payload;
@@ -76,37 +68,37 @@ package body pathfollowing is
       --end loop;
 -- find bottompoint
       for J in Column_Index loop
-         if grey(Row_Index(height-1))(J) = 255 then
+         if binaImage(Row_Index(height-32))(J) = 255 then
             bottomPoint := Integer(J);
          end if;
          --
       end loop;
       for J in reverse Column_Index loop
-         if grey(Row_Index(height-1))(J) = 255 then
+         if binaImage(Row_Index(height-32))(J) = 255 then
             bottomPoint1 := Integer(J);
          end if;
       end loop;
       bottomPoint := (bottomPoint + bottomPoint1) / 2;
       -- find toppoint
       for J in Column_Index loop
-         if grey(0)(J) = 255 then
+         if binaImage(0)(J) = 255 then
             topPoint := Integer(J);
          end if;
       end loop;
       for J in reverse Column_Index loop
-         if grey(Row_Index(0))(J) = 255 then
+         if binaImage(Row_Index(0))(J) = 255 then
             topPoint1 := Integer(J);
          end if;
       end loop;
       topPoint := (topPoint + topPoint1) / 2;
       -- find rightpoint
       for I in Row_Index loop
-         if grey(I)(Column_Index(width-1)) = 255 then
+         if binaImage(I)(Column_Index(width-1)) = 255 then
             rightPoint:= Integer(I);
          end if;
       end loop;
       for I in reverse Row_Index loop
-         if grey(I)(Column_Index(width-1)) = 255 then
+         if binaImage(I)(Column_Index(width-1)) = 255 then
             rightPoint1:= Integer(I);
          end if;
       end loop;
@@ -114,29 +106,24 @@ package body pathfollowing is
 
       --find leftPoint
       for I in Row_Index loop
-         if grey(I)(0) = 255 then
+         if binaImage(I)(0) = 255 then
             leftPoint:= Integer(I);
          end if;
       end loop;
       for I in reverse Row_Index loop
-         if grey(I)(0) = 255 then
+         if binaImage(I)(0) = 255 then
             leftPoint1 := Integer(I);
          end if;
       end loop;
       leftPoint := (leftPoint + leftPoint1)/2;
 
-      --Put_Line(Integer'Image(bottomPoint) & Integer'Image(topPoint) & Integer'Image(rightPoint) & Integer'Image(leftPoint));
+      Put_Line(Integer'Image(bottomPoint) & Integer'Image(topPoint) & Integer'Image(rightPoint) & Integer'Image(leftPoint));
       --calculate steering angle
       -- top and bottom
-      --PID control the left and right velocity
-      Error := float64(bottomPoint - offsetImage);
-      integral := integral + Error;
-      derivative := Error - lastError;
-      V_turn := Kp * Error + Ki* integral + Kd * derivative;
       --if bottomPoint /= 0 and topPoint /= 0 and rightPoint = 0 and leftPoint = 0 then
          --if topPoint - bottomPoint > 0 then
             --steeringAngle := float64((topPoint - bottomPoint) / height) ;
-        --elsif topPoint - bottomPoint < 0 then
+         --elsif topPoint - bottomPoint < 0 then
             --steeringAngle := -float64((topPoint - bottomPoint) / height);
          --else steeringAngle := 0.0;
          --end if;
@@ -156,19 +143,29 @@ package body pathfollowing is
       -- bottom and right
       --if bottomPoint/= 0 and rightPoint /= 0 and topPoint =0 and leftPoint = 0 then
          --steeringAngle := float64((width-bottomPoint) / (height - leftPoint));
-      --end if;
+         --end if;
+      if bottomPoint >27 then
+         V_turn := 0.8;
+      elsif bottomPoint <16  and bottomPoint > 0 then
+         V_turn := -0.8;
+         else V_turn := 0.0;
+      end if;
 
 
-      --Put_Line (steeringAngle'Image);
+      Put_Line (V_turn'Image);
       --turn right
-      --if steeringAngle > 0.0 then
+
+      if V_turn > 0.0 then
          wheehlvelocity(0) := basicVelocity + V_turn;
-         wheehlvelocity(1) := basicVelocity - V_turn;
+         wheehlvelocity(1) := basicVelocity;
       --turn left
-      --elsif steeringAngle < 0.0 then
-         --wheehlvelocity(0) := basicVelocity;
-         --wheehlvelocity(1) := basicVelocity - steeringAngle * axleTrack;
-      --end if;
+      elsif V_turn < 0.0 then
+         wheehlvelocity(0) := basicVelocity;
+         wheehlvelocity(1) := basicVelocity - V_turn;
+      else
+         wheehlvelocity(0) := basicVelocity;
+         wheehlvelocity(1) := basicVelocity;
+      end if;
 
       Put_Line (wheehlvelocity (0)'Image & ", " & wheehlvelocity (1)'Image);
 

@@ -49,14 +49,14 @@ package body ada_main is
    E156 : Short_Integer; pragma Import (Ada, E156, "system__tasking__protected_objects_E");
    E172 : Short_Integer; pragma Import (Ada, E172, "system__tasking__protected_objects__entries_E");
    E174 : Short_Integer; pragma Import (Ada, E174, "system__tasking__queuing_E");
-   E247 : Short_Integer; pragma Import (Ada, E247, "system__tasking__stages_E");
+   E249 : Short_Integer; pragma Import (Ada, E249, "system__tasking__stages_E");
    E150 : Short_Integer; pragma Import (Ada, E150, "types_E");
    E216 : Short_Integer; pragma Import (Ada, E216, "mailbox_E");
    E148 : Short_Integer; pragma Import (Ada, E148, "byte_buffer_E");
    E152 : Short_Integer; pragma Import (Ada, E152, "tcp_client_E");
    E146 : Short_Integer; pragma Import (Ada, E146, "backend_thread_E");
    E226 : Short_Integer; pragma Import (Ada, E226, "pathfollowing_E");
-   E249 : Short_Integer; pragma Import (Ada, E249, "webots_thread_E");
+   E251 : Short_Integer; pragma Import (Ada, E251, "webots_thread_E");
 
    Sec_Default_Sized_Stacks : array (1 .. 1) of aliased System.Secondary_Stack.SS_Stack (System.Parameters.Runtime_Default_Sec_Stack_Size);
 
@@ -67,7 +67,7 @@ package body ada_main is
 
    procedure finalize_library is
    begin
-      E249 := E249 - 1;
+      E251 := E251 - 1;
       declare
          procedure F1;
          pragma Import (Ada, F1, "webots_thread__finalize_spec");
@@ -368,7 +368,7 @@ package body ada_main is
       System.Tasking.Queuing'Elab_Body;
       E174 := E174 + 1;
       System.Tasking.Stages'Elab_Body;
-      E247 := E247 + 1;
+      E249 := E249 + 1;
       E216 := E216 + 1;
       byte_buffer'elab_spec;
       byte_buffer'elab_body;
@@ -380,7 +380,7 @@ package body ada_main is
       pathfollowing'elab_body;
       E226 := E226 + 1;
       webots_thread'elab_spec;
-      E249 := E249 + 1;
+      E251 := E251 + 1;
    end adainit;
 
    procedure Ada_Main_Program;

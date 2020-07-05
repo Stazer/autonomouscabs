@@ -19,7 +19,7 @@ RV NO_OBSOLESCENT_FEATURES
 RV SPARK_05
 RV MAX_ENTRY_QUEUE_LENGTH=1+
 
-U tcp_client%b		tcp_client.adb		225d25dc NE OO PK IL
+U tcp_client%b		tcp_client.adb		de0eeefc NE OO PK IL
 Z ada.streams%s		a-stream.adb		a-stream.ali
 Z ada.tags%s		a-tags.adb		a-tags.ali
 Z system%s		system.ads		system.ali
@@ -95,7 +95,7 @@ D s-traent.ads		20200312110721 005bf670 system.traceback_entries%s
 D s-unstyp.ads		20200312110721 34867c83 system.unsigned_types%s
 D s-wchcon.ads		20200312110721 1b7d22d2 system.wch_con%s
 D tcp_client.ads	20200624154551 b98992a8 tcp_client%s
-D tcp_client.adb	20200624154551 337ecb9c tcp_client%b
+D tcp_client.adb	20200630130717 cf2d00bc tcp_client%b
 D types.ads		20200624154551 a8aa7ce8 types%s
 X 1 ada.ads
 16K9*Ada 20e8 55|2r6 2r23 3r6 3r23 6r6 6r25 56|101r28
@@ -179,7 +179,7 @@ X 56 tcp_client.adb
 54m7 new_byte{57|6M9} 59m42 59r42 60r37
 72m7 bytes_received{57|8M9} 79m7 83m7 87m7
 73m7 conv_package_ID{57|6M9} 84m46 88r63
-74m7 conv_package_value_length{57|8M9} 80m47 87r51 88r36
+74m7 conv_package_value_length{57|8M9} 80m47 81m7 81r36 87r51 88r36
 96r15 new_packet{57|18R9} 98m10 99m10 100m10 101m10 103r19 104r39 108r32
 103m14 I<18|74M9> 104r64
 X 57 types.ads

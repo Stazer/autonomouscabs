@@ -78,7 +78,7 @@ package body tcp_client is
       --  read package_length
       bytes_received := recv_bytes(server_stream, protocol_package_length, dynamic_buffer);
       byte_buffer.read_uint32(dynamic_buffer, conv_package_value_length);
-
+      conv_package_value_length := conv_package_value_length - 5;
       --  read package_ID
       bytes_received := recv_bytes(server_stream, protocol_ID_length, dynamic_buffer);
       byte_buffer.read_uint8(dynamic_buffer, conv_package_ID);

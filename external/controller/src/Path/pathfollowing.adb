@@ -22,7 +22,7 @@ package body pathfollowing is
 
    wheehlvelocity : Wheehl_velocity := (others => 0.0);
    --axleTrack : float64 := 1.1;
-   basicVelocity : float64 :=1.0 ;
+   basicVelocity : float64 :=2.0 ;
    --ratio : float64 := 8.0;
    V_turn : float64 := 0.0;
    offset : Integer := 32;

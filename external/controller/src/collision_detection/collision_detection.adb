@@ -60,8 +60,6 @@ package body collision_detection is
                else
                   Ada.Text_IO.Put_Line("There is no space");
                end if;
-
-               return True;
             end if;
 
          when Left =>
@@ -108,21 +106,25 @@ package body collision_detection is
 --                 for I in o8'Range loop
 --                    Webots_Cmd.local_payload (I + 8) := o8 (I);
 --                 end loop;
-            ADA.Integer_Text_IO.Put(Integer(Webots_Cmd.package_ID));
+           ADA.Integer_Text_IO.Put(Integer(Webots_Cmd.package_ID));
 --                 send_bytes(Webots_Channel, Webots_Cmd);
 --
 
          when Right =>
-            --Ada.Text_IO.Put("Left");
+            Ada.Text_IO.Put("Left");
             if distance(2) > threshold then
                Ada.Text_IO.Put_Line("Get Back to path");
                car_state := Forward;
             end if;
 
       end case;
+      if car_state = Left or car_state = Right then
+         return True;
+      else
+         return False;
+      end if;
 
-      return False;
+
    end;
-
 
 end ;

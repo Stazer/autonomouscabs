@@ -45,13 +45,12 @@ begin
 
       -- do calculations with current packet
       --Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.package_ID)));
-
       -- Path following
-      if is_object_collision = False then
-         if(current_packet.package_ID = 67) then
-            send_packet := pathfollowing.path_following(current_packet);
-            send_bytes(Webots_Channel, send_packet);
-         end if;
+     if(current_packet.package_ID = 67) then
+         send_packet := pathfollowing.path_following(current_packet);
+--           if is_object_collision = False then
+--              send_bytes(Webots_Channel, send_packet);
+--           end if;
       end if;
 
       -- Object collision
@@ -64,7 +63,6 @@ begin
          end loop;
          is_object_collision := detect(distance_sensor_data);
       end if;
-
 
    end loop;
 

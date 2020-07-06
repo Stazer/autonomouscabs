@@ -19,7 +19,7 @@ RV NO_IMPLEMENTATION_PRAGMAS
 RV NO_ELABORATION_CODE
 RV SPARK_05
 
-U pathfollowing%b	pathfollowing.adb	9a4ba409 OO PK IL
+U pathfollowing%b	pathfollowing.adb	b900fb18 OO PK IL
 Z ada.tags%s		a-tags.adb		a-tags.ali
 Z system.concat_3%s	s-conca3.adb		s-conca3.ali
 Z system.concat_4%s	s-conca4.adb		s-conca4.ali
@@ -49,7 +49,7 @@ D i-c.ads		20200312110721 5421119b interfaces.c%s
 D i-cstrea.ads		20200312110721 e53d8b8e interfaces.c_streams%s
 D mailbox.ads		20200624154551 01c4c1c0 mailbox%s
 D pathfollowing.ads	20200703165547 53f1d129 pathfollowing%s
-D pathfollowing.adb	20200703165648 c9ba7520 pathfollowing%b
+D pathfollowing.adb	20200706151050 eaf12a31 pathfollowing%b
 D system.ads		20200312110721 4635ec04 system%s
 D s-atacco.ads		20200312110721 4c36d12f system.address_to_access_conversions%s
 D s-conca3.ads		20200312110721 0b705ca5 system.concat_3%s
@@ -87,7 +87,7 @@ X 4 a-flteio.ads
 20K13*Float_Text_IO[10|46] 16|2w10 2r33
 X 9 a-textio.ads
 49K13*Text_IO 471e16 16|1w10 1r27
-263U14*Put_Line 17|120s7 155s7 170s7
+263U14*Put_Line 17|129s7 171s7 186s7
 X 12 interfac.ads
 63M9*Unsigned_8
 74M9*Unsigned_32
@@ -96,80 +96,90 @@ X 12 interfac.ads
 X 15 mailbox.ads
 4K9*mailbox 24e12 16|4w6
 X 16 pathfollowing.ads
-6K9*pathfollowing 25l5 25e18 17|1b14 196l5 196t18
-8i4*width{integer} 10r31 13r36 17|37r52 96r39 101r39
-9i4*height{integer} 10r39 14r33 17|71r33 77r33
+6K9*pathfollowing 25l5 25e18 17|1b14 212l5 212t18
+8i4*width{integer} 10r31 13r36 17|46r52 105r39 110r39
+9i4*height{integer} 10r39 14r33 17|80r33 86r33
 10i4*size{integer} 16r35
 12A9*Pixel(48|6M9)<integer>
-13I9*Column_Index<short_short_integer> 19r32 17|36r19 48r19 70r16 76r24 83r16
-. 88r24 96r26 101r26
-14I9*Row_Index<short_short_integer> 20r32 17|35r16 47r16 71r23 77r23 89r23
-. 95r16 100r24 108r16 113r24
-16I9*Image_Index<short_integer> 17r28 17|31r15 37r22
+13I9*Column_Index<short_short_integer> 19r32 17|45r19 57r19 79r16 85r24 92r16
+. 97r24 105r26 110r26
+14I9*Row_Index<short_short_integer> 20r32 17|44r16 56r16 80r23 86r23 98r23
+. 104r16 109r24 117r16 122r24
+16I9*Image_Index<short_integer> 17r28 17|40r15 46r22
 17A9*Image_Raw(48|6M9)<16I9>
 19A9*Colour_Column(48|6M9)<13I9> 20r46
 20A9*Colour_Matrix(19A9)<14I9> 17|17r10 18r11 19r12 20r11 21r16
 21A9*Wheehl_velocity(48|10F9)<integer> 17|23r21
-23V13*path_following{48|18R9} 23>28 17|29b13 194l8 194t22
-23r28 imageInput{48|18R9} 17|29b29 30r37
+23V13*path_following{48|18R9} 23>28 17|38b13 210l8 210t22
+23r28 imageInput{48|18R9} 17|38b29 39r37
 X 17 pathfollowing.adb
-2i4 colour{integer} 41m13 42r35
+2i4 colour{integer} 50m13 51r35
 3i4 r{integer}
 4i4 g{integer}
 5i4 b{integer}
-7i4 bottomPoint{integer} 72m13 81m7 81r23 120r30 147r10 149r13 149r34
-8i4 topPoint{integer} 85m13 93m7 93r20 120r59
-9i4 leftPoint{integer} 110m13 118m7 118r21 120r113
-10i4 rightPoint{integer} 97m13 105m7 105r22 120r85
-11i4 bottomPoint1{integer} 78m13 81r37
-12i4 topPoint1{integer} 90m13 93r31
-13i4 leftPoint1{integer} 115m13 118r33
-14i4 rightPoint1{integer} 102m13 105r35
-17a4 red{16|20A9} 40m13 41r99
-18a4 blue{16|20A9} 38m13 41r31
-19a4 green{16|20A9} 39m13 41r64
-20a4 grey{16|20A9} 42m13 49r16
-21a4 binaImage{16|20A9} 50m16 52m16 71r13 77r13 84r13 89r13 96r13 101r13
-. 109r13 114r13
-23a4 wheehlvelocity{16|21A9} 159m10 160m10 163m10 164m10 166m10 167m10 170r17
-. 170r51 178r42 185r42
-25f4 basicVelocity{48|10F9} 159r31 160r31 163r31 164r31 166r31 167r31
-27f4 V_turn{48|10F9} 148m10 150m10 151m15 155r17 158r10 159r47 162r13 164r47
-30p7 raw(48|15A9) 38r29 39r30 40r28
-31i7 index{16|16I9} 37m13 38r47 39r48 40r46
-32a7 o8{48|13A9} 179m10 181r19 182r41 186m10 188r19 189r45
-33m7 u64{48|9M9} 178m10 179r40 185m10 186r40
-35i11 I{16|14I9} 37r47 38r19 39r20 40r18 41r37 41r71 41r104 42r19
-36i14 J{16|13I9} 37r68 38r23 39r24 40r22 41r41 41r75 41r108 42r23
-47i11 I{16|14I9} 49r22 50r27 52r27
-48i14 J{16|13I9} 49r25 50r30 52r30
-70i11 J{16|13I9} 71r45 72r36
-76i11 J{16|13I9} 77r45 78r37
-83i11 J{16|13I9} 84r26 85r33
-88i11 J{16|13I9} 89r37 90r34
-95i11 I{16|14I9} 96r23 97r34
-100i11 I{16|14I9} 101r23 102r35
-108i11 I{16|14I9} 109r23 110r33
-113i11 I{16|14I9} 114r23 115r35
-172r15 packet{48|18R9} 174m10 175m10 176m10 182r13 189r13 192r17
-181m14 I<12|74M9> 182r35 182r45
-188m14 I<12|74M9> 189r35 189r49
+7i4 bottomPoint{integer} 81m13 90m7 90r23 129r30 163r10 165r13 165r36
+8i4 topPoint{integer} 94m13 102m7 102r20 129r59
+9i4 leftPoint{integer} 119m13 127m7 127r21 129r113
+10i4 rightPoint{integer} 106m13 114m7 114r22 129r85
+11i4 bottomPoint1{integer} 87m13 90r37
+12i4 topPoint1{integer} 99m13 102r31
+13i4 leftPoint1{integer} 124m13 127r33
+14i4 rightPoint1{integer} 111m13 114r35
+17a4 red{16|20A9} 49m13 50r99
+18a4 blue{16|20A9} 47m13 50r31
+19a4 green{16|20A9} 48m13 50r64
+20a4 grey{16|20A9} 51m13 58r16
+21a4 binaImage{16|20A9} 59m16 61m16 80r13 86r13 93r13 98r13 105r13 110r13
+. 118r13 123r13
+23a4 wheehlvelocity{16|21A9} 175m10 176m10 179m10 180m10 182m10 183m10 186r17
+. 186r51 194r42 201r42
+25f4 basicVelocity{48|10F9} 175r31 176r31 179r31 180r31 182r31 183r31
+27f4 V_turn{48|10F9} 164m10 166m10 167m15 171r17 174r10 175r47 176r47 178r13
+. 179r47 180r47
+28i4 offset{integer}
+29f4 Kp{48|10F9}
+30f4 Ki{48|10F9}
+31f4 Kd{48|10F9}
+32f4 Error{48|10F9}
+33f4 lastError{48|10F9}
+34f4 integral{48|10F9}
+35f4 derivative{48|10F9}
+39p7 raw(48|15A9) 47r29 48r30 49r28
+40i7 index{16|16I9} 46m13 47r47 48r48 49r46
+41a7 o8{48|13A9} 195m10 197r19 198r41 202m10 204r19 205r45
+42m7 u64{48|9M9} 194m10 195r40 201m10 202r40
+44i11 I{16|14I9} 46r47 47r19 48r20 49r18 50r37 50r71 50r104 51r19
+45i14 J{16|13I9} 46r68 47r23 48r24 49r22 50r41 50r75 50r108 51r23
+56i11 I{16|14I9} 58r22 59r27 61r27
+57i14 J{16|13I9} 58r25 59r30 61r30
+79i11 J{16|13I9} 80r44 81r36
+85i11 J{16|13I9} 86r44 87r37
+92i11 J{16|13I9} 93r26 94r33
+97i11 J{16|13I9} 98r37 99r34
+104i11 I{16|14I9} 105r23 106r34
+109i11 I{16|14I9} 110r23 111r35
+117i11 I{16|14I9} 118r23 119r33
+122i11 I{16|14I9} 123r23 124r35
+188r15 packet{48|18R9} 190m10 191m10 192m10 198r13 205r13 208r17
+197m14 I<12|74M9> 198r35 198r45
+204m14 I<12|74M9> 205r35 205r49
 X 36 s-stausa.ads
 203U14*Initialize 204i<c,__gnat_stack_usage_initialize>22
 268U14*Output_Results 272i<c,__gnat_stack_usage_output_results>22
 X 48 types.ads
-4K9*types 16|3w6 3r17 17|30r20 38r34 39r35 40r33 178r17 179r16 185r17 186r16
+4K9*types 16|3w6 3r17 17|39r20 47r34 48r35 49r33 194r17 195r16 201r17 202r16
 . 48|45e10
-6M9*uint8<12|63M9> 16|12r35 17r44 19r49 17|42r29
-8M9*uint32<12|74M9> 17|38r40 39r41 40r39
-9M9*uint64<12|77M9> 17|33r13
-10F9*float64<12|172F9> 16|21r43 17|25r20 27r13
-13A9*Octets_8(6M9)<8M9> 17|32r12
-15A9*payload(6M9)<8M9> 17|30r26 176r38
-18R9*Communication_Packet 16|23r44 23r73 17|29r45 29r74 172r24 48|23e14
-19m7*package_ID{6M9} 17|174m17
-20m7*payload_length{8M9} 17|175m17
-21p7*local_payload(15A9) 17|30r48 176m17 182r20 189r20
-27V13*uint64_to_octets{13A9} 17|179s22 186s22
-34V13*float64_to_uint64{9M9} 17|178s23 185s23
+6M9*uint8<12|63M9> 16|12r35 17r44 19r49 17|51r29
+8M9*uint32<12|74M9> 17|47r40 48r41 49r39
+9M9*uint64<12|77M9> 17|42r13
+10F9*float64<12|172F9> 16|21r43 17|25r20 27r13 29r9 30r9 31r9 32r12 33r16
+. 34r15 35r17
+13A9*Octets_8(6M9)<8M9> 17|41r12
+15A9*payload(6M9)<8M9> 17|39r26 192r38
+18R9*Communication_Packet 16|23r44 23r73 17|38r45 38r74 188r24 48|23e14
+19m7*package_ID{6M9} 17|190m17
+20m7*payload_length{8M9} 17|191m17
+21p7*local_payload(15A9) 17|39r48 192m17 198r20 205r20
+27V13*uint64_to_octets{13A9} 17|195s22 202s22
+34V13*float64_to_uint64{9M9} 17|194s23 201s23
 

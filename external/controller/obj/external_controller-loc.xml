@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <Locations >
-  <Project>
-    <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/external/controller/external_controller.gpr</vfs_file>
+  <Project >
     <file_marker column=" 1" line=" 7" >
       <vfs_project>/home/kingmoon/Documents/Github/autonomouscabs/external/controller/external_controller.gpr</vfs_project>
       <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/external/controller/src/webots_thread/webots_thread.adb</vfs_file>
@@ -18,7 +17,15 @@
       <vfs_project />
       <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/external/controller/external_controller.gpr</vfs_file>
     </file_marker>
-    <file_marker current="true" column=" 1" line=" 1" >
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project>/home/kingmoon/Documents/Github/autonomouscabs/external/controller/external_controller.gpr</vfs_project>
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/external/controller/src/Path/pathfollowing.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 9" line=" 159" >
+      <vfs_project>/home/kingmoon/Documents/Github/autonomouscabs/external/controller/external_controller.gpr</vfs_project>
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/external/controller/src/Path/pathfollowing.adb</vfs_file>
+    </file_marker>
+    <file_marker current="true" column=" 18" line=" 29" >
       <vfs_project>/home/kingmoon/Documents/Github/autonomouscabs/external/controller/external_controller.gpr</vfs_project>
       <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/external/controller/src/Path/pathfollowing.adb</vfs_file>
     </file_marker>

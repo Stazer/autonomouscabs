@@ -25,6 +25,15 @@ package body pathfollowing is
    basicVelocity : float64 :=1.0 ;
    --ratio : float64 := 8.0;
    V_turn : float64 := 0.0;
+   offset : Integer := 32;
+   Kp : float64 := 0.08;
+   Ki : float64 :=0.08;
+   Kd : float64 := 0.08;
+   Error : float64 := 0.0;
+   lastError : float64 := 0.0;
+   integral : float64 := 0.0;
+   derivative : float64 := 0.0;
+
 
    function path_following (imageInput : in Communication_Packet) return Communication_Packet is
       raw : access types.payload := imageInput.local_payload;
@@ -68,13 +77,13 @@ package body pathfollowing is
       --end loop;
 -- find bottompoint
       for J in Column_Index loop
-         if binaImage(Row_Index(height-32))(J) = 255 then
+         if binaImage(Row_Index(height-5))(J) = 255 then
             bottomPoint := Integer(J);
          end if;
          --
       end loop;
       for J in reverse Column_Index loop
-         if binaImage(Row_Index(height-32))(J) = 255 then
+         if binaImage(Row_Index(height-5))(J) = 255 then
             bottomPoint1 := Integer(J);
          end if;
       end loop;
@@ -144,10 +153,17 @@ package body pathfollowing is
       --if bottomPoint/= 0 and rightPoint /= 0 and topPoint =0 and leftPoint = 0 then
          --steeringAngle := float64((width-bottomPoint) / (height - leftPoint));
          --end if;
-      if bottomPoint >27 then
-         V_turn := 0.8;
-      elsif bottomPoint <16  and bottomPoint > 0 then
-         V_turn := -0.8;
+      --Error : = bottomPoint - offset;
+      --integral :  =  integral + Error;
+      --derivative  : =  Error -  lastError;
+      --V_turn := Kp * Error + Ki  * integral + Kd * derivative;
+
+
+
+      if bottomPoint >= 36 then
+         V_turn := 0.9;
+      elsif bottomPoint <= 28  and bottomPoint > 0 then
+         V_turn := -0.9;
          else V_turn := 0.0;
       end if;
 
@@ -157,10 +173,10 @@ package body pathfollowing is
 
       if V_turn > 0.0 then
          wheehlvelocity(0) := basicVelocity + V_turn;
-         wheehlvelocity(1) := basicVelocity;
+         wheehlvelocity(1) := basicVelocity - V_turn;
       --turn left
       elsif V_turn < 0.0 then
-         wheehlvelocity(0) := basicVelocity;
+         wheehlvelocity(0) := basicVelocity + V_turn;
          wheehlvelocity(1) := basicVelocity - V_turn;
       else
          wheehlvelocity(0) := basicVelocity;

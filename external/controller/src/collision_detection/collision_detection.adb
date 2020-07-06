@@ -6,7 +6,7 @@ with Ada.Float_Text_IO;
 
 package body collision_detection is
 
-   procedure detect(distance: Dtype) is
+   function detect(distance: Dtype) return Boolean is
       threshold: float64 := 900.0;
       ls, rs : types.float64;
       u64 : types.uint64;
@@ -27,7 +27,7 @@ package body collision_detection is
             Ada.Float_Text_IO.Put(FLoat(distance(7)),5,3,0);
             Ada.Float_Text_IO.Put(FLoat(distance(8)),5,3,0);
             Ada.Text_IO.Put_Line("");
-            if distance(1) < threshold then
+            if distance(0) < threshold then
                -- Slow down car
                Webots_Cmd.package_ID := 129;
                Webots_Cmd.payload_length := 5 + 16;
@@ -60,11 +60,13 @@ package body collision_detection is
                else
                   Ada.Text_IO.Put_Line("There is no space");
                end if;
+
+               return True;
             end if;
 
          when Left =>
             moves_left := moves_left + 1;
-            if distance(1) > threshold then
+            if distance(0) > threshold then
                Webots_Cmd.package_ID := 129;
                Webots_Cmd.payload_length := 5 + 16;
                Webots_Cmd.local_payload := new types.payload (0 .. 15);
@@ -119,7 +121,7 @@ package body collision_detection is
 
       end case;
 
-
+      return False;
    end;
 
 

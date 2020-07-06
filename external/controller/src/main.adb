@@ -29,10 +29,10 @@ procedure Main is
    send_packet : types.Communication_Packet;
    dist: types.Octets_8;
    distance_sensor_data: collision_detection.Dtype;
+   is_object_collision: Boolean := False;
 begin
 
    -- threads have started here
-
    while true loop
 
       -- clear out both mailboxes
@@ -47,9 +47,11 @@ begin
       --Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.package_ID)));
 
       -- Path following
-      if(current_packet.package_ID = 67) then
-         send_packet := pathfollowing.path_following(current_packet);
-         send_bytes(Webots_Channel, send_packet);
+      if is_object_collision = False then
+         if(current_packet.package_ID = 67) then
+            send_packet := pathfollowing.path_following(current_packet);
+            send_bytes(Webots_Channel, send_packet);
+         end if;
       end if;
 
       -- Object collision
@@ -60,7 +62,7 @@ begin
             end loop;
             distance_sensor_data(Integer(J)) := Types.uint64_to_float64(octets_to_uint64(dist));
          end loop;
-         detect(distance_sensor_data);
+         is_object_collision := detect(distance_sensor_data);
       end if;
 
 

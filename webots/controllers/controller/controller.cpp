@@ -119,7 +119,7 @@ int main(int argc, char **argv)
     {
       buffer out;
       buffer_writer writer(out);
-      writer << ds_msg << ls_msg << img_msg; 
+      writer << ds_msg ;
       std::size_t t = boost::asio::write(client, boost::asio::buffer(out));
     }
     catch(std::exception& e)

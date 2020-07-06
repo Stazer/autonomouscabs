@@ -3,6 +3,7 @@ with tcp_client; use tcp_client;
 with backend_thread; use backend_thread;
 with webots_thread; use webots_thread;
 with pathfollowing; use pathfollowing;
+with collision_detection; use collision_detection;
 with types; use types;
 
 with mailbox;
@@ -26,6 +27,8 @@ procedure Main is
    current_packet : types.Communication_Packet;
    alternator : types.uint8 := 1;
    send_packet : types.Communication_Packet;
+   dist: types.Octets_8;
+   distance_sensor_data: collision_detection.Dtype;
 begin
 
    -- threads have started here
@@ -41,11 +44,25 @@ begin
       mailbox.update_alternator(alternator);
 
       -- do calculations with current packet
-      Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.package_ID)));
+      --Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.package_ID)));
+
+      -- Path following
       if(current_packet.package_ID = 67) then
          send_packet := pathfollowing.path_following(current_packet);
          send_bytes(Webots_Channel, send_packet);
       end if;
+
+      -- Object collision
+      if(current_packet.package_ID = 66) then
+         for J in uint32 range 0..8 loop
+            for I in uint32 range 0..7 loop
+               dist(I) := current_packet.local_payload(I+J*8);
+            end loop;
+            distance_sensor_data(Integer(J)) := Types.uint64_to_float64(octets_to_uint64(dist));
+         end loop;
+         detect(distance_sensor_data);
+      end if;
+
 
    end loop;
 

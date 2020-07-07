@@ -7,6 +7,8 @@ with collision_detection; use collision_detection;
 with types; use types;
 
 with mailbox;
+with ADA.Integer_Text_IO;
+
 
 
 procedure Main is
@@ -26,7 +28,8 @@ procedure Main is
 
    current_packet : types.Communication_Packet;
    alternator : types.uint8 := 1;
-   send_packet : types.Communication_Packet;
+   send_packet_path_following : types.Communication_Packet;
+   send_packet_collision_avoidance : types.Communication_Packet;
    dist: types.Octets_8;
    distance_sensor_data: collision_detection.Dtype;
    is_object_collision: Boolean := False;
@@ -47,10 +50,7 @@ begin
       --Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.package_ID)));
       -- Path following
      if(current_packet.package_ID = 67) then
-         send_packet := pathfollowing.path_following(current_packet);
---           if is_object_collision = False then
---              send_bytes(Webots_Channel, send_packet);
---           end if;
+         send_packet_path_following := pathfollowing.path_following(current_packet);
       end if;
 
       -- Object collision
@@ -61,7 +61,12 @@ begin
             end loop;
             distance_sensor_data(Integer(J)) := Types.uint64_to_float64(octets_to_uint64(dist));
          end loop;
-         is_object_collision := detect(distance_sensor_data);
+         send_packet_collision_avoidance := detect(distance_sensor_data);
+      end if;
+      if send_packet_collision_avoidance.payload_length = 0 then
+         send_bytes(Webots_Channel, send_packet_path_following);
+      else
+         send_bytes(Webots_Channel, send_packet_collision_avoidance);
       end if;
 
    end loop;

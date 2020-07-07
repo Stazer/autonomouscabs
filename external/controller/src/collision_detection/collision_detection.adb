@@ -88,29 +88,29 @@ package body collision_detection is
 
       end case;
       if ls = 0.0 and rs = 0.0  then
-         declare Webots_Cmd : Communication_Packet;
+         declare packet : Communication_Packet;
          begin
-            Webots_Cmd.payload_length := 0;
-            return Webots_Cmd;
+            packet.payload_length := 0;
+            return packet;
          end;
       else
-         declare Webots_Cmd : Communication_Packet;
+         declare packet : Communication_Packet;
          begin
-            Webots_Cmd.package_ID := 129;
-            Webots_Cmd.payload_length := 5 + 16;
-            Webots_Cmd.local_payload := new types.payload (0 .. 15);
+            packet.package_ID := 129;
+            packet.payload_length := 5 + 16;
+            packet.local_payload := new types.payload (0 .. 15);
             u64 := types.float64_to_uint64 (ls);
             o8 := types.uint64_to_octets (u64);
             for I in o8'Range loop
-               Webots_Cmd.local_payload (I) := o8 (I);
+               packet.local_payload (I) := o8 (I);
             end loop;
             u64 := types.float64_to_uint64 (rs);
             o8 := types.uint64_to_octets (u64);
             for I in o8'Range loop
-               Webots_Cmd.local_payload (I + 8) := o8 (I);
+               packet.local_payload (I + 8) := o8 (I);
             end loop;
 
-         return Webots_Cmd;
+         return packet;
          end;
       end if;
 

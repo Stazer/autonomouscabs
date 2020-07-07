@@ -14,7 +14,6 @@ package body webots_thread is
       test_to_send :=uint64_to_octets(test_uint64);
       Webots_Cmd.package_ID := 129;
       Webots_Cmd.payload_length := 21;
-      --Backend_Cmd.local_payload := new types.payload(0..1);
       Webots_Cmd.local_payload := new types.payload(0..15);
 
 

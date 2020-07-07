@@ -26,6 +26,8 @@ procedure Main is
    current_packet : types.Communication_Packet;
    alternator : types.uint8 := 1;
    send_packet : types.Communication_Packet;
+   dist: types.Octets_8;
+   distance_sensor_data: pathfollowing.Dtype;
 begin
 
    -- threads have started here
@@ -42,8 +44,19 @@ begin
 
       -- do calculations with current packet
       Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.package_ID)));
+      Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.payload_length)));
+
+      if (current_packet.package_ID = 66) then
+         for J in uint32 range 0..8 loop
+            for I in uint32 range 0..7 loop
+               dist(I) := current_packet.local_payload(I+J*8);
+            end loop;
+            distance_sensor_data(Integer(J)) := Types.uint64_to_float64(octets_to_uint64(dist));
+         end loop;
+      end if;
+
       if(current_packet.package_ID = 67) then
-         send_packet := pathfollowing.path_following(current_packet);
+         send_packet := pathfollowing.path_following(current_packet, distance_sensor_data);
          send_bytes(Webots_Channel, send_packet);
       end if;
 

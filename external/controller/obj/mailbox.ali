@@ -26,7 +26,7 @@ RV SPARK_05
 RV MAX_PROTECTED_ENTRIES=2
 RV MAX_ENTRY_QUEUE_LENGTH=1+
 
-U mailbox%b		mailbox.adb		e10d784c NE OO PK IL
+U mailbox%b		mailbox.adb		f7cc1da6 NE OO PK IL
 Z ada.calendar.delays%s	a-caldel.adb		a-caldel.ali
 Z ada.tags%s		a-tags.adb		a-tags.ali
 Z system%s		system.ads		system.ali
@@ -59,7 +59,7 @@ D a-unccon.ads		20200312110721 0e9b276f ada.unchecked_conversion%s
 D interfac.ads		20200312110721 5ab55268 interfaces%s
 D i-c.ads		20200312110721 5421119b interfaces.c%s
 D mailbox.ads		20200624154551 01c4c1c0 mailbox%s
-D mailbox.adb		20200706144026 e0c9b98c mailbox%b
+D mailbox.adb		20200706162034 f608dc66 mailbox%b
 D system.ads		20200312110721 4635ec04 system%s
 D s-atacco.ads		20200312110721 4c36d12f system.address_to_access_conversions%s
 D s-exctab.ads		20200312110721 54135002 system.exception_table%s

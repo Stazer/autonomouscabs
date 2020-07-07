@@ -22,7 +22,7 @@ package body pathfollowing is
 
    wheehlvelocity : Wheehl_velocity := (others => 0.0);
    --axleTrack : float64 := 1.1;
-   basicVelocity : float64 :=1.0 ;
+   basicVelocity : float64 :=4.0 ;
    --ratio : float64 := 8.0;
    V_turn : float64 := 0.0;
    offset : Integer := 32;
@@ -35,12 +35,13 @@ package body pathfollowing is
    derivative : float64 := 0.0;
 
 
-   function path_following (imageInput : in Communication_Packet) return Communication_Packet is
+   function path_following (imageInput : in Communication_Packet; d_sensor : in Dtype) return Communication_Packet is
       raw : access types.payload := imageInput.local_payload;
       index : Image_Index := 0;
       o8 : Octets_8;
       u64 : uint64;
    begin
+
       for I in Row_Index loop
          for J in Column_Index loop
             index := Image_Index(4 * (Integer(I) * width + Integer(J)));
@@ -161,13 +162,21 @@ package body pathfollowing is
 
 
       if bottomPoint >= 36 then
-         V_turn := 0.9;
+         V_turn := 3.6;
       elsif bottomPoint <= 28  and bottomPoint > 0 then
-         V_turn := -0.9;
-         else V_turn := 0.0;
+         V_turn := -3.6;
+      elsif bottomPoint > 28 and bottomPoint < 36 then
+         V_turn := 0.0;
+      elsif bottomPoint = 0 then
+         if d_sensor(6) < 450.0 then
+            V_turn := 1.0;
+         end if;
+         if d_sensor(3) < 450.0 then
+            V_turn := -1.0;
+         end if;
       end if;
 
-
+      Put_Line (d_sensor(3)'Image & ", " & d_sensor(6)'Image);
       Put_Line (V_turn'Image);
       --turn right
 

@@ -37,7 +37,7 @@ package ada_main is
    pragma Export (C, main, "main");
 
    type Version_32 is mod 2 ** 32;
-   u00001 : constant Version_32 := 16#2a2e4de7#;
+   u00001 : constant Version_32 := 16#df9534fa#;
    pragma Export (C, u00001, "mainB");
    u00002 : constant Version_32 := 16#050ff2f0#;
    pragma Export (C, u00002, "system__standard_libraryB");
@@ -465,7 +465,7 @@ package ada_main is
    pragma Export (C, u00213, "system__img_boolB");
    u00214 : constant Version_32 := 16#b3ec9def#;
    pragma Export (C, u00214, "system__img_boolS");
-   u00215 : constant Version_32 := 16#e10d784c#;
+   u00215 : constant Version_32 := 16#f7cc1da6#;
    pragma Export (C, u00215, "mailboxB");
    u00216 : constant Version_32 := 16#ab2e415b#;
    pragma Export (C, u00216, "mailboxS");
@@ -485,9 +485,9 @@ package ada_main is
    pragma Export (C, u00223, "system__storage_pools__subpools__finalizationB");
    u00224 : constant Version_32 := 16#fe2f4b3a#;
    pragma Export (C, u00224, "system__storage_pools__subpools__finalizationS");
-   u00225 : constant Version_32 := 16#b900fb18#;
+   u00225 : constant Version_32 := 16#1b294b30#;
    pragma Export (C, u00225, "pathfollowingB");
-   u00226 : constant Version_32 := 16#930898fb#;
+   u00226 : constant Version_32 := 16#e25993bf#;
    pragma Export (C, u00226, "pathfollowingS");
    u00227 : constant Version_32 := 16#932a4690#;
    pragma Export (C, u00227, "system__concat_4B");

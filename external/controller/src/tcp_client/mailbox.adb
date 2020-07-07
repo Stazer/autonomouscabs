@@ -36,14 +36,14 @@ package body mailbox is
          select
             first.Collect(new_packet);
          else
-            delay(0.00005);
+            delay(0.0000005);
             check_mailbox(second,first,new_packet,alternator);
          end select;
       else
          select
             second.Collect(new_packet);
          else
-            delay(0.00005);
+            delay(0.0000005);
             check_mailbox(second,first,new_packet,alternator);
          end select;
       end if;

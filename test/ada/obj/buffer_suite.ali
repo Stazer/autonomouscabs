@@ -1,0 +1,95 @@
+V "GNAT Lib v9"
+A -gnatA
+A -gnatQ
+A -gnatf
+A -gnato
+A -gnat2012
+A -mtune=generic
+A -march=x86-64
+P ZX
+
+RN
+RV NO_DEFAULT_INITIALIZATION
+RV NO_IMPLEMENTATION_PRAGMAS
+RV NO_ELABORATION_CODE
+RV SPARK_05
+
+U buffer_suite%b	buffer_suite.adb	1c722c17 OO PK IL
+W buffer_tests%s	buffer_tests.adb	buffer_tests.ali
+
+U buffer_suite%s	buffer_suite.ads	d90da88b EE NE OO PK IL
+W aunit%s		aunit.adb		aunit.ali
+W aunit.test_suites%s	aunit-test_suites.adb	aunit-test_suites.ali
+
+D ada.ads		20200312110721 76789da1 ada%s
+D a-calend.ads		20200312110721 b288ede8 ada.calendar%s
+D a-except.ads		20200312110721 291912d5 ada.exceptions%s
+D a-finali.ads		20200312110721 bf4f806b ada.finalization%s
+D a-reatim.ads		20200312110721 0240fc73 ada.real_time%s
+D a-stream.ads		20200312110721 119b8fb3 ada.streams%s
+D a-tags.ads		20200312110721 491b781d ada.tags%s
+D a-unccon.ads		20200312110721 0e9b276f ada.unchecked_conversion%s
+D ada_containers.ads	20200228061852 11329e00 ada_containers%s
+D ada_containers-aunit_lists.ads  20200228061852 d9ebc89a ada_containers.aunit_lists%s
+D aunit.ads		20200228061852 76cdf7c6 aunit%s
+D aunit-assertions.ads	20200228061852 b7f9ecd6 aunit.assertions%s
+D aunit-options.ads	20200228061852 6e5a02a6 aunit.options%s
+D aunit-simple_test_cases.ads  20200228061852 4111c32f aunit.simple_test_cases%s
+D aunit-test_cases.ads	20200228061852 3fb77584 aunit.test_cases%s
+D aunit-test_filters.ads  20200228061852 f10b2127 aunit.test_filters%s
+D aunit-test_results.ads  20200228061852 171847c9 aunit.test_results%s
+D aunit-test_suites.ads	20200228061852 6821dc24 aunit.test_suites%s
+D aunit-tests.ads	20200228061852 1da11d49 aunit.tests%s
+D aunit-time_measure.ads  20200228061852 a8b9fbfb aunit.time_measure%s
+D buffer_suite.ads	20200706181538 b12c74af buffer_suite%s
+D buffer_suite.adb	20200706181538 27b24b26 buffer_suite%b
+D buffer_tests.ads	20200706181538 8aec139e buffer_tests%s
+D gnat.ads		20200312110721 b5988c27 gnat%s
+D g-souinf.ads		20200312110721 291df751 gnat.source_info%s
+D interfac.ads		20200312110721 5ab55268 interfaces%s
+D i-c.ads		20200312110721 5421119b interfaces.c%s
+D system.ads		20200312110721 4635ec04 system%s
+D s-atacco.ads		20200312110721 4c36d12f system.address_to_access_conversions%s
+D s-exctab.ads		20200312110721 54135002 system.exception_table%s
+D s-finmas.ads		20200312110721 7811a767 system.finalization_masters%s
+D s-finroo.ads		20200312110721 4ff27390 system.finalization_root%s
+D s-linux.ads		20200312110721 ed0b8aee system.linux%s
+D s-multip.ads		20200312110721 38ac9f73 system.multiprocessors%s
+D s-oscons.ads		20200409103809 0b994636 system.os_constants%s
+D s-osinte.ads		20200312110721 710cf8c6 system.os_interface%s
+D s-parame.ads		20200312110721 48ec542b system.parameters%s
+D s-pooglo.ads		20200312110721 ede33ef8 system.pool_global%s
+D s-secsta.ads		20200312110721 20bbe636 system.secondary_stack%s
+D s-soflin.ads		20200312110721 a7318a92 system.soft_links%s
+D s-stache.ads		20200312110721 a37c21ec system.stack_checking%s
+D s-stausa.ads		20200312110721 017a0a05 system.stack_usage%s
+D s-stalib.ads		20200312110721 09bd3940 system.standard_library%s
+D s-stoele.ads		20200312110721 2dc34a04 system.storage_elements%s
+D s-stopoo.ads		20200312110721 b16154c2 system.storage_pools%s
+D s-tasinf.ads		20200312110721 2b3f8252 system.task_info%s
+D s-taspri.ads		20200312110721 f40ac08d system.task_primitives%s
+D s-taprop.ads		20200312110721 1dd2e1b6 system.task_primitives.operations%s
+D s-taskin.ads		20200312110721 b9d612e2 system.tasking%s
+D s-traent.ads		20200312110721 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20200312110721 34867c83 system.unsigned_types%s
+D types.ads		20200624154551 a8aa7ce8 types%s
+X 11 aunit.ads
+34K9*AUnit 48e10 21|1r6 5r26 22|5r8
+X 18 aunit-test_suites.ads
+41K15*Test_Suites 86e22 21|1w12 5r32 22|5r14
+43R9*Test_Suite<19|38R9> 84e14 22|8r21
+44P9*Access_Test_Suite(43R9) 21|5r44 22|13r26
+48U14*Add_Test 22|15s7
+X 21 buffer_suite.ads
+3K9*buffer_suite 7l5 7e17 22|3b14 19l5 19t17
+5V13*Suite{18|44P9} 22|13b13 17l8 17t13
+X 22 buffer_suite.adb
+8r4 Result{18|43R9} 15m17 15r17 16m14 16r14
+11r4 Test_1{23|7R9} 15m32 15r32
+X 23 buffer_tests.ads
+5K9*buffer_tests 22|1w6 11r21 23|22e17
+7R9*buffer_test<15|41R9> 22|11r34 23|7e65
+X 42 s-stausa.ads
+203U14*Initialize 204i<c,__gnat_stack_usage_initialize>22
+268U14*Output_Results 272i<c,__gnat_stack_usage_output_results>22
+

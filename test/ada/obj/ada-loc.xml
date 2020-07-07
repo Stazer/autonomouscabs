@@ -1,0 +1,205 @@
+<?xml version="1.0"?>
+<Locations >
+  <Project>
+    <vfs_file />
+    <file_marker column=" 1" line=" 7" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/external/controller/src/webots_thread/webots_thread.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/external/controller/src/webots_thread/webots_thread.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 6" line=" 5" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/external/controller/src/main.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 112" line=" 3" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/external/controller/external_controller.gpr</vfs_file>
+    </file_marker>
+    <file_marker column=" 53" line=" 127" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/external/controller/src/Path/pathfollowing.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/external/harness/harness.gpr</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_file>
+    </file_marker>
+    <file_marker column=" 17" line=" 22" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/empty.gpr</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 23" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/empty.gpr</vfs_file>
+    </file_marker>
+    <file_marker column=" 13" line=" 5" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/empty.gpr</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/mailbox_suite/mailbox_tests.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 22" line=" 36" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/mailbox_suite/mailbox_tests.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 22" line=" 147" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/mailbox_suite/mailbox_tests.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 22" line=" 36" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/mailbox_suite/mailbox_tests.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 12" line=" 37" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/mailbox_suite/mailbox_tests.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 22" line=" 147" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/mailbox_suite/mailbox_tests.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 9" line=" 141" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/mailbox_suite/mailbox_tests.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/test_main.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/composite_suite.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/composite_suite.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 14" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/composite_suite.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/tcp_suite/tcp_suite.adb</vfs_file>
+    </file_marker>
+    <file_marker current="true" column=" 1" line=" 1" >
+      <vfs_project />
+      <vfs_file>/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_file>
+    </file_marker>
+  </Project>
+  <Project >
+    <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_file>
+    <file_marker column=" 1" line=" 7">
+      <vfs_project  />
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/external/controller/src/webots_thread/webots_thread.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_project  />
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/external/controller/src/webots_thread/webots_thread.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 6" line=" 5">
+      <vfs_project  />
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/external/controller/src/main.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 112" line=" 3">
+      <vfs_project  />
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/external/controller/external_controller.gpr</vfs_file>
+    </file_marker>
+    <file_marker column=" 53" line=" 127">
+      <vfs_project  />
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/external/controller/src/Path/pathfollowing.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_project  />
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_project  />
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/external/harness/harness.gpr</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_project  />
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_file>
+    </file_marker>
+    <file_marker column=" 17" line=" 22">
+      <vfs_project  />
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_project  />
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/empty.gpr</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 23">
+      <vfs_project  />
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/empty.gpr</vfs_file>
+    </file_marker>
+    <file_marker column=" 13" line=" 5">
+      <vfs_project  />
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/empty.gpr</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_project >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_project>
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/mailbox_suite/mailbox_tests.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 22" line=" 36">
+      <vfs_project >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_project>
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/mailbox_suite/mailbox_tests.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 22" line=" 147">
+      <vfs_project >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_project>
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/mailbox_suite/mailbox_tests.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 22" line=" 36">
+      <vfs_project >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_project>
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/mailbox_suite/mailbox_tests.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 12" line=" 37">
+      <vfs_project >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_project>
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/mailbox_suite/mailbox_tests.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 22" line=" 147">
+      <vfs_project >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_project>
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/mailbox_suite/mailbox_tests.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 9" line=" 141">
+      <vfs_project >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_project>
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/mailbox_suite/mailbox_tests.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_project >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_project>
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/test_main.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_project >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_project>
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/composite_suite.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_project >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_project>
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/composite_suite.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 14">
+      <vfs_project >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_project>
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/composite_suite.adb</vfs_file>
+    </file_marker>
+    <file_marker current="true" column=" 1" line=" 1">
+      <vfs_project >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/ada.gpr</vfs_project>
+      <vfs_file >/home/kingmoon/Documents/Github/autonomouscabs/test/ada/src/tcp_suite/tcp_suite.adb</vfs_file>
+    </file_marker>
+  </Project>
+</Locations>

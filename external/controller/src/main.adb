@@ -44,7 +44,7 @@ begin
 
       -- do calculations with current packet
       Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.package_ID)));
-      Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.payload_length)));
+      --Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.payload_length)));
 
       if (current_packet.package_ID = 66) then
          for J in uint32 range 0..8 loop

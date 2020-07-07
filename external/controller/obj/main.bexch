@@ -1,0 +1,32 @@
+[GENERATED OBJECT FILE]
+b__main.o
+[PROJECT FILES]
+/home/kingmoon/Documents/Github/autonomouscabs/external/controller/external_controller.gpr
+20200630124356
+[BOUND OBJECT FILES]
+/home/kingmoon/Documents/Github/autonomouscabs/external/controller/obj/mailbox.o
+/home/kingmoon/Documents/Github/autonomouscabs/external/controller/obj/byte_buffer.o
+/home/kingmoon/Documents/Github/autonomouscabs/external/controller/obj/tcp_client.o
+/home/kingmoon/Documents/Github/autonomouscabs/external/controller/obj/types.o
+/home/kingmoon/Documents/Github/autonomouscabs/external/controller/obj/backend_thread.o
+/home/kingmoon/Documents/Github/autonomouscabs/external/controller/obj/pathfollowing.o
+/home/kingmoon/Documents/Github/autonomouscabs/external/controller/obj/webots_thread.o
+/home/kingmoon/Documents/Github/autonomouscabs/external/controller/obj/main.o
+[GENERATED SOURCE FILES]
+b__main.ads
+b__main.adb
+b__main.ali
+[RESULTING OPTIONS]
+-L/home/kingmoon/Documents/Github/autonomouscabs/external/controller/obj/
+-L/home/kingmoon/Documents/Github/autonomouscabs/external/controller/obj/
+-L/usr/lib/gcc/x86_64-linux-gnu/9/adalib/
+-shared
+-shared-libgcc
+-lgnarl-9
+-lgnat-9
+-lpthread
+-lrt
+-ldl
+[RUN PATH OPTION]
+/usr/lib/gcc/x86_64-linux-gnu/9/adalib/
+/usr/lib

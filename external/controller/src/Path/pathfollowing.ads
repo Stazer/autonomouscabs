@@ -21,6 +21,9 @@ package pathfollowing is
    type Wheehl_velocity is array(0..1) of float64;
    type Dtype is array(0..8) of float64;
 
-   function path_following(imageInput : in Communication_Packet; d_sensor : in Dtype) return Communication_Packet;
+   function path_following(dataInput : in Communication_Packet; d_sensor : in Dtype) return Communication_Packet;
+   function binarize(grey : in Colour_Matrix) return Colour_Matrix;
+   function wheel_Velocity(binarizedImage : in Colour_Matrix; d_sensor : in Dtype) return Wheehl_velocity;
+
 
 end pathfollowing;

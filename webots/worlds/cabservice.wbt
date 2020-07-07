@@ -3,16 +3,16 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation 0.3410563729501033 -0.8600231782809643 -0.37952692037539165 4.667501266739929
-  position 22.908953187518193 24.721983248892425 -57.31062599431719
+  orientation 0.030450811085339844 0.9868558496449489 0.15870816023693018 3.0617323403687435
+  position -56.358246348100344 24.61133237180895 -59.595232574824195
 }
 TexturedBackground {
   luminosity 2
   reflections FALSE
 }
 DEF Cab2 Robot {
-  translation -9.70634 0.398658 -59.7668
-  rotation -0.0001098621319371706 -0.9999999869911889 0.00011810137139033657 -1.6143575511696904
+  translation -58.23923736040401 0.39866972615599205 -7.578468307479976
+  rotation 8.542815852656062e-07 0.9999999932241663 -0.00011640849416949046 -3.141369780567429
   children [
     DEF cam_f Camera {
       translation 0 0.1 1
@@ -350,7 +350,7 @@ DEF Cab2 Robot {
     }
     DEF wheelFL HingeJoint {
       jointParameters HingeJointParameters {
-        position 1890.1406352206216
+        position 3386.671021722067
         anchor 0.55 -0.1 0.55
       }
       device [
@@ -361,7 +361,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelFL Solid {
         translation 0.55 -0.1 0.55
-        rotation 0.4629643068535678 -0.4625957826842963 -0.7560880850947852 4.437131141029881
+        rotation -0.017080853322951187 0.01706725679469421 -0.9997084340922927 4.7128936988210155
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -379,11 +379,13 @@ DEF Cab2 Robot {
         physics DEF physics_wheel Physics {
           density 10
         }
+        linearVelocity -0.00019398409803612497 1.1275125861657554e-06 -1.1998674188824523
+        angularVelocity -3.9999737276816463 4.552157369532559e-05 0.0008927525026377384
       }
     }
     DEF wheelRL HingeJoint {
       jointParameters HingeJointParameters {
-        position 1890.1216434035343
+        position 3386.654947686532
         anchor 0.55 -0.1 -0.7
       }
       device [
@@ -394,7 +396,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelRL Solid {
         translation 0.55 -0.1 -0.7
-        rotation 0.46856518835045863 -0.4681922058240962 -0.7491613462210035 4.4282852814950475
+        rotation -0.009040262499814754 0.009033066361411046 -0.9999183353484649 4.713103639216648
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -412,11 +414,13 @@ DEF Cab2 Robot {
         physics DEF physics_wheel Physics {
           density 10
         }
+        linearVelocity -0.00031751440203224655 -1.12593273170221e-05 -1.1998764417035939
+        angularVelocity -3.9999858821296193 3.943138265176719e-06 0.0008627478217563805
       }
     }
     DEF wheelRR HingeJoint {
       jointParameters HingeJointParameters {
-        position 1430.715328258571
+        position 2754.198914896801
         anchor -0.55 -0.1 -0.7
       }
       device [
@@ -427,7 +431,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelRR Solid {
         translation -0.55 -0.1 -0.7
-        rotation -0.624473326148181 0.623976239201424 0.469773049292395 2.262629609733359
+        rotation 0.6621230874227028 -0.6615960308934264 0.35197117638791425 2.464234124827884
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -445,11 +449,13 @@ DEF Cab2 Robot {
         physics DEF physics_wheel Physics {
           density 10
         }
+        linearVelocity -0.000321761601080584 -1.8101490692772414e-06 -1.200055189147191
+        angularVelocity -3.9999951869104535 3.061018393559411e-05 0.0008779606070655089
       }
     }
     DEF wheelFR HingeJoint {
       jointParameters HingeJointParameters {
-        position 1430.7319599730783
+        position 2754.215854105747
         anchor -0.55 -0.1 0.55
       }
       device [
@@ -460,7 +466,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelFR Solid {
         translation -0.55 -0.1 0.55
-        rotation -0.6220663009142207 0.6215711299833704 0.4761122216852814 2.2522635054941085
+        rotation 0.6637803273500233 -0.66325195164137 0.34567690936336726 2.4754640511034345
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -478,6 +484,8 @@ DEF Cab2 Robot {
         physics DEF physics_wheel Physics {
           density 10
         }
+        linearVelocity -0.00023032031136924484 1.0576419173318294e-05 -1.200072672022618
+        angularVelocity -4.0000040616751225 4.55532058531178e-05 0.0009119188654241638
       }
     }
     DEF car_body Shape {
@@ -499,6 +507,8 @@ DEF Cab2 Robot {
   ]
   controller "controller"
   controllerArgs "5555"
+  linearVelocity -0.00026876535994141784 4.2120675013316926e-07 -1.1999666960135968
+  angularVelocity 1.0114326827340488e-05 2.685449104314927e-05 8.76586269894374e-06
 }
 DEF environment Solid {
   scale 1.09819 1.09819 1.09819
@@ -1497,6 +1507,9 @@ DEF environment Solid {
       rightBarrier TRUE
       leftBarrier TRUE
       bottom TRUE
+      startLine [
+        ""
+      ]
       appearance Asphalt {
         colorOverride 0 0 0
         IBLStrength 0
@@ -1504,6 +1517,9 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+      bottomTexture [
+        ""
+      ]
     }
     Solid {
       translation 15.5 0 51.48

@@ -89,30 +89,7 @@ package body pathfollowing is
          end if;
       end loop;
       bottomPoint := (bottomPoint + bottomPoint1) / 2;
-      -- find toppoint
-      for J in Column_Index loop
-         if binaImage(0)(J) = 255 then
-            topPoint := Integer(J);
-         end if;
-      end loop;
-      for J in reverse Column_Index loop
-         if binaImage(Row_Index(0))(J) = 255 then
-            topPoint1 := Integer(J);
-         end if;
-      end loop;
-      topPoint := (topPoint + topPoint1) / 2;
-      -- find rightpoint
-      for I in Row_Index loop
-         if binaImage(I)(Column_Index(width-1)) = 255 then
-            rightPoint:= Integer(I);
-         end if;
-      end loop;
-      for I in reverse Row_Index loop
-         if binaImage(I)(Column_Index(width-1)) = 255 then
-            rightPoint1:= Integer(I);
-         end if;
-      end loop;
-      rightPoint := (rightPoint + rightPoint1) /2;
+
 
       --find leftPoint
       for I in Row_Index loop
@@ -127,37 +104,8 @@ package body pathfollowing is
       end loop;
       leftPoint := (leftPoint + leftPoint1)/2;
 
-      Put_Line(Integer'Image(bottomPoint) & Integer'Image(topPoint) & Integer'Image(rightPoint) & Integer'Image(leftPoint));
-      --calculate steering angle
-      -- top and bottom
-      --if bottomPoint /= 0 and topPoint /= 0 and rightPoint = 0 and leftPoint = 0 then
-         --if topPoint - bottomPoint > 0 then
-            --steeringAngle := float64((topPoint - bottomPoint) / height) ;
-         --elsif topPoint - bottomPoint < 0 then
-            --steeringAngle := -float64((topPoint - bottomPoint) / height);
-         --else steeringAngle := 0.0;
-         --end if;
-      --end if;
-      -- bottom and left
-      --if bottomPoint /= 0 and leftPoint/= 0 and topPoint = 0 and rightPoint = 0 then
-         --steeringAngle := - float64(bottomPoint / (height - leftPoint));
-      --end if;
-      -- top and right
-      --if topPoint /= 0 and rightPoint /= 0 and bottomPoint = 0 and leftPoint= 0 then
-         --steeringAngle := - float64((width - topPoint) / rightPoint);
-      --end if;
-      --top and left
-      --if topPoint /= 0 and leftPoint /=0 and bottomPoint = 0 and rightPoint = 0 then
-         --steeringAngle := float64(topPoint / leftPoint);
-      --end if;
-      -- bottom and right
-      --if bottomPoint/= 0 and rightPoint /= 0 and topPoint =0 and leftPoint = 0 then
-         --steeringAngle := float64((width-bottomPoint) / (height - leftPoint));
-         --end if;
-      --Error : = bottomPoint - offset;
-      --integral :  =  integral + Error;
-      --derivative  : =  Error -  lastError;
-      --V_turn := Kp * Error + Ki  * integral + Kd * derivative;
+      --Put_Line(Integer'Image(bottomPoint) & Integer'Image(topPoint) & Integer'Image(rightPoint) & Integer'Image(leftPoint));
+
 
 
 

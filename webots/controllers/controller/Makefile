@@ -78,7 +78,7 @@ ifeq ($(UNAME_S),Linux)
 LIBRARIES += -lpthread -lboost_system
 endif
 
-CXX_SOURCES = controller.cpp ../../../shared/buffer_reader.cpp ../../../shared/buffer_writer.cpp ../../../shared/message.cpp
+CXX_SOURCES = controller.cpp robot_container.cpp ../../../shared/buffer_reader.cpp ../../../shared/buffer_writer.cpp ../../../shared/message.cpp
 
 CFLAGS = -Wno-strict-aliasing -Wno-unused-variable
 

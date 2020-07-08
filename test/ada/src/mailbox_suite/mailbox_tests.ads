@@ -1,9 +1,9 @@
 with AUnit; use AUnit;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
 with AUnit.Assertions; use AUnit.Assertions;
-with types; use types;
-with mailbox;
-with byte_buffer;
+with Types; use Types;
+with Mailbox;
+with Byte_Buffer;
 with Ada.Real_Time; use Ada.Real_Time;
 with Ada.Text_IO;
 
@@ -34,6 +34,6 @@ package mailbox_tests is
    
    procedure Test_Empty (T : in out Test_Cases.Test_Case'Class);
    
-   procedure Test_isExpired (T : in out Test_Cases.Test_Case'Class);
+   procedure Test_Is_Expired (T : in out Test_Cases.Test_Case'Class);
 
 end mailbox_tests;

@@ -1,7 +1,7 @@
 package body mailbox_tests is
    
    -- test fixture for mailbox tests
-   type Communication_Array is array(types.uint8 range <> ) of types.Communication_Packet;
+   type Communication_Array is array(Types.Uint8 range <> ) of Types.Communication_Packet;
    
    local_mailbox : mailbox.Mailbox(Size => 5);
    
@@ -16,14 +16,14 @@ package body mailbox_tests is
       
       -- set up all 5 test Comm_Packet with asc package_IDs
       for I in test_packets'Range loop
-         test_packets(I).package_ID := types.uint8(I);
-         test_packets(I).payload_length := 2;
-         test_packets(I).local_payload := new payload(0..(test_packets(I).payload_length - 1));
+         test_packets(I).Package_ID := types.uint8(I);
+         test_packets(I).Payload_Length := 2;
+         test_packets(I).Local_Payload := new Payload(0..(test_packets(I).Payload_Length - 1));
          test_packets(I).TTL := Ada.Real_Time.Clock;
          
          -- set up payload values
-         for J in 0..(test_packets(I).payload_length - 1) loop
-            test_packets(I).local_payload(J) := 1;
+         for J in 0..(test_packets(I).Payload_Length - 1) loop
+            test_packets(I).Local_Payload(J) := 1;
          end loop;
       end loop;
       
@@ -47,7 +47,7 @@ package body mailbox_tests is
       Register_Routine (T, Test_Clear_not_isExpired'Access, "Mailbox.Clear(not_isExpired): Test unexpired items in mailbox.");
       Register_Routine (T, Test_Clear_isExpired'Access, "Mailbox.Clear(isExpired): Test expired items in mailbox.");
       Register_Routine (T, Test_Empty'Access, "Mailbox.Empty: Delete all items from Mailbox.");
-      Register_Routine (T, Test_isExpired'Access, "isExpired.");
+      Register_Routine (T, Test_Is_Expired'Access, "Is_Expired.");
    end Register_Tests;
 
    -- Identifier of test case
@@ -59,7 +59,7 @@ package body mailbox_tests is
    -- test both collect and deposit
    procedure Test_Collect_and_Deposit (T : in out Test_Cases.Test_Case'Class) is
       
-      last_package_ID : types.uint8 := 0;
+      last_package_ID : Types.Uint8 := 0;
 
    begin
       
@@ -156,7 +156,7 @@ package body mailbox_tests is
    end Test_Empty;
    
    -- test ttl expired
-   procedure Test_isExpired (T : in out Test_Cases.Test_Case'Class) is
+   procedure Test_Is_Expired (T : in out Test_Cases.Test_Case'Class) is
       
       expiration_result : Boolean;
       
@@ -166,10 +166,10 @@ package body mailbox_tests is
       
       test_time := Ada.Real_Time.Clock - Ada.Real_Time.Milliseconds(10000);
       
-      expiration_result := mailbox.isExpired(test_time);
+      expiration_result := mailbox.Is_Expired(test_time);
       
-      Assert (expiration_result = True, "isExpired is not working as intended.");    
+      Assert (expiration_result = True, "Is_Expired is not working as intended.");    
       
-   end Test_isExpired;
+   end Test_Is_Expired;
    
 end mailbox_tests;

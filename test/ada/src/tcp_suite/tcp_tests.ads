@@ -1,10 +1,10 @@
 with AUnit; use AUnit;
 with Ada.Text_IO;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
-with tcp_client; use tcp_client;
-with types; use types;
-with byte_buffer;
-with mailbox;
+with Tcp_Client; use Tcp_Client;
+with Types; use Types;
+with Byte_Buffer;
+with Mailbox;
 
 package tcp_tests is
 

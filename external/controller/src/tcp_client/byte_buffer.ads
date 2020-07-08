@@ -1,17 +1,22 @@
 with Ada.Containers.Vectors;
 
 with Types;
+with Messages;
 
 package Byte_Buffer is
    
    -- a simple read and write buffer
    type Buffer is tagged private;
    
+   Wrong_Message_Id : exception;
+   Not_Enough_Data : exception;
+   
    -- procedures to read a Uintx/Payload from the buffer
    procedure Read_Uint8 (Self : in out Buffer; Val : out Types.Uint8);
    procedure Read_Uint16 (Self : in out Buffer; Val : out Types.Uint16);
    procedure Read_Uint32 (Self : in out Buffer; Val : out Types.Uint32);
    procedure Read_Uint64 (Self : in out Buffer; Val : out Types.Uint64);
+   procedure Read_Float64 (Self : in out Buffer; Val : out Types.Float64);
    procedure Read_Payload (Self : in out Buffer; Val : access Types.Payload);
    
    -- procedures to write a Uintx/Payload from the buffer
@@ -19,7 +24,15 @@ package Byte_Buffer is
    procedure Write_Uint16 (Self : in out Buffer; Val : in Types.Uint16);
    procedure Write_Uint32 (Self : in out Buffer; Val : in Types.Uint32);
    procedure Write_Uint64 (Self : in out Buffer; Val : in Types.Uint64);
+   procedure Write_Float64 (Self : in out Buffer; Val : in Types.Float64);
    procedure Write_Payload (Self : in out Buffer; Val : access Types.Payload);
+   
+   procedure Read_Message (Self : in out Buffer; Val : in out Messages.Distance_Sensor_Message);
+   procedure Read_Message (Self : in out Buffer; Val : in out Messages.Image_Data_Message);
+   procedure Read_Message (Self : in out Buffer; Val : in out Messages.Join_Challenge_Message);
+   
+   procedure Write_Message (Self : in out Buffer; Val : in Messages.Join_Success_Message);
+   procedure Write_Message (Self : in out Buffer; Val : in Messages.Velocity_Message);
    
    -- utility procedures
    function Bytes_Read (Self : in out Buffer) return Types.Uint32;

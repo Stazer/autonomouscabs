@@ -2,6 +2,10 @@ package body Byte_Buffer is
       
    procedure Read_Uint8 (Self : in out Buffer; Val : out Types.Uint8) is
    begin
+      if Self.Bytes_Remaining < Val'Size then
+         raise Not_Enough_Data;
+      end if;
+      
       Val := Self.Vector.Element (Integer (Self.Read));
       Self.Read := Self.Read + 1;
    end Read_Uint8;
@@ -9,6 +13,10 @@ package body Byte_Buffer is
    procedure Read_Uint16 (Self : in out Buffer; Val : out Types.Uint16) is
       o2 : Types.Octets_2;
    begin
+      if Self.Bytes_Remaining < Val'Size then
+         raise Not_Enough_Data;
+      end if;
+      
       o2 (0) := Self.Vector.Element (Integer (Self.Read));
       o2 (1) := Self.Vector.Element (Integer (Self.Read) + 1);
       Val := Types.octets_to_Uint16 (o2);
@@ -18,6 +26,10 @@ package body Byte_Buffer is
    procedure Read_Uint32 (Self : in out Buffer; Val : out Types.Uint32) is
       o4 : Types.Octets_4;
    begin
+      if Self.Bytes_Remaining < Val'Size then
+         raise Not_Enough_Data;
+      end if;
+      
       o4 (0) := Self.Vector.Element (Integer (Self.Read));
       o4 (1) := Self.Vector.Element (Integer (Self.Read) + 1);
       o4 (2) := Self.Vector.Element (Integer (Self.Read) + 2);
@@ -29,6 +41,10 @@ package body Byte_Buffer is
    procedure Read_Uint64 (Self : in out Buffer; Val : out Types.Uint64) is
       o8 : Types.Octets_8;
    begin
+      if Self.Bytes_Remaining < Val'Size then
+         raise Not_Enough_Data;
+      end if;
+      
       o8 (0) := Self.Vector.Element (Integer (Self.Read));
       o8 (1) := Self.Vector.Element (Integer (Self.Read) + 1);
       o8 (2) := Self.Vector.Element (Integer (Self.Read) + 2);
@@ -41,9 +57,20 @@ package body Byte_Buffer is
       Self.Read := Self.Read + 8;
    end Read_Uint64; 
    
+   procedure Read_Float64 (Self : in out Buffer; Val : out Types.Float64) is
+      u64 : Types.Uint64;
+   begin
+      Self.Read_Uint64 (u64);
+      Val := Types.Uint64_To_Float64 (u64);
+   end Read_Float64;
+      
    procedure Read_Payload (Self : in out Buffer; Val : access Types.Payload) is
       count : Types.Uint32 := 0;
    begin
+      if Self.Bytes_Remaining < Val'Size then
+         raise Not_Enough_Data;
+      end if;
+      
       for I in Val'Range loop
          Val (I) := Self.Vector.Element (Integer (Self.Read + count));
          count := count + 1;
@@ -89,6 +116,13 @@ package body Byte_Buffer is
       Self.Written := Self.Written + 8;
    end Write_Uint64; 
    
+   procedure Write_Float64 (Self : in out Buffer; Val : in Types.Float64) is
+      u64 : Types.Uint64;
+   begin
+      u64 := Types.Float64_To_Uint64 (Val);
+      Self.Write_Uint64 (u64);
+   end Write_Float64;
+   
    procedure Write_Payload (Self : in out Buffer; Val : access Types.Payload) is
       count : Types.Uint32 := 0;
    begin
@@ -98,6 +132,81 @@ package body Byte_Buffer is
       end loop;
       Self.Written := Self.Written + count;
    end Write_Payload;
+   
+   procedure Read_Message (Self : in out Buffer; Val : in out Messages.Distance_Sensor_Message) is
+      Size : Types.Uint32;
+      Id : Types.Uint8;
+   begin
+      if Self.Bytes_Remaining < Val.Size then
+         raise Not_Enough_Data;
+      end if;
+      
+      Self.Read_Uint32 (Size);
+      Self.Read_Uint8 (Id);
+      
+      if Id /= Val.Id then
+         Self.Unwind (5);
+         raise Wrong_Message_Id;
+      end if;
+      
+      for I in Val.Payload'Range loop
+         Self.Read_Float64 (Val.Payload (I));
+      end loop;      
+   end Read_Message;
+   
+      
+   procedure Read_Message (Self : in out Buffer; Val : in out Messages.Image_Data_Message) is
+      Size : Types.Uint32;
+      Id : Types.Uint8;
+   begin
+      if Self.Bytes_Remaining < Val.Size then
+         raise Not_Enough_Data;
+      end if;
+      
+      Self.Read_Uint32 (Size);
+      Self.Read_Uint8 (Id);
+      
+      if Id /= Val.Id then
+         Self.Unwind (5);
+         raise Wrong_Message_Id;
+      end if;
+      
+      for I in Val.Payload'Range loop
+         Self.Read_Uint8 (Val.Payload (I));
+      end loop;      
+   end Read_Message;
+   
+   procedure Read_Message (Self : in out Buffer; Val : in out Messages.Join_Challenge_Message) is
+      Size : Types.Uint32;
+      Id : Types.Uint8;
+   begin
+      if Self.Bytes_Remaining < Val.Size then
+         raise Not_Enough_Data;
+      end if;
+      
+      Self.Read_Uint32 (Size);
+      Self.Read_Uint8 (Id);
+      
+      if Id /= Val.Id then
+         Self.Unwind (5);
+         raise Wrong_Message_Id;
+      end if;      
+   end Read_Message;
+   
+   procedure Write_Message (Self : in out Buffer; Val : in Messages.Join_Success_Message) is
+   begin
+      Self.Write_Uint32 (Val.Size);
+      Self.Write_Uint8 (Val.Id);
+      Self.Write_Uint32 (Val.Cab_Id);      
+   end Write_Message;
+   
+   procedure Write_Message (Self : in out Buffer; Val : in Messages.Velocity_Message) is
+   begin
+      Self.Write_Uint32 (Val.Size);
+      Self.Write_Uint8 (Val.Id);
+      Self.Write_Float64 (Val.Left_Speed);
+      Self.Write_Float64 (Val.Right_Speed);
+   end Write_Message;
    
    function Bytes_Read (Self : in out Buffer) return Types.Uint32 is
    begin

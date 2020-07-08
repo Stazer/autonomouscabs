@@ -1,20 +1,15 @@
-package body webots_thread is
+package body Webots_Thread is
 
-   procedure webots_main is
+   procedure Main is
 
    begin
 
-      Webots_Channel := build_connection (Webots_Client, 2000, Webots_Address);
-
-      Webots_Cmd.package_ID := protocol_join_ID;
-      Webots_Cmd.payload_length := 0;
-      --Backend_Cmd.local_payload := new types.payload(0..1);
-      send_bytes(Webots_Channel, Webots_Cmd);
+      Webots_Channel := Tcp_Client.Connect (Webots_Client, 9999, Webots_Address);
 
       while true loop
-         listen( Webots_Channel, Webots_Vector_Buffer, Webots_Mailbox );
+         Tcp_Client.Read_Packet (Webots_Channel, Webots_Vector_Buffer, Webots_Mailbox);
       end loop;
 
-   end webots_main;
+   end Main;
 
-end webots_thread;
+end Webots_Thread;

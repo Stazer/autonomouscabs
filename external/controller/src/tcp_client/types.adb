@@ -1,134 +1,132 @@
 with Ada.Unchecked_Conversion;
 with System; use type System.Bit_Order;
-with Ada.Text_IO;
-with tcp_client;
 
-package body types is
+package body Types is
 
-   function unchecked_16_to_octets is
-     new Ada.Unchecked_Conversion (Source => uint16, Target => Octets_2);
+   function Unchecked_16_To_Octets is
+     new Ada.Unchecked_Conversion (Source => Uint16, Target => Octets_2);
    
-   function unchecked_32_to_octets is
-     new Ada.Unchecked_Conversion (Source => uint32, Target => Octets_4);
+   function Unchecked_32_To_Octets is
+     new Ada.Unchecked_Conversion (Source => Uint32, Target => Octets_4);
    
-   function unchecked_64_to_octets is
-      new Ada.Unchecked_Conversion (Source => uint64, Target => Octets_8);
+   function Unchecked_64_To_Octets is
+      new Ada.Unchecked_Conversion (Source => Uint64, Target => Octets_8);
    
-   function unchecked_octets_to_16 is
-     new Ada.Unchecked_Conversion (Source => Octets_2, Target => uint16);
+   function Unchecked_Octets_To_16 is
+     new Ada.Unchecked_Conversion (Source => Octets_2, Target => Uint16);
    
-   function unchecked_octets_to_32 is
-     new Ada.Unchecked_Conversion (Source => Octets_4, Target => uint32);
+   function Unchecked_Octets_To_32 is
+     new Ada.Unchecked_Conversion (Source => Octets_4, Target => Uint32);
    
-   function unchecked_octets_to_64 is 
-     new Ada.Unchecked_Conversion (Source => Octets_8, Target => uint64);
+   function Unchecked_Octets_To_64 is 
+     new Ada.Unchecked_Conversion (Source => Octets_8, Target => Uint64);
    
-   function unchecked_uint64_to_float64 is
-      new Ada.Unchecked_Conversion (Source => uint64, Target => float64);
+   function Unchecked_Uint64_To_Float64 is
+      new Ada.Unchecked_Conversion (Source => Uint64, Target => Float64);
    
-   function unchecked_float64_to_uint64 is
-      new Ada.Unchecked_Conversion (Source => float64, Target => uint64);
+   function Unchecked_Float64_To_Uint64 is
+      new Ada.Unchecked_Conversion (Source => Float64, Target => Uint64);
    
-   function uint16_to_octets (X : uint16) return Octets_2 is
+   function Uint16_To_Octets (X : Uint16) return Octets_2 is
    begin
-      return unchecked_16_to_octets (X);
-   end uint16_to_octets;
+      return Unchecked_16_To_Octets (X);
+   end Uint16_To_Octets;
    
-   function uint32_to_octets (X : uint32) return Octets_4 is
+   function Uint32_To_Octets (X : Uint32) return Octets_4 is
    begin 
-      return unchecked_32_to_octets (X);
-   end uint32_to_octets;
+      return Unchecked_32_To_Octets (X);
+   end Uint32_To_Octets;
    
-   function uint64_to_octets (X : uint64) return Octets_8 is
+   function Uint64_To_Octets (X : Uint64) return Octets_8 is
    begin 
-      return unchecked_64_to_octets (X);
-   end uint64_to_octets;
+      return Unchecked_64_To_Octets (X);
+   end Uint64_To_Octets;
    
-   function octets_to_uint16 (X : Octets_2) return uint16 is
+   function Octets_To_Uint16 (X : Octets_2) return Uint16 is
    begin 
-      return unchecked_octets_to_16 (X);
-   end octets_to_uint16;
+      return Unchecked_Octets_To_16 (X);
+   end Octets_To_Uint16;
    
-   function octets_to_uint32 (X : Octets_4) return uint32 is
+   function Octets_To_Uint32 (X : Octets_4) return Uint32 is
    begin 
-      return unchecked_octets_to_32 (X);
-   end octets_to_uint32;
+      return Unchecked_Octets_To_32 (X);
+   end Octets_To_Uint32;
    
-   function octets_to_uint64 (X : Octets_8) return uint64 is 
+   function Octets_To_Uint64 (X : Octets_8) return Uint64 is 
    begin 
-      return unchecked_octets_to_64 (X);
-   end octets_to_uint64;   
+      return Unchecked_Octets_To_64 (X);
+   end Octets_To_Uint64;   
    
-   function uint64_to_float64 (X : uint64) return float64 is
+   function Uint64_To_Float64 (X : Uint64) return Float64 is
    begin
-      return unchecked_uint64_to_float64 (X);
-   end uint64_to_float64;
+      return Unchecked_Uint64_To_Float64 (X);
+   end Uint64_To_Float64;
    
-   function float64_to_uint64 (X : float64) return uint64 is
+   function Float64_To_Uint64 (X : Float64) return Uint64 is
    begin
-      return unchecked_float64_to_uint64 (X);
-   end float64_to_uint64;
+      return Unchecked_Float64_To_Uint64 (X);
+   end Float64_To_Uint64;
    
-   function hton16 (X : uint16) return uint16 is
+   function Hton16 (X : Uint16) return Uint16 is
       o2 : Octets_2;
    begin
       if System.Default_Bit_Order = System.Low_Order_First then
-         o2 := uint16_to_octets (X);
-         return octets_to_uint16 ((o2 (1), o2 (0)));
+         o2 := Uint16_To_Octets (X);
+         return Octets_To_Uint16 ((o2 (1), o2 (0)));
       end if;
       return X;
-   end hton16;
+   end Hton16;
    
-   function ntoh16 (X : uint16) return uint16 is
+   function Ntoh16 (X : Uint16) return Uint16 is
       o2 : Octets_2;
    begin
       if System.Default_Bit_Order = System.Low_Order_First then
-         o2 := uint16_to_octets (X);
-         return octets_to_uint16 ((o2 (1), o2 (0)));
+         o2 := Uint16_To_Octets (X);
+         return Octets_To_Uint16 ((o2 (1), o2 (0)));
       end if;
       return X;
-   end ntoh16;
+   end Ntoh16;
    
-   function hton32 (X : uint32) return uint32 is 
+   function Hton32 (X : Uint32) return Uint32 is 
       o4 : Octets_4;
    begin
       if System.Default_Bit_Order = System.Low_Order_First then
-         o4 := uint32_to_octets (X);
-         return octets_to_uint32 ((o4 (3), o4 (2), o4 (1), o4 (0)));
+         o4 := Uint32_To_Octets (X);
+         return Octets_To_Uint32 ((o4 (3), o4 (2), o4 (1), o4 (0)));
       end if;
       return X;
-   end hton32;
+   end Hton32;
    
-   function ntoh32 (X : uint32) return uint32 is
+   function Ntoh32 (X : Uint32) return Uint32 is
       o4 : Octets_4;
    begin
       if System.Default_Bit_Order = System.Low_Order_First then
-         o4 := uint32_to_octets (X);
-         return octets_to_uint32 ((o4 (3), o4 (2), o4 (1), o4 (0)));
+         o4 := Uint32_To_Octets (X);
+         return Octets_To_Uint32 ((o4 (3), o4 (2), o4 (1), o4 (0)));
       end if;
       return X;
-   end ntoh32;
+   end Ntoh32;
    
-   function hton64 (X : uint64) return uint64 is
+   function Hton64 (X : Uint64) return Uint64 is
       o8 : Octets_8;
    begin
       if System.Default_Bit_Order = System.Low_Order_First then
-         o8 := uint64_to_octets (X);
-         return octets_to_uint64 ((o8 (7), o8 (6), o8 (5), o8 (4), 
+         o8 := Uint64_To_Octets (X);
+         return Octets_To_Uint64 ((o8 (7), o8 (6), o8 (5), o8 (4), 
                                   o8 (3), o8 (2), o8 (1), o8 (0)));
       end if;
       return X;
-   end hton64;
+   end Hton64;
    
-   function ntoh64 (X : uint64) return uint64 is
+   function Ntoh64 (X : Uint64) return Uint64 is
       o8 : Octets_8;
    begin
       if System.Default_Bit_Order = System.Low_Order_First then
-         o8 := uint64_to_octets (X);
-         return octets_to_uint64 ((o8 (7), o8 (6), o8 (5), o8 (4), 
+         o8 := Uint64_To_Octets (X);
+         return Octets_To_Uint64 ((o8 (7), o8 (6), o8 (5), o8 (4), 
                                   o8 (3), o8 (2), o8 (1), o8 (0)));
       end if;
       return X;
-   end ntoh64;
+   end Ntoh64;
    
-   end types;
+end types;

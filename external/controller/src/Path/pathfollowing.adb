@@ -5,13 +5,14 @@ package body pathfollowing is
    b : Integer := 0;
 
    bottomPoint : Integer := 0;
-   topPoint : Integer := 0;
-   leftPoint : Integer := 0;
-   rightPoint : Integer:= 0;
+   --topPoint : Integer := 0;
+   --leftPoint : Integer := 0;
+   --rightPoint : Integer:= 0;
    bottomPoint1 : Integer := 0;
-   topPoint1 : Integer := 0;
-   leftPoint1 : Integer := 0;
-   rightPoint1 : Integer:= 0;
+   white_Line : Integer := 0;
+   --topPoint1 : Integer := 0;
+   --leftPoint1 : Integer := 0;
+   --rightPoint1 : Integer:= 0;
    --steeringAngle : float64 := 0.0;
 
    red : Colour_Matrix := (others => (others => 0));
@@ -39,7 +40,7 @@ package body pathfollowing is
 
        for I in Row_Index loop
          for J in Column_Index loop
-            if grey (I)(J) > 100 then
+            if grey (I)(J) > 150 then
                binaImage (I)(J) := 255;
             else
                binaImage (I)(j) := 0;
@@ -53,11 +54,9 @@ package body pathfollowing is
 
    end binarize;
 
-   function wheel_Velocity (binarizedImage : in Colour_Matrix; d_sensor : in Dtype) return Wheehl_velocity is
-      wheehlvelocity : Wheehl_velocity := (others => 0.0);
+   function findLine (binarizedImage : in Colour_Matrix) return Integer is
 
    begin
-
       for J in Column_Index loop
          if binaImage(Row_Index(height-5))(J) = 255 then
             bottomPoint := Integer(J);
@@ -70,19 +69,29 @@ package body pathfollowing is
          end if;
       end loop;
       bottomPoint := (bottomPoint + bottomPoint1) / 2;
-
       Put_Line(Integer'Image(bottomPoint));
-      if bottomPoint >= 36 then
+      return bottomPoint;
+
+   end findLine;
+
+
+   function wheel_Velocity (whiteLine : in Integer; d_sensor : in Dtype) return Wheehl_velocity is
+      wheehlvelocity : Wheehl_velocity := (others => 0.0);
+
+   begin
+
+
+      if whiteLine >= 36 then
          V_turn := 3.6;
-      elsif bottomPoint <= 28  and bottomPoint > 0 then
+      elsif whiteLine <= 28  and whiteLine > 0 then
          V_turn := -3.6;
-      elsif bottomPoint > 28 and bottomPoint < 36 then
+      elsif whiteLine > 28 and whiteLine < 36 then
          V_turn := 0.0;
-      elsif bottomPoint = 0 then
-         if d_sensor(6) < 450.0 then
+      elsif whiteLine = 0 then
+         if d_sensor(6) < 500.0 then
             V_turn := 1.0;
          end if;
-         if d_sensor(3) < 450.0 then
+         if d_sensor(3) < 500.0 then
             V_turn := -1.0;
          end if;
       end if;
@@ -128,8 +137,10 @@ package body pathfollowing is
 
       --Binarized
       binaImage := binarize(grey);
+      --findLine
+      white_Line := findLine(binaImage);
       --wheelvelocity calculate
-      wheehlvelocity := wheel_Velocity(binaImage, d_sensor);
+      wheehlvelocity := wheel_Velocity(white_Line, d_sensor);
 
       declare packet : Communication_Packet;
       begin

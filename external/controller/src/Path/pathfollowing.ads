@@ -23,7 +23,8 @@ package pathfollowing is
 
    function path_following(dataInput : in Communication_Packet; d_sensor : in Dtype) return Communication_Packet;
    function binarize(grey : in Colour_Matrix) return Colour_Matrix;
-   function wheel_Velocity(binarizedImage : in Colour_Matrix; d_sensor : in Dtype) return Wheehl_velocity;
+   function findLine(binarizedImage : in Colour_Matrix) return Integer;
+   function wheel_Velocity(whiteLine : in Integer; d_sensor : in Dtype) return Wheehl_velocity;
 
 
 end pathfollowing;

@@ -53,6 +53,7 @@ void cab_session::handle_join()
         success_message.id = _cab->id();
         _socket.async_send(boost::asio::buffer(success_message.to_buffer()), [this, self](boost::system::error_code error_code, std::size_t written)
         {
+            std::cout << "Data sent " << written << std::endl;
             if(!error_code)
             {
                 handle_receive();

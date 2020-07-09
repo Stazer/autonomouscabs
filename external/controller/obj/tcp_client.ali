@@ -1,0 +1,205 @@
+V "GNAT Lib v9"
+A -gnatA
+A -g
+A -mtune=generic
+A -march=x86-64
+P ZX
+
+RN
+RV NO_ALLOCATORS
+RV NO_ANONYMOUS_ALLOCATORS
+RV NO_IO
+RV NO_LOCAL_ALLOCATORS
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_STREAMS
+RV NO_DEFAULT_INITIALIZATION
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_IMPLEMENTATION_PRAGMAS
+RV NO_OBSOLESCENT_FEATURES
+RV SPARK_05
+RV MAX_ENTRY_QUEUE_LENGTH=1+
+
+U tcp_client%b		tcp_client.adb		921820c9 NE OO PK IL
+Z ada.streams%s		a-stream.adb		a-stream.ali
+Z ada.tags%s		a-tags.adb		a-tags.ali
+Z system%s		system.ads		system.ali
+Z system.stream_attributes%s  s-stratt.adb	s-stratt.ali
+Z system.tasking%s	s-taskin.adb		s-taskin.ali
+Z system.tasking.protected_objects%s  s-taprob.adb  s-taprob.ali
+Z system.tasking.protected_objects.operations%s  s-tpobop.adb  s-tpobop.ali
+W types%s		types.adb		types.ali
+
+U tcp_client%s		tcp_client.ads		114a63de EE NE OO PK IL
+W ada%s			ada.ads			ada.ali
+W ada.real_time%s	a-reatim.adb		a-reatim.ali
+W ada.streams%s		a-stream.adb		a-stream.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W byte_buffer%s		byte_buffer.adb		byte_buffer.ali
+W gnat%s		gnat.ads		gnat.ali
+W gnat.sockets%s	g-socket.adb		g-socket.ali
+W mailbox%s		mailbox.adb		mailbox.ali
+W types%s		types.adb		types.ali
+
+D ada.ads		20200312110721 76789da1 ada%s
+D a-contai.ads		20200312110721 61e5e089 ada.containers%s
+D a-conhel.ads		20200312110721 20298884 ada.containers.helpers%s
+D a-convec.ads		20200312110721 7e2b0fdf ada.containers.vectors%s
+D a-except.ads		20200312110721 291912d5 ada.exceptions%s
+D a-finali.ads		20200312110721 bf4f806b ada.finalization%s
+D a-ioexce.ads		20200312110721 e4a01f64 ada.io_exceptions%s
+D a-iteint.ads		20200312110721 7c7305e9 ada.iterator_interfaces%s
+D a-reatim.ads		20200312110721 0240fc73 ada.real_time%s
+D a-stream.ads		20200312110721 119b8fb3 ada.streams%s
+D a-tags.ads		20200312110721 491b781d ada.tags%s
+D a-textio.ads		20200312110721 881db35a ada.text_io%s
+D a-unccon.ads		20200312110721 0e9b276f ada.unchecked_conversion%s
+D a-uncdea.ads		20200312110721 eff36322 ada.unchecked_deallocation%s
+D byte_buffer.ads	20200623184139 0ee2c091 byte_buffer%s
+D gnat.ads		20200312110721 b5988c27 gnat%s
+D g-socket.ads		20200312110721 b63a5f09 gnat.sockets%s
+D interfac.ads		20200312110721 5ab55268 interfaces%s
+D i-c.ads		20200312110721 5421119b interfaces.c%s
+D i-cstrea.ads		20200312110721 e53d8b8e interfaces.c_streams%s
+D mailbox.ads		20200630180600 07d0a64a mailbox%s
+D system.ads		20200312110721 4635ec04 system%s
+D s-atacco.ads		20200312110721 4c36d12f system.address_to_access_conversions%s
+D s-atocou.ads		20200312110721 b45c2d8d system.atomic_counters%s
+D s-crtl.ads		20200312110721 0ebbdb71 system.crtl%s
+D s-exctab.ads		20200312110721 54135002 system.exception_table%s
+D s-ficobl.ads		20200312110721 078245e4 system.file_control_block%s
+D s-finmas.ads		20200312110721 7811a767 system.finalization_masters%s
+D s-finroo.ads		20200312110721 4ff27390 system.finalization_root%s
+D s-linux.ads		20200312110721 ed0b8aee system.linux%s
+D s-multip.ads		20200312110721 38ac9f73 system.multiprocessors%s
+D s-oscons.ads		20200518215901 0b994636 system.os_constants%s
+D s-osinte.ads		20200312110721 710cf8c6 system.os_interface%s
+D s-parame.ads		20200312110721 48ec542b system.parameters%s
+D s-pooglo.ads		20200312110721 ede33ef8 system.pool_global%s
+D s-secsta.ads		20200312110721 20bbe636 system.secondary_stack%s
+D s-soflin.ads		20200312110721 a7318a92 system.soft_links%s
+D s-stache.ads		20200312110721 a37c21ec system.stack_checking%s
+D s-stausa.ads		20200312110721 017a0a05 system.stack_usage%s
+D s-stalib.ads		20200312110721 09bd3940 system.standard_library%s
+D s-stoele.ads		20200312110721 2dc34a04 system.storage_elements%s
+D s-stopoo.ads		20200312110721 b16154c2 system.storage_pools%s
+D s-stposu.ads		20200312110721 97a6219c system.storage_pools.subpools%s
+D s-stratt.ads		20200312110721 aedef97e system.stream_attributes%s
+D s-tasinf.ads		20200312110721 2b3f8252 system.task_info%s
+D s-taspri.ads		20200312110721 f40ac08d system.task_primitives%s
+D s-taprop.ads		20200312110721 1dd2e1b6 system.task_primitives.operations%s
+D s-taskin.ads		20200312110721 b9d612e2 system.tasking%s
+D s-taprob.ads		20200312110721 acd6094d system.tasking.protected_objects%s
+D s-tpoben.ads		20200312110721 60ad3dae system.tasking.protected_objects.entries%s
+D s-tpobop.ads		20200312110721 5f548bb3 system.tasking.protected_objects.operations%s
+D s-traent.ads		20200312110721 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20200312110721 34867c83 system.unsigned_types%s
+D s-wchcon.ads		20200312110721 1b7d22d2 system.wch_con%s
+D tcp_client.ads	20200701124050 9d2ee67e tcp_client%s
+D tcp_client.adb	20200701134829 a79cba5f tcp_client%b
+D types.ads		20200623184139 a8aa7ce8 types%s
+X 1 ada.ads
+16K9*Ada 20e8 55|2r6 2r23 3r6 3r23 6r6 6r25 56|97r28
+X 8 a-iteint.ads
+24h9 Forward_Iterator
+32h9 Reversible_Iterator<24R9[4|111]>
+X 9 a-reatim.ads
+39K13*Real_Time 185e18 55|6w10 6r29 56|97r32
+49O9*Time<duration>
+61V13*Clock{49O9} 56|97s42
+X 10 a-stream.ads
+36K13*Streams 87e16 55|2w10 2r27
+X 12 a-textio.ads
+49K13*Text_IO 471e16 55|3w10 3r27
+X 15 byte_buffer.ads
+4K9*byte_buffer 33e16 55|4w6 22r112 24r77 26r51 56|47r111 66r77 76r7 80r7
+. 88r51
+11R9*Buffer 14e14 55|22r124 24r89 26r63 56|47r123 66r89 88r63
+16U14*write_uint8 56|56s25
+22U14*read_uint8 56|80s19 100s28
+24U14*read_uint32 56|76s19
+X 16 gnat.ads
+34K9*GNAT 57e9 55|1r6 1r24 56|6r7
+X 17 g-socket.ads
+55K14*Sockets 1472e17 55|1w11 1r29 56|6r12
+379U14*Initialize 56|6s20
+412I9*Socket_Type<integer> 55|16r37 18r48 56|4r37 13r48
+492I9*Port_Type<integer> 55|18r68 56|13r68
+597R9*Sock_Addr_Type 600e14 55|16r67 18r96 56|4r67 13r96
+598r7*Addr{517R9} 56|15m15
+599i7*Port{492I9} 56|16m15
+623V13*Inet_Addr{517R9} 56|15s23
+1008U14*Create_Socket 56|7s7
+1049U14*Connect_Socket 56|8s7
+1213P9*Stream_Access(10|39R9) 55|16r90 18r119 20r42 22r41 24r38 56|4r90 13r119
+. 22r42 47r40 66r38
+1216V13*Stream{1213P9} 56|10s14
+X 18 interfac.ads
+63M9*Unsigned_8
+74M9*Unsigned_32
+X 21 mailbox.ads
+5K9*mailbox 26e12 55|7w6 7r19 24r120 26r151 56|66r120 88r151
+9W19*Mailbox 18e15 55|24r128 26r159 56|66r128 88r159
+10U17 Clear 56|103s24
+11Y13 Deposit 56|104s24
+X 39 s-stausa.ads
+203U14*Initialize 204i<c,__gnat_stack_usage_initialize>22
+268U14*Output_Results 272i<c,__gnat_stack_usage_output_results>22
+X 55 tcp_client.ads
+9K9*tcp_client 28l5 28e15 56|3b14 110l5 110t15
+12m4*protocol_package_length{57|8M9} 56|75r51
+13m4*protocol_ID_length{57|8M9} 56|79r51
+14m4*protocol_join_ID{57|6M9}
+16V13*Connect{17|1213P9} 16=21 16=50 56|4b13 11l8 11t15 18s14
+16i21 Client{17|412I9} 56|4b21 7m21 8r22 10r21
+16r50 Address{17|597R9} 56|4b50 8r30
+18V13*build_connection{17|1213P9} 18=32 18>61 18=79 56|13b13 19l8 19t24
+18i32 client{17|412I9} 56|13b32 18m22 18r22
+18i61 port{17|492I9} 56|13b61 16r23
+18r79 address{17|597R9} 56|13b79 15m7 16m7 18m30 18r30
+20U14*send_bytes 20>26 20>57 56|22b14 44l8 44t18
+20p26 server_stream{17|1213P9} 56|22b26 31r28 35r25 40r31
+20r57 outgoing_packet{57|18R9} 56|22b57 29r55 35r40 38r10 39r19 40r46
+22V13*recv_bytes{57|8M9} 22>25 22>56 22=88 56|47b13 62l8 62t18 75s25 79s25
+. 83s25
+22p25 server_stream{17|1213P9} 56|47b24 55r27
+22m56 bytes_wanted{57|8M9} 56|47b55 54r30
+22r88 dynamic_buffer{15|11R9} 56|47b87 56m10 56r10
+24U14*listen 24>22 24=53 24=97 56|66b14 86l8 86t14
+24p22 server_stream{17|1213P9} 56|66b22 75r36 79r36 83r36
+24r53 dynamic_buffer{15|11R9} 56|66b53 75m76 75r76 76m31 79m71 79r71 80m30
+. 83m78 83r78 84m20
+24w97 local_mailbox{21|9W19} 56|66b97 84m79
+26U14*read_payload 26=27 26>71 26>102 26=128 56|84s7 88b14 108l8 108t20
+26r27 dynamic_buffer{15|11R9} 56|88b27 100m13 100r13
+26m71 payload_length{57|8M9} 56|88b71 95r39 96r54
+26m102 package_ID{57|6M9} 56|88b102 94r35
+26w128 local_mailbox{21|9W19} 56|88b128 103r10 104r10
+X 56 tcp_client.adb
+24a7 uint8_payload_length{57|12A9} 29m7 30r16 31r43
+30m11 I<18|74M9> 31r64
+39m14 I<18|74M9> 40r76
+49m7 bytes_received{57|8M9} 54r13 57m10 57r28 60r14
+50m7 new_byte{57|6M9} 55m42 55r42 56r37
+68m7 bytes_received{57|8M9} 75m7 79m7 83m7
+69m7 conv_package_ID{57|6M9} 80m46 84r63
+70m7 conv_package_value_length{57|8M9} 76m47 83r51 84r36
+92r15 new_packet{57|18R9} 94m10 95m10 96m10 97m10 99r19 100r39 104r32
+99m14 I<18|74M9> 100r64
+X 57 types.ads
+4K9*types 55|5w6 12r30 13r25 14r23 20r75 22r74 22r140 26r88 26r115 56|1w6
+. 1r17 22r75 24r30 31r10 35r7 40r13 47r73 47r139 49r24 50r18 55r10 68r24
+. 69r25 70r35 88r88 88r115 57|45e10
+6M9*uint8<18|63M9> 55|14r29 26r121 56|31r16 35r13 40r19 50r24 55r16 69r31
+. 88r121
+8M9*uint32<18|74M9> 55|12r36 13r31 22r80 22r146 26r94 56|47r79 47r145 49r30
+. 68r30 70r41 88r94
+12A9*Octets_4(6M9)<8M9> 56|24r36
+15A9*payload(6M9)<8M9> 56|96r42
+18R9*Communication_Packet 55|20r81 56|22r81 92r28 57|23e14
+19m7*package_ID{6M9} 56|35r56 94m21
+20m7*payload_length{8M9} 56|29r71 38r26 95m21
+21p7*local_payload(15A9) 56|39r35 40r62 96m21 99r30 100r50
+22o7*TTL{9|49O9} 56|97m21
+26V13*uint32_to_octets{12A9} 56|29s31
+39V13*hton32{8M9} 56|29s48
+

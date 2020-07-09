@@ -7,6 +7,8 @@ with Byte_Buffer;
 with Ada.Real_Time; use Ada.Real_Time;
 with Ada.Text_IO;
 
+with Messages; use Messages;
+
 package mailbox_tests is
 
    type mailbox_test is new Test_Cases.Test_Case with null record;
@@ -28,9 +30,9 @@ package mailbox_tests is
    
    procedure Test_View_Inbox (T : in out Test_Cases.Test_Case'Class);
    
-   procedure Test_Clear_not_isExpired (T : in out Test_Cases.Test_Case'Class);
+   procedure Test_Clear_Is_Not_Expired (T : in out Test_Cases.Test_Case'Class);
    
-   procedure Test_Clear_isExpired (T : in out Test_Cases.Test_Case'Class);
+   procedure Test_Clear_Is_Expired (T : in out Test_Cases.Test_Case'Class);
    
    procedure Test_Empty (T : in out Test_Cases.Test_Case'Class);
    

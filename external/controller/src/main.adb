@@ -24,7 +24,7 @@ procedure Main is
       Backend_Thread.Main;
    end backend_task;
 
-   Current_Mail : Mailbox.Mail;
+   current_packet : Messages.Message_Ptr;
    alternator : Types.Uint8 := 1;
 
    V : Messages.Velocity_Message;
@@ -41,11 +41,11 @@ begin
       Webots_Thread.Webots_Mailbox.Clear;
 
       -- alternate between checking webots and backend mailbox first, then update alternator
-      Mailbox.check_mailbox (Backend_Thread.Backend_Mailbox, Webots_Thread.Webots_Mailbox, Current_Mail, alternator);
+      Mailbox.check_mailbox (Backend_Thread.Backend_Mailbox, Webots_Thread.Webots_Mailbox, current_packet, alternator);
       Mailbox.update_alternator (alternator);
 
       -- do calculations with current packet
-      Put_Line (Current_Mail.Message.Id'Image);
+      Put_Line (current_packet.Id'Image);
 
       V := Messages.Velocity_Message_Create (5.1, 2.4);
 

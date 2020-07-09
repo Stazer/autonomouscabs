@@ -1,5 +1,5 @@
 with Ada.Real_Time; use Ada.Real_Time;
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO;
 
 with Types; use Types;
 with Messages;
@@ -7,7 +7,7 @@ with Messages;
 package Mailbox is
    
    type Mail is record 
-      Message : Messages.Message_Ptr;
+      M : Messages.Message_Ptr;
       TTL : Ada.Real_Time.Time;
    end record;
 
@@ -15,8 +15,8 @@ package Mailbox is
    
    protected type Mailbox (Size : Types.Uint8) is
       procedure Clear;
-      entry Deposit (X: in Mail);
-      entry Collect (X: out Mail);
+      entry Deposit (X: in Messages.Message_Ptr);
+      entry Collect (X: out Messages.Message_Ptr);
       procedure View_Inbox (Remaining_Items: out Types.Uint8);
       procedure Empty;
    private
@@ -24,7 +24,7 @@ package Mailbox is
       Last : Types.Uint8 := 0;
    end Mailbox;
 
-   procedure Check_Mailbox (first : in out Mailbox; second : in out Mailbox; new_packet : out Mail; alternator: Types.Uint8);
+   procedure Check_Mailbox (first : in out Mailbox; second : in out Mailbox; new_packet : out Messages.Message_Ptr; alternator: Types.Uint8);
    
    procedure Update_Alternator (alternator: in out Types.Uint8);
       

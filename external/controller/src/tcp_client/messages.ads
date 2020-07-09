@@ -61,8 +61,6 @@ package Messages is
    type LS_Message_Ptr is access all Light_Sensor_Message;
    type ID_Message_Ptr is access all Image_Data_Message;
    type JS_Message_Ptr is access all Join_Success_Message;
-   type JC_Message_Ptr is access all Join_Challenge_Message;
-   type V_Message_Ptr is access all Velocity_Message;
    
    function Velocity_Message_Create (Left_Speed, Right_Speed : in Types.Float64) return Velocity_Message;
    function Join_Challenge_Message_Create return Join_Challenge_Message;

@@ -1,33 +1,47 @@
 with Ada.Containers.Vectors;
-with types; use types;
 
-package byte_buffer is
-      
-   package Byte_Vector is new Ada.Containers.Vectors
-     (Index_Type => Natural, Element_Type => types.uint8);
-   use Byte_Vector;
+with Types;
+
+package Byte_Buffer is
    
    -- a simple read and write buffer
+   type Buffer is tagged private;
+   
+   -- procedures to read a Uintx/Payload from the buffer
+   procedure Read_Uint8 (Self : in out Buffer; Val : out Types.Uint8);
+   procedure Read_Uint16 (Self : in out Buffer; Val : out Types.Uint16);
+   procedure Read_Uint32 (Self : in out Buffer; Val : out Types.Uint32);
+   procedure Read_Uint64 (Self : in out Buffer; Val : out Types.Uint64);
+   procedure Read_Payload (Self : in out Buffer; Val : access Types.Payload);
+   
+   -- procedures to write a Uintx/Payload from the buffer
+   procedure Write_Uint8 (Self : in out Buffer; Val : in Types.Uint8);
+   procedure Write_Uint16 (Self : in out Buffer; Val : in Types.Uint16);
+   procedure Write_Uint32 (Self : in out Buffer; Val : in Types.Uint32);
+   procedure Write_Uint64 (Self : in out Buffer; Val : in Types.Uint64);
+   procedure Write_Payload (Self : in out Buffer; Val : access Types.Payload);
+   
+   -- utility procedures
+   function Bytes_Read (Self : in out Buffer) return Types.Uint32;
+   function Bytes_Written (Self : in out Buffer) return Types.Uint32;
+   function Bytes_Remaining (Self : in out Buffer) return Types.Uint32;
+   function Size (Self : in out Buffer) return Types.Uint32;
+   procedure Unwind (Self : in out Buffer; Bytes : in Types.Uint32);
+   
+   -- delete (N <= Self.Written ? N : Self.Written) bytes from the start of the Buffer
+   procedure Delete_Bytes (Self : in out Buffer; N : in Types.Uint32);
+   
+private
+   
+   use Types;
+   package Byte_Vector is new Ada.Containers.Vectors
+     (Index_Type => Natural, Element_Type => Types.Uint8);
+   use Byte_Vector;
+   
    type Buffer is tagged record
-      Buffer : Byte_Vector.Vector;
-      Index : Integer := 0;     
+      Vector : Byte_Vector.Vector;
+      Read : Types.Uint32 := 0;
+      Written : Types.Uint32 := 0;
    end record;
    
-   procedure write_uint8 (Self : in out Buffer; Val : in types.uint8);
-   procedure write_uint16 (Self : in out Buffer; Val : in types.uint16);
-   procedure write_uint32 (Self : in out Buffer; Val : in types.uint32);
-   procedure write_uint64 (Self : in out Buffer; Val : in types.uint64);
-   procedure write_payload (Self : in out Buffer; Val : access types.payload);
-   
-   procedure read_uint8 (Self : in out Buffer; Val : out types.uint8);
-   procedure read_uint16 (Self : in out Buffer; Val : out types.uint16);
-   procedure read_uint32 (Self : in out Buffer; Val : out types.uint32);
-   procedure read_uint64 (Self : in out Buffer; Val : out types.uint64);
-   procedure read_payload (Self : in out Buffer; Val : access types.payload);
-   
-   function size (Self : in out Buffer) return types.uint32;
-   function remaining (Self : in out Buffer) return types.uint32;
-   function bytes_read (Self : in out Buffer) return types.uint32;
-   procedure unwind (Self : in out Buffer; Bytes : in types.uint32);
-
-end byte_buffer;
+end Byte_Buffer;

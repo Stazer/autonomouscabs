@@ -18,15 +18,15 @@ package body tcp_tests is
 
    procedure Test_read_payload (T : in out Test_Cases.Test_Case'Class) is
 
-      local_mailbox : mailbox.Mailbox(Size => 1);
+      local_mailbox : Mailbox.Mailbox(Size => 1);
 
-      test_packet : types.Communication_Packet;
+      test_packet : Types.Communication_Packet;
 
-      dynamic_buffer : byte_buffer.Buffer;
+      dynamic_buffer : Byte_Buffer.Buffer;
 
-      package_ID : types.uint8 := 1;
+      package_ID : Types.uint8 := 1;
 
-      payload_length : types.uint32 := 50000;
+      payload_length : Types.uint32 := 50000;
 
    begin
 

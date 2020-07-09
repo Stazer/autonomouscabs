@@ -1,28 +1,29 @@
 with Ada.Text_IO; use Ada.Text_IO;
-with tcp_client; use tcp_client;
-with backend_thread; use backend_thread;
-with webots_thread; use webots_thread;
-with types; use types;
-with mailbox;
+
+with Tcp_Client;
+with Backend_Thread;
+with Webots_Thread;
+with Types;
+with Mailbox;
 
 
 procedure Main is
 
-   task webots_thread;
-   task backend_thread;
+   task webots_task;
+   task backend_task;
 
-   task body webots_thread is
+   task body webots_task is
    begin
-      webots_main;
-   end webots_thread;
+      Webots_Thread.Main;
+   end webots_task;
 
-   task body backend_thread is
+   task body backend_task is
    begin
-      backend_main;
-   end backend_thread;
+      Backend_Thread.Main;
+   end backend_task;
 
-   current_packet : types.Communication_Packet;
-   alternator : types.uint8 := 1;
+   current_packet : Types.Communication_Packet;
+   alternator : Types.Uint8 := 1;
 
 begin
 
@@ -31,14 +32,15 @@ begin
    while true loop
 
       -- clear out both mailboxes
-      Backend_Mailbox.Clear;
-      Webots_Mailbox.Clear;
+      Backend_Thread.Backend_Mailbox.Clear;
+      Webots_Thread.Webots_Mailbox.Clear;
 
       -- alternate between checking webots and backend mailbox first, then update alternator
-      mailbox.check_mailbox(Backend_Mailbox,Webots_Mailbox,current_packet,alternator);
-      mailbox.update_alternator(alternator);
+      Mailbox.check_mailbox (Backend_Thread.Backend_Mailbox, Webots_Thread.Webots_Mailbox, current_packet, alternator);
+      Mailbox.update_alternator (alternator);
 
       -- do calculations with current packet
+      Put_Line (current_packet.Package_ID'Image);
 
    end loop;
 

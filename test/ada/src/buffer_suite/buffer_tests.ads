@@ -18,5 +18,6 @@ package buffer_tests is
    procedure Test_Read_Write_Uint32 (T : in out Test_Cases.Test_Case'Class);
    procedure Test_Read_Write_Uint64 (T : in out Test_Cases.Test_Case'Class);
    procedure Test_Read_Write_Payload (T : in out Test_Cases.Test_Case'Class);
+   procedure Test_Delete_Bytes (T : in out Test_Cases.Test_Case'Class);
 
 end buffer_tests;

@@ -6,17 +6,22 @@ with Byte_Buffer;
 with Types;
 with Mailbox;
 
-
 package Backend_Thread is
+   Socket: Socket_Type;
+   Stream: Stream_Access;
+   Address: Sock_Addr_Type;
 
-   -- Backend thread variables
-   Backend_Client: Socket_Type; -- stores the socket for the backend
-   Backend_Channel : Stream_Access; -- socket I/O interface
-   Backend_Address : Sock_Addr_Type; -- stores the server address
-   Backend_Cmd : Types.Communication_Packet; -- command to send over socket
-   Backend_Vector_Buffer : Byte_Buffer.Buffer;
-   Backend_Mailbox : Mailbox.Mailbox (Size => 5); -- queue that holds at max 5 items
+   Backend_Mailbox: Mailbox(Size => 5);
+
+   Buffer: Byte_buffer;
+   Receive_Buffer_Size : Ada.Streams.Stream_Element_Count;
+   Receive_Buffer_Data : Ada.Streams.Stream_Element_Array(1 .. 256);
+
+   procedure Handle_Join_Challenge;
+   procedure Handle_Join;
 
    procedure Main;
 
+   type Handle_Buffer_Type is access procedure;
+   Handle_Buffer : Handle_Buffer_Type;
 end Backend_Thread;

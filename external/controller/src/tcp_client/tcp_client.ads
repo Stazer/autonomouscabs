@@ -14,7 +14,9 @@ package Tcp_Client is
    protocol_ID_length : Types.Uint32 := 1;
    protocol_join_ID : Types.Uint8 := 6;
 
-   function Connect (client : in out Socket_Type; port : Port_Type; address : in out Sock_Addr_Type) return Stream_Access; --builds the connection and then return the socket
+   function Connect(Client : in out Socket_Type; Address : in out Sock_Addr_Type) return Stream_Access;
+
+   function build_connection ( client : in out Socket_Type; port : Port_Type; address : in out Sock_Addr_Type) return Stream_Access; --builds the connection and then return the socket
 
    procedure Send_Bytes (server_stream : Stream_Access; outgoing_packet : Types.Communication_Packet); --sends a bytes over stream, established connection needed
 

@@ -1,0 +1,150 @@
+V "GNAT Lib v9"
+A -gnatA
+A -g
+A -mtune=generic
+A -march=x86-64
+P ZX
+
+RN
+RV SIMPLE_BARRIERS
+RV NO_DELAY
+RV NO_DIRECT_BOOLEAN_OPERATORS
+RV NO_EXCEPTION_HANDLERS
+RV NO_EXCEPTION_PROPAGATION
+RV NO_EXCEPTIONS
+RV NO_FIXED_POINT
+RV NO_IO
+RV NO_IMPLICIT_CONDITIONALS
+RV NO_PROTECTED_TYPES
+RV NO_RECURSION
+RV NO_RELATIVE_DELAY
+RV NO_SELECT_STATEMENTS
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_IMPLEMENTATION_PRAGMAS
+RV NO_IMPLICIT_LOOPS
+RV SPARK_05
+RV MAX_PROTECTED_ENTRIES=2
+RV MAX_ENTRY_QUEUE_LENGTH=1+
+
+U mailbox%b		mailbox.adb		d47b47a9 NE OO PK IL
+Z ada.calendar.delays%s	a-caldel.adb		a-caldel.ali
+Z ada.tags%s		a-tags.adb		a-tags.ali
+Z system%s		system.ads		system.ali
+Z system.soft_links%s	s-soflin.adb		s-soflin.ali
+Z system.tasking%s	s-taskin.adb		s-taskin.ali
+Z system.tasking.protected_objects%s  s-taprob.adb  s-taprob.ali
+Z system.tasking.protected_objects.entries%s  s-tpoben.adb  s-tpoben.ali
+Z system.tasking.protected_objects.operations%s  s-tpobop.adb  s-tpobop.ali
+
+U mailbox%s		mailbox.ads		2527958b EE NE OO PK IL
+W ada%s			ada.ads			ada.ali
+Z ada.exceptions%s	a-except.adb		a-except.ali
+W ada.real_time%s	a-reatim.adb		a-reatim.ali
+Z ada.tags%s		a-tags.adb		a-tags.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+Z system%s		system.ads		system.ali
+Z system.tasking%s	s-taskin.adb		s-taskin.ali
+Z system.tasking.protected_objects%s  s-taprob.adb  s-taprob.ali
+Z system.tasking.protected_objects.entries%s  s-tpoben.adb  s-tpoben.ali
+W types%s		types.adb		types.ali
+
+D ada.ads		20200312110721 76789da1 ada%s
+D a-calend.ads		20200312110721 b288ede8 ada.calendar%s
+D a-caldel.ads		20200312110721 9f20b83d ada.calendar.delays%s
+D a-except.ads		20200312110721 291912d5 ada.exceptions%s
+D a-finali.ads		20200312110721 bf4f806b ada.finalization%s
+D a-ioexce.ads		20200312110721 e4a01f64 ada.io_exceptions%s
+D a-reatim.ads		20200312110721 0240fc73 ada.real_time%s
+D a-stream.ads		20200312110721 119b8fb3 ada.streams%s
+D a-tags.ads		20200312110721 491b781d ada.tags%s
+D a-textio.ads		20200312110721 881db35a ada.text_io%s
+D a-unccon.ads		20200312110721 0e9b276f ada.unchecked_conversion%s
+D interfac.ads		20200312110721 5ab55268 interfaces%s
+D i-c.ads		20200312110721 5421119b interfaces.c%s
+D i-cstrea.ads		20200312110721 e53d8b8e interfaces.c_streams%s
+D mailbox.ads		20200630180600 07d0a64a mailbox%s
+D mailbox.adb		20200630180600 d3abe1e3 mailbox%b
+D system.ads		20200312110721 4635ec04 system%s
+D s-atacco.ads		20200312110721 4c36d12f system.address_to_access_conversions%s
+D s-crtl.ads		20200312110721 0ebbdb71 system.crtl%s
+D s-exctab.ads		20200312110721 54135002 system.exception_table%s
+D s-ficobl.ads		20200312110721 078245e4 system.file_control_block%s
+D s-finroo.ads		20200312110721 4ff27390 system.finalization_root%s
+D s-linux.ads		20200312110721 ed0b8aee system.linux%s
+D s-multip.ads		20200312110721 38ac9f73 system.multiprocessors%s
+D s-oscons.ads		20200518215901 0b994636 system.os_constants%s
+D s-osinte.ads		20200312110721 710cf8c6 system.os_interface%s
+D s-parame.ads		20200312110721 48ec542b system.parameters%s
+D s-secsta.ads		20200312110721 20bbe636 system.secondary_stack%s
+D s-soflin.ads		20200312110721 a7318a92 system.soft_links%s
+D s-stache.ads		20200312110721 a37c21ec system.stack_checking%s
+D s-stausa.ads		20200312110721 017a0a05 system.stack_usage%s
+D s-stalib.ads		20200312110721 09bd3940 system.standard_library%s
+D s-stoele.ads		20200312110721 2dc34a04 system.storage_elements%s
+D s-tasinf.ads		20200312110721 2b3f8252 system.task_info%s
+D s-taspri.ads		20200312110721 f40ac08d system.task_primitives%s
+D s-taprop.ads		20200312110721 1dd2e1b6 system.task_primitives.operations%s
+D s-taskin.ads		20200312110721 b9d612e2 system.tasking%s
+D s-taprob.ads		20200312110721 acd6094d system.tasking.protected_objects%s
+D s-tpoben.ads		20200312110721 60ad3dae system.tasking.protected_objects.entries%s
+D s-tpobop.ads		20200312110721 5f548bb3 system.tasking.protected_objects.operations%s
+D s-traent.ads		20200312110721 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20200312110721 34867c83 system.unsigned_types%s
+D s-wchcon.ads		20200312110721 1b7d22d2 system.wch_con%s
+D types.ads		20200623184139 a8aa7ce8 types%s
+X 1 ada.ads
+16K9*Ada 20e8 15|2r6 2r25 3r6 16|67r11 67r54
+X 7 a-reatim.ads
+39K13*Real_Time 185e18 15|2w10 2r29 16|67r15 67r58
+49O9*Time<duration> 15|24r44 16|65r44
+54O9*Time_Span<duration>
+61V13*Clock{49O9} 16|67s25
+71V14*"-"{54O9} 16|67s31
+107V14*">="{boolean} 16|67r51
+119V13*Milliseconds{54O9} 16|67s68
+X 10 a-textio.ads
+49K13*Text_IO 471e16 15|3w10
+X 12 interfac.ads
+63M9*Unsigned_8
+X 15 mailbox.ads
+5K9*mailbox 26l5 26e12 16|1b14 74l5 74t12
+7A9*Mail_List(44|18R9)<44|6M9> 16r14
+9W19*Mailbox 9d28 16E7 18l8 18e15 20r45 20r70 16|3b19 35l8 35t15 37r45 37r70
+9m28 Size{44|6M9} 16r27 16|16r67
+10U17 Clear 16|4b17 15l11 15t16
+11Y13 Deposit 11>21 16|16b13 20l11 20t18
+11r21 X{44|18R9} 16|18r29
+12Y13 Collect 12<21 16|21b13 26l11 26t18 41s19 48s20
+12r21 X{44|18R9} 16|23m10
+13U17 View_Inbox 13<28 16|27b17 30l11 30t21
+13m28 Remaining_Items{44|6M9} 16|27b28 29m10
+14U17 Empty 16|31b17 34l11 34t16
+16a7 Items{7A9} 16|7r22 8r29 10r22 10r40 18r10 23r15 25r10 25r28
+17m7 Last{44|6M9} 16|6r13 9r22 9r30 10r31 10r49 12r26 12r42 16r60 18r16 19r10
+. 19r18 21r61 24r10 24r18 25r19 25r37 29r28 33r10
+20U14*check_mailbox 20=30 20=54 20<79 20>124 16|37b14 44s13 51s13 54l8 54t21
+20w30 first{9W19} 16|37b30 41r13 44m34 51m34
+20w54 second{9W19} 16|37b54 44m27 48r13 51m27
+20r79 new_packet{44|18R9} 16|37b79 41m27 44m40 48m28 51m40
+20m124 alternator{44|6M9} 16|37b124 39r10 44r51 51r51
+22U14*update_alternator 22=32 16|56b14 63l8 63t25
+22m32 alternator{44|6M9} 16|56b33 58r10 59m10 61m10
+24V13*isExpired{boolean} 24>23 16|8s19 65b13 72l8 72t17
+24o23 Time_In_Question{7|49O9} 16|65b23 67r33
+X 16 mailbox.adb
+7m17 I<12|63M9> 8r35 12r38
+16r21 X{44|18R9}
+21r21 X{44|18R9}
+X 31 s-stausa.ads
+203U14*Initialize 204i<c,__gnat_stack_usage_initialize>22
+268U14*Output_Results 272i<c,__gnat_stack_usage_output_results>22
+X 44 types.ads
+4K9*types 15|1w6 1r17 7r29 7r54 9r35 11r27 12r28 13r49 17r14 20r96 20r136
+. 22r51 16|16r27 21r28 27r49 37r96 37r136 56r52 44|45e10
+6M9*uint8<12|63M9> 15|7r35 9r41 13r55 17r20 20r142 22r57 16|27r55 37r142
+. 56r58
+18R9*Communication_Packet 15|7r60 11r33 12r34 20r102 16|16r33 21r34 37r102
+. 44|23e14
+22o7*TTL{7|49O9} 16|8r38
+

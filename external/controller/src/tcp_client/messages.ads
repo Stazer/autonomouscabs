@@ -19,35 +19,50 @@ package Messages is
                        BACKEND_JOIN_CHALLENGE => 16#C1#);
 
    for Message_Id'Size use Types.Uint8'Size;
-
-   type Message (In_Size : Types.Uint32; In_Id : Message_Id) is tagged record
-      Size : Types.Uint32 := In_Size;
-      Id : Types.Uint8 := Types.Uint8 (Message_Id'Enum_Rep (In_Id));
+   
+   -- base message type
+   type Message is tagged record
+      Size : Types.Uint32;
+      Id : Message_Id;
    end record;
 
-   type Distance_Sensor_Array is array(0 .. 7) of Types.Float64;
+   type Distance_Sensor_Array is array(0 .. 8) of Types.Float64;
 
-   type Distance_Sensor_Message is new Message (5 + 16, EXTERNAL_DISTANCE_SENSOR) with record
-     Payload : Distance_Sensor_Array;
+   type Distance_Sensor_Message is new Message with record
+      Payload : Distance_Sensor_Array;
+   end record;
+   
+   type Light_Sensor_Array is array(0 .. 0) of Types.Float64;
+   
+   type Light_Sensor_Message is new Message with record
+      Payload : Light_Sensor_Array;
    end record;
 
-   type Image_Data_Array is array(0 .. (50 * 50 * 4) - 1) of Types.Uint8;
-
-   type Image_Data_Message is new Message (5 + (50 * 50 * 4), EXTERNAL_IMAGE_DATA) with record
-     Payload : Image_Data_Array;
+   type Image_Data_Message is new Message with record
+      Payload : access Types.Payload;
    end record;
 
-   type Join_Success_Message is new Message (5 + 4, EXTERNAL_JOIN_SUCCESS) with record
-     Cab_Id : Types.Uint32;
+   type Join_Success_Message is new Message with record
+      Cab_Id : Types.Uint32;
    end record;
 
-   type Velocity_Message is new Message (5 + 16, WEBOTS_VELOCITY) with record
+   type Velocity_Message is new Message with record
       Left_Speed : Types.Float64;
       Right_Speed : Types.Float64;
    end record;
    
-   type Join_Challenge_Message is new Message (5, BACKEND_JOIN_CHALLENGE) with record
+   type Join_Challenge_Message is new Message with record
       null;
    end record;
+   
+   -- pointer types for all messages
+   type Message_Ptr is access all Message'Class;
+   type DS_Message_Ptr is access all Distance_Sensor_Message;
+   type LS_Message_Ptr is access all Light_Sensor_Message;
+   type ID_Message_Ptr is access all Image_Data_Message;
+   type JS_Message_Ptr is access all Join_Success_Message;
+   
+   function Velocity_Message_Create (Left_Speed, Right_Speed : in Types.Float64) return Velocity_Message;
+   function Join_Challenge_Message_Create return Join_Challenge_Message;
 
 end Messages;

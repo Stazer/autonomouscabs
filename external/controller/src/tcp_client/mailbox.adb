@@ -14,15 +14,17 @@ package body Mailbox is
          end if;   
       end Clear;
       
-      entry Deposit(X: in Types.Communication_Packet) when Last < Size is
+      entry Deposit(X: in Messages.Message_Ptr) when Last < Size is
+         M : Mail := (M => X, TTL => Ada.Real_Time.Clock);
       begin
-         Items(Last + 1) := X;
+         Items(Last + 1) := M;
          Last := Last + 1;
       end Deposit;
       
-      entry Collect(X: out Types.Communication_Packet) when Last > 0 is
+      entry Collect(X: out Messages.Message_Ptr) when Last > 0 is
+         M : Mail := Items(1);
       begin
-         X := Items(1);
+         X := M.M;
          Last := Last - 1;
          Items(1..Last) := Items(2..Last+1);
       end Collect;
@@ -37,7 +39,7 @@ package body Mailbox is
       end Empty;
    end Mailbox;
    
-   procedure Check_Mailbox (first : in out Mailbox; second : in out Mailbox; new_packet : out Types.Communication_Packet; alternator: Types.Uint8 ) is
+   procedure Check_Mailbox (first : in out Mailbox; second : in out Mailbox; new_packet : out Messages.Message_Ptr; alternator: Types.Uint8 ) is
    begin
       if alternator = 1 then
          select

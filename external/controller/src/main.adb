@@ -5,6 +5,8 @@ with Backend_Thread;
 with Webots_Thread;
 with Types;
 with Mailbox;
+with Messages;
+with Byte_Buffer;
 
 
 procedure Main is
@@ -22,8 +24,11 @@ procedure Main is
       Backend_Thread.Main;
    end backend_task;
 
-   current_packet : Types.Communication_Packet;
+   current_packet : Messages.Message_Ptr;
    alternator : Types.Uint8 := 1;
+
+   V : Messages.Velocity_Message;
+   Out_Buffer : Byte_Buffer.Buffer;
 
 begin
 
@@ -40,7 +45,14 @@ begin
       Mailbox.update_alternator (alternator);
 
       -- do calculations with current packet
-      Put_Line (current_packet.Package_ID'Image);
+      Put_Line (current_packet.Id'Image);
+
+      V := Messages.Velocity_Message_Create (5.1, 2.4);
+
+      Out_Buffer.Write_Message (V);
+      Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
+      Out_Buffer.Delete_Bytes (V.Size);
+
 
    end loop;
 

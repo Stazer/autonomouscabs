@@ -13,7 +13,7 @@ package body Byte_Buffer is
    procedure Read_Uint16 (Self : in out Buffer; Val : out Types.Uint16) is
       O2 : Types.Octets_2;
    begin
-      if Self.Bytes_Remaining < 4 then
+      if Self.Bytes_Remaining < 2 then
          raise Not_Enough_Data;
       end if;
       
@@ -67,7 +67,7 @@ package body Byte_Buffer is
    procedure Read_Payload (Self : in out Buffer; Val : access Types.Payload) is
       Count : Types.Uint32 := 0;
    begin
-      if Self.Bytes_Remaining < Val'Size then
+      if Self.Bytes_Remaining < Val'Length then
          raise Not_Enough_Data;
       end if;
       
@@ -178,6 +178,12 @@ package body Byte_Buffer is
          when Messages.EXTERNAL_JOIN_SUCCESS => 
             Val := new Messages.Join_Success_Message;
             Self.Read_Uint32 (Messages.JS_Message_Ptr (Val).Cab_Id);
+         when Messages.BACKEND_JOIN_CHALLENGE => 
+            Val := new Messages.Join_Challenge_Message;
+         when Messages.WEBOTS_VELOCITY => 
+            Val := new Messages.Velocity_Message;
+            Self.Read_Float64 (Messages.V_Message_Ptr (Val).Left_Speed);
+            Self.Read_Float64 (Messages.V_Message_Ptr (Val).Right_Speed);
          when others => null;
       end case;
       
@@ -185,11 +191,48 @@ package body Byte_Buffer is
       Val.Id := M_Id;
    end Read_Message;
    
+   procedure Write_Message (Self : in out Buffer; Val : in Messages.Light_Sensor_Message) is
+   begin
+      Self.Write_Uint32 (Val.Size);
+      Self.Write_Uint8 (Types.Uint8 (Messages.Message_Id'Enum_Rep (Val.Id)));
+      
+      for I in Val.Payload'Range loop
+         Self.Write_Float64 (Val.Payload (I));
+      end loop;
+   end Write_Message;
+   
+   procedure Write_Message (Self : in out Buffer; Val : in Messages.Distance_Sensor_Message) is
+   begin
+      Self.Write_Uint32 (Val.Size);
+      Self.Write_Uint8 (Types.Uint8 (Messages.Message_Id'Enum_Rep (Val.Id)));
+      
+      for I in Val.Payload'Range loop
+         Self.Write_Float64 (Val.Payload (I));
+      end loop;
+   end Write_Message;
+   
+   procedure Write_Message (Self : in out Buffer; Val : in Messages.Image_Data_Message) is
+   begin
+      Self.Write_Uint32 (Val.Size);
+      Self.Write_Uint8 (Types.Uint8 (Messages.Message_Id'Enum_Rep (Val.Id)));
+      Self.Write_Uint32 (Val.Payload'Length);
+      
+      for I in Val.Payload'Range loop
+         Self.Write_Uint8 (Val.Payload (I));
+      end loop;
+   end Write_Message;
+   
    procedure Write_Message (Self : in out Buffer; Val : in Messages.Join_Success_Message) is
    begin
       Self.Write_Uint32 (Val.Size);
       Self.Write_Uint8 (Types.Uint8 (Messages.Message_Id'Enum_Rep (Val.Id)));
       Self.Write_Uint32 (Val.Cab_Id);      
+   end Write_Message;
+   
+   procedure Write_Message (Self : in out Buffer; Val : in Messages.Join_Challenge_Message) is
+   begin
+      Self.Write_Uint32 (Val.Size);
+      Self.Write_Uint8 (Types.Uint8 (Messages.Message_Id'Enum_Rep (Val.Id)));    
    end Write_Message;
    
    procedure Write_Message (Self : in out Buffer; Val : in Messages.Velocity_Message) is

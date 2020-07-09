@@ -7,51 +7,52 @@ package body Mailbox is
             for I in Items'Range loop
                if Is_Expired(Items(I).TTL) = True then
                      Last := Last - 1;
-                     Items(1..Last) := Items(2..Last+1);
+                     Items(1 .. Last) := Items(2 .. Last + 1);
                end if;
                exit when Last = 0 or I = Last;
             end loop;
          end if;   
       end Clear;
       
-      entry Deposit(X: in Types.Communication_Packet) when Last < Size is
+      entry Deposit(X: in Mail) when Last < Size is
       begin
-         Items(Last + 1) := X;
+         Items (Last + 1) := X;
          Last := Last + 1;
       end Deposit;
       
-      entry Collect(X: out Types.Communication_Packet) when Last > 0 is
+      entry Collect(X: out Mail) when Last > 0 is
       begin
          X := Items(1);
          Last := Last - 1;
-         Items(1..Last) := Items(2..Last+1);
+         Items (1 .. Last) := Items (2 .. Last + 1);
       end Collect;
       
-      procedure View_Inbox(Remaining_Items: out Types.Uint8) is
+      procedure View_Inbox(Remaining_Items : out Types.Uint8) is
       begin
-         Remaining_Items:= Last;
+         Remaining_Items := Last;
       end View_Inbox;
+      
       procedure Empty is
       begin
          Last := 0;
       end Empty;
    end Mailbox;
    
-   procedure Check_Mailbox (first : in out Mailbox; second : in out Mailbox; new_packet : out Types.Communication_Packet; alternator: Types.Uint8 ) is
+   procedure Check_Mailbox (first : in out Mailbox; second : in out Mailbox; new_packet : out Mail; alternator: Types.Uint8 ) is
    begin
       if alternator = 1 then
          select
-            first.Collect(new_packet);
+            first.Collect (new_packet);
          else
             delay(0.05);
-            check_mailbox(second,first,new_packet,alternator);
+            Check_Mailbox (second, first, new_packet, alternator);
          end select;
       else
          select
-            second.Collect(new_packet);
+            second.Collect (new_packet);
          else
             delay(0.05);
-            check_mailbox(second,first,new_packet,alternator);
+            Check_Mailbox (second, first, new_packet, alternator);
          end select;
       end if;
    end Check_Mailbox;

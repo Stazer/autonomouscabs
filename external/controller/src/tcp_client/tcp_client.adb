@@ -44,70 +44,21 @@ package body Tcp_Client is
 
    end Send_Bytes;
 
-
-   function Receive_Bytes (server_stream : Stream_Access; bytes_wanted : in Types.Uint32; dynamic_buffer : in out Byte_Buffer.Buffer) return Types.Uint32 is
-
-      bytes_received : Types.Uint32 := 0;
-      new_byte : Types.Uint8;
-
+   procedure Read_Packet (server_stream : Stream_Access;
+                          dynamic_buffer : in out Byte_Buffer.Buffer;
+                          local_mailbox : in out Mailbox.Mailbox) is
    begin
+      --  read message
+      Byte_Buffer.Buffer'Read (server_stream, dynamic_buffer);
 
-      while bytes_received < bytes_wanted loop
-         Types.Uint8'Read(server_stream, new_byte);
-         dynamic_buffer.Write_Uint8(new_byte);
-         bytes_received := bytes_received + 1;
-      end loop;
-
-      return bytes_received;
-
-   end Receive_Bytes;
-
-   procedure Read_Packet (server_stream : Stream_Access; dynamic_buffer : in out Byte_Buffer.Buffer; local_mailbox : in out Mailbox.Mailbox) is --  not finished
-
-      bytes_received : Types.Uint32 := 0;
-      conv_package_ID : Types.Uint8;
-      conv_package_value_length : Types.Uint32;
-
-   begin
-
-      --  read package_length
-      bytes_received := Receive_Bytes(server_stream, protocol_package_length, dynamic_buffer);
-      dynamic_buffer.Read_Uint32(conv_package_value_length);
-
-      --  read package_ID
-      bytes_received := Receive_Bytes(server_stream, protocol_ID_length, dynamic_buffer);
-      dynamic_buffer.Read_Uint8(conv_package_ID);
-
-      conv_package_value_length := conv_package_value_length - 5;
-
-      --  read payload
-      bytes_received := Receive_Bytes(server_stream, conv_package_value_length, dynamic_buffer);
-      read_payload(dynamic_buffer, conv_package_value_length, conv_package_ID, local_mailbox);
-
-   end Read_Packet;
-
-   procedure read_payload(dynamic_buffer : in out Byte_Buffer.Buffer; payload_length : Types.Uint32; package_ID : Types.Uint8; local_mailbox : in out Mailbox.Mailbox) is
-
-   begin
-
-      declare new_packet : Communication_Packet;
+      declare
+         M : Mailbox.Mail;
       begin
-         new_packet.Package_ID := package_ID;
-         new_packet.Payload_length := payload_length;
-         new_packet.Local_Payload := new Payload(0..(payload_length - 1));
-         new_packet.TTL := Ada.Real_Time.Clock;
-
-         --  for I in new_packet.Local_Payload'Range loop
-         --     dynamic_buffer.read_uint8(new_packet.Local_Payload(I));
-         --  end loop;
-
-         dynamic_buffer.Read_Payload (new_packet.Local_Payload);
-
+         dynamic_buffer.Read_Message (M.Message);
+         M.TTL := Ada.Real_Time.Clock;
          local_mailbox.Clear;
-         local_mailbox.Deposit(new_packet);
-
+         local_mailbox.Deposit (M);
       end;
-
-   end read_payload;
+   end Read_Packet;
 
 end Tcp_Client;

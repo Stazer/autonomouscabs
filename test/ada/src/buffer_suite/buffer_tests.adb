@@ -15,6 +15,7 @@ package body buffer_tests is
       Register_Routine (T, Test_Read_Write_Uint64'Access, "Test write and read uint64 from buffer.");
       Register_Routine (T, Test_Read_Write_Payload'Access, "Test write and read payload from buffer.");
       Register_Routine (T, Test_Delete_Bytes'Access, "Test deleting bytes from buffer.");
+      Register_Routine (T, Test_Read_Message'Access, "Test write and read messages from buffer.");
    end Register_Tests;
 
    -- Identifier of test case
@@ -83,6 +84,7 @@ package body buffer_tests is
       for I in p_out'Range loop
          Assert (p_out (I) = p_in (I), "Writing and reading payload does not work");
       end loop;
+      null;
    end Test_Read_Write_Payload;
    
    procedure Test_Delete_Bytes (T : in out Test_Cases.Test_Case'Class) is
@@ -108,4 +110,73 @@ package body buffer_tests is
       Assert (b4.Size = 0, "Deleting more than b.Size bytes is not handled correctly");
    end Test_Delete_Bytes;
    
+   procedure Test_Read_Message (T : in out Test_Cases.Test_Case'Class) is
+      B : Buffer;
+      
+      M1 : Light_Sensor_Message;
+      M2 : Distance_Sensor_Message;
+      M3 : Image_Data_Message;
+      M4 : Join_Success_Message;
+      M5 : Join_Challenge_Message;
+      M6 : Velocity_Message;
+      
+      MP1 : LS_Message_Ptr;
+      MP2 : DS_Message_Ptr;
+      MP3 : ID_Message_Ptr;
+      MP4 : JS_Message_Ptr;
+      MP5 : JC_Message_Ptr;
+      MP6 : V_Message_Ptr;
+   begin
+      M1.Id := EXTERNAL_LIGHT_SENSOR;
+      M1.Size := 5 + 8;
+      M1.Payload (0) := 30.4;
+      
+      M2.Id := EXTERNAL_DISTANCE_SENSOR;
+      M2.Size := 5 + 72;
+      for I in M2.Payload'Range loop
+         M2.Payload (i) := Float64 (I);
+      end loop;
+      
+      M3.Id := EXTERNAL_IMAGE_DATA;
+      M3.Size := 5 + 5;
+      M3.Payload := new Payload (0 .. 4);
+      for I in M3.Payload'Range loop 
+         M3.Payload (I) := Uint8 (I);
+      end loop;
+      
+      M4.Id := EXTERNAL_JOIN_SUCCESS;
+      M4.Size := 5 + 4;
+      M4.Cab_Id := 340;
+      
+      M5.Id := BACKEND_JOIN_CHALLENGE;
+      M5.Size := 5;
+      
+      M6.Id := WEBOTS_VELOCITY;
+      M6.Size := 5 + 16;
+      M6.Left_Speed := 4.3;
+      M6.Right_Speed := 2.1;
+      
+      B.Write_Message (M1);
+      B.Write_Message (M2);
+      B.Write_Message (M3);
+      B.Write_Message (M4);
+      B.Write_Message (M5);
+      B.Write_Message (M6);
+      
+      B.Read_Message (Message_Ptr (MP1));
+      B.Read_Message (Message_Ptr (MP2));
+      B.Read_Message (Message_Ptr (MP3));
+      B.Read_Message (Message_Ptr (MP4));
+      B.Read_Message (Message_Ptr (MP5));
+      B.Read_Message (Message_Ptr (MP6));
+      
+      Assert (MP1.Id = M1.Id, "Writing Light_Sensor_Message does not work");
+      Assert (MP2.Id = M2.Id, "Writing Distance_Sensor_Message does not work");
+      Assert (MP3.Id = M3.Id, "Writing Image_Data_Message does not work");
+      Assert (MP4.Id = M4.Id, "Writing Join_Success_Message does not work");
+      Assert (MP5.Id = M5.Id, "Writing Join_Challenge_Message does not work");
+      Assert (MP6.Id = M6.Id, "Writing Velocity_Message does not work");
+      
+   end Test_Read_Message;
+      
 end buffer_tests;

@@ -1,33 +1,36 @@
 with Ada.Text_IO; use Ada.Text_IO;
-with tcp_client; use tcp_client;
-with backend_thread; use backend_thread;
-with webots_thread; use webots_thread;
-with pathfollowing; use pathfollowing;
-with types; use types;
 
-with mailbox;
+with Tcp_Client;
+with Backend_Thread;
+with Webots_Thread;
+with Types;
+with Mailbox;
+with Messages;
+with Byte_Buffer;
+with pathfollowing;
 
 
 procedure Main is
 
-   task webots_thread;
-   task backend_thread;
+   task webots_task;
+   task backend_task;
 
-   task body webots_thread is
+   task body webots_task is
    begin
-      webots_main;
-   end webots_thread;
+      Webots_Thread.Main;
+   end webots_task;
 
-   task body backend_thread is
+   task body backend_task is
    begin
-      backend_main;
-   end backend_thread;
+      Backend_Thread.Main;
+   end backend_task;
 
-   current_packet : types.Communication_Packet;
-   alternator : types.uint8 := 1;
-   send_packet : types.Communication_Packet;
-   dist: types.Octets_8;
-   distance_sensor_data: pathfollowing.Dtype;
+   Current_Mail : Mailbox.Mail;
+   alternator : Types.Uint8 := 1;
+
+   V : Messages.Velocity_Message;
+   Out_Buffer : Byte_Buffer.Buffer;
+
 begin
 
    -- threads have started here
@@ -35,12 +38,12 @@ begin
    while true loop
 
       -- clear out both mailboxes
-      Backend_Mailbox.Clear;
-      Webots_Mailbox.Clear;
+      Backend_Thread.Backend_Mailbox.Clear;
+      Webots_Thread.Webots_Mailbox.Clear;
 
       -- alternate between checking webots and backend mailbox first, then update alternator
-      mailbox.check_mailbox(Backend_Mailbox,Webots_Mailbox,current_packet,alternator);
-      mailbox.update_alternator(alternator);
+      Mailbox.check_mailbox (Backend_Thread.Backend_Mailbox, Webots_Thread.Webots_Mailbox, Current_Mail, alternator);
+      Mailbox.update_alternator (alternator);
 
       -- do calculations with current packet
       Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.package_ID)));
@@ -59,6 +62,13 @@ begin
          send_packet := pathfollowing.path_following(current_packet, distance_sensor_data);
          send_bytes(Webots_Channel, send_packet);
       end if;
+      Put_Line (Current_Mail.Message.Id'Image);
+
+      V := Messages.Velocity_Message_Create (5.1, 2.4);
+
+      Out_Buffer.Write_Message (V);
+      Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
+      Out_Buffer.Delete_Bytes (V.Size);
 
    end loop;
 

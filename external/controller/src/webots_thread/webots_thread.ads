@@ -1,21 +1,21 @@
 with GNAT.Sockets; use GNAT.Sockets;
 with Ada.Streams; use Ada.Streams;
-with tcp_client; use tcp_client;
-with Ada.Text_IO;
-with types;use types;
-with byte_buffer;
-with mailbox;
 
-package webots_thread is
+with Tcp_Client;
+with Types;
+with Byte_buffer;
+with Mailbox;
+
+package Webots_Thread is
 
    -- Webots thread variables
    Webots_Client  : Socket_Type; -- stores the socket for the webots controller
    Webots_Channel : Stream_Access; -- socket I/O interface
    Webots_Address : Sock_Addr_Type; -- stores the server address
-   Webots_Cmd : types.Communication_Packet; -- command to send over socket
-   Webots_Vector_Buffer : byte_buffer.Buffer;
-   Webots_Mailbox : mailbox.Mailbox(Size => 5);
+   Webots_Cmd : Types.Communication_Packet; -- command to send over socket
+   Webots_Vector_Buffer : Byte_buffer.Buffer;
+   Webots_Mailbox : Mailbox.Mailbox (Size => 5);
 
-   procedure webots_main;
+   procedure Main;
 
-end webots_thread;
+end Webots_Thread;

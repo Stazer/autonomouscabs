@@ -1,33 +1,15 @@
-package body webots_thread is
+package body Webots_Thread is
 
-   procedure webots_main is
-      test : float64 := 4.0;
-      test_uint64 : uint64;
-      test_to_send : Octets_8;
-
+   procedure Main is
 
    begin
 
-      Webots_Channel := build_connection (Webots_Client, 5555, Webots_Address);
-
-      test_uint64 := float64_to_uint64(test);
-      test_to_send :=uint64_to_octets(test_uint64);
-      Webots_Cmd.package_ID := 129;
-      Webots_Cmd.payload_length := 21;
-      --Backend_Cmd.local_payload := new types.payload(0..1);
-      Webots_Cmd.local_payload := new types.payload(0..15);
-
-
-      for I in Webots_Cmd.local_payload'Range loop
-         Webots_Cmd.local_payload(I) := test_to_send(I mod 8);
-      end loop;
-
-      send_bytes(Webots_Channel, Webots_Cmd);
+      Webots_Channel := Tcp_Client.Connect (Webots_Client, 9999, Webots_Address);
 
       while true loop
-         listen( Webots_Channel, Webots_Vector_Buffer, Webots_Mailbox );
+         Tcp_Client.Read_Packet (Webots_Channel, Webots_Vector_Buffer, Webots_Mailbox);
       end loop;
 
-   end webots_main;
+   end Main;
 
-end webots_thread;
+end Webots_Thread;

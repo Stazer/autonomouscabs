@@ -1,7 +1,10 @@
 with AUnit; use AUnit;
+with Ada.Text_IO;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
-with tcp_client; use tcp_client;
-with types; use types;
+with Tcp_Client; use Tcp_Client;
+with Types; use Types;
+with Byte_Buffer;
+with Mailbox;
 
 package tcp_tests is
 
@@ -13,7 +16,7 @@ package tcp_tests is
    function Name (T : tcp_test) return Message_String;
   -- Provide name identifying the test case
 
-   -- Test Routines:
-   procedure Sample_Test (T : in out Test_Cases.Test_Case'Class);
+   -- Test Routines
+   procedure Test_read_payload (T : in out Test_Cases.Test_Case'Class);
 
 end tcp_tests;

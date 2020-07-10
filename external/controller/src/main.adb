@@ -28,10 +28,10 @@ procedure Main is
    Current_Mail : Mailbox.Mail;
    alternator : Types.Uint8 := 1;
    
-   DS_Data : Path_Following.Dtype := (others => 1000.0);
+   DS_Data : Messages.Distance_Sensor_Array := (others => 1000.0);
 
    V : Messages.Velocity_Message;
-   D : Messages.Distance_Sensor_Message;
+   -- D : Messages.Distance_Sensor_Message;
    Out_Buffer : Byte_Buffer.Buffer;
 
 begin
@@ -48,16 +48,15 @@ begin
       Mailbox.check_mailbox (Backend_Thread.Backend_Mailbox, Webots_Thread.Webots_Mailbox, Current_Mail, alternator);
       Mailbox.update_alternator (alternator);
 
-      Put_Line (Current_Mail.Message.Id'Image);
+      -- Put_Line (Current_Mail.Message.Id'Image);
 
       -- do calculations with current packet
       if Current_Mail.Message.Id = Messages.EXTERNAL_IMAGE_DATA then
-         V := Path_Following.Path_Following (Messages.ID_Message_Ptr (Current_Mail.Message), DS_Data);
+         V := Path_Following.Main (Messages.ID_Message_Ptr (Current_Mail.Message), DS_Data);
          Out_Buffer.Write_Message (V);
          Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
       elsif Current_Mail.Message.Id = Messages.EXTERNAL_DISTANCE_SENSOR then
-         null;
-        
+         DS_Data := Messages.DS_Message_Ptr (Current_Mail.Message).Payload;        
       end if;
       
       --  Out_Buffer.Write_Message (V);

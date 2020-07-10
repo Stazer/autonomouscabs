@@ -21,7 +21,7 @@ package body Path_Following is
    grey : Colour_Matrix := (others => (others => 0));
    binaImage : Colour_Matrix := (others => (others => 0));
 
-   wheehlvelocity : Wheehl_velocity := (others => 0.0);
+   wheehlvelocity : Velocity_Array := (others => 0.0);
    --axleTrack : float64 := 1.1;
    basicVelocity : Float64 :=4.0 ;
    --ratio : float64 := 8.0;
@@ -76,8 +76,8 @@ package body Path_Following is
    end Find_Line;
 
 
-   function Wheel_Velocity (whiteLine : in Integer; d_sensor : in Dtype) return Wheehl_velocity is
-      Velocity : Wheehl_velocity := (others => 0.0);
+   function Wheel_Velocity (whiteLine : in Integer; d_sensor : in Messages.Distance_Sensor_Array) return Velocity_Array is
+      Velocity : Velocity_Array := (others => 0.0);
    begin
 
 
@@ -101,26 +101,25 @@ package body Path_Following is
       --turn right
 
       if V_turn > 0.0 then
-         wheehlvelocity(0) := basicVelocity + V_turn;
-         wheehlvelocity(1) := basicVelocity - V_turn;
+         Velocity (0) := basicVelocity + V_turn;
+         Velocity (1) := basicVelocity - V_turn;
       --turn left
       elsif V_turn < 0.0 then
-         wheehlvelocity(0) := basicVelocity + V_turn;
-         wheehlvelocity(1) := basicVelocity - V_turn;
+         Velocity (0) := basicVelocity + V_turn;
+         Velocity (1) := basicVelocity - V_turn;
       else
-         wheehlvelocity(0) := basicVelocity;
-         wheehlvelocity(1) := basicVelocity;
+         Velocity (0) := basicVelocity;
+         Velocity (1) := basicVelocity;
       end if;
       Put_Line (wheehlvelocity (0)'Image & ", " & wheehlvelocity (1)'Image);
 
-      return Wheel_Velocity;
+      return Velocity;
 
    end Wheel_Velocity;
 
-   function Path_Following (Data_Input : in Messages.ID_Message_Ptr; d_sensor : in Dtype) return Messages.Velocity_Message is
+   function Main (Data_Input : in Messages.ID_Message_Ptr; d_sensor : in Messages.Distance_Sensor_Array) return Messages.Velocity_Message is
       Index : Image_Index := 0;
-      o8 : Octets_8;
-      u64 : uint64;
+      Velocity : Velocity_Array;
    begin
       --grayscale Image
       for I in Row_Index loop
@@ -139,14 +138,14 @@ package body Path_Following is
       --findLine
       white_Line := Find_Line (binaImage);
       --wheelvelocity calculate
-      wheehlvelocity := Wheel_Velocity (white_Line, d_sensor);
+      Velocity := Wheel_Velocity (white_Line, d_sensor);
 
       declare
-         packet : Messages.Velocity_Message :=
-           Messages.Velocity_Message_Create (wheehlvelocity (0), wheehlvelocity (1));
+         Message : Messages.Velocity_Message :=
+           Messages.Velocity_Message_Create (Velocity (0), Velocity (1));
       begin
-         return packet;
+         return Message;
       end;
-   end Path_Following;
+   end Main;
 
 end Path_Following;

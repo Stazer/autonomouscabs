@@ -1,4 +1,4 @@
-package body pathfollowing is
+package body Path_Following is
    colour : Integer := 0;
    r : Integer := 0;
    g : Integer := 0;
@@ -23,9 +23,9 @@ package body pathfollowing is
 
    wheehlvelocity : Wheehl_velocity := (others => 0.0);
    --axleTrack : float64 := 1.1;
-   basicVelocity : float64 :=4.0 ;
+   basicVelocity : Float64 :=4.0 ;
    --ratio : float64 := 8.0;
-   V_turn : float64 := 0.0;
+   V_turn : Float64 := 0.0;
    --offset : Integer := 32;
    --Kp : float64 := 0.08;
    --Ki : float64 :=0.08;
@@ -34,8 +34,8 @@ package body pathfollowing is
    --lastError : float64 := 0.0;
    --integral : float64 := 0.0;
    --derivative : float64 := 0.0;
-   function binarize (grey : in Colour_Matrix) return Colour_Matrix is
 
+   function Binarize (grey : in Colour_Matrix) return Colour_Matrix is
    begin
 
        for I in Row_Index loop
@@ -52,10 +52,9 @@ package body pathfollowing is
       end loop;
       return binaImage;
 
-   end binarize;
+   end Binarize;
 
-   function findLine (binarizedImage : in Colour_Matrix) return Integer is
-
+   function Find_Line (binarizedImage : in Colour_Matrix) return Integer is
    begin
       for J in Column_Index loop
          if binaImage(Row_Index(height-5))(J) = 255 then
@@ -63,21 +62,22 @@ package body pathfollowing is
          end if;
          --
       end loop;
+
       for J in reverse Column_Index loop
          if binaImage(Row_Index(height-5))(J) = 255 then
             bottomPoint1 := Integer(J);
          end if;
       end loop;
+
       bottomPoint := (bottomPoint + bottomPoint1) / 2;
       Put_Line(Integer'Image(bottomPoint));
       return bottomPoint;
 
-   end findLine;
+   end Find_Line;
 
 
-   function wheel_Velocity (whiteLine : in Integer; d_sensor : in Dtype) return Wheehl_velocity is
-      wheehlvelocity : Wheehl_velocity := (others => 0.0);
-
+   function Wheel_Velocity (whiteLine : in Integer; d_sensor : in Dtype) return Wheehl_velocity is
+      Velocity : Wheehl_velocity := (others => 0.0);
    begin
 
 
@@ -88,10 +88,10 @@ package body pathfollowing is
       elsif whiteLine > 28 and whiteLine < 36 then
          V_turn := 0.0;
       elsif whiteLine = 0 then
-         if d_sensor(6) < 500.0 then
+         if d_sensor (6) < 500.0 then
             V_turn := 1.0;
          end if;
-         if d_sensor(3) < 500.0 then
+         if d_sensor (3) < 500.0 then
             V_turn := -1.0;
          end if;
       end if;
@@ -113,57 +113,40 @@ package body pathfollowing is
       end if;
       Put_Line (wheehlvelocity (0)'Image & ", " & wheehlvelocity (1)'Image);
 
-      return wheehlvelocity;
+      return Wheel_Velocity;
 
-   end wheel_Velocity;
+   end Wheel_Velocity;
 
-   function path_following (dataInput : in Communication_Packet; d_sensor : in Dtype) return Communication_Packet is
-      raw : access types.payload := dataInput.local_payload;
-      index : Image_Index := 0;
+   function Path_Following (Data_Input : in Messages.ID_Message_Ptr; d_sensor : in Dtype) return Messages.Velocity_Message is
+      Index : Image_Index := 0;
       o8 : Octets_8;
       u64 : uint64;
    begin
       --grayscale Image
       for I in Row_Index loop
          for J in Column_Index loop
-            index := Image_Index(4 * (Integer(I) * width + Integer(J)));
-            blue (I) (J) := raw (types.uint32(index) + 4);
-            green (I) (J) := raw (types.uint32(index + 1) + 4);
-            red (I) (J) := raw (types.uint32(index + 2) + 4);
-            colour := Integer(blue (I) (J))*114/1000 + Integer(green (I) (J)) *587/1000 + Integer(red (I) (J))*299/1000;
+            Index := Image_Index(4 * (Integer(I) * width + Integer(J)));
+            blue (I) (J) := Data_Input.Payload (Types.Uint32(Index));
+            green (I) (J) := Data_Input.Payload (Types.Uint32(Index + 1));
+            red (I) (J) := Data_Input.Payload (Types.Uint32(Index + 2));
+            colour := Integer(blue (I) (J)) * 114/1000 + Integer(green (I) (J)) * 587/1000 + Integer(red (I) (J)) * 299/1000;
             grey (I) (J) := uint8(colour);
          end loop;
       end loop;
 
       --Binarized
-      binaImage := binarize(grey);
+      binaImage := Binarize (grey);
       --findLine
-      white_Line := findLine(binaImage);
+      white_Line := Find_Line (binaImage);
       --wheelvelocity calculate
-      wheehlvelocity := wheel_Velocity(white_Line, d_sensor);
+      wheehlvelocity := Wheel_Velocity (white_Line, d_sensor);
 
-      declare packet : Communication_Packet;
+      declare
+         packet : Messages.Velocity_Message :=
+           Messages.Velocity_Message_Create (wheehlvelocity (0), wheehlvelocity (1));
       begin
-         packet.package_ID := 129;
-         packet.payload_length := 16 + 5;
-         packet.local_payload := new payload (0 .. 15);
-
-         u64 := types.float64_to_uint64 (wheehlvelocity (0));
-         o8 := types.uint64_to_octets (u64);
-
-         for I in o8'Range loop
-            packet.local_payload (I) := o8 (I);
-         end loop;
-
-         u64 := types.float64_to_uint64 (wheehlvelocity (1));
-         o8 := types.uint64_to_octets (u64);
-
-         for I in o8'Range loop
-            packet.local_payload (I + 8) := o8 (I);
-         end loop;
-
          return packet;
       end;
-   end path_following;
+   end Path_Following;
 
-end pathfollowing;
+end Path_Following;

@@ -4,9 +4,10 @@ project External_Controller is
                         "src/tcp_client/**",
                         "src/backend_thread/**",
                         "src/webots_thread/**",
-                        "src/Path/**",
+                        "src/path/**",
                         "src/knowledge/**",
                         "src/vendor/**");
+
    for Object_Dir use "obj";
    for Main use ("main.adb");
    for Exec_Dir use ".";

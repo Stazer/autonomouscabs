@@ -280,7 +280,8 @@ package body Byte_Buffer is
    procedure Write_Stream (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
                            In_Buffer : in Buffer) is
       B : Buffer := In_Buffer;
-      Stream_Buffer : Ada.Streams.Stream_Element_Array (0 .. Ada.Streams.Stream_Element_Offset (B.Bytes_Remaining - 1));
+      Stream_Buffer : Ada.Streams.Stream_Element_Array 
+        (0 .. Ada.Streams.Stream_Element_Offset (B.Bytes_Remaining - 1));
    begin
       for I in Stream_Buffer'Range loop
          B.Read_Uint8 (Types.Uint8 (Stream_Buffer (I)));
@@ -305,7 +306,8 @@ package body Byte_Buffer is
       Size := Types.Octets_To_Uint32 (O4);
       
       declare 
-         Stream_Buffer2 : Ada.Streams.Stream_Element_Array (0 .. Ada.Streams.Stream_Element_Offset (Size - 5));
+         Stream_Buffer2 : Ada.Streams.Stream_Element_Array 
+           (0 .. Ada.Streams.Stream_Element_Offset (Size - 5));
       begin
          Stream.Read (Stream_Buffer2, Last);
          

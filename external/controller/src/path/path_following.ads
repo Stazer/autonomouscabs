@@ -1,9 +1,11 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Float_Text_Io; use Ada.Float_Text_Io;
-with types; use types;
-with mailbox;
 
-package pathfollowing is
+with Types; use Types;
+with Mailbox;
+with Messages;
+
+package Path_Following is
 
    width : constant Integer := 64;
    height : constant Integer := 64;
@@ -18,13 +20,13 @@ package pathfollowing is
 
    type Colour_Column is array(Column_Index) of uint8;
    type Colour_Matrix is array(Row_Index) of Colour_Column;
-   type Wheehl_velocity is array(0..1) of float64;
+   type Velocity_Array is array(0..1) of float64;
    type Dtype is array(0..8) of float64;
 
-   function path_following(dataInput : in Communication_Packet; d_sensor : in Dtype) return Communication_Packet;
-   function binarize(grey : in Colour_Matrix) return Colour_Matrix;
-   function findLine(binarizedImage : in Colour_Matrix) return Integer;
-   function wheel_Velocity(whiteLine : in Integer; d_sensor : in Dtype) return Wheehl_velocity;
+   function Path_Following (Data_Input : in Messages.ID_Message_Ptr; d_sensor : in Dtype) return Messages.Velocity_Message;
+   function Binarize (grey : in Colour_Matrix) return Colour_Matrix;
+   function Find_Line (binarizedImage : in Colour_Matrix) return Integer;
+   function Wheel_Velocity (whiteLine : in Integer; d_sensor : in Dtype) return Velocity_Array;
 
 
-end pathfollowing;
+end Path_Following;

@@ -5,9 +5,9 @@ with Backend_Thread;
 with Webots_Thread;
 with Types;
 with Mailbox;
-with Messages;
+with Messages; use Messages;
 with Byte_Buffer;
-with pathfollowing;
+with Path_Following;
 
 
 procedure Main is
@@ -27,8 +27,11 @@ procedure Main is
 
    Current_Mail : Mailbox.Mail;
    alternator : Types.Uint8 := 1;
+   
+   DS_Data : Path_Following.Dtype := (others => 1000.0);
 
    V : Messages.Velocity_Message;
+   D : Messages.Distance_Sensor_Message;
    Out_Buffer : Byte_Buffer.Buffer;
 
 begin
@@ -45,30 +48,21 @@ begin
       Mailbox.check_mailbox (Backend_Thread.Backend_Mailbox, Webots_Thread.Webots_Mailbox, Current_Mail, alternator);
       Mailbox.update_alternator (alternator);
 
-      -- do calculations with current packet
-      Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.package_ID)));
-      --Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.payload_length)));
-
-      if (current_packet.package_ID = 66) then
-         for J in uint32 range 0..8 loop
-            for I in uint32 range 0..7 loop
-               dist(I) := current_packet.local_payload(I+J*8);
-            end loop;
-            distance_sensor_data(Integer(J)) := Types.uint64_to_float64(octets_to_uint64(dist));
-         end loop;
-      end if;
-
-      if(current_packet.package_ID = 67) then
-         send_packet := pathfollowing.path_following(current_packet, distance_sensor_data);
-         send_bytes(Webots_Channel, send_packet);
-      end if;
       Put_Line (Current_Mail.Message.Id'Image);
 
-      V := Messages.Velocity_Message_Create (5.1, 2.4);
-
-      Out_Buffer.Write_Message (V);
-      Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
-      Out_Buffer.Delete_Bytes (V.Size);
+      -- do calculations with current packet
+      if Current_Mail.Message.Id = Messages.EXTERNAL_IMAGE_DATA then
+         V := Path_Following.Path_Following (Messages.ID_Message_Ptr (Current_Mail.Message), DS_Data);
+         Out_Buffer.Write_Message (V);
+         Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
+      elsif Current_Mail.Message.Id = Messages.EXTERNAL_DISTANCE_SENSOR then
+         null;
+        
+      end if;
+      
+      --  Out_Buffer.Write_Message (V);
+      --  Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
+      --  Out_Buffer.Delete_Bytes (V.Size);
 
    end loop;
 

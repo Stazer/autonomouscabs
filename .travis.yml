@@ -7,4 +7,4 @@ before_install:
   - docker build -t autonomouscabs/test .
 
 script:
-  - docker run autonomouscabs/test /bin/sh -c "cd /home/user/repository/build && ./test.bin && cd /home/user/repository/external/harness && ./test_main"
+  - docker run autonomouscabs/test /bin/sh -c "cd /home/user/repository/build && ./test.bin && cd /home/user/repository/test/ada && ./test_main"

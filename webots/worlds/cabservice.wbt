@@ -3,15 +3,15 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation 0.9339520084592416 0.3387996299009215 0.11379128557999144 5.178062307917623
-  position 21.916190319100764 82.42566410958368 97.13862151283939
+  orientation 0.9349746256913415 0.3356865718396451 0.11461664277007344 5.168717653008425
+  position 23.520503387598918 78.03594037323609 93.89343336594375
 }
 TexturedBackground {
   luminosity 2
   reflections FALSE
 }
 DEF Cab2 Robot {
-  translation 52.20049228659902 0.3986697731266905 57.69351543241373
+  translation 52.1962 0.39867 58.2335
   rotation -0.00011531808680313831 0.9999999865352619 -0.00011675279433232985 -1.5785892208758237
   children [
     DEF cam_f Camera {
@@ -378,8 +378,6 @@ DEF Cab2 Robot {
         physics DEF physics_wheel Physics {
           density 10
         }
-        linearVelocity -1.1999648399931955 -4.0924879145822026e-07 -0.00935222361152099
-        angularVelocity -0.031169285296947857 -2.9633722925248624e-06 3.9998793381587117
       }
     }
     DEF wheelRL HingeJoint {
@@ -413,8 +411,6 @@ DEF Cab2 Robot {
         physics DEF physics_wheel Physics {
           density 10
         }
-        linearVelocity -1.1999637405208126 -2.31741951663756e-07 -0.009350822558000111
-        angularVelocity -0.03116915113816748 -3.1399545537002237e-06 3.999878774145318
       }
     }
     DEF wheelRR HingeJoint {
@@ -448,8 +444,6 @@ DEF Cab2 Robot {
         physics DEF physics_wheel Physics {
           density 10
         }
-        linearVelocity -1.1999622379996542 2.633039533681472e-07 -0.009350439836926312
-        angularVelocity -0.03117284976079755 4.304808796020019e-06 3.9998779751962323
       }
     }
     DEF wheelFR HingeJoint {
@@ -483,8 +477,6 @@ DEF Cab2 Robot {
         physics DEF physics_wheel Physics {
           density 10
         }
-        linearVelocity -1.1999635863138123 8.596601965420519e-08 -0.009351805439346453
-        angularVelocity -0.031173018785481312 4.464480910911486e-06 3.9998786649059443
       }
     }
     DEF car_body Shape {
@@ -506,8 +498,6 @@ DEF Cab2 Robot {
   ]
   controller "controller"
   controllerArgs "5555"
-  linearVelocity -1.1999636152858821 -8.387599970969031e-08 -0.009351376356254633
-  angularVelocity 4.5539023203460823e-07 -1.3083990508850912e-06 1.4830588170451184e-07
 }
 DEF environment Solid {
   scale 1.09819 1.09819 1.09819

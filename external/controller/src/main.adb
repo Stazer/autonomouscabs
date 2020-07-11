@@ -86,10 +86,13 @@ begin
       if Current_Mail.Message.Id = Messages.EXTERNAL_IMAGE_DATA then
          V := Path_Following.Main (Messages.ID_Message_Ptr (Current_Mail.Message), DS_Data);
          Out_Buffer.Write_Message (V);
-         Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
+         Put_Line("trying to send");
+         --Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
+         Put_Line("sent");
       elsif Current_Mail.Message.Id = Messages.EXTERNAL_DISTANCE_SENSOR then
          DS_Data := Messages.DS_Message_Ptr (Current_Mail.Message).Payload;
       end if;
+      Put_Line("loop ended");
 
       --  Out_Buffer.Write_Message (V);
       --  Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);

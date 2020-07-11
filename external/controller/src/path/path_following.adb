@@ -70,7 +70,7 @@ package body Path_Following is
       end loop;
 
       bottomPoint := (bottomPoint + bottomPoint1) / 2;
-      Put_Line(Integer'Image(bottomPoint));
+ --     Put_Line(Integer'Image(bottomPoint));
       return bottomPoint;
 
    end Find_Line;
@@ -96,8 +96,8 @@ package body Path_Following is
          end if;
       end if;
 
-      Put_Line (d_sensor(3)'Image & ", " & d_sensor(6)'Image);
-      Put_Line (V_turn'Image);
+--        Put_Line (d_sensor(3)'Image & ", " & d_sensor(6)'Image);
+--        Put_Line (V_turn'Image);
       --turn right
 
       if V_turn > 0.0 then
@@ -111,7 +111,7 @@ package body Path_Following is
          Velocity (0) := basicVelocity;
          Velocity (1) := basicVelocity;
       end if;
-      Put_Line (wheehlvelocity (0)'Image & ", " & wheehlvelocity (1)'Image);
+      Put_Line (Velocity (0)'Image & ", " & Velocity (1)'Image);
 
       return Velocity;
 

@@ -32,8 +32,7 @@ procedure Main is
    DS_Data : Messages.Distance_Sensor_Array := (others => 1000.0);
 
    V : Messages.Velocity_Message;
-   -- D : Messages.Distance_Sensor_Message;
-   Out_Buffer : Byte_Buffer.Buffer;
+   -- D : Messages.Distance_Sensor_   Out_Buffer : Byte_Buffer.Buffer;
 
    current_packet : types.Communication_Packet;
    send_packet_path_following : types.Communication_Packet;
@@ -85,8 +84,12 @@ begin
 --  =======
       if Current_Mail.Message.Id = Messages.EXTERNAL_IMAGE_DATA then
          V := Path_Following.Main (Messages.ID_Message_Ptr (Current_Mail.Message), DS_Data);
-         Out_Buffer.Write_Message (V);
-         Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
+         --Out_Buffer.Write_Message (V);
+         declare Out_Buffer : Byte_Buffer.Buffer;
+            begin
+            Out_Buffer.Write_Message(V);
+            Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
+            end;
       elsif Current_Mail.Message.Id = Messages.EXTERNAL_DISTANCE_SENSOR then
          DS_Data := Messages.DS_Message_Ptr (Current_Mail.Message).Payload;
       end if;

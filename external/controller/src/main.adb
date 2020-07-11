@@ -54,46 +54,28 @@ begin
       Mailbox.check_mailbox (Backend_Thread.Backend_Mailbox, Webots_Thread.Webots_Mailbox, Current_Mail, alternator);
       Mailbox.update_alternator (alternator);
 
-      -- Put_Line (Current_Mail.Message.Id'Image);
-
-      -- do calculations with current packet
---  <<<<<<< HEAD
---        --Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.package_ID)));
---
---        send_packet_path_following.payload_length := 0;
---        -- Path following
---       if current_packet.package_ID = 67 then
---           send_packet_path_following := pathfollowing.path_following(current_packet);
---       end if;
---
---        -- Object collision
---        if current_packet.package_ID = 66 then
---           for J in uint32 range 0..8 loop
---              for I in uint32 range 0..7 loop
---                 dist(I) := current_packet.local_payload(I+J*8);
---              end loop;
---              distance_sensor_data(Integer(J)) := Types.uint64_to_float64(octets_to_uint64(dist));
---           end loop;
---           send_packet_collision_avoidance := detect(distance_sensor_data);
---        end if;
---        if send_packet_collision_avoidance.payload_length = 0 then
---           if send_packet_path_following.payload_length /= 0 then
---              send_bytes(Webots_Channel, send_packet_path_following);
---           end if;
---        else
---           send_bytes(Webots_Channel, send_packet_collision_avoidance);
---  =======
       if Current_Mail.Message.Id = Messages.EXTERNAL_IMAGE_DATA then
          V := Path_Following.Main (Messages.ID_Message_Ptr (Current_Mail.Message), DS_Data);
-         Out_Buffer.Write_Message (V);
+         --Out_Buffer.Write_Message (V);
          Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
       elsif Current_Mail.Message.Id = Messages.EXTERNAL_DISTANCE_SENSOR then
          DS_Data := Messages.DS_Message_Ptr (Current_Mail.Message).Payload;
       end if;
 
-      --  Out_Buffer.Write_Message (V);
-      --  Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
-      --  Out_Buffer.Delete_Bytes (V.Size);
+
+      Webots_Thread.Webots_Mailbox2.Clear;
+
+      -- alternate between checking webots and backend mailbox first, then update alternator
+      Mailbox.check_mailbox (Backend_Thread.Backend_Mailbox, Webots_Thread.Webots_Mailbox2, Current_Mail, alternator);
+      Mailbox.update_alternator (alternator);
+
+      if Current_Mail.Message.Id = Messages.EXTERNAL_IMAGE_DATA then
+         V := Path_Following.Main (Messages.ID_Message_Ptr (Current_Mail.Message), DS_Data);
+         Out_Buffer.Write_Message (V);
+         Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel2, Out_Buffer);
+      elsif Current_Mail.Message.Id = Messages.EXTERNAL_DISTANCE_SENSOR then
+         DS_Data := Messages.DS_Message_Ptr (Current_Mail.Message).Payload;
+      end if;
 
 
    end loop;

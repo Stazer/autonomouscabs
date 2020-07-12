@@ -1,6 +1,12 @@
 #pragma once
 
-#include "cab.hpp"
+#include <map>
+#include <memory>
+#include <vector>
+
+#include <boost/graph/graph_traits.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/property_map/property_map.hpp>
 
 using node_id_base = std::uint8_t;
 
@@ -18,8 +24,25 @@ enum node_id : node_id_base
     P4,
     P5,
     P6,
-    P7		
+    P7,
 };
 
+using graph = boost::adjacency_list<boost::listS, boost::vecS, 
+        boost::directedS, node_id>;
+// using vertex_descriptor = boost::graph_traits<graph>::vertex_descriptor;
 
-cab* cab_provision(node_id src, node_id dest);
+class road_network
+{
+    public:
+        road_network();
+
+        std::vector<node_id> get_predecessors(node_id node);
+
+        graph& get_graph();
+        
+        // void cab_provision(node_id src, node_id dest, std::map<node_id, std::vector<std::shared_ptr<cab>>> map);
+    private:
+        graph _g;
+        
+        std::map<node_id, std::vector<node_id>> _predecessors;
+};

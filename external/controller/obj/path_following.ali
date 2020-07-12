@@ -1,0 +1,167 @@
+V "GNAT Lib v9"
+A -gnatA
+A -g
+A -mtune=generic
+A -march=x86-64
+P ZX
+
+RN
+RV NO_DIRECT_BOOLEAN_OPERATORS
+RV NO_FLOATING_POINT
+RV NO_IO
+RV NO_SECONDARY_STACK
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_IMPLEMENTATION_PRAGMAS
+RV NO_ELABORATION_CODE
+RV SPARK_05
+
+U path_following%b	path_following.adb	6a7592d1 OO PK
+Z ada.tags%s		a-tags.adb		a-tags.ali
+Z system.concat_3%s	s-conca3.adb		s-conca3.ali
+Z system.img_int%s	s-imgint.adb		s-imgint.ali
+Z system.img_real%s	s-imgrea.adb		s-imgrea.ali
+Z system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+
+U path_following%s	path_following.ads	bb02323c EE NE OO PK
+W ada%s			ada.ads			ada.ali
+W ada.float_text_io%s	a-flteio.ads		a-flteio.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W mailbox%s		mailbox.adb		mailbox.ali
+W messages%s		messages.adb		messages.ali
+W types%s		types.adb		types.ali
+
+D ada.ads		20200312110721 76789da1 ada%s
+D a-except.ads		20200312110721 291912d5 ada.exceptions%s
+D a-finali.ads		20200312110721 bf4f806b ada.finalization%s
+D a-flteio.ads		20200312110721 e18a47a0 ada.float_text_io%s
+D a-ioexce.ads		20200312110721 e4a01f64 ada.io_exceptions%s
+D a-reatim.ads		20200312110721 0240fc73 ada.real_time%s
+D a-stream.ads		20200312110721 119b8fb3 ada.streams%s
+D a-tags.ads		20200312110721 491b781d ada.tags%s
+D a-textio.ads		20200312110721 881db35a ada.text_io%s
+D a-tiflio.ads		20200312110721 56fbda09 ada.text_io.float_io%s
+D a-unccon.ads		20200312110721 0e9b276f ada.unchecked_conversion%s
+D interfac.ads		20200312110721 5ab55268 interfaces%s
+D i-c.ads		20200312110721 5421119b interfaces.c%s
+D i-cstrea.ads		20200312110721 e53d8b8e interfaces.c_streams%s
+D mailbox.ads		20200711005138 8dd1b67f mailbox%s
+D messages.ads		20200711005138 6cf64825 messages%s
+D path_following.ads	20200711005138 9b184474 path_following%s
+D path_following.adb	20200711010353 f16dd6a5 path_following%b
+D system.ads		20200312110721 4635ec04 system%s
+D s-atacco.ads		20200312110721 4c36d12f system.address_to_access_conversions%s
+D s-conca3.ads		20200312110721 0b705ca5 system.concat_3%s
+D s-crtl.ads		20200312110721 0ebbdb71 system.crtl%s
+D s-exctab.ads		20200312110721 54135002 system.exception_table%s
+D s-ficobl.ads		20200312110721 078245e4 system.file_control_block%s
+D s-finmas.ads		20200312110721 7811a767 system.finalization_masters%s
+D s-finroo.ads		20200312110721 4ff27390 system.finalization_root%s
+D s-imgint.ads		20200312110721 02dbe0c2 system.img_int%s
+D s-imgrea.ads		20200312110721 c7a851e2 system.img_real%s
+D s-linux.ads		20200312110721 ed0b8aee system.linux%s
+D s-multip.ads		20200312110721 38ac9f73 system.multiprocessors%s
+D s-oscons.ads		20200409103809 0b994636 system.os_constants%s
+D s-osinte.ads		20200312110721 710cf8c6 system.os_interface%s
+D s-parame.ads		20200312110721 48ec542b system.parameters%s
+D s-pooglo.ads		20200312110721 ede33ef8 system.pool_global%s
+D s-secsta.ads		20200312110721 20bbe636 system.secondary_stack%s
+D s-soflin.ads		20200312110721 a7318a92 system.soft_links%s
+D s-stache.ads		20200312110721 a37c21ec system.stack_checking%s
+D s-stausa.ads		20200312110721 017a0a05 system.stack_usage%s
+D s-stalib.ads		20200312110721 09bd3940 system.standard_library%s
+D s-stoele.ads		20200312110721 2dc34a04 system.storage_elements%s
+D s-stopoo.ads		20200312110721 b16154c2 system.storage_pools%s
+D s-stratt.ads		20200312110721 aedef97e system.stream_attributes%s
+D s-tasinf.ads		20200312110721 2b3f8252 system.task_info%s
+D s-taspri.ads		20200312110721 f40ac08d system.task_primitives%s
+D s-taprop.ads		20200312110721 1dd2e1b6 system.task_primitives.operations%s
+D s-taskin.ads		20200312110721 b9d612e2 system.tasking%s
+D s-taprob.ads		20200312110721 acd6094d system.tasking.protected_objects%s
+D s-tpoben.ads		20200312110721 60ad3dae system.tasking.protected_objects.entries%s
+D s-traent.ads		20200312110721 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20200312110721 34867c83 system.unsigned_types%s
+D s-wchcon.ads		20200312110721 1b7d22d2 system.wch_con%s
+D types.ads		20200711005138 a8aa7ce8 types%s
+X 1 ada.ads
+16K9*Ada 20e8 17|1r6 1r23 2r6 2r29
+X 4 a-flteio.ads
+20K13*Float_Text_IO[10|46] 17|2w10 2r33
+X 9 a-textio.ads
+49K13*Text_IO 471e16 17|1w10 1r27
+263U14*Put_Line 18|73s7 99s7 100s7 114s7
+X 12 interfac.ads
+63M9*Unsigned_8
+74M9*Unsigned_32
+172F9*IEEE_Float_64<long_float>
+X 15 mailbox.ads
+7K9*Mailbox 33e12 17|5w6
+X 16 messages.ads
+3K9*Messages 70e13 17|6w6 25r35 25r74 25r113 28r67 18|79r67 120r35 120r74
+. 120r113 144r20 145r12
+29A9*Distance_Sensor_Array(52|10F9)<integer> 17|25r83 28r76 18|79r76 120r83
+42p7*Payload(52|15A9) 18|128r40 129r41 130r39
+49R9*Velocity_Message<24R9> 52e14 17|25r122 18|120r122 144r29
+62P9*ID_Message_Ptr(41R9) 17|25r44 18|120r44
+67V13*Velocity_Message_Create{49R9} 18|145s21
+X 17 path_following.ads
+8K9*Path_Following 31l5 31e19 18|1b14 151l5 151t19
+10i4*width{integer} 12r31 15r36 18|127r52
+11i4*height{integer} 12r39 16r33 18|60r33 67r33
+12i4*size{integer} 18r35
+14A9*Pixel(52|6M9)<integer>
+15I9*Column_Index<short_short_integer> 21r32 18|42r19 59r16 66r24 126r19
+16I9*Row_Index<short_short_integer> 22r32 18|41r17 60r23 67r23 125r16
+18I9*Image_Index<short_integer> 19r28 18|121r15 127r22
+19A9*Image_Raw(52|6M9)<18I9>
+21A9*Colour_Column(52|6M9)<15I9> 22r46
+22A9*Colour_Matrix(21A9)<16I9> 26r33 26r55 27r44 18|18r10 19r11 20r12 21r11
+. 22r16 38r33 38r55 57r44
+23A9*Velocity_Array(52|10F9)<integer> 28r106 18|24r21 79r106 80r18 122r18
+25V13*Main{16|49R9} 25>19 25>60 18|120b13 149l8 149t12
+25p19 Data_Input{16|62P9} 18|120b19 128r29 129r30 130r28
+25a60 d_sensor{16|29A9} 18|120b60 141r47
+26V13*Binarize{22A9} 26>23 18|38b13 55l8 55t16 137s20
+26a23 grey{22A9} 18|38b23 43r16
+27V13*Find_Line{integer} 27>24 18|57b13 76l8 76t17 139s21
+27a24 binarizedImage{22A9} 18|57b24
+28V13*Wheel_Velocity{23A9} 28>29 28>53 18|79b13 118l8 118t22 141s19
+28i29 whiteLine{integer} 18|79b29 84r10 86r13 86r34 88r13 88r32 90r13
+28a53 d_sensor{16|29A9} 18|79b53 91r13 94r13 99r17 99r44
+X 18 path_following.adb
+2i4 colour{integer} 131m13 132r35
+3i4 r{integer}
+4i4 g{integer}
+5i4 b{integer}
+7i4 bottomPoint{integer} 61m13 72m7 72r23 73r30 74r14
+11i4 bottomPoint1{integer} 68m13 72r37
+12i4 white_Line{integer} 139m7 141r35
+18a4 red{17|22A9} 130m13 131r102
+19a4 blue{17|22A9} 128m13 131r31
+20a4 green{17|22A9} 129m13 131r66
+21a4 grey{17|22A9} 132m13 137r30
+22a4 binaImage{17|22A9} 44m16 46m16 53r14 60r13 67r13 137m7 139r32
+24a4 wheehlvelocity{17|23A9}
+26f4 basicVelocity{52|10F9} 104r26 105r26 108r26 109r26 111r26 112r26
+28f4 V_turn{52|10F9} 85m10 87m10 89m10 92m13 95m13 100r17 103r10 104r42 105r42
+. 107r13 108r42 109r42
+41i12 I{17|16I9} 43r22 44r27 46r27
+42i14 J{17|15I9} 43r25 44r30 46r30
+59i11 J{17|15I9} 60r44 61r36
+66i11 J{17|15I9} 67r44 68r37
+80a7 Velocity{17|23A9} 104m10 105m10 108m10 109m10 111m10 112m10 114r17 114r45
+. 116r14
+121i7 Index{17|18I9} 127m13 128r62 129r63 130r61
+122a7 Velocity{17|23A9} 141m7 145r46 145r60
+125i11 I{17|16I9} 127r47 128r19 129r20 130r18 131r37 131r73 131r107 132r19
+126i14 J{17|15I9} 127r68 128r23 129r24 130r22 131r41 131r77 131r111 132r23
+144r10 Message{16|49R9} 147r17
+X 38 s-stausa.ads
+203U14*Initialize 204i<c,__gnat_stack_usage_initialize>22
+268U14*Output_Results 272i<c,__gnat_stack_usage_output_results>22
+X 52 types.ads
+4K9*Types 17|4w6 4r17 18|128r49 129r50 130r48 52|45e10
+6M9*Uint8<12|63M9> 17|14r35 19r44 21r49 18|132r29
+8M9*Uint32<12|74M9> 18|128r55 129r56 130r54
+10F9*Float64<12|172F9> 17|23r42 18|26r20 28r13
+15A9*Payload(6M9)<8M9>
+

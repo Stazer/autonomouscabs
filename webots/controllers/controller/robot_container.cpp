@@ -139,7 +139,7 @@ void robot_container::run()
             _motors[1]->setVelocity(vl_msg.right_speed);
             _motors[2]->setVelocity(vl_msg.left_speed);
             _motors[3]->setVelocity(vl_msg.left_speed);
-            // std::cout << "recieved rs: " << vl_msg.right_speed << ", ls: " << vl_msg.left_speed << '\n';
+            std::cout << "recieved rs: " << vl_msg.right_speed << ", ls: " << vl_msg.left_speed << '\n';
         }
         catch(const std::exception& e)
         {

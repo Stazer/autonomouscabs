@@ -1,4 +1,4 @@
-build/release/controller.o: controller.cpp robot_container.hpp \
+build/release/robot_container.o: robot_container.cpp robot_container.hpp \
  /usr/local/webots/include/controller/cpp/webots/Robot.hpp \
  /usr/local/webots/include/controller/cpp/webots/Motor.hpp \
  /usr/local/webots/include/controller/cpp/webots/Device.hpp \

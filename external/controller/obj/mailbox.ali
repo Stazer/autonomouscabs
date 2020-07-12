@@ -1,0 +1,160 @@
+V "GNAT Lib v9"
+A -gnatA
+A -g
+A -mtune=generic
+A -march=x86-64
+P ZX
+
+RN
+RV SIMPLE_BARRIERS
+RV NO_DELAY
+RV NO_DIRECT_BOOLEAN_OPERATORS
+RV NO_EXCEPTION_HANDLERS
+RV NO_EXCEPTION_PROPAGATION
+RV NO_EXCEPTIONS
+RV NO_FIXED_POINT
+RV NO_IO
+RV NO_IMPLICIT_CONDITIONALS
+RV NO_PROTECTED_TYPES
+RV NO_RECURSION
+RV NO_RELATIVE_DELAY
+RV NO_SELECT_STATEMENTS
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_IMPLEMENTATION_PRAGMAS
+RV NO_IMPLICIT_LOOPS
+RV SPARK_05
+RV MAX_PROTECTED_ENTRIES=2
+RV MAX_ENTRY_QUEUE_LENGTH=1+
+
+U mailbox%b		mailbox.adb		f26d7867 NE OO PK
+Z ada.calendar.delays%s	a-caldel.adb		a-caldel.ali
+Z ada.tags%s		a-tags.adb		a-tags.ali
+Z system%s		system.ads		system.ali
+Z system.soft_links%s	s-soflin.adb		s-soflin.ali
+Z system.tasking%s	s-taskin.adb		s-taskin.ali
+Z system.tasking.protected_objects%s  s-taprob.adb  s-taprob.ali
+Z system.tasking.protected_objects.entries%s  s-tpoben.adb  s-tpoben.ali
+Z system.tasking.protected_objects.operations%s  s-tpobop.adb  s-tpobop.ali
+
+U mailbox%s		mailbox.ads		c3d0cd9b EE NE OO PK
+W ada%s			ada.ads			ada.ali
+Z ada.exceptions%s	a-except.adb		a-except.ali
+W ada.real_time%s	a-reatim.adb		a-reatim.ali
+Z ada.tags%s		a-tags.adb		a-tags.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W messages%s		messages.adb		messages.ali
+Z system%s		system.ads		system.ali
+Z system.tasking%s	s-taskin.adb		s-taskin.ali
+Z system.tasking.protected_objects%s  s-taprob.adb  s-taprob.ali
+Z system.tasking.protected_objects.entries%s  s-tpoben.adb  s-tpoben.ali
+W types%s		types.adb		types.ali
+
+D ada.ads		20200312110721 76789da1 ada%s
+D a-calend.ads		20200312110721 b288ede8 ada.calendar%s
+D a-caldel.ads		20200312110721 9f20b83d ada.calendar.delays%s
+D a-except.ads		20200312110721 291912d5 ada.exceptions%s
+D a-finali.ads		20200312110721 bf4f806b ada.finalization%s
+D a-ioexce.ads		20200312110721 e4a01f64 ada.io_exceptions%s
+D a-reatim.ads		20200312110721 0240fc73 ada.real_time%s
+D a-stream.ads		20200312110721 119b8fb3 ada.streams%s
+D a-tags.ads		20200312110721 491b781d ada.tags%s
+D a-textio.ads		20200312110721 881db35a ada.text_io%s
+D a-unccon.ads		20200312110721 0e9b276f ada.unchecked_conversion%s
+D interfac.ads		20200312110721 5ab55268 interfaces%s
+D i-c.ads		20200312110721 5421119b interfaces.c%s
+D i-cstrea.ads		20200312110721 e53d8b8e interfaces.c_streams%s
+D mailbox.ads		20200711005138 8dd1b67f mailbox%s
+D mailbox.adb		20200711011637 7fbcce18 mailbox%b
+D messages.ads		20200711005138 6cf64825 messages%s
+D system.ads		20200312110721 4635ec04 system%s
+D s-atacco.ads		20200312110721 4c36d12f system.address_to_access_conversions%s
+D s-crtl.ads		20200312110721 0ebbdb71 system.crtl%s
+D s-exctab.ads		20200312110721 54135002 system.exception_table%s
+D s-ficobl.ads		20200312110721 078245e4 system.file_control_block%s
+D s-finmas.ads		20200312110721 7811a767 system.finalization_masters%s
+D s-finroo.ads		20200312110721 4ff27390 system.finalization_root%s
+D s-linux.ads		20200312110721 ed0b8aee system.linux%s
+D s-multip.ads		20200312110721 38ac9f73 system.multiprocessors%s
+D s-oscons.ads		20200409103809 0b994636 system.os_constants%s
+D s-osinte.ads		20200312110721 710cf8c6 system.os_interface%s
+D s-parame.ads		20200312110721 48ec542b system.parameters%s
+D s-pooglo.ads		20200312110721 ede33ef8 system.pool_global%s
+D s-secsta.ads		20200312110721 20bbe636 system.secondary_stack%s
+D s-soflin.ads		20200312110721 a7318a92 system.soft_links%s
+D s-stache.ads		20200312110721 a37c21ec system.stack_checking%s
+D s-stausa.ads		20200312110721 017a0a05 system.stack_usage%s
+D s-stalib.ads		20200312110721 09bd3940 system.standard_library%s
+D s-stoele.ads		20200312110721 2dc34a04 system.storage_elements%s
+D s-stopoo.ads		20200312110721 b16154c2 system.storage_pools%s
+D s-stratt.ads		20200312110721 aedef97e system.stream_attributes%s
+D s-tasinf.ads		20200312110721 2b3f8252 system.task_info%s
+D s-taspri.ads		20200312110721 f40ac08d system.task_primitives%s
+D s-taprop.ads		20200312110721 1dd2e1b6 system.task_primitives.operations%s
+D s-taskin.ads		20200312110721 b9d612e2 system.tasking%s
+D s-taprob.ads		20200312110721 acd6094d system.tasking.protected_objects%s
+D s-tpoben.ads		20200312110721 60ad3dae system.tasking.protected_objects.entries%s
+D s-tpobop.ads		20200312110721 5f548bb3 system.tasking.protected_objects.operations%s
+D s-traent.ads		20200312110721 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20200312110721 34867c83 system.unsigned_types%s
+D s-wchcon.ads		20200312110721 1b7d22d2 system.wch_con%s
+D types.ads		20200711005138 a8aa7ce8 types%s
+X 1 ada.ads
+16K9*Ada 20e8 15|1r6 1r25 2r6 2r23 11r13 16|71r11 71r54
+X 7 a-reatim.ads
+39K13*Real_Time 185e18 15|1w10 1r29 11r17 16|71r15 71r58
+49O9*Time<duration> 15|11r27 31r46 16|69r45
+54O9*Time_Span<duration>
+61V13*Clock{49O9} 16|71s25
+71V14*"-"{54O9} 16|71s31
+107V14*">="{boolean} 16|71r51
+119V13*Milliseconds{54O9} 16|71s68
+X 10 a-textio.ads
+49K13*Text_IO 471e16 15|2w10 2r27
+X 12 interfac.ads
+63M9*Unsigned_8
+X 15 mailbox.ads
+7K9*Mailbox 33l5 33e12 16|1b14 78l5 78t12
+9R9*Mail 12e14 14r54 18r28 19r29 27r95 16|17r27 23r28 41r95
+10p7*Message{17|59P9}
+11o7*TTL{7|49O9} 16|8r39
+14A9*Mail_List(9R9)<49|6M9> 23r14
+16W19*Mailbox 16d28 23E7 25l8 25e15 27r44 27r69 16|3b19 39l8 39t15 41r44
+. 41r69
+16m28 Size{49|6M9} 23r28 16|17r45
+17U17 Clear 16|4b17 15l11 15t16
+18Y13 Deposit 18>22 16|17b13 21l11 21t18
+18r22 X{9R9} 16|19r30
+19Y13 Collect 19<22 16|23b13 28l11 28t18 45s19 52s20
+19r22 X{9R9} 16|25m10
+20U17 View_Inbox 20<29 16|30b17 33l11 33t21
+20m29 Remaining_Items{49|6M9} 16|30b28 32m10
+21U17 Empty 16|35b17 38l11 38t16
+23a7 Items{14A9} 16|7r22 8r30 10r22 10r42 19r10 25r15 27r10 27r31
+24m7 Last{49|6M9} 16|6r13 9r22 9r30 10r33 10r53 12r26 12r42 17r38 19r17 20r10
+. 20r18 23r39 26r10 26r18 27r22 27r43 32r29 37r10
+27U14*Check_Mailbox 27=29 27=53 27<78 27>101 16|41b14 48s13 55s13 58l8 58t21
+27w29 first{16W19} 16|41b29 45r13 48m36 55m36
+27w53 second{16W19} 16|41b53 48m28 52r13 55m28
+27r78 new_packet{9R9} 16|41b78 45m28 48m43 52m29 55m43
+27m101 alternator{49|6M9} 16|41b101 43r10 48r55 55r55
+29U14*Update_Alternator 29=33 16|60b14 67l8 67t25
+29m33 alternator{49|6M9} 16|60b33 62r10 63m10 65m10
+31V13*Is_Expired{boolean} 31>25 16|8s19 69b13 76l8 76t18
+31o25 Time_In_Question{7|49O9} 16|69b24 71r33
+X 16 mailbox.adb
+7m17 I<12|63M9> 8r36 12r38
+17r21 X{15|9R9}
+23r21 X{15|9R9}
+X 17 messages.ads
+3K9*Messages 15|5w6 10r17 17|70e13
+59P9*Message_Ptr(24R9) 15|10r26
+X 34 s-stausa.ads
+203U14*Initialize 204i<c,__gnat_stack_usage_initialize>22
+268U14*Output_Results 272i<c,__gnat_stack_usage_output_results>22
+X 49 types.ads
+4K9*Types 15|4w6 4r17 14r29 16r35 20r50 24r14 27r113 29r52 16|30r50 41r113
+. 60r52 49|45e10
+6M9*Uint8<12|63M9> 15|14r35 16r41 20r56 24r20 27r119 29r58 16|30r56 41r119
+. 60r58
+

@@ -81,12 +81,24 @@ package body Path_Following is
    begin
 
 
-      if whiteLine >= 36 then
-         V_turn := 3.6;
-      elsif whiteLine <= 28  and whiteLine > 0 then
-         V_turn := -3.6;
-      elsif whiteLine > 28 and whiteLine < 36 then
+      if whiteLine >= 56 then
+         V_turn := 1.0;
+      elsif whiteLine >= 49  and whiteLine < 56 then
+         V_turn := 0.75;
+      elsif whiteLine >= 42 and whiteLine < 49 then
+         V_turn := 0.5;
+      elsif whiteLine >= 35  and whiteLine < 42 then
+         V_turn := 0.25;
+      elsif whiteLine >= 28 and whiteLine < 35 then
          V_turn := 0.0;
+      elsif whiteLine >= 21 and whiteLine < 28 then
+         V_turn := -0.25;
+      elsif whiteLine >= 14 and whiteLine < 21 then
+         V_turn := -0.5;
+      elsif whiteLine >= 7 and whiteLine < 14 then
+         V_turn := -0.75;
+      elsif whiteLine >= 0 and whiteLine < 7 then
+         V_turn := -1.0;
       elsif whiteLine = 0 then
          if d_sensor (6) < 500.0 then
             V_turn := 1.0;

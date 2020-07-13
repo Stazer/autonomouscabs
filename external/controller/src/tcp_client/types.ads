@@ -1,5 +1,6 @@
 with Interfaces;
 with Ada.Real_Time;
+with Ada.Unchecked_Deallocation;
 
 package Types is
 
@@ -15,12 +16,10 @@ package Types is
    type Payload is array(Uint32 range <>) of Uint8 with
      Default_Component_Value => 0;
    
-   type Communication_Packet is record
-      Package_ID : Uint8;
-      Payload_Length : Uint32;
-      Local_Payload : access Payload;
-      TTL : Ada.Real_Time.Time;
-   end record;
+   type Payload_Ptr is access all Payload;
+   
+   procedure Free_Payload is new Ada.Unchecked_Deallocation
+     (Object => Payload, Name => Payload_Ptr);
    
    function Uint16_To_Octets (X : Uint16) return Octets_2;
    function Uint32_To_Octets (X : Uint32) return Octets_4;

@@ -123,7 +123,7 @@ package body Path_Following is
          Velocity (0) := basicVelocity;
          Velocity (1) := basicVelocity;
       end if;
-      Put_Line (Velocity (0)'Image & ", " & Velocity (1)'Image);
+  --    Put_Line (Velocity (0)'Image & ", " & Velocity (1)'Image);
 
       return Velocity;
 

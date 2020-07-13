@@ -1,11 +1,11 @@
 with types;use types;
+with Messages; use Messages;
 
-package collision_detection is
+package Collision_Detection is
 
-   type State is (Forward, Right, Left, Get_back_Left);
-   type Dtype is array(0..8) of float64;
+   type State is (Forward, Right, Left);
    car_state: State;
-   function detect(distance: Dtype) return types.Communication_Packet;
+   function Main(Distance: Messages.Distance_Sensor_Array) return Messages.Velocity_Message;
    ls, rs : types.float64 := 0.0;
 
-end collision_detection;
+end Collision_Detection;

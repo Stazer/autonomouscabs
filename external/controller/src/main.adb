@@ -4,12 +4,14 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Tcp_Client;
 with Backend_Thread;
 with Webots_Thread;
-with Types;
+with Types;use type Types.Float64;
+use Types;
 with Mailbox;
-with Messages; use Messages;
+with Messages; use Messages;use type Messages.Velocity_Message;
 with Byte_Buffer;
 with Path_Following;
-with collision_detection;
+with Collision_Detection;
+with Ada.Float_Text_IO;
 
 procedure Main is
 
@@ -31,14 +33,11 @@ procedure Main is
 
    DS_Data : Messages.Distance_Sensor_Array := (others => 1000.0);
 
-   V : Messages.Velocity_Message;
+   V_Path : Messages.Velocity_Message;
+   V_Collision : Messages.Velocity_Message;
+
    -- D : Messages.Distance_Sensor_   Out_Buffer : Byte_Buffer.Buffer;
 
-   current_packet : types.Communication_Packet;
-   send_packet_path_following : types.Communication_Packet;
-   send_packet_collision_avoidance : types.Communication_Packet;
-   dist: types.Octets_8;
-   distance_sensor_data: collision_detection.Dtype;
    is_object_collision: Boolean := False;
 begin
 
@@ -82,21 +81,49 @@ begin
 --        else
 --           send_bytes(Webots_Channel, send_packet_collision_avoidance);
 --  =======
-      if Current_Mail.Message.Id = Messages.EXTERNAL_IMAGE_DATA then
-         V := Path_Following.Main (Messages.ID_Message_Ptr (Current_Mail.Message), DS_Data);
-         --Out_Buffer.Write_Message (V);
-         declare Out_Buffer : Byte_Buffer.Buffer;
-            begin
-            Out_Buffer.Write_Message(V);
-            Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
-            end;
-      elsif Current_Mail.Message.Id = Messages.EXTERNAL_DISTANCE_SENSOR then
-         DS_Data := Messages.DS_Message_Ptr (Current_Mail.Message).Payload;
-      end if;
+--        if Current_Mail.Message.Id = Messages.EXTERNAL_IMAGE_DATA then
+--           V_Path := Path_Following.Main (Messages.ID_Message_Ptr (Current_Mail.Message), DS_Data);
+--        elsif Current_Mail.Message.Id = Messages.EXTERNAL_DISTANCE_SENSOR then
+--           DS_Data := Messages.DS_Message_Ptr (Current_Mail.Message).Payload;
+--           V_Collision := Collision_Detection.Main(DS_Data);
+--        end if;
+--        declare Out_Buffer : Byte_Buffer.Buffer;
+--        begin
+--         --  if (V_Collision.Left_Speed = 0.0) and (V_Collision.Right_Speed = 0.0) then
+--              Out_Buffer.Write_Message(V_Path);
+--  --           else
+--  --              Out_Buffer.Write_Message(V_Collision);
+--  --           end if;
+--           Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
+--        end;
 
-      --  Out_Buffer.Write_Message (V);
-      --  Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
-      --  Out_Buffer.Delete_Bytes (V.Size);
+
+      -- do calculations with current packet
+
+      if Current_Mail.Message.Id = Messages.EXTERNAL_DISTANCE_SENSOR then
+         DS_Data := Messages.DS_Message_Ptr (Current_Mail.Message).Payload;
+         V_Collision := Collision_Detection.Main(DS_Data);
+--           ADA.Float_Text_IO.Put(Float(V_Collision.Left_Speed));
+--           ADA.Text_IO.Put_Line("");
+         if V_Collision.Left_Speed /= 0.0 and V_Collision.Right_Speed /= 0.0 then
+            is_object_collision := True;
+            Declare Out_Buffer: Byte_Buffer.Buffer;
+            begin
+               Out_Buffer.Write_Message (V_Collision);
+               Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
+            end;
+         else
+            is_object_collision := False;
+         end if;
+
+      elsif Current_Mail.Message.Id = Messages.EXTERNAL_IMAGE_DATA and is_object_collision = False then
+         V_Path := Path_Following.Main (Messages.ID_Message_Ptr (Current_Mail.Message), DS_Data);
+         Declare Out_Buffer: Byte_Buffer.Buffer;
+         begin
+            Out_Buffer.Write_Message (V_Path);
+            Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
+         end;
+      end if;
 
 
    end loop;

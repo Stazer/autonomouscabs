@@ -19,31 +19,6 @@ package body Tcp_Client is
 
    end Connect;
 
-
-   procedure Send_Bytes (server_stream : Stream_Access; outgoing_packet : Types.Communication_Packet) is
-
-      uint8_payload_length : Types.Octets_4;
-
-   begin
-
-      -- send payload_length
-      uint8_payload_length := Types.Uint32_To_Octets(outgoing_packet.payload_length);
-      for I in uint8_payload_length'Range loop
-         Types.Uint8'Write(server_stream, uint8_payload_length(I));
-      end loop;
-
-      -- send package_ID
-      Types.Uint8'Write(server_stream, outgoing_packet.package_ID);
-
-      --  write full payload to stream
-      if outgoing_packet.payload_length > 0 then
-         for I in outgoing_packet.local_payload'Range loop
-            Types.Uint8'Write(server_stream, outgoing_packet.local_payload(I));
-         end loop;
-      end if;
-
-   end Send_Bytes;
-
    procedure Read_Packet (server_stream : Stream_Access;
                           dynamic_buffer : in out Byte_Buffer.Buffer;
                           local_mailbox : in out Mailbox.Mailbox) is

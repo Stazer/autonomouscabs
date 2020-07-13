@@ -36,6 +36,8 @@ enum class message_id : message_id_base
 
     BACKEND_FIRST = 0xC0,
     BACKEND_JOIN_CHALLENGE,
+    BACKEND_POSITION_UPDATE,
+    BACKEND_ROUTE_UPDATE,
     BACKEND_LAST,
 
     LAST,
@@ -133,6 +135,31 @@ struct backend_join_challenge_message final : public empty_message<message_id::B
 struct external_join_success_message final : public basic_message<external_join_success_message, message_id::EXTERNAL_JOIN_SUCCESS>
 {
     std::uint32_t id;
+};
+
+struct backend_position_update_message final : public basic_message<backend_position_update_message, message_id::BACKEND_POSITION_UPDATE>
+{
+    std::uint8_t position;
+};
+
+struct backend_route_update_message final : public basic_message<backend_route_update_message, message_id::BACKEND_ROUTE_UPDATE>
+{
+    std::vector<std::uint8_t> route;
+
+    message_size body_size() const
+    {
+        return sizeof(buffer_collection_size) + route.size() * sizeof(std::uint8_t);
+    }
+
+    void write_body(buffer_writer& writer) const
+    {
+        writer << route;
+    }
+
+    void read_body(buffer_reader& reader)
+    {
+        reader >> route;
+    }
 };
 
 #include "message.inl"

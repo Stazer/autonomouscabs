@@ -25,12 +25,16 @@ class cab
         bool pickup_contains(node_id node);
         bool deliver_contains(node_id node);
 
+        std::size_t calculate_costs(node_id src, node_id dst);
+
         void add_request(node_id src, node_id dst);
         void set_route(std::vector<node_id> new_route);
+        std::vector<node_id> route();
 
     private:
         std::uint32_t _id = 0;
         std::uint32_t _passengers = 0; 
+        node_id _position;
 
         std::shared_ptr<road_network> _rnet;
 
@@ -39,4 +43,8 @@ class cab
         std::vector<node_id> _deliver; 
 
         std::map<node_id, std::uint32_t> _pasengers_at_node;
+        std::map<node_id, std::uint32_t> _costs;
+
+        std::size_t s_pos;
+        std::size_t d_pos;
 };

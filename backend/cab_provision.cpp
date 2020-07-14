@@ -9,7 +9,6 @@
 
 #include "cab_provision.hpp"
 
-const std::array<std::string, 14> name = {"null", "D", "P0", "I1", "P1", "I2", "P2", "I3", "P3", "I4", "P4", "P5", "P6", "P7"};
 typedef std::pair<node_id, node_id> Edge;
 std::array<Edge, 17> edge_array{
     Edge(node_id::P0, node_id::D),
@@ -54,6 +53,82 @@ std::vector<node_id> road_network::get_predecessors(node_id node)
         pre.push_back(static_cast<node_id>(vd));
     }
     return pre;
+}
+
+
+bool road_network::in_between(node_id start, node_id stop, node_id q)
+{
+    if(are_twins(start, q) || are_twins(stop, q) || are_twins(start, stop))
+    {
+        return false;
+    }
+
+    std::deque<node_id> queue;
+    queue.push_back(start);
+
+    while(!queue.empty())
+    {
+        node_id current = queue.front();
+        queue.pop_front();
+
+        if(current == stop || are_twins(current, stop))
+        {
+            break;
+        }
+        else if (current == q)
+        {
+            return true;
+        }
+
+        std::vector<node_id> vec = get_predecessors(current);
+        for(auto n : vec)
+        {
+            queue.push_back(n);
+        }
+    }
+    return false;
+}
+
+bool road_network::are_twins(node_id n1, node_id n2)
+{
+    switch (n1)
+    {
+        case node_id::P0:
+            return n2 == node_id::P4;
+        case node_id::P1:
+            return n2 == node_id::P5;
+        case node_id::P2:
+            return n2 == node_id::P6;
+        case node_id::P3:
+            return n2 == node_id::P7;
+        case node_id::P4:
+            return n2 == node_id::P0;
+        case node_id::P5:
+            return n2 == node_id::P1;
+        case node_id::P6:
+            return n2 == node_id::P2;
+        case node_id::P7:
+            return n2 == node_id::P3;
+        default:
+            return false;
+    }
+}
+
+bool road_network::is_inner(node_id n)
+{
+    switch (n)
+    {
+        case node_id::P0:
+            return true;
+        case node_id::P1:
+            return true;
+        case node_id::P2:
+            return true;
+        case node_id::P3:
+            return true;
+        default:
+            return false;
+    }
 }
 
 graph& road_network::get_graph()

@@ -39,6 +39,8 @@ package Byte_Buffer is
    procedure Write_Message (Self : in out Buffer; Val : in Messages.Join_Success_Message);
    procedure Write_Message (Self : in out Buffer; Val : in Messages.Join_Challenge_Message);
    procedure Write_Message (Self : in out Buffer; Val : in Messages.Velocity_Message);
+   procedure Write_Message (Self : in out Buffer; Val : in Messages.Position_Update_Message);
+   procedure Write_Message (Self : in out Buffer; Val : in Messages.Route_Update_Message);
    
    -- utility procedures
    function Bytes_Read (Self : in out Buffer) return Types.Uint32;

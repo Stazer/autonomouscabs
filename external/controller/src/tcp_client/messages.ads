@@ -1,3 +1,5 @@
+with Ada.Unchecked_Deallocation;
+
 with Types; use Types;
 
 package Messages is
@@ -8,7 +10,9 @@ package Messages is
                        EXTERNAL_IMAGE_DATA,
                        EXTERNAL_JOIN_SUCCESS,
                        WEBOTS_VELOCITY,
-                       BACKEND_JOIN_CHALLENGE);
+                       BACKEND_JOIN_CHALLENGE,
+                       BACKEND_POSITION_UPDATE,
+                       BACKEND_ROUTE_UPDATE);
 
    for Message_Id use (UNDEFINED => 16#1#, NOP => 16#2#, Ping => 16#3#,
                        EXTERNAL_LIGHT_SENSOR => 16#41#,
@@ -16,7 +20,9 @@ package Messages is
                        EXTERNAL_IMAGE_DATA => 16#43#,
                        EXTERNAL_JOIN_SUCCESS => 16#44#,
                        WEBOTS_VELOCITY => 16#81#,
-                       BACKEND_JOIN_CHALLENGE => 16#C1#);
+                       BACKEND_JOIN_CHALLENGE => 16#C1#,
+                       BACKEND_POSITION_UPDATE => 16#C2#,
+                       BACKEND_ROUTE_UPDATE => 16#C3#);
 
    for Message_Id'Size use Types.Uint8'Size;
    
@@ -39,7 +45,7 @@ package Messages is
    end record;
 
    type Image_Data_Message is new Message with record
-      Payload : access Types.Payload;
+      Payload : Types.Payload_Ptr;
    end record;
 
    type Join_Success_Message is new Message with record
@@ -55,6 +61,14 @@ package Messages is
       null;
    end record;
    
+   type Position_Update_Message is new Message with record
+      Position : Types.Uint8;
+   end record;
+   
+   type Route_Update_Message is new Message with record
+      Route : Types.Payload_Ptr;
+   end record;
+   
    -- pointer types for all messages
    type Message_Ptr is access all Message'Class;
    type DS_Message_Ptr is access all Distance_Sensor_Message;
@@ -63,8 +77,39 @@ package Messages is
    type JS_Message_Ptr is access all Join_Success_Message;
    type JC_Message_Ptr is access all Join_Challenge_Message;
    type V_Message_Ptr is access all Velocity_Message;
+   type PU_Message_Ptr is access all Position_Update_Message;
+   type RU_Message_Ptr is access all Route_Update_Message;
    
-   function Velocity_Message_Create (Left_Speed, Right_Speed : in Types.Float64) return Velocity_Message;
+   function Velocity_Message_Create (Left_Speed, Right_Speed : in Types.Float64) 
+                                     return Velocity_Message;
    function Join_Challenge_Message_Create return Join_Challenge_Message;
+   function Position_Update_Message_Create (Position : Types.Uint8) 
+                                            return Position_Update_Message;
+   function Route_Update_Message_Create (Route : Types.Payload_Ptr) 
+                                         return Route_Update_Message;
+   
+   procedure Free_DS_Message is new Ada.Unchecked_Deallocation
+     (Object => Distance_Sensor_Message, Name => DS_Message_Ptr);
+   
+   procedure Free_LS_Message is new Ada.Unchecked_Deallocation
+     (Object => Light_Sensor_Message, Name => LS_Message_Ptr);
+   
+   procedure Free_ID_Message is new Ada.Unchecked_Deallocation
+     (Object => Image_Data_Message, Name => ID_Message_Ptr);
+   
+   procedure Free_JS_Message is new Ada.Unchecked_Deallocation
+     (Object => Join_Success_Message, Name => JS_Message_Ptr);
+   
+   procedure Free_JC_Message is new Ada.Unchecked_Deallocation
+     (Object => Join_Challenge_Message, Name => JC_Message_Ptr);
+   
+   procedure Free_V_Message is new Ada.Unchecked_Deallocation
+     (Object => Velocity_Message, Name => V_Message_Ptr);
+   
+   procedure Free_PU_Message is new Ada.Unchecked_Deallocation
+     (Object => Position_Update_Message, Name => PU_Message_Ptr);
+   
+   procedure Free_RU_Message is new Ada.Unchecked_Deallocation
+     (Object => Route_Update_Message, Name => RU_Message_Ptr);
 
 end Messages;

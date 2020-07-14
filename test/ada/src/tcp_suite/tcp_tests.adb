@@ -20,8 +20,6 @@ package body tcp_tests is
 
       local_mailbox : Mailbox.Mailbox(Size => 1);
 
-      test_packet : Types.Communication_Packet;
-
       dynamic_buffer : Byte_Buffer.Buffer;
 
       package_ID : Types.uint8 := 1;

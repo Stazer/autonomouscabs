@@ -119,6 +119,9 @@ package body buffer_tests is
       M4 : Join_Success_Message;
       M5 : Join_Challenge_Message;
       M6 : Velocity_Message;
+      M7 : Position_Update_Message;
+      M8 : Route_Update_Message;
+      Route : Payload_Ptr;
       
       MP1 : LS_Message_Ptr;
       MP2 : DS_Message_Ptr;
@@ -126,6 +129,8 @@ package body buffer_tests is
       MP4 : JS_Message_Ptr;
       MP5 : JC_Message_Ptr;
       MP6 : V_Message_Ptr;
+      MP7 : PU_Message_Ptr;
+      MP8 : RU_Message_Ptr;
    begin
       M1.Id := EXTERNAL_LIGHT_SENSOR;
       M1.Size := 5 + 8;
@@ -148,13 +153,17 @@ package body buffer_tests is
       M4.Size := 5 + 4;
       M4.Cab_Id := 340;
       
-      M5.Id := BACKEND_JOIN_CHALLENGE;
-      M5.Size := 5;
+      M5 := Join_Challenge_Message_Create;
       
-      M6.Id := WEBOTS_VELOCITY;
-      M6.Size := 5 + 16;
-      M6.Left_Speed := 4.3;
-      M6.Right_Speed := 2.1;
+      M6 := Velocity_Message_Create (5.1, 2.1);
+      
+      M7 := Position_Update_Message_Create (5);
+      
+      Route := new Payload (0 .. 4);
+      for I in Route'Range loop
+         Route (I) := Uint8 (I);
+      end loop;
+      M8 := Route_Update_Message_Create (Route);
       
       B.Write_Message (M1);
       B.Write_Message (M2);
@@ -162,6 +171,8 @@ package body buffer_tests is
       B.Write_Message (M4);
       B.Write_Message (M5);
       B.Write_Message (M6);
+      B.Write_Message (M7);
+      B.Write_Message (M8);
       
       B.Read_Message (Message_Ptr (MP1));
       B.Read_Message (Message_Ptr (MP2));
@@ -169,6 +180,8 @@ package body buffer_tests is
       B.Read_Message (Message_Ptr (MP4));
       B.Read_Message (Message_Ptr (MP5));
       B.Read_Message (Message_Ptr (MP6));
+      B.Read_Message (Message_Ptr (MP7));
+      B.Read_Message (Message_Ptr (MP8));
       
       Assert (MP1.Id = M1.Id, "Writing Light_Sensor_Message does not work");
       Assert (MP2.Id = M2.Id, "Writing Distance_Sensor_Message does not work");
@@ -176,6 +189,23 @@ package body buffer_tests is
       Assert (MP4.Id = M4.Id, "Writing Join_Success_Message does not work");
       Assert (MP5.Id = M5.Id, "Writing Join_Challenge_Message does not work");
       Assert (MP6.Id = M6.Id, "Writing Velocity_Message does not work");
+      Assert (MP7.Id = M7.Id, "Writing Position_Update_Message does not work");
+      Assert (MP8.Id = M8.Id, "Writing Route_Update_Message does not work");
+      
+      Free_Payload (M3.Payload);
+      Free_Payload (MP3.Payload);
+      Free_Payload (Route);
+      Free_Payload (M8.Route);
+      Free_Payload (MP8.Route);
+      
+      Free_LS_Message (MP1);
+      Free_DS_Message (MP2);
+      Free_ID_Message (MP3);
+      Free_JS_Message (MP4);
+      Free_JC_Message (MP5);
+      Free_V_Message (MP6);
+      Free_PU_Message (MP7);
+      Free_RU_Message (MP8);
       
    end Test_Read_Message;
       

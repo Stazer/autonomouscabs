@@ -1,3 +1,4 @@
+with ada.Integer_Text_IO;
 package body Path_Following is
    colour : Integer := 0;
    r : Integer := 0;
@@ -80,7 +81,8 @@ package body Path_Following is
       Velocity : Velocity_Array := (others => 0.0);
    begin
 
-
+      ada.Integer_Text_IO.Put(whiteLine);
+      ada.Text_IO.Put_Line("");
       if whiteLine >= 56 then
          V_turn := 1.0;
       elsif whiteLine >= 49  and whiteLine < 56 then

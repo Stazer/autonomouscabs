@@ -40,6 +40,7 @@ class road_network
         bool in_between(node_id start, node_id stop, node_id q);
         bool are_twins(node_id n1, node_id n2);
         bool is_inner(node_id n);
+        bool is_pickup(node_id n);
 
         graph& get_graph();
         

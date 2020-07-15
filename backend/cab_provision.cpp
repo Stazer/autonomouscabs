@@ -71,13 +71,13 @@ bool road_network::in_between(node_id start, node_id stop, node_id q)
         node_id current = queue.front();
         queue.pop_front();
 
-        if(current == stop || are_twins(current, stop))
-        {
-            break;
-        }
-        else if (current == q)
+        if (current == q)
         {
             return true;
+        }
+        else if (queue.front() == stop || are_twins(queue.front(), stop))
+        {
+            break;
         }
 
         std::vector<node_id> vec = get_predecessors(current);
@@ -125,6 +125,32 @@ bool road_network::is_inner(node_id n)
         case node_id::P2:
             return true;
         case node_id::P3:
+            return true;
+        default:
+            return false;
+    }
+}
+
+
+bool road_network::is_pickup(node_id n)
+{
+    switch(n)
+    {
+        case node_id::P0:
+            return true;
+        case node_id::P1:
+            return true;
+        case node_id::P2:
+            return true;
+        case node_id::P3:
+            return true;
+        case node_id::P4:
+            return true;
+        case node_id::P5:
+            return true;
+        case node_id::P6:
+            return true;
+        case node_id::P7:
             return true;
         default:
             return false;

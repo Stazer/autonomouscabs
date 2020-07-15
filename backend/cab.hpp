@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include <tuple>
 
 #include <boost/uuid/uuid.hpp>
 
@@ -22,13 +23,11 @@ class cab
         std::uint32_t passengers_at_node(node_id node);
 
         bool route_contains(node_id node);
-        bool pickup_contains(node_id node);
-        bool deliver_contains(node_id node);
 
-        std::size_t calculate_costs(node_id src, node_id dst);
-
-        void add_request(node_id src, node_id dst);
-        void set_route(std::vector<node_id> new_route);
+        std::uint32_t calculate_costs(node_id src, node_id dst);
+        void add_request(node_id src, node_id dst, std::uint32_t passengers);
+        void update_route(std::vector<node_id> new_route);
+        void update_position(node_id position);
         std::vector<node_id> route();
 
     private:
@@ -39,10 +38,12 @@ class cab
         std::shared_ptr<road_network> _rnet;
 
         std::vector<node_id> _route; 
-        std::vector<node_id> _pickup; 
-        std::vector<node_id> _deliver; 
+        std::vector<std::tuple<node_id, node_id, std::uint32_t>> _requests;
 
-        std::map<node_id, std::uint32_t> _pasengers_at_node;
+        std::vector<std::pair<node_id, std::uint32_t>> _pickup; 
+        std::vector<std::pair<node_id, std::uint32_t>> _deliver; 
+
+        std::map<node_id, std::uint32_t> _passengers_at_node;
         std::map<node_id, std::uint32_t> _costs;
 
         std::size_t s_pos;

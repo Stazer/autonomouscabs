@@ -37,29 +37,29 @@ std::uint32_t cab::passengers_at_node(node_id node)
         node_id current = queue.front();
         queue.pop_front();
 
-        if(_pasengers_at_node.find(current) == _pasengers_at_node.end())
+        if(_passengers_at_node.find(current) != _passengers_at_node.end())
         {
-            std::vector<node_id> vec = _rnet->get_predecessors(current);
-            for(auto n : vec)
-            {
-                auto it = std::find(queue.begin(), queue.end(), n);
-                if(it == queue.end())
-                {
-                    queue.push_back(n);
-                }
-            }
-
-            // we are back at src
-            if(current == node)
-            {
-                return 0;
-            }
-
-            continue;
+            // found a predecessor with a passenger count
+            _passengers_at_node[node] = _passengers_at_node[current];
+            return _passengers_at_node[current];
         }
 
-        // found the predecessor with a pessenger count
-        return _pasengers_at_node[current];
+        std::vector<node_id> vec = _rnet->get_predecessors(current);
+        for(auto n : vec)
+        {
+            // add all predecessors to queue which are currently not in the queue
+            auto it = std::find(queue.begin(), queue.end(), n);
+            if(it == queue.end())
+            {
+                queue.push_back(n);
+            }
+        }
+
+        // we are back at src
+        if(current == node)
+        {
+            return 0;
+        }       
     }
     return 0;
 }
@@ -70,22 +70,12 @@ bool cab::route_contains(node_id node)
     return it != _route.end();
 }
 
-bool cab::pickup_contains(node_id node)
+std::uint32_t cab::calculate_costs(node_id src, node_id dst)
 {
-    auto it = std::find(_pickup.begin(), _pickup.end(), node);
-    return it != _pickup.end();
-}
-
-bool cab::deliver_contains(node_id node)
-{
-    auto it = std::find(_deliver.begin(), _deliver.end(), node);
-    return it != _deliver.end();
-}
-
-std::size_t cab::calculate_costs(node_id src, node_id dst)
-{
-    bool contains_src = route_contains(src);
-    bool contains_dst = route_contains(dst);
+    auto sit = std::find(_route.begin(), _route.end(), src);
+    auto dit = std::find(_route.begin(), _route.end(), dst);
+    bool contains_src = sit != _route.end();
+    bool contains_dst = dit != _route.end() && sit < dit;
     bool s_done = false, d_done = false;
     _route.insert(_route.begin(), _position);
     std::size_t i = 1;
@@ -116,6 +106,7 @@ std::size_t cab::calculate_costs(node_id src, node_id dst)
             }
         }
     }
+    
 
     if(!contains_dst)
     {
@@ -146,34 +137,26 @@ std::size_t cab::calculate_costs(node_id src, node_id dst)
 
     // get the costs to get to every node without changing the value in _costs
     // if node is inner increase costs by 1, if node is outer increase costs by two
-    i = s_pos;
-    if(contains_src)
+    std::uint32_t max = 0;
+    for(i = s_pos; i < _route.size(); ++i)
     {
-        std::cout << "contains src" << '\n';
-        i = d_pos - 1;
-    }
-
-    if(contains_dst)
-    {
-        std::cout << "contains dst" << '\n';
-        i = _route.size();
-    }
-    std::size_t max = 0;
-    for(; i < _route.size(); ++i)
-    {
-        std::cout << "i: " << i << '\n';
-        std::size_t cost = 0;
+        std::uint32_t cost = 0;
         if(_costs.find(_route[i]) != _costs.end())
         {
             cost = _costs[_route[i]];
         }
 
-        bool is_inner = _rnet->is_inner(src);
-        cost = is_inner ? cost + 1 : cost + 2;
-
-        if(i > d_pos - 2)
+        // only increase cost if src is not already in _route
+        if(!contains_src)
         {
-            is_inner = _rnet->is_inner(dst);
+            bool is_inner = _rnet->is_inner(src);
+            cost = is_inner ? cost + 1 : cost + 2;
+        }
+
+        // only increase cost if dst is not already in _route
+        if(!contains_dst && i > d_pos - 2)
+        {
+            bool is_inner = _rnet->is_inner(dst);
             cost = is_inner ? cost + 1 : cost + 2;
         }
         
@@ -183,8 +166,11 @@ std::size_t cab::calculate_costs(node_id src, node_id dst)
     return max;
 }
 
-void cab::add_request(node_id src, node_id dst)
+void cab::add_request(node_id src, node_id dst, std::uint32_t passengers)
 {
+    _pickup.push_back(std::pair<node_id, std::uint32_t> {src, passengers});
+    _deliver.push_back(std::pair<node_id, std::uint32_t> {dst, passengers});
+
     // set the costs to include the src, dst pair in _route
     for(std::size_t i = s_pos; i < _route.size(); ++i)
     {
@@ -207,46 +193,116 @@ void cab::add_request(node_id src, node_id dst)
     }
 
     // update the passenger count at every node between src and dst
-    std::uint32_t n_pass = passengers_at_node(src);
-    _pasengers_at_node[src] = n_pass + 1;
-
     std::deque<node_id> queue;
-    std::vector<node_id> pre = _rnet->get_predecessors(dst);
-
-    for(auto n : pre)
-    {
-        queue.push_back(n);
-    }
+    queue.push_back(dst);
 
     while(!queue.empty())
     {
         node_id current = queue.front();
         queue.pop_front();
 
-        if(current != dst)
+        std::uint32_t n_pass = passengers_at_node(current);
+        _passengers_at_node[current] = n_pass + passengers;
+
+        std::vector<node_id> vec = _rnet->get_predecessors(current);
+        for(auto n : vec)
         {
-            std::uint32_t n_pass = passengers_at_node(current);
-            _pasengers_at_node[current] = n_pass + 1;
-            std::vector<node_id> vec = _rnet->get_predecessors(current);
-            for(auto n : vec)
+            // add all predecessors to queue which are currently not in the queue
+            auto it = std::find(queue.begin(), queue.end(), n);
+            if(it == queue.end())
             {
-                auto it = std::find(queue.begin(), queue.end(), n);
-                if(it == queue.end())
-                {
-                    queue.push_back(n);
-                }
+                queue.push_back(n);
             }
         }
 
-        if(queue.front() == src)
+        if(current == src)
         {
             break;
         }
     }
-    
+
+    // dst gets visited in loop above but the passenger count should not be increased
+    _passengers_at_node[dst] = _passengers_at_node[dst] - passengers;
 }
 
-void cab::set_route(std::vector<node_id> new_route)
+void cab::update_position(node_id position)
+{
+    // update passenger count
+    // for ervery src, dst pair position is in between, reduce the passenger count of position
+    for(std::size_t i = 0; i < _deliver.size(); ++i)
+    {
+        node_id d_tmp = _deliver[i].first;
+        node_id s_tmp = _pickup[i].first;
+
+        if(_rnet->in_between(d_tmp, s_tmp, position))
+        {
+            std::size_t n_pass = passengers_at_node(position);
+            n_pass = n_pass > _deliver[i].second ? n_pass - _deliver[i].second : 0;
+            _passengers_at_node[position] = n_pass;
+        }
+    }
+    
+    _position = position;
+
+    // update cost
+    std::size_t index = 0;
+    for(; index < _deliver.size(); ++index)
+    {
+        if(_deliver[index].first == position)
+        {
+            break;
+        }
+    }
+
+    // return when position is not a dst
+    if(index == _deliver.size())
+    {
+        return;
+    }
+
+    node_id dst = position;
+    node_id src = _pickup[index].first;
+
+    for(std::size_t i = 0; i < index; ++i)
+    {
+        node_id d_tmp = _deliver[i].first;
+        node_id s_tmp = _pickup[i].first;
+
+        std::size_t cost = 0;
+        if(_costs.find(d_tmp) != _costs.end())
+        {
+            cost = _costs[d_tmp];
+        }
+
+        if(_rnet->in_between(d_tmp, d_tmp, src))
+        {
+            _costs[d_tmp] = cost > 0 ? (_rnet->is_inner(src) ? cost - 1 : cost - 2) : 0;
+        }
+
+        if(_rnet->in_between(d_tmp, d_tmp, dst))
+        {
+            _costs[d_tmp] = cost > 0 ? (_rnet->is_inner(dst) ? cost - 1 : cost - 2) : 0;
+        }
+
+        cost = 0;
+        if(_costs.find(s_tmp) != _costs.end())
+        {
+            cost = _costs[s_tmp];
+        }
+
+        if(_rnet->in_between(s_tmp, s_tmp, src))
+        {
+            _costs[s_tmp] = cost > 0 ? (_rnet->is_inner(src) ? cost - 1 : cost - 2) : 0;
+        }
+
+        if(_rnet->in_between(s_tmp, s_tmp, dst))
+        {
+            _costs[s_tmp] = cost > 0 ? (_rnet->is_inner(dst) ? cost - 1 : cost - 2) : 0;
+        }
+    }
+}
+
+void cab::update_route(std::vector<node_id> new_route)
 {
     _route = new_route;
 }
@@ -262,23 +318,33 @@ int main(int argc, char **argv)
 
     cab c(static_cast<std::uint32_t>(0), std::make_shared<road_network>(rnet));
 
+    // c.add_request(node_id::P0, node_id::P4, 1);
+    // c.add_request(node_id::P1, node_id::P2, 1);
+    // c.update_route(std::vector<node_id> {P0, I1, P1, I2, P2, I3, I4, P4});
+    // c.update_position(node_id::P0);
+    // c.update_position(node_id::I1);
+    // c.update_position(node_id::P1);
+    // c.update_position(node_id::I2);
+    // c.update_position(node_id::P2);
+    // std::cout << "P1: " << c.passengers_at_node(P1) << ", P3: " << c.passengers_at_node(P3) << '\n';
+
     std::size_t cost = c.calculate_costs(node_id::P0, node_id::P3);
-    c.add_request(node_id::P0, node_id::P3);
+    c.add_request(node_id::P0, node_id::P3, 1);
     std::cout << "cost: " << cost << std::endl;
 
-    c.set_route(std::vector<node_id> {P0, I1, I2, I3, P3});
+    c.update_route(std::vector<node_id> {P0, I1, I2, I3, P3});
 
     cost = c.calculate_costs(node_id::P1, node_id::P2);
-    c.add_request(node_id::P1, node_id::P2);
+    c.add_request(node_id::P1, node_id::P2, 1);
     std::cout << "cost: " << cost << std::endl;
 
-    c.set_route(std::vector<node_id> {P0, I1, P1, I2, P2, I3, P3});
+    c.update_route(std::vector<node_id> {P0, I1, P1, I2, P2, I3, P3});
 
     cost = c.calculate_costs(node_id::P1, node_id::P4);
-    c.add_request(node_id::P1, node_id::P4);
+    c.add_request(node_id::P1, node_id::P4, 1);
     std::cout << "cost: " << cost << std::endl;
 
-    c.set_route(std::vector<node_id> {P0, I1, P1, I2, P2, I3, P3, I4, P4});
+    c.update_route(std::vector<node_id> {P0, I1, P1, I2, P2, I3, P3, I4, P4});
 
     for(auto n : c.route())
     {

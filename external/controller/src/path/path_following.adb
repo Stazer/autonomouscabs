@@ -41,7 +41,7 @@ package body Path_Following is
 
        for I in Row_Index loop
          for J in Column_Index loop
-            if grey (I)(J) > 150 then
+            if grey (I)(J) > 100 then
                binaImage (I)(J) := 255;
             else
                binaImage (I)(j) := 0;
@@ -80,7 +80,7 @@ package body Path_Following is
    function Wheel_Velocity (whiteLine : in Integer; d_sensor : in Messages.Distance_Sensor_Array) return Velocity_Array is
       Velocity : Velocity_Array := (others => 0.0);
    begin
-
+--
       ada.Integer_Text_IO.Put(whiteLine);
       ada.Text_IO.Put_Line("");
       if whiteLine >= 56 then

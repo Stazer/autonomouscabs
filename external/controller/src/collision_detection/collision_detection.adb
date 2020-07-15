@@ -26,7 +26,7 @@ package body Collision_Detection is
             if distance(0) < 700.0 or distance(1) < threshold or
                distance(2) < threshold then
                ls := -10.0;
-               rs := 10.0;
+               rs :=  10.0;
                car_state := Left;
             elsif distance(8) < threshold or Distance(7) < threshold then
                ls := 10.0;
@@ -35,13 +35,19 @@ package body Collision_Detection is
             end if;
          when Left =>
             --Ada.Text_IO.Put("Left");
-            if Distance(0) > 950.0 and Distance(1) > threshold then
+            if Distance(0) > 950.0 and Distance(1) > threshold and Distance(2) > threshold then
                ls := 4.0;
                rs := 4.0;
             end if;
+            if Distance(1) < threshold then
+               ls := 1.0;
+               rs := 4.0;
+            end if;
+
             if Distance(4) = 1000.0 then
                ls := 0.0;
                rs := 0.0;
+               --car_state := Forward;
             end if;
 
          when Right =>
@@ -54,9 +60,9 @@ package body Collision_Detection is
       end case;
 
 
---
---        ADA.Float_Text_IO.Put(Float(ls));
---        ADA.Float_Text_IO.Put(Float(ls));
+
+--        ADA.Float_Text_IO.Put(Float(ls),5,3,0);
+--        ADA.Float_Text_IO.Put(Float(rs),5,3,0);
 --        ADA.Text_IO.Put_Line("");
 
 

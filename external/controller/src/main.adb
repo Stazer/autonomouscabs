@@ -118,7 +118,7 @@ begin
          end if;
 
       elsif Current_Mail.Message.Id = Messages.EXTERNAL_IMAGE_DATA and is_object_collision = False then
-
+         ada.Text_IO.Put_Line("image data");
          V_Path := Path_Following.Main (Messages.ID_Message_Ptr (Current_Mail.Message), DS_Data);
          Declare Out_Buffer: Byte_Buffer.Buffer;
          begin

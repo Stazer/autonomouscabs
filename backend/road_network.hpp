@@ -1,8 +1,5 @@
 #pragma once
 
-<<<<<<< HEAD
-#include "cab.hpp"
-=======
 #include <map>
 #include <memory>
 #include <vector>
@@ -10,7 +7,6 @@
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/property_map/property_map.hpp>
->>>>>>> b4d8948ca89509bec218977a6eb5eb9a0eb14261
 
 using node_id_base = std::uint8_t;
 
@@ -28,13 +24,6 @@ enum node_id : node_id_base
     P4,
     P5,
     P6,
-<<<<<<< HEAD
-    P7		
-};
-
-
-cab* cab_provision(node_id src, node_id dest);
-=======
     P7,
 };
 
@@ -48,6 +37,10 @@ class road_network
         road_network();
 
         std::vector<node_id> get_predecessors(node_id node);
+        bool in_between(node_id start, node_id stop, node_id q);
+        bool are_twins(node_id n1, node_id n2);
+        bool is_inner(node_id n);
+        bool is_pickup(node_id n);
 
         graph& get_graph();
         
@@ -57,4 +50,3 @@ class road_network
         
         std::map<node_id, std::vector<node_id>> _predecessors;
 };
->>>>>>> b4d8948ca89509bec218977a6eb5eb9a0eb14261

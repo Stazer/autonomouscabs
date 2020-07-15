@@ -2,13 +2,12 @@
 
 #include <cstdint>
 #include <vector>
-#include <map>
 #include <memory>
 
 #include <boost/uuid/uuid.hpp>
-#include "cab_provision.hpp"
 
-#include "cab_provision.hpp"
+#include "road_network.hpp"
+#include "request.hpp"
 
 class road_network;
 
@@ -23,25 +22,23 @@ class cab
         std::uint32_t passengers_at_node(node_id node);
 
         bool route_contains(node_id node);
-        bool pickup_contains(node_id node);
-        bool deliver_contains(node_id node);
 
-        void add_request(node_id src, node_id dst);
-        void set_route(std::vector<node_id> new_route);
+        std::int32_t calculate_costs(node_id src, node_id dst);
+        void add_request(node_id src, node_id dst, std::uint32_t passengers);
+        void update_route(std::vector<node_id> new_route);
+        void update_position(node_id position);
+        std::vector<node_id> route();
+        std::uint32_t costs();
 
     private:
         std::uint32_t _id = 0;
-        std::uint32_t _passengers = 0; 
-<<<<<<< HEAD
-        std::vector<node_id> _route; 
-=======
+        std::uint32_t _passengers = 0;
+        node_id _position;
 
         std::shared_ptr<road_network> _rnet;
 
-        std::vector<node_id> _route; 
-        std::vector<node_id> _pickup; 
-        std::vector<node_id> _deliver; 
+        std::vector<node_id> _route;
+        std::vector<request> _requests;
 
-        std::map<node_id, std::uint32_t> _pasengers_at_node;
->>>>>>> b4d8948ca89509bec218977a6eb5eb9a0eb14261
+        std::uint32_t _costs;
 };

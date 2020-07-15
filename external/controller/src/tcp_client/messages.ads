@@ -28,6 +28,7 @@ package Messages is
 
    type Distance_Sensor_Array is array(0 .. 8) of Types.Float64;
 
+   -- interesting ones: 2: front ,3,6,5,8
    type Distance_Sensor_Message is new Message with record
       Payload : Distance_Sensor_Array;
    end record;

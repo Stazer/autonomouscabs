@@ -40,7 +40,7 @@ package body Path_Following is
 
        for I in Row_Index loop
          for J in Column_Index loop
-            if grey (I)(J) > 150 then
+            if grey (I)(J) > 100 then
                binaImage (I)(J) := 255;
             else
                binaImage (I)(j) := 0;
@@ -78,25 +78,83 @@ package body Path_Following is
 
    function Wheel_Velocity (whiteLine : in Integer; d_sensor : in Messages.Distance_Sensor_Array) return Velocity_Array is
       Velocity : Velocity_Array := (others => 0.0);
+
+      steering_zones_size : Long_Float := Long_Float(width)/13.0;
+
+      type steering_zones is array(1..13) of Long_Float;
+
+      steering_zones_array : steering_zones;
+
    begin
 
+      for I in steering_zones_array'Range loop
+         steering_zones_array(I) := Long_Float(I)*steering_zones_size;
+      end loop;
 
-      if whiteLine >= 36 then
-         V_turn := 3.6;
-      elsif whiteLine <= 28  and whiteLine > 0 then
-         V_turn := -3.6;
-      elsif whiteLine > 28 and whiteLine < 36 then
-         V_turn := 0.0;
-      elsif whiteLine = 0 then
-         if d_sensor (6) < 500.0 then
+
+      if whiteLine = 0 then
+       if d_sensor (6) < 500.0 then
             V_turn := 1.0;
          end if;
          if d_sensor (3) < 500.0 then
             V_turn := -1.0;
          end if;
+      else
+         if Long_Float(whiteLine) < steering_zones_array(1) then
+            V_turn := -3.0;
+         elsif Long_Float(whiteLine) < steering_zones_array(2) then
+            V_turn := -2.5;
+         elsif Long_Float(whiteLine) < steering_zones_array(3) then
+            V_turn := -1.75;
+         elsif Long_Float(whiteLine) < steering_zones_array(4) then
+            V_turn := -0.75;
+         elsif Long_Float(whiteLine) < steering_zones_array(5) then
+            V_turn := -0.5;
+         elsif Long_Float(whiteLine) < steering_zones_array(6) then
+            V_turn := -0.25;
+         elsif Long_Float(whiteLine) < steering_zones_array(7) then-- straight
+            V_turn := 0.0;
+         elsif Long_Float(whiteLine) < steering_zones_array(8) then
+            V_turn := 0.255;
+         elsif Long_Float(whiteLine) < steering_zones_array(9) then
+            V_turn := 0.5;
+         elsif Long_Float(whiteLine) < steering_zones_array(10) then
+            V_turn := 0.75;
+         elsif Long_Float(whiteLine) < steering_zones_array(11) then
+            V_turn := 1.75;
+         elsif Long_Float(whiteLine) < steering_zones_array(12) then
+            V_turn := 2.5;
+         else
+            V_turn := 3.0;
+         end if;
+         --if whiteLine >= 36 then
+            --V_turn := 3.6;
+         --elsif whiteLine <= 28  and whiteLine > 0 then
+            --V_turn := -3.6;
+         --elsif whiteLine > 28 and whiteLine < 36 then
+            --V_turn := 0.0;
+         --end if;
+
       end if;
 
-      Put_Line (d_sensor(3)'Image & ", " & d_sensor(6)'Image);
+
+
+      --if whiteLine >= 36 then
+         --V_turn := 3.6;
+      --elsif whiteLine <= 28  and whiteLine > 0 then
+         --V_turn := -3.6;
+     -- elsif whiteLine > 28 and whiteLine < 36 then
+        -- V_turn := 0.0;
+     -- elsif whiteLine = 0 then
+       --  if d_sensor (6) < 500.0 then
+       --     V_turn := 1.0;
+       --  end if;
+      --   if d_sensor (3) < 500.0 then
+       --     V_turn := -1.0;
+      --   end if;
+   --   end if;
+
+      --Put_Line (d_sensor(3)'Image & ", " & d_sensor(6)'Image);
       Put_Line (V_turn'Image);
       --turn right
 
@@ -112,6 +170,13 @@ package body Path_Following is
          Velocity (1) := basicVelocity;
       end if;
       Put_Line (Velocity (0)'Image & ", " & Velocity (1)'Image);
+
+      Put_Line ("front_ds: " & d_sensor(2)'Image);
+
+      if d_sensor (2) < 300.0 then
+         Velocity (0) := 1.0;
+         Velocity (1) := -1.0;
+      end if;
 
       return Velocity;
 

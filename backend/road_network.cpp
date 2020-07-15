@@ -7,7 +7,7 @@
 #include <memory>
 #include <iostream>
 
-#include "cab_provision.hpp"
+#include "road_network.hpp"
 
 typedef std::pair<node_id, node_id> Edge;
 std::array<Edge, 17> edge_array{
@@ -58,13 +58,23 @@ std::vector<node_id> road_network::get_predecessors(node_id node)
 
 bool road_network::in_between(node_id start, node_id stop, node_id q)
 {
-    if(are_twins(start, q) || are_twins(stop, q) || are_twins(start, stop))
+    if(are_twins(start, q) || are_twins(stop, q))
     {
         return false;
     }
 
+    /* if((start == node_id::D && q == node_id::P4) || (start == node_id::P4 && q == node_id::D))
+    {
+        return false;
+    } */
+
+    if(are_twins(start, stop) || start == q || stop == q)
+    {
+        return true;
+    }
+
     std::deque<node_id> queue;
-    queue.push_back(start);
+    queue.push_back(stop);
 
     while(!queue.empty())
     {
@@ -75,7 +85,7 @@ bool road_network::in_between(node_id start, node_id stop, node_id q)
         {
             return true;
         }
-        else if (queue.front() == stop || are_twins(queue.front(), stop))
+        else if (queue.front() == start || are_twins(queue.front(), start))
         {
             break;
         }

@@ -8,7 +8,8 @@ with Messages;
 package Path_Following is
 
    width : constant Integer := 64;
-   height : constant Integer := 64;
+   --height : constant Integer := 64;
+   height : constant Integer := 5;
    size : constant Integer := width * height * 4;
 
    type Pixel is array(0 .. 3) of uint8;
@@ -27,5 +28,6 @@ package Path_Following is
    function Find_Line (binarizedImage : in Colour_Matrix) return Integer;
    function Wheel_Velocity (whiteLine : in Integer; d_sensor : in Messages.Distance_Sensor_Array) return Velocity_Array;
 
+   procedure Check_For_Fork (pick_up_location_reached : in Boolean; bottomPoint : in out Integer; bottomPoint1 : in out Integer );
 
 end Path_Following;

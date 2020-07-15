@@ -3,16 +3,16 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation -0.12999345844820634 0.9679236439620974 0.21500120981010715 1.6901476623869045
-  position 39.485908187861 19.583802825808746 -28.36101590197844
+  orientation -0.9531500668783005 -0.2979099264145855 -0.052484528706537074 0.9327618822535761
+  position 48.81434146116777 10.326356252322716 11.352834117189145
 }
 TexturedBackground {
   luminosity 2
   reflections FALSE
 }
 DEF Cab2 Robot {
-  translation 4.91052 0.398702 -32.0922
-  rotation -0.0001548789968393237 0.9999999795926091 0.00012971999735275326 -1.229045307179586
+  translation 53.1477 0.40013 -6.16024
+  rotation -0.02123539995702098 0.9997744112822371 -0.0004293412647112401 -0.010949479688002072
   children [
     DEF cam_f Camera {
       translation 0 0.1 1
@@ -36,11 +36,12 @@ DEF Cab2 Robot {
         density 1
       }
       fieldOfView 0.75
+      height 5
       far 10
     }
     DEF ls_f LightSensor {
-      translation 0 -0.19 1
-      rotation 0 1 0 -1.57
+      translation -0.209949 -0.17929 1.06091
+      rotation -0.577197562004763 0.5771965620055218 0.57765656165646 -2.093935307179586
       children [
         Shape {
           appearance PBRAppearance {
@@ -64,6 +65,9 @@ DEF Cab2 Robot {
       physics Physics {
         density 1
       }
+      recognitionColors [
+        0 0 0
+      ]
       lookupTable [
         0 0 0
         5 1000 0
@@ -350,7 +354,7 @@ DEF Cab2 Robot {
     }
     DEF wheelFL HingeJoint {
       jointParameters HingeJointParameters {
-        position 1733.736964765539
+        position 2470.1710685428375
         anchor 0.55 -0.1 0.55
       }
       device [
@@ -361,7 +365,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelFL Solid {
         translation 0.55 -0.1 0.55
-        rotation -0.6085854300438158 0.6081009900195697 0.509742052685084 2.1981264146711905
+        rotation 0.21560339969647083 -0.21543177725692292 -0.9524202451582218 4.664454766528894
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -383,7 +387,7 @@ DEF Cab2 Robot {
     }
     DEF wheelRL HingeJoint {
       jointParameters HingeJointParameters {
-        position 6407.099545312441
+        position 7143.498755787596
         anchor 0.55 -0.1 -0.7
       }
       device [
@@ -394,7 +398,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelRL Solid {
         translation 0.55 -0.1 -0.7
-        rotation -0.609089495895868 0.6086046546302153 0.5085374719248856 2.200040523037505
+        rotation 0.23274759381272836 -0.23256232442502214 -0.9443216204410528 4.655926859888109
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -416,7 +420,7 @@ DEF Cab2 Robot {
     }
     DEF wheelRR HingeJoint {
       jointParameters HingeJointParameters {
-        position 5794.712234104554
+        position 6384.68660439792
         anchor -0.55 -0.1 -0.7
       }
       device [
@@ -427,7 +431,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelRR Solid {
         translation -0.55 -0.1 -0.7
-        rotation 0.5860475937623598 -0.5855810940788015 0.5600383916329507 2.11987842939071
+        rotation 0.4229302582905978 -0.4225936016201163 0.8015888250792839 1.7893973702043697
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -449,7 +453,7 @@ DEF Cab2 Robot {
     }
     DEF wheelFR HingeJoint {
       jointParameters HingeJointParameters {
-        position 5794.706979565616
+        position 6384.735319671028
         anchor -0.55 -0.1 0.55
       }
       device [
@@ -460,7 +464,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelFR Solid {
         translation -0.55 -0.1 0.55
-        rotation 0.5850782144363221 -0.5846124863882998 0.5620602492179063 2.1168015617508615
+        rotation 0.438674254029874 -0.4383250649829978 0.7844973143733408 1.8103864602074378
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -504,6 +508,11 @@ DEF environment Solid {
   translation -1.80485 -1.42108e-14 -1.11554
   scale 1.09819 1.09819 1.09819
   children [
+    CeilingSpotLight {
+      translation 49.81 0.05 0
+      rotation 0 0 1 3.14159
+      spotLightIntensity 50
+    }
     DEF PickUp1 BusStop {
       translation 0 0 -45
       rotation 0 1 0 3.14159
@@ -687,7 +696,7 @@ DEF environment Solid {
       }
     }
     CurvedRoadSegment {
-      translation 33 0 -56
+      translation 33 0 -55.95
       rotation 0 1 0 1.57
       name "road(9)"
       width 6

@@ -14,7 +14,7 @@ std::ostream& operator<<(std::ostream& stream, node_id id)
 }
 
 cab::cab(std::uint32_t id, std::shared_ptr<road_network> rnet):
-    _id(id), _position(node_id::D), _rnet(rnet), s_pos(0), d_pos(0)
+    _id(id), _position(node_id::D), _rnet(rnet), _costs(0)
 {
 }
 
@@ -28,40 +28,29 @@ std::uint32_t cab::passengers()
     return _passengers;
 }
 
+
+std::uint32_t cab::costs()
+{
+    return _costs;
+}
+
 std::uint32_t cab::passengers_at_node(node_id node)
 {
-    std::deque<node_id> queue;
-    queue.push_back(node);
-    while(!queue.empty())
+    std::uint32_t passengers = 0;
+    for(auto r : _requests)
     {
-        node_id current = queue.front();
-        queue.pop_front();
-
-        if(_passengers_at_node.find(current) != _passengers_at_node.end())
+        if(_rnet->in_between(_position, r.dst(), r.src()) &&
+                _rnet->in_between(r.src(), r.dst(), node))
         {
-            // found a predecessor with a passenger count
-            _passengers_at_node[node] = _passengers_at_node[current];
-            return _passengers_at_node[current];
+            passengers += r.passengers();
         }
-
-        std::vector<node_id> vec = _rnet->get_predecessors(current);
-        for(auto n : vec)
+        else if(_rnet->in_between(r.src(), r.dst(), _position) && r.picked_up() && _rnet->in_between(_position, r.dst(), node))
         {
-            // add all predecessors to queue which are currently not in the queue
-            auto it = std::find(queue.begin(), queue.end(), n);
-            if(it == queue.end())
-            {
-                queue.push_back(n);
-            }
+            passengers += r.passengers();
         }
-
-        // we are back at src
-        if(current == node)
-        {
-            return 0;
-        }       
     }
-    return 0;
+    
+    return passengers;
 }
 
 bool cab::route_contains(node_id node)
@@ -70,234 +59,107 @@ bool cab::route_contains(node_id node)
     return it != _route.end();
 }
 
-std::uint32_t cab::calculate_costs(node_id src, node_id dst)
+std::int32_t cab::calculate_costs(node_id src, node_id dst)
 {
-    auto sit = std::find(_route.begin(), _route.end(), src);
-    auto dit = std::find(_route.begin(), _route.end(), dst);
-    bool contains_src = sit != _route.end();
-    bool contains_dst = dit != _route.end() && sit < dit;
-    bool s_done = false, d_done = false;
-    _route.insert(_route.begin(), _position);
-    std::size_t i = 1;
-    if(!contains_src)
+    // check if the cab already has src and dst in that order in its requests
+    bool found_src = false, found_dst = false;
+    for(auto r : _requests)
     {
-        for(; i < _route.size(); ++i)
+        found_src = (r.src() == src || r.dst() == src) || found_src;
+        found_dst = ((r.src() == dst || r.dst() == dst) && found_src) || found_dst;
+        if(found_src && found_dst)
         {
-            node_id one = _route[i - 1];
-            node_id two = _route[i];
-
-            if(_rnet->in_between(two, one, src))
-            {
-                s_pos = i - 1;
-                s_done = true;
-
-                if(!contains_dst && _rnet->in_between(two, src, dst))
-                {
-                    d_pos = i;
-                    d_done = true;
-                    i = _route.size();
-                }
-                else
-                {
-                    i += 1;
-                }
-                
-                break;
-            }
-        }
-    }
-    
-
-    if(!contains_dst)
-    {
-        for(; i < _route.size(); ++i)
-        {
-            node_id one = _route[i - 1];
-            node_id two = _route[i];
-
-            if(_rnet->in_between(two, one, dst))
-            {
-                d_pos = i - 1;
-                d_done = true;
-                break;
-            }
+            return 0;
         }
     }
 
-    if(!s_done)
-    {
-        s_pos = i - 1;
-        d_pos = s_pos + 1;
-    } 
-    else if (!d_done)
-    {
-        d_pos = i;
-    }
-    _route.erase(_route.begin());
-
-    // get the costs to get to every node without changing the value in _costs
-    // if node is inner increase costs by 1, if node is outer increase costs by two
+    // calculate max detour costs and return the difference between max and current _costs
     std::uint32_t max = 0;
-    for(i = s_pos; i < _route.size(); ++i)
+    for(auto r : _requests)
     {
-        std::uint32_t cost = 0;
-        if(_costs.find(_route[i]) != _costs.end())
+        std::uint32_t cost = r.detours();
+        bool is_inner = _rnet->is_inner(src); 
+        if(!found_src && (_rnet->in_between(_position, r.src(), src) || 
+                _rnet->in_between(r.src(), r.dst(), src)))
         {
-            cost = _costs[_route[i]];
-        }
-
-        // only increase cost if src is not already in _route
-        if(!contains_src)
-        {
-            bool is_inner = _rnet->is_inner(src);
             cost = is_inner ? cost + 1 : cost + 2;
         }
 
-        // only increase cost if dst is not already in _route
-        if(!contains_dst && i > d_pos - 2)
+        is_inner = _rnet->is_inner(dst); 
+        if(!found_dst && (_rnet->in_between(_position, r.src(), dst) || 
+                _rnet->in_between(r.src(), r.dst(), dst)))
         {
-            bool is_inner = _rnet->is_inner(dst);
             cost = is_inner ? cost + 1 : cost + 2;
         }
         
         max = cost > max ? cost : max;
     }
 
-    return max;
+    return max - _costs;
 }
 
 void cab::add_request(node_id src, node_id dst, std::uint32_t passengers)
 {
-    _pickup.push_back(std::pair<node_id, std::uint32_t> {src, passengers});
-    _deliver.push_back(std::pair<node_id, std::uint32_t> {dst, passengers});
-
-    // set the costs to include the src, dst pair in _route
-    for(std::size_t i = s_pos; i < _route.size(); ++i)
-    {
-        std::size_t cost = 0;
-        if(_costs.find(_route[i]) != _costs.end())
+    bool found_src = false, found_dst = false;
+    for(std::size_t i = 0; i < _requests.size(); ++i)
+    {   
+        if(_requests[i].src() == src && _requests[i].dst() == dst)
         {
-            cost = _costs[_route[i]];
+            _requests[i].add_passengers(passengers);
+            return;
         }
 
-        bool is_inner = _rnet->is_inner(src);
-        cost = is_inner ? cost + 1 : cost + 2;
-
-        if(i > d_pos - 2)
-        {
-            is_inner = _rnet->is_inner(dst);
-            cost = is_inner ? cost + 1 : cost + 2;
-        }
-
-        _costs[_route[i]] = cost;
-    }
-
-    // update the passenger count at every node between src and dst
-    std::deque<node_id> queue;
-    queue.push_back(dst);
-
-    while(!queue.empty())
-    {
-        node_id current = queue.front();
-        queue.pop_front();
-
-        std::uint32_t n_pass = passengers_at_node(current);
-        _passengers_at_node[current] = n_pass + passengers;
-
-        std::vector<node_id> vec = _rnet->get_predecessors(current);
-        for(auto n : vec)
-        {
-            // add all predecessors to queue which are currently not in the queue
-            auto it = std::find(queue.begin(), queue.end(), n);
-            if(it == queue.end())
-            {
-                queue.push_back(n);
-            }
-        }
-
-        if(current == src)
+        request r = _requests[i];
+        found_src = (r.src() == src || r.dst() == src) || found_src;
+        found_dst = ((r.src() == dst || r.dst() == dst) && found_src) || found_dst;
+        if(found_src && found_dst)
         {
             break;
         }
     }
 
-    // dst gets visited in loop above but the passenger count should not be increased
-    _passengers_at_node[dst] = _passengers_at_node[dst] - passengers;
+    // add detours to all requests
+    std::uint32_t max = 0;
+    for(std::size_t i = 0; i < _requests.size(); ++i)
+    {
+        bool is_inner = _rnet->is_inner(src); 
+        if(!found_src && (_rnet->in_between(_position, _requests[i].src(), src) || 
+                _rnet->in_between(_requests[i].src(), _requests[i].dst(), src)))
+        {
+            std::uint32_t cost = is_inner ? 1 : 2;
+            _requests[i].add_detours(cost);
+        }
+
+        is_inner = _rnet->is_inner(dst); 
+        if(!found_dst && (_rnet->in_between(_position, _requests[i].src(), dst) || 
+                _rnet->in_between(_requests[i].src(), _requests[i].dst(), dst)))
+        {
+            std::uint32_t cost = is_inner ? 1 : 2;
+            _requests[i].add_detours(cost);
+        }
+        
+        max = _requests[i].detours() > max ? _requests[i].detours() : max;
+    }
+    _costs = max > _costs ? max : _costs; 
+
+    _requests.push_back(request(src, dst, passengers));
 }
 
 void cab::update_position(node_id position)
 {
-    // update passenger count
-    // for ervery src, dst pair position is in between, reduce the passenger count of position
-    for(std::size_t i = 0; i < _deliver.size(); ++i)
-    {
-        node_id d_tmp = _deliver[i].first;
-        node_id s_tmp = _pickup[i].first;
-
-        if(_rnet->in_between(d_tmp, s_tmp, position))
-        {
-            std::size_t n_pass = passengers_at_node(position);
-            n_pass = n_pass > _deliver[i].second ? n_pass - _deliver[i].second : 0;
-            _passengers_at_node[position] = n_pass;
-        }
-    }
-    
     _position = position;
-
-    // update cost
-    std::size_t index = 0;
-    for(; index < _deliver.size(); ++index)
+    for(std::size_t i = 0; i < _requests.size(); ++i)
     {
-        if(_deliver[index].first == position)
+        if(_requests[i].src() == position)
         {
-            break;
-        }
-    }
-
-    // return when position is not a dst
-    if(index == _deliver.size())
-    {
-        return;
-    }
-
-    node_id dst = position;
-    node_id src = _pickup[index].first;
-
-    for(std::size_t i = 0; i < index; ++i)
-    {
-        node_id d_tmp = _deliver[i].first;
-        node_id s_tmp = _pickup[i].first;
-
-        std::size_t cost = 0;
-        if(_costs.find(d_tmp) != _costs.end())
-        {
-            cost = _costs[d_tmp];
+            _passengers += _requests[i].passengers();
+            _requests[i].pick_up();
         }
 
-        if(_rnet->in_between(d_tmp, d_tmp, src))
+        if(_requests[i].dst() == position)
         {
-            _costs[d_tmp] = cost > 0 ? (_rnet->is_inner(src) ? cost - 1 : cost - 2) : 0;
-        }
-
-        if(_rnet->in_between(d_tmp, d_tmp, dst))
-        {
-            _costs[d_tmp] = cost > 0 ? (_rnet->is_inner(dst) ? cost - 1 : cost - 2) : 0;
-        }
-
-        cost = 0;
-        if(_costs.find(s_tmp) != _costs.end())
-        {
-            cost = _costs[s_tmp];
-        }
-
-        if(_rnet->in_between(s_tmp, s_tmp, src))
-        {
-            _costs[s_tmp] = cost > 0 ? (_rnet->is_inner(src) ? cost - 1 : cost - 2) : 0;
-        }
-
-        if(_rnet->in_between(s_tmp, s_tmp, dst))
-        {
-            _costs[s_tmp] = cost > 0 ? (_rnet->is_inner(dst) ? cost - 1 : cost - 2) : 0;
+            _passengers -= _requests[i].passengers();
+            _requests.erase(_requests.begin() + i);
         }
     }
 }
@@ -318,8 +180,8 @@ int main(int argc, char **argv)
 
     cab c(static_cast<std::uint32_t>(0), std::make_shared<road_network>(rnet));
 
-    // c.add_request(node_id::P0, node_id::P4, 1);
-    // c.add_request(node_id::P1, node_id::P2, 1);
+    // c.add_request(node_id::P0, node_id::P4, 3);
+    // c.add_request(node_id::P1, node_id::P2, 4);
     // c.update_route(std::vector<node_id> {P0, I1, P1, I2, P2, I3, I4, P4});
     // c.update_position(node_id::P0);
     // c.update_position(node_id::I1);
@@ -346,10 +208,9 @@ int main(int argc, char **argv)
 
     c.update_route(std::vector<node_id> {P0, I1, P1, I2, P2, I3, P3, I4, P4});
 
-    for(auto n : c.route())
-    {
-        std::cout << n << '\n';
-    }
+    cost = c.calculate_costs(node_id::P2, node_id::P4);
+    c.add_request(node_id::P2, node_id::P4, 1);
+    std::cout << "cost: " << cost << std::endl;
     
     // c.add_request(node_id::P2, node_id::P3);
     // c.add_request(node_id::P3, node_id::P1);

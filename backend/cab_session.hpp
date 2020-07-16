@@ -2,22 +2,32 @@
 
 #include <iostream>
 #include <array>
+#include <memory>
 
 #include <boost/asio.hpp>
 
-#include "tcp_session.hpp"
 #include "cab.hpp"
 #include "../shared/buffer.hpp"
 
-class cab_session : public tcp_session<cab_session>
+class application;
+
+class cab_session : public std::enable_shared_from_this<cab_session>
 {
     public:
-        cab_session(boost::asio::ip::tcp::socket&& socket, class application& application);
+        cab_session(application& application, boost::asio::ip::tcp::socket&& socket);
+        cab_session(const cab_session&) = delete;
+        cab_session(cab_session&&) = default;
+
+        cab_session& operator=(const cab_session&) = delete;
+        cab_session& operator=(cab_session&&) = default;
+
         ~cab_session();
 
         void run();
 
     private:
+        application* _application;
+
         boost::asio::ip::tcp::socket _socket;
         std::array<std::uint8_t, 1024> _receive_buffer;
         buffer _buffer;

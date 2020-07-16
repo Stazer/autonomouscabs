@@ -2,8 +2,8 @@
 #include "application.hpp"
 #include "../shared/message.hpp"
 
-cab_session::cab_session(boost::asio::ip::tcp::socket&& socket, class application& application):
-    tcp_session(application),
+cab_session::cab_session(application& application, boost::asio::ip::tcp::socket&& socket):
+    _application(&application),
     _socket(std::move(socket))
 {
     std::cout << "Cab connection from " << this->_socket.remote_endpoint().address().to_string()
@@ -13,7 +13,7 @@ cab_session::cab_session(boost::asio::ip::tcp::socket&& socket, class applicatio
 cab_session::~cab_session()
 {
     if(_cab)
-        application().cab_manager().remove(*_cab);
+        _application->cab_manager().remove(*_cab);
 
     std::cout << "Cab connection from " << this->_socket.remote_endpoint().address().to_string()
               << ":" << this->_socket.remote_endpoint().port() << " closed\n";
@@ -44,7 +44,7 @@ void cab_session::handle_join()
     {
         challenge_message.from_buffer(_buffer);
 
-        _cab = &application().cab_manager().create();
+        _cab = &_application->cab_manager().create();
 
         std::cout << "Cab with id " << _cab->id() << " joined\n";
 

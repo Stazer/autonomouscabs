@@ -6,7 +6,12 @@ cab_server::cab_server(application& application, boost::asio::io_context& io_con
     _io_context(io_context),
     _acceptor(io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port))
 {
-    std::cout << "TCP server Listening on *:" << port << "\n";
+    std::cout << "Cab server Listening on *:" << port << "\n";
+}
+
+cab_server::~cab_server()
+{
+    std::cout << "Cab server stopped\n";
 }
 
 void cab_server::run()

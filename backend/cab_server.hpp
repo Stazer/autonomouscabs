@@ -10,6 +10,7 @@ class cab_server
 {
     public:
         cab_server(application& _application, boost::asio::io_context& io_context, std::uint16_t port);
+        ~cab_server();
 
         void run();
 

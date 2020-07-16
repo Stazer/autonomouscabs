@@ -1,24 +1,23 @@
 package body Tcp_Client is
 
-
-   function Connect (client : in out Socket_Type; port : Port_Type; address : in out Sock_Addr_Type) return Stream_Access is
+   function Connect(Client : in out Socket_Type; Address : in out Sock_Addr_Type) return Stream_Access is
    begin
+      GNAT.Sockets.Initialize;
+      Create_Socket(Client);
+      Connect_Socket(Client, Address);
 
-      GNAT.Sockets.Initialize;  -- initialize a new packet
+      return Stream(Client);
+   end Connect;
 
-      Create_Socket (client); -- create a socket + store it as variable Client
-
-      -- Set the server address:
+   function build_connection ( client : in out Socket_Type; port : Port_Type; address : in out Sock_Addr_Type) return Stream_Access is
+   begin
       address.Addr := Inet_Addr("127.0.0.1"); -- localhost
-
       address.Port := port;
 
       Connect_Socket (client, Address); -- bind the address to the socket + connect
 
-      return Stream(client);
-
-   end Connect;
-
+      return Connect(client, Address);
+   end build_connection;
 
    procedure Send_Bytes (server_stream : Stream_Access; outgoing_packet : Types.Communication_Packet) is
 
@@ -51,13 +50,11 @@ package body Tcp_Client is
       --  read message
       Byte_Buffer.Buffer'Read (server_stream, dynamic_buffer);
 
-      declare
-         M : Mailbox.Mail;
+      declare M : Messages.Message_Ptr;
       begin
-         dynamic_buffer.Read_Message (M.Message);
-         M.TTL := Ada.Real_Time.Clock;
+         dynamic_buffer.Read_Message (M);
          local_mailbox.Clear;
-         local_mailbox.Deposit (M);
+         local_mailbox.Deposit (Messages.Message_Ptr (M));
       end;
    end Read_Packet;
 

@@ -1,8 +1,7 @@
 #include "application.hpp"
 
 application::application():
-    _cab_session_server(_io_context, 9875, *this),
-    _web_session_server(_io_context, 9876, *this)
+    _cab_server(*this, _io_context, 9875)
 {
 }
 
@@ -18,8 +17,7 @@ const class cab_manager& application::cab_manager() const
 
 int application::run(int argc, char** argv)
 {
-    _cab_session_server.run();
-    _web_session_server.run();
+    _cab_server.run();
 
     _io_context.run();
 

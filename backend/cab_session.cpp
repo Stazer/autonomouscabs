@@ -12,6 +12,9 @@ cab_session::cab_session(boost::asio::ip::tcp::socket&& socket, class applicatio
 
 cab_session::~cab_session()
 {
+    if(_cab)
+        application().cab_manager().remove(*_cab);
+
     std::cout << "Cab connection from " << this->_socket.remote_endpoint().address().to_string()
               << ":" << this->_socket.remote_endpoint().port() << " closed\n";
 }

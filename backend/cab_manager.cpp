@@ -8,6 +8,11 @@ cab& cab_manager::create()
     return *_cabs[id];
 }
 
+void cab_manager::remove(cab& cab)
+{
+    remove(cab.id());
+}
+
 void cab_manager::remove(id_type id)
 {
     _cabs.erase(id);

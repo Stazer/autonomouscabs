@@ -9,6 +9,8 @@ class cab_manager
 {
     public:
         cab& create();
+
+        void remove(cab& cab);
         void remove(id_type id);
 
     private:

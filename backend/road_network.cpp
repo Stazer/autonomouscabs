@@ -38,6 +38,14 @@ std::array<Edge, 17> edge_array{
     Edge(node_id::I4, node_id::P7),
 };
 
+
+std::ostream& operator<<(std::ostream& stream, node_id id)
+{
+    const std::array<std::string, 13> name = { "D", "P0", "I1", "P1", "I2", "P2", "I3", "P3", "I4", "P4", "P5", "P6", "P7"};
+    stream << name[id - 1];
+    return stream;
+}
+
 road_network::road_network() : 
     _g(edge_array.begin(), edge_array.end(), 13)
 {
@@ -85,15 +93,16 @@ bool road_network::in_between(node_id start, node_id stop, node_id q)
         {
             return true;
         }
-        else if (queue.front() == start || are_twins(queue.front(), start))
-        {
-            break;
-        }
 
         std::vector<node_id> vec = get_predecessors(current);
         for(auto n : vec)
         {
             queue.push_back(n);
+        }
+
+        if (queue.front() == start || are_twins(queue.front(), start))
+        {
+            break;
         }
     }
     return false;

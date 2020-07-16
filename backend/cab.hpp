@@ -18,17 +18,19 @@ class cab
 
         std::uint32_t id() const;
         std::uint32_t passengers();
+        std::vector<node_id> route();
+        std::uint32_t costs();
+        node_id position();
 
         std::uint32_t passengers_at_node(node_id node);
 
         bool route_contains(node_id node);
+        std::pair<bool, bool> route_contains_ordered(node_id src, node_id dst);
 
         std::int32_t calculate_costs(node_id src, node_id dst);
         void add_request(node_id src, node_id dst, std::uint32_t passengers);
         void update_route(std::vector<node_id> new_route);
         void update_position(node_id position);
-        std::vector<node_id> route();
-        std::uint32_t costs();
 
     private:
         std::uint32_t _id = 0;

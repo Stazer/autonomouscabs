@@ -27,6 +27,8 @@ enum node_id : node_id_base
     P7,
 };
 
+std::ostream& operator<<(std::ostream& stream, node_id id);
+
 using graph = boost::adjacency_list<boost::listS, boost::vecS, 
         boost::directedS, node_id>;
 // using vertex_descriptor = boost::graph_traits<graph>::vertex_descriptor;

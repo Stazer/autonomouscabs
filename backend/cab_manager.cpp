@@ -41,6 +41,8 @@ std::shared_ptr<cab> cab_manager::cab_provision(node_id src, node_id dst, std::u
         node_id current = queue.front();
         queue.pop_front();
 
+        // std::cout << current << '\n';
+
         std::int32_t min = INT32_MAX;
         std::shared_ptr<cab> choosen = nullptr;
         if(_cabs_at_node.find(current) != _cabs_at_node.end())
@@ -77,7 +79,10 @@ std::shared_ptr<cab> cab_manager::cab_provision(node_id src, node_id dst, std::u
                 queue.push_back(n);
             }
         }
-
+       /*  if(queue.front() == src)
+        {
+            break;
+        } */
     }
     return nullptr;
 }
@@ -97,7 +102,7 @@ std::vector<std::shared_ptr<cab>> cab_manager::cabs_at_node(node_id node)
     return _cabs_at_node[node];
 }
 
-int main(int argc, char **argv)
+/* int main(int argc, char **argv)
 {
     cab_manager manager;
 
@@ -146,4 +151,4 @@ int main(int argc, char **argv)
     // c.add_request(node_id::P2, node_id::P3);
     // c.add_request(node_id::P3, node_id::P1);
     return 0;
-}
+} */

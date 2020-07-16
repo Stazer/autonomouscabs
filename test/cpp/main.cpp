@@ -1,13 +1,17 @@
 #define BOOST_TEST_MODULE Test
 #include <iostream>
+#include <memory>
 
 #include <boost/test/included/unit_test.hpp>
 
 #include "../../shared/buffer_reader.hpp"
 #include "../../shared/buffer_writer.hpp"
 #include "../../shared/message.hpp"
+#include "../../backend/road_network.hpp"
+#include "../../backend/cab.hpp"
+#include "../../backend/cab_manager.hpp"
 
-BOOST_AUTO_TEST_CASE(buffer_write_read_integer)
+/* BOOST_AUTO_TEST_CASE(buffer_write_read_integer)
 {
     const uint8_t wuint8 = 0xFF - 1;
     const uint16_t wuint16 = 0xFFFF - 1;
@@ -276,4 +280,167 @@ BOOST_AUTO_TEST_CASE(webots_velocity_message_size)
 {
     webots_velocity_message msg;
     BOOST_TEST(msg.body_size() == 2 * sizeof(double));
+} */
+
+BOOST_AUTO_TEST_CASE(cab_provision_simple)
+{
+    node_id src = node_id::P0;
+    node_id dst = node_id::P5;
+
+    cab_manager manager;
+    manager.create();
+    std::shared_ptr<cab> c = manager.cab_provision(src, dst, 1);
+    BOOST_TEST(c->id() == 0);
+}
+
+BOOST_AUTO_TEST_CASE(cab_provision_complex)
+{
+    node_id src = node_id::P1;
+    node_id dst = node_id::P3;
+
+    cab_manager manager;
+    manager.create();
+    manager.create();
+
+    std::shared_ptr<cab> c = manager.cab_provision(src, dst, 4);
+    c->add_request(src, dst, 4);
+    manager.update_cab(c->id(),node_id::P0);
+    manager.update_cab(c->id(),node_id::I1);
+    manager.update_cab(c->id(),node_id::P1);
+    manager.update_cab(c->id(),node_id::I2);
+
+    src = node_id::P4;
+    dst = node_id::P5;
+
+    c = manager.cab_provision(src, dst, 1);
+
+    BOOST_TEST(c->id() == 0);
+}
+
+BOOST_AUTO_TEST_CASE(cab_provision_complex2)
+{
+    node_id src = node_id::P1;
+    node_id dst = node_id::P3;
+
+    cab_manager manager;
+    manager.create();
+    manager.create();
+
+    std::shared_ptr<cab> c = manager.cab_provision(src, dst, 4);
+    c->add_request(src, dst, 4);
+
+    manager.update_cab(c->id(),node_id::P0);
+    manager.update_cab(c->id(),node_id::I1);
+    manager.update_cab(c->id(),node_id::P1);
+    manager.update_cab(c->id(),node_id::I2);
+
+    src = node_id::P0;
+    dst = node_id::P5;
+
+    c = manager.cab_provision(src, dst, 1);
+
+    BOOST_TEST(c->id() == 1);
+}
+
+BOOST_AUTO_TEST_CASE(cab_provision_complex3)
+{
+    node_id src = node_id::P4;
+    node_id dst = node_id::P5;
+
+    cab_manager manager;
+    manager.create();
+
+    std::shared_ptr<cab> c = manager.cab_provision(src, dst, 1);
+
+    BOOST_TEST(c->id() == 0);
+}
+
+BOOST_AUTO_TEST_CASE(cab_provision_complex4)
+{
+    node_id src = node_id::P1;
+    node_id dst = node_id::P3;
+
+    cab_manager manager;
+    manager.create();
+    manager.create();
+
+    std::shared_ptr<cab> c = manager.cab_provision(src, dst, 4);
+    c->add_request(src, dst, 4);
+
+    manager.update_cab(c->id(),node_id::P0);
+    manager.update_cab(c->id(),node_id::I1);
+    manager.update_cab(c->id(),node_id::P1);
+    manager.update_cab(c->id(),node_id::I2);
+    manager.update_cab(c->id(),node_id::I3);
+    manager.update_cab(c->id(),node_id::P3);
+    manager.update_cab(c->id(),node_id::I4);
+
+    src = node_id::P0;
+    dst = node_id::P3;  
+
+    c = manager.cab_provision(src, dst, 1);
+
+    BOOST_TEST(c->id() == 0);
+}
+
+BOOST_AUTO_TEST_CASE(cab_provision_complex5)
+{
+    node_id src = node_id::P0;
+    node_id dst = node_id::P1;
+
+    cab_manager manager;
+    manager.create();
+    manager.create();
+
+    std::shared_ptr<cab> c = manager.cab_provision(src, dst, 4);
+    c->add_request(src, dst, 4);
+
+    manager.update_cab(c->id(),node_id::P0);
+    manager.update_cab(c->id(),node_id::I1);
+    manager.update_cab(c->id(),node_id::P1);
+
+    src = node_id::P1;
+    dst = node_id::P2;  
+
+    c = manager.cab_provision(src, dst, 1);
+
+    BOOST_TEST(c->id() == 0);
+}
+
+BOOST_AUTO_TEST_CASE(cab_provision_complex6)
+{
+    node_id src = node_id::P0;
+    node_id dst = node_id::P3;
+
+    cab_manager manager;
+    manager.create();
+    manager.create();
+
+    std::shared_ptr<cab> c1 = manager.cab_provision(src, dst, 4);
+    c1->add_request(src, dst, 4);
+
+    manager.update_cab(0,node_id::P0);
+    manager.update_cab(0,node_id::I1);
+
+    src = node_id::P0;
+    dst = node_id::P2;
+
+    std::shared_ptr<cab> c2 = manager.cab_provision(src, dst, 4);
+    c2->add_request(src, dst, 4);
+
+    manager.update_cab(1,node_id::P0);
+    manager.update_cab(0,node_id::I2);
+    manager.update_cab(1,node_id::I1);
+    manager.update_cab(0,node_id::P2);
+    manager.update_cab(1,node_id::I2); 
+
+    src = node_id::P2;
+    dst = node_id::P3;  
+
+    std::cout << c1->passengers_at_node(node_id::P2) << '\n';
+    std::cout << c2->passengers_at_node(node_id::P2) << '\n';
+
+    std::shared_ptr<cab> c = manager.cab_provision(src, dst, 1);
+
+    BOOST_TEST(c->id() == c2->id());
 }

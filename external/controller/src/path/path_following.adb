@@ -40,7 +40,7 @@ package body Path_Following is
 
        for I in Row_Index loop
          for J in Column_Index loop
-            if grey (I)(J) > 160 then
+            if grey (I)(J) > 150 then
                binaImage (I)(J) := 255;
             else
                binaImage (I)(j) := 0;
@@ -55,34 +55,22 @@ package body Path_Following is
    end Binarize;
 
    function Find_Line (binarizedImage : in Colour_Matrix) return Integer is
-
-      pick_up_location_reached :  Boolean := False;
-
    begin
       for J in Column_Index loop
-         --if binaImage(Row_Index(height-5))(J) = 255 then
-         if binaImage(Row_Index(height-1))(J) = 255 then
+         if binaImage(Row_Index(height-5))(J) = 255 then
             bottomPoint := Integer(J);
          end if;
+         --
       end loop;
 
       for J in reverse Column_Index loop
-         --if binaImage(Row_Index(height-5))(J) = 255 then
-         if binaImage(Row_Index(height-1))(J) = 255 then
+         if binaImage(Row_Index(height-5))(J) = 255 then
             bottomPoint1 := Integer(J);
          end if;
       end loop;
 
-      --Put_Line("BottomPoint: " & Integer'Image(bottomPoint));
-      --Put_Line("BottomPoint1: " & Integer'Image(bottomPoint1));
-      -- check for fork here
-      if bottomPoint /= 0 or bottomPoint1 /= 0 then
-         --Put_Line("Checking for Fork.");
-         Check_For_Fork(pick_up_location_reached,bottomPoint,bottomPoint1);
-      end if;
-
       bottomPoint := (bottomPoint + bottomPoint1) / 2;
-      --Put_Line("MiddlePoint: " & Integer'Image(bottomPoint));
+      Put_Line(Integer'Image(bottomPoint));
       return bottomPoint;
 
    end Find_Line;
@@ -162,31 +150,31 @@ package body Path_Following is
          end if;
       else
          if Long_Float(whiteLine) < steering_zones_array(1) then
-            V_turn := -2.5;
-         elsif Long_Float(whiteLine) < steering_zones_array(2) then
             V_turn := -2.0;
+         elsif Long_Float(whiteLine) < steering_zones_array(2) then
+            V_turn := -1.5;
          elsif Long_Float(whiteLine) < steering_zones_array(3) then
-            V_turn := -1.75;
-         elsif Long_Float(whiteLine) < steering_zones_array(4) then
             V_turn := -1.25;
-         elsif Long_Float(whiteLine) < steering_zones_array(5) then
+         elsif Long_Float(whiteLine) < steering_zones_array(4) then
             V_turn := -0.75;
-         elsif Long_Float(whiteLine) < steering_zones_array(6) then
+         elsif Long_Float(whiteLine) < steering_zones_array(5) then
             V_turn := -0.5;
+         elsif Long_Float(whiteLine) < steering_zones_array(6) then
+            V_turn := -0.25;
          elsif Long_Float(whiteLine) < steering_zones_array(7) then-- straight
             V_turn := 0.0;
          elsif Long_Float(whiteLine) < steering_zones_array(8) then
-            V_turn := 0.5;
+            V_turn := 0.255;
          elsif Long_Float(whiteLine) < steering_zones_array(9) then
-            V_turn := 0.75;
+            V_turn := 0.5;
          elsif Long_Float(whiteLine) < steering_zones_array(10) then
-            V_turn := 1.25;
+            V_turn := 0.75;
          elsif Long_Float(whiteLine) < steering_zones_array(11) then
-            V_turn := 1.75;
+            V_turn := 1.25;
          elsif Long_Float(whiteLine) < steering_zones_array(12) then
-            V_turn := 2.0;
+            V_turn := 1.5;
          else
-            V_turn := 2.5;
+            V_turn := 2.0;
          end if;
       end if;
 
@@ -222,9 +210,15 @@ package body Path_Following is
          Velocity (0) := basicVelocity;
          Velocity (1) := basicVelocity;
       end if;
-      --Put_Line (Velocity (0)'Image & ", " & Velocity (1)'Image);
+      Put_Line (Velocity (0)'Image & ", " & Velocity (1)'Image);
 
-      --Put_Line ("front_ds: " & d_sensor(2)'Image);
+      Put_Line ("front_ds: " & d_sensor(2)'Image);
+
+      if d_sensor (2) < 300.0 then
+         Velocity (0) := 1.0;
+         Velocity (1) := -1.0;
+      end if;
+
       return Velocity;
 
    end Wheel_Velocity;

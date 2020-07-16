@@ -26,12 +26,12 @@ procedure Main is
       Backend_Thread.Main;
    end backend_task;
 
+
    Current_Mail : Mailbox.Mail;
    alternator : Types.Uint8 := 1;
 
    DS_Data : Messages.Distance_Sensor_Array := (others => 1000.0);
    LS_Data : Messages.Light_Sensor_Array  := (others => 0.0);
-
    V : Messages.Velocity_Message;
    V_old : Messages.Velocity_Message;
    -- D : Messages.Distance_Sensor_   Out_Buffer : Byte_Buffer.Buffer;

@@ -10,20 +10,20 @@ package body Collision_Detection is
       threshold: float64 := 600.0;
    begin
       -- Object in front of car
---              Ada.Float_Text_IO.Put(FLoat(distance(0)),5,3,0);
---              Ada.Float_Text_IO.Put(FLoat(distance(1)),5,3,0);
---              Ada.Float_Text_IO.Put(FLoat(distance(2)),5,3,0);
---              Ada.Float_Text_IO.Put(FLoat(distance(3)),5,3,0);
---              Ada.Float_Text_IO.Put(FLoat(distance(4)),5,3,0);
---              Ada.Float_Text_IO.Put(FLoat(distance(5)),5,3,0);
---              Ada.Float_Text_IO.Put(FLoat(distance(6)),5,3,0);
---              Ada.Float_Text_IO.Put(FLoat(distance(7)),5,3,0);
---              Ada.Float_Text_IO.Put(FLoat(distance(8)),5,3,0);
---        Ada.Text_IO.Put_Line("");
+          Ada.Float_Text_IO.Put(FLoat(distance(0)),5,3,0);
+            Ada.Float_Text_IO.Put(FLoat(distance(1)),5,3,0);
+            Ada.Float_Text_IO.Put(FLoat(distance(2)),5,3,0);
+            Ada.Float_Text_IO.Put(FLoat(distance(3)),5,3,0);
+            Ada.Float_Text_IO.Put(FLoat(distance(4)),5,3,0);
+            Ada.Float_Text_IO.Put(FLoat(distance(5)),5,3,0);
+            Ada.Float_Text_IO.Put(FLoat(distance(6)),5,3,0);
+            Ada.Float_Text_IO.Put(FLoat(distance(7)),5,3,0);
+            Ada.Float_Text_IO.Put(FLoat(distance(8)),5,3,0);
+      Ada.Text_IO.Put_Line("");
       case car_state is
          when Forward =>
             --ada.Text_IO.Put_Line("forward");
-            if distance(0) < 1500.0 or distance(1) < threshold or
+            if distance(0) < 950.0 or distance(1) < threshold or
                distance(2) < threshold then
                ls := -10.0;
                rs :=  10.0;
@@ -36,7 +36,7 @@ package body Collision_Detection is
          when Left =>
             --Ada.Text_IO.Put("Left");
             if Distance(0) > 950.0 and Distance(1) > threshold and Distance(2) > threshold then
-               ls := 4.0;
+               ls := 3.75;
                rs := 4.0;
             end if;
             if Distance(1) < threshold then
@@ -47,7 +47,7 @@ package body Collision_Detection is
             if Distance(4) = 1000.0 then
                ls := 0.0;
                rs := 0.0;
-               --car_state := Forward;
+               car_state := Forward;
             end if;
 
          when Right =>

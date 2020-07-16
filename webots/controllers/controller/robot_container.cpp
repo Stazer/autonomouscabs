@@ -5,7 +5,7 @@
 #include "robot_container.hpp"
 #include "../../../shared/message.hpp"
 
-robot_container::robot_container() 
+robot_container::robot_container()
     : _external(_io_service), _reader(_in), _writer(_in)
 {
     _basic_time_step = (int) _robot.getBasicTimeStep();
@@ -14,7 +14,7 @@ robot_container::robot_container()
 void robot_container::setup_robot()
 {
     std::cout << "setting up distance sensors" << '\n';
-    std::vector<std::string> ds_names = {"ds_fc", "ds_fcr", "ds_fr", "ds_rf", "ds_rc", 
+    std::vector<std::string> ds_names = {"ds_fc", "ds_fcr", "ds_fr", "ds_rf", "ds_rc",
                                          "ds_lc", "ds_lf", "ds_fl", "ds_fcl"};
     for(std::size_t i = 0; i<ds_names.size(); ++i)
     {
@@ -46,7 +46,7 @@ void robot_container::setup_robot()
 }
 
 int robot_container::wait_for_connection(char *port)
-{   
+{
     std::cout << "waiting for external controller" << '\n';
     using boost::asio::ip::tcp;
     try
@@ -93,8 +93,9 @@ void robot_container::fill_image_data_message(buffer_writer& writer)
 
 void robot_container::run()
 {
-    while (_robot.step(_basic_time_step) != -1) 
+    while (_robot.step(_basic_time_step) != -1)
     {
+      std::cout << "Loop begin.\n" ;
         buffer out;
         buffer_writer out_writer(out);
         fill_distance_sensor_message(out_writer);
@@ -139,14 +140,16 @@ void robot_container::run()
             _motors[1]->setVelocity(vl_msg.right_speed);
             _motors[2]->setVelocity(vl_msg.left_speed);
             _motors[3]->setVelocity(vl_msg.left_speed);
-            // std::cout << "recieved rs: " << vl_msg.right_speed << ", ls: " << vl_msg.left_speed << '\n';
+            std::cout << "recieved rs: " << vl_msg.right_speed << ", ls: " << vl_msg.left_speed << '\n';
         }
         catch(const std::exception& e)
         {
             std::cerr << e.what() << '\n';
             break;
         }
+        std::cout << "Loop end.\n" ;
     }
+    std::cout << "Loop exited.\n" ;
 
     for(int i = 0; i<4; i++)
     {

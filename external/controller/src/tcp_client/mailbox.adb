@@ -40,18 +40,19 @@ package body Mailbox is
    
    procedure Check_Mailbox (first : in out Mailbox; second : in out Mailbox; new_packet : out Mail; alternator: Types.Uint8 ) is
    begin
+      --Put_Line("checking");
       if alternator = 1 then
          select
             first.Collect (new_packet);
          else
-            delay(0.00005);
+            delay(0.0000005);
             check_mailbox(second,first,new_packet,alternator);
          end select;
       else
          select
             second.Collect (new_packet);
          else
-            delay(0.00005);
+            delay(0.00000005);
             check_mailbox(second,first,new_packet,alternator);
          end select;
       end if;

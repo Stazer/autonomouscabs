@@ -78,9 +78,15 @@ ifeq ($(UNAME_S),Linux)
 LIBRARIES += -lpthread -lboost_system
 endif
 
+ifeq ($(UNAME_S),Darwin) # Mac OS X
+LIBRARIES += -lpthread -lboost_system
+#LIBRARIES += "-L/Users/luyandamlangeni/boost/boost_1_66_0/stage/lib" # -lboost_system
+endif
+
 CXX_SOURCES = controller.cpp robot_container.cpp ../../../shared/buffer_reader.cpp ../../../shared/buffer_writer.cpp ../../../shared/message.cpp
 
-CFLAGS = -Wno-strict-aliasing -Wno-unused-variable
+CFLAGS = -Wno-strict-aliasing -Wno-unused-variable -std=c++11
+
 
 ### Do not modify: this includes Webots global Makefile.include
 space :=

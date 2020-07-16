@@ -3,20 +3,20 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation -0.9946984921146053 0.01379894581727082 0.1019043614339566 0.8637457104992206
-  position -61.015961529891904 20.06102470363713 64.82892932291728
+  orientation -0.3035313805786666 -0.9169162731695503 -0.25910084716355364 1.4993287152766102
+  position -70.18845525797084 19.926958429142584 -55.136154832437114
 }
 TexturedBackground {
   luminosity 2
   reflections FALSE
 }
-DEF Cab2 Robot {
-  translation -61.6161 0.398617 53.7964
-  rotation 7.008328746497548e-05 0.9999998211410632 0.000593974893762263 2.62283
+DEF Cab1 Robot {
+  translation -52.4001 0.78 -57.8226
+  rotation 0 1 0 1.56921
   children [
     DEF cam_f Camera {
       translation 0 0.1 1
-      rotation 0.0001018959294375226 -0.971928669461667 -0.23527569168040463 -3.140015307179586
+      rotation 0 0.998749463846409 0.04999508442347797 3.14
       children [
         Shape {
           appearance PBRAppearance {
@@ -36,10 +36,11 @@ DEF Cab2 Robot {
         density 1
       }
       fieldOfView 0.75
+      height 5
       far 10
     }
     DEF ls_f LightSensor {
-      translation 0 -0.19 1
+      translation 0 0 1
       rotation 0 1 0 -1.57
       children [
         Shape {
@@ -260,7 +261,7 @@ DEF Cab2 Robot {
       }
       lookupTable [
         0 0 0
-        20 1000 0
+        5 1000 0
       ]
     }
     DEF ds_fcr DistanceSensor {
@@ -350,7 +351,6 @@ DEF Cab2 Robot {
     }
     DEF wheelFL HingeJoint {
       jointParameters HingeJointParameters {
-        position 297.4266688870299
         anchor 0.55 -0.1 0.55
       }
       device [
@@ -361,7 +361,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelFL Solid {
         translation 0.55 -0.1 0.55
-        rotation -0.36044069595492206 0.36015378159439687 -0.8604485796971176 4.56343774435958
+        rotation 0 0 1 1.5699999999999963
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -383,7 +383,6 @@ DEF Cab2 Robot {
     }
     DEF wheelRL HingeJoint {
       jointParameters HingeJointParameters {
-        position 4970.784560942532
         anchor 0.55 -0.1 -0.7
       }
       device [
@@ -394,7 +393,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelRL Solid {
         translation 0.55 -0.1 -0.7
-        rotation -0.3574987160562342 0.3572141435408164 -0.8628978639865467 4.566249336174883
+        rotation 0 0 1 1.5699999999999963
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -416,7 +415,6 @@ DEF Cab2 Robot {
     }
     DEF wheelRR HingeJoint {
       jointParameters HingeJointParameters {
-        position 4612.143814011016
         anchor -0.55 -0.1 -0.7
       }
       device [
@@ -427,7 +425,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelRR Solid {
         translation -0.55 -0.1 -0.7
-        rotation 0.1411009319761118 -0.14098861423806697 0.979904453327314 1.5902989721581389
+        rotation 0 0 1 1.5699999999999963
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -449,7 +447,6 @@ DEF Cab2 Robot {
     }
     DEF wheelFR HingeJoint {
       jointParameters HingeJointParameters {
-        position 4612.139511107217
         anchor -0.55 -0.1 0.55
       }
       device [
@@ -460,7 +457,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelFR Solid {
         translation -0.55 -0.1 0.55
-        rotation 0.13903180218782646 -0.1389211314975672 0.9804953223773384 1.5896962786198976
+        rotation 0 0 1 1.5699999999999956
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -489,7 +486,7 @@ DEF Cab2 Robot {
       }
     }
   ]
-  name "Cab2"
+  name "Cab1"
   boundingObject USE car_body
   physics Physics {
     density 10
@@ -501,7 +498,7 @@ DEF Cab2 Robot {
   controllerArgs "5555"
 }
 DEF environment Solid {
-  translation -1.80485 -1.42108e-14 -1.11554
+  translation -0.345948 0 0.438951
   scale 1.09819 1.09819 1.09819
   children [
     DEF PickUp1 BusStop {
@@ -623,7 +620,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -647,7 +644,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -671,7 +668,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -695,7 +692,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -719,7 +716,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -742,7 +739,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -765,7 +762,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -789,7 +786,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -809,7 +806,7 @@ DEF environment Solid {
       rotation 0 1 0 0.785
       roadsWidth 6
       startRoadsLength [
-        0
+        -0.1
       ]
       startRoadsStartLine [
         ""
@@ -833,7 +830,7 @@ DEF environment Solid {
       name "road intersection(1)"
       roadsWidth 6
       startRoadsLength [
-        0
+        -0.1
       ]
       startRoadsStartLine [
         ""
@@ -857,7 +854,7 @@ DEF environment Solid {
       name "road intersection(2)"
       roadsWidth 6
       startRoadsLength [
-        0
+        -0.1
       ]
       startRoadsStartLine [
         ""
@@ -881,7 +878,7 @@ DEF environment Solid {
       name "road intersection(3)"
       roadsWidth 6
       startRoadsLength [
-        0
+        -0.1
       ]
       startRoadsStartLine [
         ""
@@ -907,7 +904,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -932,7 +929,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -956,7 +953,7 @@ DEF environment Solid {
             metalness 0
           }
           geometry Box {
-            size 0.08 0.01 11.6
+            size 0.2 0.01 11.6
           }
         }
       ]
@@ -971,11 +968,11 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -999,7 +996,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1023,7 +1020,7 @@ DEF environment Solid {
             metalness 0
           }
           geometry Box {
-            size 0.08 0.01 11.6
+            size 0.2 0.01 11.6
           }
         }
       ]
@@ -1037,7 +1034,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1061,7 +1058,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1087,7 +1084,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
         RoadLine {
           type "continuous"
@@ -1115,7 +1112,7 @@ DEF environment Solid {
             metalness 0
           }
           geometry Box {
-            size 0.08 0.01 11.6
+            size 0.2 0.01 11.6
           }
         }
       ]
@@ -1131,11 +1128,11 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1162,7 +1159,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
         RoadLine {
           type "continuous"
@@ -1172,9 +1169,6 @@ DEF environment Solid {
       rightBarrier TRUE
       leftBarrier TRUE
       bottom TRUE
-      startLine [
-        ""
-      ]
       appearance Asphalt {
         colorOverride 0 0 0
         IBLStrength 0
@@ -1193,7 +1187,7 @@ DEF environment Solid {
             metalness 0
           }
           geometry Box {
-            size 0.08 0.01 11.6
+            size 0.2 0.01 11.6
           }
         }
       ]
@@ -1208,7 +1202,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       roadBorderWidth [
@@ -1236,7 +1230,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1260,7 +1254,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       roadBorderWidth [
@@ -1288,7 +1282,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1311,7 +1305,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1336,7 +1330,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1360,7 +1354,7 @@ DEF environment Solid {
             metalness 0
           }
           geometry Box {
-            size 0.08 0.01 11.6
+            size 0.2 0.01 11.6
           }
         }
       ]
@@ -1375,11 +1369,11 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1404,7 +1398,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1428,7 +1422,7 @@ DEF environment Solid {
             metalness 0
           }
           geometry Box {
-            size 0.08 0.01 11.6
+            size 0.2 0.01 11.6
           }
         }
       ]
@@ -1442,7 +1436,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1466,7 +1460,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1483,7 +1477,7 @@ DEF environment Solid {
     }
     AddLanesRoadSegment {
       translation 20 0 53
-      rotation -8.069599999950631e-07 -0.999999999993882 -3.4036599999791764e-06 1.57
+      rotation 0 1 0 -1.57
       name "road(28)"
       width 6
       length 10
@@ -1492,15 +1486,12 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
       leftBarrier TRUE
       bottom TRUE
-      startLine [
-        ""
-      ]
       appearance Asphalt {
         colorOverride 0 0 0
         IBLStrength 0
@@ -1508,9 +1499,6 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
-      bottomTexture [
-        ""
-      ]
     }
     Solid {
       translation 15.5 0 51.48
@@ -1522,7 +1510,7 @@ DEF environment Solid {
             metalness 0
           }
           geometry Box {
-            size 0.08 0.01 11.6
+            size 0.2 0.01 11.6
           }
         }
       ]
@@ -1538,11 +1526,11 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1567,7 +1555,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1591,7 +1579,7 @@ DEF environment Solid {
             metalness 0
           }
           geometry Box {
-            size 0.08 0.01 11.6
+            size 0.2 0.01 11.6
           }
         }
       ]
@@ -1606,7 +1594,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1629,7 +1617,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1652,7 +1640,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1676,7 +1664,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1699,7 +1687,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1723,7 +1711,7 @@ DEF environment Solid {
       lines [
         RoadLine {
           type "continuous"
-          width 0.1
+          width 0.3
         }
       ]
       rightBarrier TRUE
@@ -1748,7 +1736,7 @@ DEF environment Solid {
             metalness 0
           }
           geometry Box {
-            size 0.08 0.01 10.67
+            size 0.2 0.01 10.67
           }
         }
       ]
@@ -1764,7 +1752,7 @@ DEF environment Solid {
             metalness 0
           }
           geometry Box {
-            size 0.08 0.01 10.67
+            size 0.2 0.01 10.67
           }
         }
       ]
@@ -1783,5 +1771,5 @@ Floor {
   }
 }
 WoodenBox {
-  translation -59.9362 0.3 41.6938
+  translation -40.2189 0.3 -57.8281
 }

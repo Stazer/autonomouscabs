@@ -12,6 +12,7 @@ with Byte_Buffer;
 with Path_Following;
 with Collision_Detection;
 with Ada.Float_Text_IO;
+with ada.Integer_Text_IO;
 
 procedure Main is
 
@@ -52,7 +53,7 @@ begin
       Mailbox.check_mailbox (Backend_Thread.Backend_Mailbox, Webots_Thread.Webots_Mailbox, Current_Mail, alternator);
       Mailbox.update_alternator (alternator);
 
-      -- Put_Line (Current_Mail.Message.Id'Image);
+     -- Put_Line (Current_Mail.Message.Id'Image);
 
       -- do calculations with current packet
 --  <<<<<<< HEAD
@@ -81,6 +82,7 @@ begin
 --        else
 --           send_bytes(Webots_Channel, send_packet_collision_avoidance);
 --  =======
+
 --        if Current_Mail.Message.Id = Messages.EXTERNAL_IMAGE_DATA then
 --           V_Path := Path_Following.Main (Messages.ID_Message_Ptr (Current_Mail.Message), DS_Data);
 --        elsif Current_Mail.Message.Id = Messages.EXTERNAL_DISTANCE_SENSOR then
@@ -98,8 +100,9 @@ begin
 --        end;
 
 
-      -- do calculations with current packet
 
+      -- do calculations with current packet
+      --Ada.Text_IO.Put_Line(Integer'Image(Integer(.package_ID)));
       if Current_Mail.Message.Id = Messages.EXTERNAL_DISTANCE_SENSOR then
          DS_Data := Messages.DS_Message_Ptr (Current_Mail.Message).Payload;
          V_Collision := Collision_Detection.Main(DS_Data);
@@ -126,6 +129,7 @@ begin
             Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
          end;
       end if;
+      --Put_Line("loop ended");
 
 
    end loop;

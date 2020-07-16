@@ -4,13 +4,15 @@
 
 #include <boost/uuid/uuid.hpp>
 
+#include "id_type.hpp"
+
 class cab
 {
     public:
-        cab(std::uint32_t id);
+        cab(id_type id);
 
-        std::uint32_t id() const;
+        id_type id() const;
 
     private:
-        std::uint32_t _id = 0;
+        id_type _id = 0;
 };

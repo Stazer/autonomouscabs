@@ -2,12 +2,12 @@
 
 #include <boost/uuid/uuid_generators.hpp>
 
-cab::cab(std::uint32_t id):
+cab::cab(id_type id):
     _id(id)
 {
 }
 
-std::uint32_t cab::id() const
+id_type cab::id() const
 {
     return _id;
 }

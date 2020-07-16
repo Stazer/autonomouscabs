@@ -4,11 +4,12 @@
 #include <memory>
 
 #include "cab.hpp"
+#include "cab_session.hpp"
 
 class cab_manager
 {
     public:
-        cab& create();
+        cab& create(std::weak_ptr<cab_session> cab_session);
 
         void remove(cab& cab);
         void remove(id_type id);

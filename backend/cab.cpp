@@ -2,7 +2,8 @@
 
 #include <boost/uuid/uuid_generators.hpp>
 
-cab::cab(id_type id):
+cab::cab(std::weak_ptr<cab_session> cab_session, id_type id):
+    _cab_session(cab_session),
     _id(id)
 {
 }

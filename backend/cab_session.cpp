@@ -42,15 +42,15 @@ void cab_session::handle_join()
     backend_join_challenge_message challenge_message;
     if(challenge_message.readable(_buffer))
     {
+        auto self = shared_from_this();
+
         challenge_message.from_buffer(_buffer);
 
-        _cab = &_application->cab_manager().create();
+        _cab = &_application->cab_manager().create(self);
 
         std::cout << "Cab with id " << _cab->id() << " joined\n";
 
         _handle_buffer = std::bind(&cab_session::handle_running, this);
-
-        auto self = shared_from_this();
 
         external_join_success_message success_message;
         success_message.id = _cab->id();

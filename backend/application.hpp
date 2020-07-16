@@ -19,5 +19,5 @@ class application
         class cab_manager _cab_manager;
 
         boost::asio::io_context _io_context;
-        cab_server _cab_server;
+        std::unique_ptr<cab_server> _cab_server;
 };

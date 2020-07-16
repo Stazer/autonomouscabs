@@ -26,7 +26,7 @@ class cab_session : public std::enable_shared_from_this<cab_session>
         void run();
 
     private:
-        application* _application;
+        application* _application = nullptr;
 
         boost::asio::ip::tcp::socket _socket;
         std::array<std::uint8_t, 1024> _receive_buffer;

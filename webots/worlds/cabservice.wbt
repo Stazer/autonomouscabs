@@ -3,16 +3,16 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation -0.3035313805786666 -0.9169162731695503 -0.25910084716355364 1.4993287152766102
-  position -70.18845525797084 19.926958429142584 -55.136154832437114
+  orientation -0.3098596754454069 -0.9162352610112355 -0.25396836025879344 1.4595984676464406
+  position -74.81857143676297 22.523552360522196 -53.62845638162082
 }
 TexturedBackground {
   luminosity 2
   reflections FALSE
 }
 DEF Cab1 Robot {
-  translation -52.4001 0.78 -57.8226
-  rotation 0 1 0 1.56921
+  translation -54.9192 0.04 -57.2013
+  rotation 0 1 0 1.83101
   children [
     DEF cam_f Camera {
       translation 0 0.1 1

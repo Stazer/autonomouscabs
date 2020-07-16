@@ -102,31 +102,14 @@ int main(int argc, char **argv)
     cab_manager manager;
 
     manager.create();
-    manager.create();
-    // manager.create();
 
+    std::shared_ptr<cab> c = manager.cab_provision(node_id::P0, node_id::P3, 4);
+    c->add_request(node_id::P0, node_id::P3, 4);
     manager.update_cab(0, node_id::P0);
-
-    std::shared_ptr<cab> go = manager.cab_provision(node_id::P1, node_id::P3, 4);
-    go->add_request(node_id::P1, node_id::P3, 4);
-    go->update_route(std::vector<node_id> {I1, I2, I3, P3});
-
     manager.update_cab(0, node_id::I1);
     manager.update_cab(0, node_id::I2);
-    manager.update_cab(0, node_id::I3);
-    std::cout << go->id() << '\n';
-    std::cout << go->passengers_at_node(node_id::P4) << "\n\n";
 
-    go = manager.cab_provision(node_id::P1, node_id::P3, 1);
-    go->add_request(node_id::P1, node_id::P3, 1);
-    go->update_route(std::vector<node_id> {I1, I2, I3, P3});
-
-    manager.update_cab(1, node_id::I1);
-    std::cout << go->id() << '\n';
-    std::cout << go->passengers_at_node(node_id::P4) << "\n\n";
-
-    go = manager.cab_provision(node_id::P4, node_id::P2, 3);
-    std::cout << go->id() << '\n';
+    std::cout << c->passengers_at_node(node_id::P2) <<std::endl;
 
     // c.add_request(node_id::P0, node_id::P4, 3);
     // c.add_request(node_id::P1, node_id::P2, 4);

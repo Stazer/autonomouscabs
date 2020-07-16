@@ -40,13 +40,16 @@ std::uint32_t cab::passengers_at_node(node_id node)
         if(_rnet->in_between(_position, r.dst(), r.src()) &&
                 _rnet->in_between(r.src(), r.dst(), node))
         {
-            std::cout << "if\n";
             passengers += r.passengers();
         }
         else if(_rnet->in_between(r.src(), r.dst(), _position) && r.picked_up() && _rnet->in_between(_position, r.dst(), node))
-        {
-            std::cout << "else\n";
+        { 
             passengers += r.passengers();
+        }
+
+        if(r.dst() == node)
+        {
+            passengers -= r.passengers();
         }
     }
     

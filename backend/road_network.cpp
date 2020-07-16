@@ -11,9 +11,9 @@
 
 typedef std::pair<node_id, node_id> Edge;
 std::array<Edge, 17> edge_array{
-    Edge(node_id::P0, node_id::D),
-    
     Edge(node_id::P0, node_id::I4),
+    
+    Edge(node_id::P0, node_id::D),
     Edge(node_id::P4, node_id::I4),
 
     Edge(node_id::I1, node_id::P0),
@@ -76,7 +76,7 @@ bool road_network::in_between(node_id start, node_id stop, node_id q)
         return false;
     } */
 
-    if(are_twins(start, stop) || start == q || stop == q)
+    if(are_twins(start, stop)/*  || start == q || stop == q */)
     {
         return true;
     }

@@ -2,10 +2,6 @@
 
 #include <boost/program_options.hpp>
 
-application::application()
-{
-}
-
 cab_manager& application::cab_manager()
 {
     return _cab_manager;

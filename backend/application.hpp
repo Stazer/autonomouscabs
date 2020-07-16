@@ -8,8 +8,6 @@
 class application
 {
     public:
-        application();
-
         cab_manager& cab_manager();
         const class cab_manager& cab_manager() const;
 

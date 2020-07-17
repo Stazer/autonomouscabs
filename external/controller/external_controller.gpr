@@ -1,5 +1,4 @@
 project External_Controller is
-
    for Source_Dirs use ("src/**",
                         "src/tcp_client/**",
                         "src/backend_thread/**",
@@ -15,5 +14,4 @@ project External_Controller is
    package Compiler is
       for Default_Switches ("ada") use ("-g");
    end Compiler;
-
 end External_Controller;

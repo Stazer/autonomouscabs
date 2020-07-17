@@ -13,7 +13,7 @@ package body Byte_Buffer is
    procedure Read_Uint16 (Self : in out Buffer; Val : out Types.Uint16) is
       O2 : Types.Octets_2;
    begin
-      if Self.Bytes_Remaining < 4 then
+      if Self.Bytes_Remaining < 2 then
          raise Not_Enough_Data;
       end if;
       

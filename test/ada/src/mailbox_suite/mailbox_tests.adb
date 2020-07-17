@@ -47,8 +47,8 @@ package body mailbox_tests is
       -- Repeat for each test routine:
       Register_Routine (T, Test_Collect_and_Deposit'Access, "Mailbox.Collect and Mailbox.Deposit.");
       Register_Routine (T, Test_View_Inbox'Access, "Mailbox.View_Inbox and if Mailbox.Last.");
-      Register_Routine (T, Test_Clear_Is_Not_Expired'Access, "Mailbox.Clear(not_isExpired): Test unexpired items in mailbox.");
-      Register_Routine (T, Test_Clear_Is_Expired'Access, "Mailbox.Clear(isExpired): Test expired items in mailbox.");
+      Register_Routine (T, Test_Clear_Is_Not_Expired'Access, "Mailbox.Clear(not expired): Test unexpired items in mailbox.");
+      Register_Routine (T, Test_Clear_Is_Expired'Access, "Mailbox.Clear(is expired): Test expired items in mailbox.");
       Register_Routine (T, Test_Empty'Access, "Mailbox.Empty: Delete all items from Mailbox.");
       Register_Routine (T, Test_Is_Expired'Access, "Is expired.");
    end Register_Tests;

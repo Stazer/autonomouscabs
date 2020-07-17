@@ -15,8 +15,8 @@ package Mailbox is
    
    protected type Mailbox (Size : Types.Uint8) is
       procedure Clear;
-      entry Deposit (X: in Messages.Message_Ptr);
-      entry Collect (X: out Messages.Message_Ptr);
+      entry Deposit (X: in Mail);
+      entry Collect (X: out Mail);
       procedure View_Inbox (Remaining_Items: out Types.Uint8);
       procedure Empty;
    private
@@ -24,9 +24,9 @@ package Mailbox is
       Last : Types.Uint8 := 0;
    end Mailbox;
 
-   procedure Check_Mailbox (first : in out Mailbox; second : in out Mailbox; new_packet : out Messages.Message_Ptr; alternator: Types.Uint8);
+   procedure Check_Mailbox (First : in out Mailbox; Second : in out Mailbox; Message : out Messages.Message_Ptr; Alternator: Types.Uint8);
    
-   procedure Update_Alternator (alternator: in out Types.Uint8);
+   procedure Update_Alternator (Alternator: in out Types.Uint8);
       
    function Is_Expired (Time_In_Question: in Time) return Boolean;
    

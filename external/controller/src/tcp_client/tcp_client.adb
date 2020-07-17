@@ -16,11 +16,12 @@ package body Tcp_Client is
       --  read message
       Byte_Buffer.Buffer'Read (Stream, Buffer);
 
-      declare Message : Messages.Message_Ptr;
+      declare Mail : Mailbox.Mail;
       begin
-         Buffer.Read_Message (Message);
+         Buffer.Read_Message (Mail.Message);
+         Mail.TTL := Ada.Real_Time.Clock;
          Local_Mailbox.Clear;
-         Local_Mailbox.Deposit (Message);
+         Local_Mailbox.Deposit (Mail);
       end;
    end Read_Packet;
 

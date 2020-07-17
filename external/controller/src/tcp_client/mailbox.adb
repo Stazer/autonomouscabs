@@ -14,17 +14,15 @@ package body Mailbox is
          end if;   
       end Clear;
       
-      entry Deposit(X: in Messages.Message_Ptr) when Last < Size is
-         M : Mail := (Message => X, TTL => Ada.Real_Time.Clock);
+      entry Deposit(X: in Mail) when Last < Size is
       begin
-         Items(Last + 1) := M;
+         Items(Last + 1) := X;
          Last := Last + 1;
       end Deposit;
       
-      entry Collect(X: out Messages.Message_Ptr) when Last > 0 is
-         M : Mail := Items(1);
+      entry Collect(X: out Mail) when Last > 0 is
       begin
-         X := M.Message;
+         X := Items(1);
          Last := Last - 1;
          Items(1..Last) := Items(2..Last+1);
       end Collect;
@@ -39,31 +37,34 @@ package body Mailbox is
       end Empty;
    end Mailbox;
    
-   procedure Check_Mailbox (first : in out Mailbox; second : in out Mailbox; new_packet : out Messages.Message_Ptr; alternator: Types.Uint8 ) is
+   procedure Check_Mailbox (First : in out Mailbox; Second : in out Mailbox; Message : out Messages.Message_Ptr; Alternator: Types.Uint8 ) is
+      M : Mail;
    begin
       if alternator = 1 then
          select
-            first.Collect(new_packet);
+            First.Collect(M);
+            Message := M.Message;
          else
             delay(0.05);
-            check_mailbox(second,first,new_packet,alternator);
+            Check_Mailbox (Second, First, Message, Alternator);
          end select;
       else
          select
-            second.Collect(new_packet);
+            Second.Collect(M);
+            Message := M.Message;
          else
             delay(0.05);
-            check_mailbox(second,first,new_packet,alternator);
+            Check_Mailbox (Second, First, Message, Alternator);
          end select;
       end if;
    end Check_Mailbox;
    
-   procedure Update_Alternator (alternator: in out Types.Uint8) is
+   procedure Update_Alternator (Alternator: in out Types.Uint8) is
    begin
-      if alternator = 1 then
-         alternator := 2;
+      if Alternator = 1 then
+         Alternator := 2;
       else
-         alternator := 1;
+         Alternator := 1;
       end if;
    end Update_Alternator;
    

@@ -8,7 +8,7 @@
 #include "../../shared/buffer_reader.hpp"
 #include "../../shared/buffer_writer.hpp"
 #include "../../shared/message.hpp"
-#include "../../backend/road_network.hpp"
+#include "../../backend/node_type.hpp"
 #include "../../backend/cab.hpp"
 #include "../../backend/cab_manager.hpp"
 #include "../../backend/application.hpp"
@@ -292,10 +292,10 @@ BOOST_AUTO_TEST_CASE(cab_provision_simple)
 
     manager.create(session);
 
-    node_id src = node_id::P0;
-    node_id dst = node_id::P5;
+    node_type src = node_type::P0;
+    node_type dst = node_type::P5;
 
-    std::shared_ptr<cab> c = manager.cab_provision(src, dst, 1);
+    std::shared_ptr<cab> c = manager.find_cab(src, dst, 1);
     BOOST_TEST(c->id() == 0);
 }
 
@@ -307,21 +307,21 @@ BOOST_AUTO_TEST_CASE(cab_provision_complex)
     manager.create(session);
     manager.create(session);
 
-    node_id src = node_id::P1;
-    node_id dst = node_id::P3;
+    node_type src = node_type::P1;
+    node_type dst = node_type::P3;
 
-    std::shared_ptr<cab> c = manager.cab_provision(src, dst, 4);
+    std::shared_ptr<cab> c = manager.find_cab(src, dst, 4);
     c->add_request(src, dst, 4);
 
-    c->update_position(node_id::P0);
-    c->update_position(node_id::I1);
-    c->update_position(node_id::P1);
-    c->update_position(node_id::I2);
+    c->update_position(node_type::P0);
+    c->update_position(node_type::I1);
+    c->update_position(node_type::P1);
+    c->update_position(node_type::I2);
 
-    src = node_id::P4;
-    dst = node_id::P5;
+    src = node_type::P4;
+    dst = node_type::P5;
 
-    c = manager.cab_provision(src, dst, 1);
+    c = manager.find_cab(src, dst, 1);
 
     BOOST_TEST(c->id() == 0);
 }
@@ -334,21 +334,21 @@ BOOST_AUTO_TEST_CASE(cab_provision_complex2)
     manager.create(session);
     manager.create(session);
 
-    node_id src = node_id::P1;
-    node_id dst = node_id::P3;
+    node_type src = node_type::P1;
+    node_type dst = node_type::P3;
 
-    std::shared_ptr<cab> c = manager.cab_provision(src, dst, 4);
+    std::shared_ptr<cab> c = manager.find_cab(src, dst, 4);
     c->add_request(src, dst, 4);
 
-    c->update_position(node_id::P0);
-    c->update_position(node_id::I1);
-    c->update_position(node_id::P1);
-    c->update_position(node_id::I2);
+    c->update_position(node_type::P0);
+    c->update_position(node_type::I1);
+    c->update_position(node_type::P1);
+    c->update_position(node_type::I2);
 
-    src = node_id::P0;
-    dst = node_id::P5;
+    src = node_type::P0;
+    dst = node_type::P5;
 
-    c = manager.cab_provision(src, dst, 1);
+    c = manager.find_cab(src, dst, 1);
 
     BOOST_TEST(c->id() == 1);
 }
@@ -360,10 +360,10 @@ BOOST_AUTO_TEST_CASE(cab_provision_complex3)
     
     manager.create(session);
 
-    node_id src = node_id::P4;
-    node_id dst = node_id::P5;
+    node_type src = node_type::P4;
+    node_type dst = node_type::P5;
 
-    std::shared_ptr<cab> c = manager.cab_provision(src, dst, 1);
+    std::shared_ptr<cab> c = manager.find_cab(src, dst, 1);
 
     BOOST_TEST(c->id() == 0);
 }
@@ -376,24 +376,24 @@ BOOST_AUTO_TEST_CASE(cab_provision_complex4)
     manager.create(session);
     manager.create(session);
 
-    node_id src = node_id::P1;
-    node_id dst = node_id::P3;
+    node_type src = node_type::P1;
+    node_type dst = node_type::P3;
 
-    std::shared_ptr<cab> c = manager.cab_provision(src, dst, 4);
+    std::shared_ptr<cab> c = manager.find_cab(src, dst, 4);
     c->add_request(src, dst, 4);
 
-    c->update_position(node_id::P0);
-    c->update_position(node_id::I1);
-    c->update_position(node_id::P1);
-    c->update_position(node_id::I2);
-    c->update_position(node_id::I3);
-    c->update_position(node_id::P3);
-    c->update_position(node_id::I4);
+    c->update_position(node_type::P0);
+    c->update_position(node_type::I1);
+    c->update_position(node_type::P1);
+    c->update_position(node_type::I2);
+    c->update_position(node_type::I3);
+    c->update_position(node_type::P3);
+    c->update_position(node_type::I4);
 
-    src = node_id::P0;
-    dst = node_id::P3;  
+    src = node_type::P0;
+    dst = node_type::P3;  
 
-    c = manager.cab_provision(src, dst, 1);
+    c = manager.find_cab(src, dst, 1);
 
     BOOST_TEST(c->id() == 0);
 }
@@ -406,20 +406,20 @@ BOOST_AUTO_TEST_CASE(cab_provision_complex5)
     manager.create(session);
     manager.create(session);
 
-    node_id src = node_id::P0;
-    node_id dst = node_id::P1;
+    node_type src = node_type::P0;
+    node_type dst = node_type::P1;
 
-    std::shared_ptr<cab> c = manager.cab_provision(src, dst, 4);
+    std::shared_ptr<cab> c = manager.find_cab(src, dst, 4);
     c->add_request(src, dst, 4);
 
-    c->update_position(node_id::P0);
-    c->update_position(node_id::I1);
-    c->update_position(node_id::P1);
+    c->update_position(node_type::P0);
+    c->update_position(node_type::I1);
+    c->update_position(node_type::P1);
 
-    src = node_id::P1;
-    dst = node_id::P2;  
+    src = node_type::P1;
+    dst = node_type::P2;  
 
-    c = manager.cab_provision(src, dst, 1);
+    c = manager.find_cab(src, dst, 1);
 
     BOOST_TEST(c->id() == 0);
 }
@@ -432,30 +432,30 @@ BOOST_AUTO_TEST_CASE(cab_provision_complex6)
     manager.create(session);
     manager.create(session);
 
-    node_id src = node_id::P0;
-    node_id dst = node_id::P3;
+    node_type src = node_type::P0;
+    node_type dst = node_type::P3;
 
-    std::shared_ptr<cab> c1 = manager.cab_provision(src, dst, 4);
+    std::shared_ptr<cab> c1 = manager.find_cab(src, dst, 4);
     c1->add_request(src, dst, 4);
 
-    c1->update_position(node_id::P0);
-    c1->update_position(node_id::I1);
+    c1->update_position(node_type::P0);
+    c1->update_position(node_type::I1);
 
-    src = node_id::P0;
-    dst = node_id::P2;
-    std::shared_ptr<cab> c2 = manager.cab_provision(src, dst, 4);
+    src = node_type::P0;
+    dst = node_type::P2;
+    std::shared_ptr<cab> c2 = manager.find_cab(src, dst, 4);
     c2->add_request(src, dst, 4);
 
-    c1->update_position(node_id::I2);
-    c1->update_position(node_id::P2);
+    c1->update_position(node_type::I2);
+    c1->update_position(node_type::P2);
 
-    c2->update_position(node_id::P0);
-    c2->update_position(node_id::I1);
-    c2->update_position(node_id::I2); 
+    c2->update_position(node_type::P0);
+    c2->update_position(node_type::I1);
+    c2->update_position(node_type::I2); 
 
-    src = node_id::P2;
-    dst = node_id::P3;
-    std::shared_ptr<cab> c = manager.cab_provision(src, dst, 1);
+    src = node_type::P2;
+    dst = node_type::P3;
+    std::shared_ptr<cab> c = manager.find_cab(src, dst, 1);
 
     BOOST_TEST(c->id() == c2->id());
 }

@@ -1,10 +1,10 @@
 #include "cab_server.hpp"
 #include "cab_session.hpp"
 
-cab_server::cab_server(application& application, boost::asio::io_context& io_context, std::uint16_t port):
+cab_server::cab_server(application& application, boost::asio::io_service& io_service, std::uint16_t port):
     _application(application),
-    _io_context(io_context),
-    _acceptor(io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port))
+    _io_service(io_service),
+    _acceptor(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port))
 {
     std::cout << "Cab server Listening on *:" << port << "\n";
 }

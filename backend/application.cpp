@@ -11,10 +11,10 @@
 
 application::application():
     _cab_manager(),
-    _io_context(),
+    _io_service(),
     _cab_server(),
-    _signals(_io_context, SIGINT),
-    _command_descriptor(_io_context, STDIN_FILENO),
+    _signals(_io_service, SIGINT),
+    _command_descriptor(_io_service, STDIN_FILENO),
     _command_buffer()
 {
     _signals.async_wait([this](const boost::system::error_code& error_code, int signal)
@@ -22,7 +22,7 @@ application::application():
         if(!error_code)
         {
             std::cout << "Received SIGINT\n";
-            _io_context.stop();
+            _io_service.stop();
         }
     });
 
@@ -58,10 +58,10 @@ int application::run(int argc, char** argv)
         return 0;
     }
 
-    _cab_server = std::make_unique<cab_server>(*this, _io_context, port);
+    _cab_server = std::make_unique<cab_server>(*this, _io_service, port);
 
     _cab_server->run();
-    _io_context.run();
+    _io_service.run();
 
     return 0;
 }

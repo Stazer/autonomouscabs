@@ -7,6 +7,7 @@
 #include <boost/program_options.hpp>
 
 #include "application.hpp"
+// #include "cab_manager.hpp"
 
 application::application():
     _cab_manager(),
@@ -28,12 +29,12 @@ application::application():
     handle_command();
 }
 
-cab_manager& application::cab_manager()
+cab_manager& application::manager()
 {
     return _cab_manager;
 }
 
-const class cab_manager& application::cab_manager() const
+const class cab_manager& application::manager() const
 {
     return _cab_manager;
 }
@@ -69,6 +70,7 @@ void application::handle_command()
 {
     boost::asio::async_read_until(_command_descriptor, _command_buffer, '\n', [this](const boost::system::error_code& error_code, std::size_t length)
     {
+        _cab_manager.add_request(node_type::P1, node_type::P3, 4);
         _command_buffer.consume(length);
         handle_command();
     });

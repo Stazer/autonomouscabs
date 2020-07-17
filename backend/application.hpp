@@ -10,8 +10,8 @@ class application
     public:
         application();
 
-        cab_manager& cab_manager();
-        const class cab_manager& cab_manager() const;
+        cab_manager& manager();
+        const class cab_manager& manager() const;
 
         int run(int argc, char** argv);
 
@@ -22,7 +22,7 @@ class application
         std::unique_ptr<cab_server> _cab_server;
 
         boost::asio::signal_set _signals;
-
+        
         boost::asio::posix::stream_descriptor _command_descriptor;
         boost::asio::streambuf _command_buffer;
 

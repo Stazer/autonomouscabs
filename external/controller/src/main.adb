@@ -37,29 +37,28 @@ procedure Main is
 
    is_object_collision: Boolean := False;
 
-   use type Webots_Thread.Channel_Type;
-   use type Webots_Thread.Thread_Number;
 begin
-
    -- threads have started here
    while true loop
 
-
+      for i in 0 .. Argument_Count - 1 loop
       -- clear out both mailboxes
-      Backend_Thread.Backend_Mailbox.Clear;
-      Webots_Thread.Webots_Mailbox.Clear;
+         Backend_Thread.Backend_Mailbox.Clear;
+         Webots_Thread.Webots_Mailbox(i).Clear;
 
-      -- alternate between checking webots and backend mailbox first, then update alternator
-      Mailbox.check_mailbox (Backend_Thread.Backend_Mailbox, Webots_Thread.Webots_Mailbox, Current_Mail, alternator);
-      Mailbox.update_alternator (alternator);
+         -- alternate between checking webots and backend mailbox first, then update alternator
+         Mailbox.check_mailbox (Backend_Thread.Backend_Mailbox, Webots_Thread.Webots_Mailbox(i), Current_Mail, alternator);
+         Mailbox.update_alternator (alternator);
 
-      if Current_Mail.Message.Id = Messages.EXTERNAL_IMAGE_DATA then
-         V := Path_Following.Main (Messages.ID_Message_Ptr (Current_Mail.Message), DS_Data);
-         Out_Buffer.Write_Message (V);
-         Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel(0), Out_Buffer);
-      elsif Current_Mail.Message.Id = Messages.EXTERNAL_DISTANCE_SENSOR then
-         DS_Data := Messages.DS_Message_Ptr (Current_Mail.Message).Payload;
-      end if;
+         if Current_Mail.Message.Id = Messages.EXTERNAL_IMAGE_DATA then
+            V := Path_Following.Main (Messages.ID_Message_Ptr (Current_Mail.Message), DS_Data);
+            Out_Buffer.Write_Message (V);
+            Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel(i), Out_Buffer);
+         elsif Current_Mail.Message.Id = Messages.EXTERNAL_DISTANCE_SENSOR then
+            DS_Data := Messages.DS_Message_Ptr (Current_Mail.Message).Payload;
+         end if;
+      end loop;
+
 
 
    end loop;

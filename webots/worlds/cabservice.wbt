@@ -393,7 +393,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelRL Solid {
         translation 0.55 -0.1 -0.7
-        rotation -0.5258681580732029 0.5254495618159305 0.6688538243234793 1.9618260245632584
+        rotation -0.525868158073203 0.5254495618159303 0.6688538243234794 1.9618260245632582
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -426,7 +426,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelRR Solid {
         translation -0.55 -0.1 -0.7
-        rotation 0.588389058831542 -0.5879206953186196 0.5551104137587434 2.127400101948532
+        rotation 0.588389058831542 -0.5879206953186196 0.5551104137587434 2.1274001019485316
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -459,7 +459,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelFR Solid {
         translation -0.55 -0.1 0.55
-        rotation 0.5876574106133559 -0.587189629499656 0.5566570818369799 2.1250359918798023
+        rotation 0.5876574106133561 -0.5871896294996558 0.5566570818369798 2.1250359918798023
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -500,7 +500,7 @@ DEF Cab2 Robot {
   controllerArgs "5555"
 }
 DEF Cab1 Robot {
-  translation 44.4405 0.396838 57.7324
+  translation 43.0605 0.396509 57.7213
   rotation -0.00011531808680313831 0.9999999865352619 -0.00011675279433232985 -1.5785892208758237
   children [
     DEF cam_f Camera {
@@ -882,7 +882,7 @@ DEF Cab1 Robot {
       ]
       endPoint DEF wheelRL Solid {
         translation 0.55 -0.1 -0.7
-        rotation -0.5258681580732029 0.5254495618159305 0.6688538243234793 1.9618260245632584
+        rotation -0.525868158073203 0.5254495618159303 0.6688538243234794 1.9618260245632582
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -915,7 +915,7 @@ DEF Cab1 Robot {
       ]
       endPoint DEF wheelRR Solid {
         translation -0.55 -0.1 -0.7
-        rotation 0.588389058831542 -0.5879206953186196 0.5551104137587434 2.127400101948532
+        rotation 0.588389058831542 -0.5879206953186196 0.5551104137587434 2.1274001019485316
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -948,7 +948,7 @@ DEF Cab1 Robot {
       ]
       endPoint DEF wheelFR Solid {
         translation -0.55 -0.1 0.55
-        rotation 0.5876574106133559 -0.587189629499656 0.5566570818369799 2.1250359918798023
+        rotation 0.5876574106133561 -0.5871896294996558 0.5566570818369798 2.1250359918798023
         children [
           DEF wheel Shape {
             appearance PBRAppearance {

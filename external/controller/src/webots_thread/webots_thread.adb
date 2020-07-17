@@ -9,11 +9,19 @@ package body Webots_Thread is
 
    begin
 
-      Webots_Channel(0) := Tcp_Client.Connect (Webots_Client, Argument(1), Webots_Address);
+      for i in 1 .. Argument_Count loop
+         Webots_Channel(i-1) := Tcp_Client.Connect (Webots_Client, Port_Type'Value(Argument(i)), Webots_Address);
+      end loop;
 
       while true loop
-         Tcp_Client.Read_Packet (Webots_Channel(0), Webots_Vector_Buffer, Webots_Mailbox);
+
+         for i in 0 .. Argument_Count - 1 loop
+            Tcp_Client.Read_Packet(Webots_Channel(i), Webots_Vector_Buffer, Webots_Mailbox(i));
+         end loop;
+
       end loop;
+
+
 
 
    end Main;

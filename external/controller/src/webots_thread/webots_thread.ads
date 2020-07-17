@@ -9,15 +9,14 @@ with Mailbox;
 
 package Webots_Thread is
 
-   type Thread_Number is range 0 .. 4;
-   type Channel_Type is array (Thread_Number) of Stream_Access;
+
    -- Webots thread variables
    Webots_Client  : Socket_Type; -- stores the socket for the webots controller
-   Webots_Channel : Channel_Type; -- socket I/O interface
+   Webots_Channel : array (0..Argument_Count) of Stream_Access; -- socket I/O interface
    Webots_Address : Sock_Addr_Type; -- stores the server address
    Webots_Cmd : Types.Communication_Packet; -- command to send over socket
    Webots_Vector_Buffer : Byte_buffer.Buffer;
-   Webots_Mailbox : Mailbox.Mailbox (Size => 5);
+   Webots_Mailbox : array(0..Argument_Count) of Mailbox.Mailbox (Size => 5);
 
    procedure Main;
 

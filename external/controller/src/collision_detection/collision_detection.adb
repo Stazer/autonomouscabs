@@ -10,16 +10,16 @@ package body Collision_Detection is
       threshold: float64 := 700.0;
    begin
       -- Object in front of car
---          Ada.Float_Text_IO.Put(FLoat(distance(0)),5,3,0);
---              Ada.Float_Text_IO.Put(FLoat(distance(1)),5,3,0);
---              Ada.Float_Text_IO.Put(FLoat(distance(2)),5,3,0);
---              Ada.Float_Text_IO.Put(FLoat(distance(3)),5,3,0);
---              Ada.Float_Text_IO.Put(FLoat(distance(4)),5,3,0);
---              Ada.Float_Text_IO.Put(FLoat(distance(5)),5,3,0);
---              Ada.Float_Text_IO.Put(FLoat(distance(6)),5,3,0);
---              Ada.Float_Text_IO.Put(FLoat(distance(7)),5,3,0);
---              Ada.Float_Text_IO.Put(FLoat(distance(8)),5,3,0);
---        Ada.Text_IO.Put_Line("");
+        Ada.Float_Text_IO.Put(FLoat(distance(0)),5,3,0);
+            Ada.Float_Text_IO.Put(FLoat(distance(1)),5,3,0);
+            Ada.Float_Text_IO.Put(FLoat(distance(2)),5,3,0);
+            Ada.Float_Text_IO.Put(FLoat(distance(3)),5,3,0);
+            Ada.Float_Text_IO.Put(FLoat(distance(4)),5,3,0);
+            Ada.Float_Text_IO.Put(FLoat(distance(5)),5,3,0);
+            Ada.Float_Text_IO.Put(FLoat(distance(6)),5,3,0);
+            Ada.Float_Text_IO.Put(FLoat(distance(7)),5,3,0);
+            Ada.Float_Text_IO.Put(FLoat(distance(8)),5,3,0);
+      Ada.Text_IO.Put_Line("");
       case car_state is
          when Forward =>
                         ada.Text_IO.Put_Line("forward ");
@@ -28,8 +28,11 @@ package body Collision_Detection is
 
             threshold_d6 := 0.0;
             threshold_d5 := 0.0;
+
+            left_obstacle := False;
+            can_turn := False;
             if Distance(0) < 800.0 then
-               if Distance(7) > Distance(2) then
+               if Distance(7) <= Distance(2) then
                   ls := 7.0;
                   rs := 1.0;
                   car_state := Right;
@@ -42,20 +45,20 @@ package body Collision_Detection is
 
             if Distance(1) < threshold or Distance(2) < threshold then
                ls := 1.0;
-               rs := 4.0;
+               rs := 5.0;
                car_state := Left;
             end if;
 
 
          when Left =>
                         ada.Text_IO.Put_Line("left");
-            if Distance(2) < threshold then
+            if Distance(2) < threshold and Distance(1) > threshold then
                ls := 4.0;
                rs := 4.0;
             elsif threshold_d3 = 0.0 then
                threshold_d3 := Distance(3);
             end if;
-            if Distance(3) < 500.0 then
+            if Distance(3) < 200.0 then
                car_state := Passing_Left;
                threshold_d4 := Distance(4);
             end if;
@@ -63,12 +66,17 @@ package body Collision_Detection is
 
          when Passing_Left =>
             ada.Text_IO.Put_Line("passing left");
+
             if Distance(3) < threshold_d3 then
                ls := 7.0;
                rs := 1.0;
                --car_state := Forward;
             end if;
-            if Distance(4) > threshold_d4 then
+            if Distance(3) > 300.0  then
+               left_obstacle := True;
+            end if;
+
+            if Distance(4) > threshold_d4 and left_obstacle = True then
                   ls := 0.0;
                   rs := 0.0;
                   car_state := Forward;
@@ -162,10 +170,10 @@ package body Collision_Detection is
       end case;
 
 
---
---        ADA.Float_Text_IO.Put(Float(ls),5,3,0);
---        ADA.Float_Text_IO.Put(Float(rs),5,3,0);
---        ADA.Text_IO.Put_Line("");
+
+      ADA.Float_Text_IO.Put(Float(ls),5,3,0);
+      ADA.Float_Text_IO.Put(Float(rs),5,3,0);
+      ADA.Text_IO.Put_Line("");
 
 
 

@@ -11,6 +11,9 @@ package Collision_Detection is
    threshold_d4: types.Float64 := 0.0;
    threshold_d5: types.Float64 := 0.0;
    threshold_d6: types.Float64 := 0.0;
+   left_obstacle : Boolean := False;
+   can_turn : Boolean := False;
+
 
 
 end Collision_Detection;

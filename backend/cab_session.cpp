@@ -117,9 +117,5 @@ void cab_session::send_request(request& request)
     _socket.async_send(boost::asio::buffer(add_message.to_buffer()), [this, self](boost::system::error_code error_code, std::size_t written)
     {
         std::cout << "Data sent " << written << std::endl;
-        if(!error_code)
-        {
-            handle_receive();
-        }
     });
 }

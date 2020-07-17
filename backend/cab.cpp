@@ -164,7 +164,11 @@ void cab::add_request(node_type src, node_type dst, std::uint32_t passengers)
     _costs = max > _costs ? max : _costs; 
 
     _requests.push_back(request(src, dst, passengers));
-    _cab_session.lock()->send_request(_requests.back());
+
+    if(auto shared = _cab_session.lock())
+    {
+        shared->send_request(_requests.back());
+    }
 }
 
 void cab::update_position(node_type position)

@@ -3,15 +3,15 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Tcp_Client;
 with Backend_Thread;
 with Webots_Thread;
-with Types; use Types;
+with Types; use type Types.Float64; use Types;
 with Mailbox;
-with Messages; use Messages;
+with Messages; use Messages; use type Messages.Velocity_Message;
 with Byte_Buffer;
 with Graph; use Graph;
-
+with Collision_Detection;
+with Path_Following;
 
 procedure Main is
-
    task webots_task;
    task backend_task;
 
@@ -28,13 +28,17 @@ procedure Main is
    Message : Messages.Message_Ptr;
    Alternator : Types.Uint8 := 1;
 
+   DS_Data : Messages.Distance_Sensor_Array := (others => 1000.0);
+   V_Path : Messages.Velocity_Message;
+   V_Collision : Messages.Velocity_Message;
+   Is_Object_Collision: Boolean := False;
+
    Out_Buffer : Byte_Buffer.Buffer;
 
    R : Graph.Route;
    A : Graph.Route;
 
    S, D : Graph.VID;
-
 begin
    Graph.Create_Graph;
 
@@ -86,8 +90,29 @@ begin
             O.Write_Message (K);
             Byte_Buffer.Buffer'Write (Backend_Thread.Backend_Stream, O);
          end;
+      elsif Message.Id = Messages.EXTERNAL_DISTANCE_SENSOR then
+         DS_Data := Messages.DS_Message_Ptr (Message).Payload;
+         V_Collision := Collision_Detection.Main(DS_Data);
+         -- Sending 0 as velocity if object collision is over
+         if V_Collision.Left_Speed /= 0.0 and V_Collision.Right_Speed /= 0.0 then
+            is_object_collision := True;
+            Declare Out_Buffer: Byte_Buffer.Buffer;
+            begin
+               Out_Buffer.Write_Message (V_Collision);
+               Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Stream, Out_Buffer);
+            end;
+         else
+            is_object_collision := False;
+         end if;
+      elsif Message.Id = Messages.EXTERNAL_IMAGE_DATA and is_object_collision = False then
+         ada.Text_IO.Put_Line("image data");
+         V_Path := Path_Following.Main (Messages.ID_Message_Ptr (Message), DS_Data);
+         Declare Out_Buffer: Byte_Buffer.Buffer;
+         begin
+            Out_Buffer.Write_Message (V_Path);
+            Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Stream, Out_Buffer);
+         end;
       end if;
-
    end loop;
 
    Graph.Destroy_Graph;

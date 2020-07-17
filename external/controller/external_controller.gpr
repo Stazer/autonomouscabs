@@ -5,6 +5,8 @@ project External_Controller is
                         "src/backend_thread/**",
                         "src/webots_thread/**",
                         "src/knowledge/**",
+                        "src/path/**",
+                        "src/collision_detection/**",
                         "src/vendor/**");
    for Object_Dir use "obj";
    for Main use ("main.adb");
@@ -15,4 +17,3 @@ project External_Controller is
    end Compiler;
 
 end External_Controller;
-

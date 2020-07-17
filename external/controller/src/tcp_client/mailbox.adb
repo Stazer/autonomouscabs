@@ -45,7 +45,7 @@ package body Mailbox is
             First.Collect(M);
             Message := M.Message;
          else
-            delay(0.05);
+            delay(0.0000005);
             Check_Mailbox (Second, First, Message, Alternator);
          end select;
       else
@@ -53,7 +53,7 @@ package body Mailbox is
             Second.Collect(M);
             Message := M.Message;
          else
-            delay(0.05);
+            delay(0.0000005);
             Check_Mailbox (Second, First, Message, Alternator);
          end select;
       end if;

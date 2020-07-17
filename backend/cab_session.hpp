@@ -25,6 +25,8 @@ class cab_session : public std::enable_shared_from_this<cab_session>
 
         void run();
 
+        void send_request(request& request);
+
     private:
         application* _application = nullptr;
 
@@ -39,5 +41,6 @@ class cab_session : public std::enable_shared_from_this<cab_session>
         void handle_receive();
 
         void handle_join();
+        void handle_update();
         void handle_running();
 };

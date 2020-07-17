@@ -9,6 +9,7 @@
 #include "road_network.hpp"
 #include "request.hpp"
 #include "id_type.hpp"
+#include "node_type.hpp"
 
 class cab_manager;
 class cab_session;
@@ -20,29 +21,29 @@ class cab
 
         id_type id() const;
         std::uint32_t passengers();
-        std::vector<node_id> route();
+        std::vector<node_type> route();
         std::uint32_t costs();
-        node_id position();
+        node_type position();
 
-        std::uint32_t passengers_at_node(node_id node);
+        std::uint32_t passengers_at_node(node_type node);
 
-        bool route_contains(node_id node);
-        std::pair<bool, bool> route_contains_ordered(node_id src, node_id dst);
+        bool route_contains(node_type node);
+        std::pair<bool, bool> route_contains_ordered(node_type src, node_type dst);
 
-        std::int32_t calculate_costs(node_id src, node_id dst);
-        void add_request(node_id src, node_id dst, std::uint32_t passengers);
-        void update_route(std::vector<node_id> new_route);
-        void update_position(node_id position);
+        std::int32_t calculate_costs(node_type src, node_type dst);
+        void add_request(node_type src, node_type dst, std::uint32_t passengers);
+        void update_route(std::vector<node_type> new_route);
+        void update_position(node_type position);
 
     private:
         id_type _id = 0;
         std::uint32_t _passengers = 0;
-        node_id _position;
+        node_type _position;
         std::uint32_t _costs;
 
         road_network* _rnet;
 
-        std::vector<node_id> _route;
+        std::vector<node_type> _route;
         std::vector<request> _requests;
 
         std::weak_ptr<cab_session> _cab_session;

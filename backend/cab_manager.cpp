@@ -20,7 +20,7 @@ void cab_manager::remove(cab& cab)
 
 void cab_manager::remove(id_type id)
 {
-    node_id pos = _cabs[id]->position();
+    node_type pos = _cabs[id]->position();
     auto it = std::find_if(_cabs_at_node[pos].begin(), _cabs_at_node[pos].end(), 
         [&id](const std::weak_ptr<cab>& cab){
             auto shared = cab.lock();
@@ -30,15 +30,15 @@ void cab_manager::remove(id_type id)
     _cabs.erase(id);
 }
 
-std::shared_ptr<cab> cab_manager::cab_provision(node_id src, node_id dst, std::uint32_t passengers)
+std::shared_ptr<cab> cab_manager::find_cab(node_type src, node_type dst, std::uint32_t passengers)
 {
     bool cycle = false;
-    std::deque<node_id> queue;
+    std::deque<node_type> queue;
     queue.push_back(src);
 
     while(!queue.empty())
     {
-        node_id current = queue.front();
+        node_type current = queue.front();
         queue.pop_front();
 
         std::int32_t min = INT32_MAX;
@@ -69,7 +69,7 @@ std::shared_ptr<cab> cab_manager::cab_provision(node_id src, node_id dst, std::u
             return chosen;
         }
 
-        std::vector<node_id> vec = _rnet.get_predecessors(current);
+        std::vector<node_type> vec = _rnet.get_predecessors(current);
         for(auto n : vec)
         {
             auto it = std::find(queue.begin(), queue.end(), n);
@@ -93,7 +93,7 @@ std::shared_ptr<cab> cab_manager::cab_provision(node_id src, node_id dst, std::u
     return nullptr;
 }
 
-void cab_manager::update_cab(id_type id, node_id from, node_id to)
+void cab_manager::update_cab(id_type id, node_type from, node_type to)
 {
     auto it = std::find_if(_cabs_at_node[from].begin(), _cabs_at_node[from].end(), 
         [&id](const std::weak_ptr<cab>& cab){
@@ -104,7 +104,20 @@ void cab_manager::update_cab(id_type id, node_id from, node_id to)
     _cabs_at_node[to].push_back(_cabs[id]);
 }
 
-std::vector<std::weak_ptr<cab>> cab_manager::cabs_at_node(node_id node)
+void cab_manager::add_request(node_type src, node_type dst, std::uint32_t passengers)
+{
+    std::shared_ptr<cab> cab = find_cab(src, dst, passengers);
+    if(cab == nullptr)
+    {
+        std::cout << "found no cab for request " << src << " --> " << dst << '\n';
+        return;
+    }
+
+    std::cout << "found cab with id " << cab->id() << " for request " << src << " --> " << dst << '\n';
+    cab->add_request(src, dst, passengers);
+}
+
+std::vector<std::weak_ptr<cab>> cab_manager::cabs_at_node(node_type node)
 {
     return _cabs_at_node[node];
 }

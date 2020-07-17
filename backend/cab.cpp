@@ -15,7 +15,7 @@ cab::cab(std::weak_ptr<cab_session> cab_session, cab_manager& cab_manager, id_ty
     _id(id),
     _costs(0),
     _rnet(rnet),
-    _position(node_id::D)
+    _position(node_type::D)
 {
 }
 
@@ -35,12 +35,12 @@ std::uint32_t cab::costs()
     return _costs;
 }
 
-node_id cab::position()
+node_type cab::position()
 {
     return _position;
 }
 
-std::uint32_t cab::passengers_at_node(node_id node)
+std::uint32_t cab::passengers_at_node(node_type node)
 {
     std::uint32_t passengers = 0;
     for(auto r : _requests)
@@ -64,13 +64,13 @@ std::uint32_t cab::passengers_at_node(node_id node)
     return passengers;
 }
 
-bool cab::route_contains(node_id node)
+bool cab::route_contains(node_type node)
 {
     auto it = std::find(_route.begin(), _route.end(), node);
     return it != _route.end();
 }
 
-std::pair<bool, bool> cab::route_contains_ordered(node_id src, node_id dst)
+std::pair<bool, bool> cab::route_contains_ordered(node_type src, node_type dst)
 {
     bool found_src = false, found_dst = false;
     for(auto n : _route)
@@ -87,7 +87,7 @@ std::pair<bool, bool> cab::route_contains_ordered(node_id src, node_id dst)
     return std::pair<bool, bool> (found_src, found_dst);
 }
 
-std::int32_t cab::calculate_costs(node_id src, node_id dst)
+std::int32_t cab::calculate_costs(node_type src, node_type dst)
 {
     // check if the cab already has src and dst in that order in its requests
     std::pair<bool, bool> pair = route_contains_ordered(src, dst);
@@ -124,7 +124,7 @@ std::int32_t cab::calculate_costs(node_id src, node_id dst)
     return max;
 }
 
-void cab::add_request(node_id src, node_id dst, std::uint32_t passengers)
+void cab::add_request(node_type src, node_type dst, std::uint32_t passengers)
 {
     for(std::size_t i = 0; i < _requests.size(); ++i)
     {
@@ -164,9 +164,10 @@ void cab::add_request(node_id src, node_id dst, std::uint32_t passengers)
     _costs = max > _costs ? max : _costs; 
 
     _requests.push_back(request(src, dst, passengers));
+    _cab_session.lock()->send_request(_requests.back());
 }
 
-void cab::update_position(node_id position)
+void cab::update_position(node_type position)
 {
     _cab_manager->update_cab(_id, _position, position);
     _position = position;
@@ -186,12 +187,12 @@ void cab::update_position(node_id position)
     }
 }
 
-void cab::update_route(std::vector<node_id> new_route)
+void cab::update_route(std::vector<node_type> new_route)
 {
     _route = new_route;
 }
 
-std::vector<node_id> cab::route()
+std::vector<node_type> cab::route()
 {
     return _route;
 }

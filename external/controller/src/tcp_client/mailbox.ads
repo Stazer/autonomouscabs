@@ -7,7 +7,7 @@ with Messages;
 package Mailbox is
    
    type Mail is record 
-      M : Messages.Message_Ptr;
+      Message : Messages.Message_Ptr;
       TTL : Ada.Real_Time.Time;
    end record;
 

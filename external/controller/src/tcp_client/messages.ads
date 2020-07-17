@@ -9,6 +9,7 @@ package Messages is
                        EXTERNAL_DISTANCE_SENSOR,
                        EXTERNAL_IMAGE_DATA,
                        EXTERNAL_JOIN_SUCCESS,
+                       EXTERNAL_ADD_REQUEST,
                        WEBOTS_VELOCITY,
                        BACKEND_JOIN_CHALLENGE,
                        BACKEND_POSITION_UPDATE,
@@ -19,6 +20,7 @@ package Messages is
                        EXTERNAL_DISTANCE_SENSOR => 16#42#,
                        EXTERNAL_IMAGE_DATA => 16#43#,
                        EXTERNAL_JOIN_SUCCESS => 16#44#,
+                       EXTERNAL_ADD_REQUEST => 16#45#,
                        WEBOTS_VELOCITY => 16#81#,
                        BACKEND_JOIN_CHALLENGE => 16#C1#,
                        BACKEND_POSITION_UPDATE => 16#C2#,
@@ -69,6 +71,12 @@ package Messages is
       Route : Types.Payload_Ptr;
    end record;
    
+   type Add_Request_Message is new Message with record
+      Src : Types.Uint8;
+      Dst : Types.Uint8;
+      Passengers : Types.Uint32;
+   end record;
+      
    -- pointer types for all messages
    type Message_Ptr is access all Message'Class;
    type DS_Message_Ptr is access all Distance_Sensor_Message;
@@ -79,6 +87,7 @@ package Messages is
    type V_Message_Ptr is access all Velocity_Message;
    type PU_Message_Ptr is access all Position_Update_Message;
    type RU_Message_Ptr is access all Route_Update_Message;
+   type AR_Message_Ptr is access all Add_Request_Message;
    
    function Velocity_Message_Create (Left_Speed, Right_Speed : in Types.Float64) 
                                      return Velocity_Message;
@@ -111,5 +120,8 @@ package Messages is
    
    procedure Free_RU_Message is new Ada.Unchecked_Deallocation
      (Object => Route_Update_Message, Name => RU_Message_Ptr);
+   
+   procedure Free_AR_Message is new Ada.Unchecked_Deallocation
+     (Object => Add_Request_Message, Name => AR_Message_Ptr);
 
 end Messages;

@@ -15,7 +15,7 @@ package body Mailbox is
       end Clear;
       
       entry Deposit(X: in Messages.Message_Ptr) when Last < Size is
-         M : Mail := (M => X, TTL => Ada.Real_Time.Clock);
+         M : Mail := (Message => X, TTL => Ada.Real_Time.Clock);
       begin
          Items(Last + 1) := M;
          Last := Last + 1;
@@ -24,7 +24,7 @@ package body Mailbox is
       entry Collect(X: out Messages.Message_Ptr) when Last > 0 is
          M : Mail := Items(1);
       begin
-         X := M.M;
+         X := M.Message;
          Last := Last - 1;
          Items(1..Last) := Items(2..Last+1);
       end Collect;

@@ -3,15 +3,15 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation -0.5417454473336889 -0.629620233690196 -0.5568574607753084 2.042423786171133
-  position -48.79344146935929 32.68849046705324 -63.47674199506942
+  orientation -0.41896262482283075 -0.7993817835665517 -0.4306496059484123 1.8196180254109016
+  position -63.31632826204747 29.01864759019167 -63.84532819591922
 }
 TexturedBackground {
   luminosity 2
   reflections FALSE
 }
 DEF Cab1 Robot {
-  translation -53.2992 0.39867 -57.3761
+  translation -54.462 0.39867 -57.5764
   rotation -0.00010496054061082978 -0.9999999877577694 0.00011605061695116088 -1.6791866686732724
   children [
     DEF cam_f Camera {
@@ -1775,6 +1775,21 @@ Floor {
   }
 }
 WoodenBox {
-  translation -44.8612 0.3 -57.1428
+  translation -45.0584 0.3 -57.7255
   rotation 0 1 0 0.261804
+}
+WoodenBox {
+  translation -45.1626 0.3 -59.0088
+  rotation 0 1 0 0.261804
+  name "wooden box(1)"
+}
+WoodenBox {
+  translation -45.1319 0.3 -58.46
+  rotation 0 1 0 0.261804
+  name "wooden box(2)"
+}
+WoodenBox {
+  translation -45.3259 0.3 -59.5082
+  rotation 0 1 0 0.261804
+  name "wooden box(3)"
 }

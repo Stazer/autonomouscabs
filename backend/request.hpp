@@ -1,14 +1,14 @@
 #pragma once
 
-#include "road_network.hpp"
+#include "node_type.hpp"
 
 class request
 {
     public:
-        request(node_id src, node_id dst, std::uint32_t passengers);
+        request(node_type src, node_type dst, std::uint32_t passengers);
 
-        node_id src();
-        node_id dst();
+        node_type src();
+        node_type dst();
         std::uint32_t passengers();
         std::uint32_t detours();
         bool picked_up();
@@ -18,7 +18,7 @@ class request
         void pick_up();
 
     private:
-        node_id _src, _dst;
+        node_type _src, _dst;
         std::uint32_t _passengers;
         std::uint32_t _detours;
         bool _picked_up;

@@ -1,16 +1,16 @@
 #include "request.hpp"
 
-request::request(node_id src, node_id dst, std::uint32_t passengers) :
+request::request(node_type src, node_type dst, std::uint32_t passengers) :
     _src(src), _dst(dst), _passengers(passengers), _detours(0)
 {
 }
 
-node_id request::src()
+node_type request::src()
 {
     return _src;
 }
 
-node_id request::dst()
+node_type request::dst()
 {
     return _dst;
 }

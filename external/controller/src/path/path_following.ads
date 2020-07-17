@@ -8,7 +8,6 @@ with Messages;
 package Path_Following is
 
    width : constant Integer := 64;
-   --height : constant Integer := 64;
    height : constant Integer := 5;
    size : constant Integer := width * height * 4;
 

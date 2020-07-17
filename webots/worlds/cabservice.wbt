@@ -3,16 +3,16 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation 0.03808682417150016 0.7714041274115354 0.635204743399305 3.119688131672871
-  position 6.409620980680648 139.501828724283 -82.55227138078858
+  orientation -0.3969146367254591 -0.8876999025655062 -0.23334021114734474 1.707611991187905
+  position -266.7560735479514 210.6433685147553 -10.482221554771922
 }
 TexturedBackground {
   luminosity 2
   reflections FALSE
 }
 DEF Cab1 Robot {
-  translation 0 0.4 -29.2
-  rotation 0 1 0 -1.5723853071795864
+  translation 0.4 0.4 -29.1
+  rotation 0 -1 0 1.57239
   children [
     DEF cam_f Camera {
       translation 0 0.1 1
@@ -987,10 +987,10 @@ DEF Cab2 Robot {
 DEF environment Solid {
   scale 1.09819 1.09819 1.09819
   children [
-    DEF PickUp1 BusStop {
+    DEF PickUp0 BusStop {
       translation 0 0 -45
       rotation 0 1 0 3.14159
-      name "PickUp1"
+      name "PickUp0"
       bench FALSE
       appearance PBRAppearance {
         baseColor 0 0 0
@@ -1000,10 +1000,10 @@ DEF environment Solid {
       internalAdvertisingTexture []
       externalAdvertisingTexture []
     }
-    DEF PickUp2 BusStop {
+    DEF PickUp1 BusStop {
       translation 45 0 0
       rotation 0 -1 0 -1.5707953071795862
-      name "PickUp2"
+      name "PickUp1"
       bench FALSE
       appearance PBRAppearance {
         baseColor 1 0 0
@@ -1014,10 +1014,10 @@ DEF environment Solid {
       externalAdvertisingTexture []
       advertisingLightOn FALSE
     }
-    DEF PickUp3 BusStop {
+    DEF PickUp2 BusStop {
       translation 0 0 45
       rotation 0 1 0 -5.307179586466759e-06
-      name "PickUp3"
+      name "PickUp2"
       bench FALSE
       appearance PBRAppearance {
         baseColor 0 1 0
@@ -1028,10 +1028,10 @@ DEF environment Solid {
       externalAdvertisingTexture []
       advertisingLightOn FALSE
     }
-    DEF PickUp4 BusStop {
+    DEF PickUp3 BusStop {
       translation -45 0 0
       rotation 0 1 0 -1.5707953071795862
-      name "PickUp4"
+      name "PickUp3"
       bench FALSE
       appearance PBRAppearance {
         baseColor 0 0 1
@@ -1042,10 +1042,10 @@ DEF environment Solid {
       externalAdvertisingTexture []
       advertisingLightOn FALSE
     }
-    DEF PickUp5 BusStop {
-      translation 0 0 -71
+    DEF PickUp4 BusStop {
+      translation 0 0 -68
       rotation 0 1 0 3.14159
-      name "PickUp5"
+      name "PickUp4"
       bench FALSE
       appearance PBRAppearance {
         baseColor 1 1 0
@@ -1056,10 +1056,10 @@ DEF environment Solid {
       externalAdvertisingTexture []
       advertisingLightOn FALSE
     }
-    DEF PickUp6 BusStop {
-      translation 71 0 0
+    DEF PickUp5 BusStop {
+      translation 68 0 0
       rotation 0 -1 0 -1.5707953071795862
-      name "PickUp6"
+      name "PickUp5"
       bench FALSE
       appearance PBRAppearance {
         baseColor 1 0 1
@@ -1070,10 +1070,10 @@ DEF environment Solid {
       externalAdvertisingTexture []
       advertisingLightOn FALSE
     }
-    DEF PickUp7 BusStop {
-      translation 0 0 71
+    DEF PickUp6 BusStop {
+      translation 0 0 68
       rotation 0 1 0 -5.307179586466759e-06
-      name "PickUp7"
+      name "PickUp6"
       bench FALSE
       appearance PBRAppearance {
         baseColor 0 1 1
@@ -1084,10 +1084,10 @@ DEF environment Solid {
       externalAdvertisingTexture []
       advertisingLightOn FALSE
     }
-    DEF PickUp8 BusStop {
-      translation -71 0 0
+    DEF PickUp7 BusStop {
+      translation -68 0 0
       rotation 0 1 0 -1.5707953071795862
-      name "PickUp8"
+      name "PickUp7"
       bench FALSE
       appearance PBRAppearance {
         roughness 0.5
@@ -1307,8 +1307,72 @@ DEF environment Solid {
       startRoadBorderWidth 0.5
       bottom TRUE
       appearance Asphalt {
-        colorOverride 0.5 0.5 0
+        colorOverride 0 0 0
+        IBLStrength 0
       }
+    }
+    Solid {
+      translation -53 0 53
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 6
+          }
+        }
+      ]
+      name "solid(11)"
+    }
+    Solid {
+      translation -53 0 53
+      rotation 0 1 0 -1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 6
+          }
+        }
+      ]
+      name "solid(15)"
+    }
+    Solid {
+      translation -51 0 51
+      rotation 0 1 0 0.785
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 5.8
+          }
+        }
+      ]
+      name "solid(43)"
+    }
+    Solid {
+      translation -55 0 55
+      rotation 0 1 0 0.785
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 5.8
+          }
+        }
+      ]
+      name "solid(44)"
     }
     RoadIntersection {
       translation 53 0 53
@@ -1331,8 +1395,72 @@ DEF environment Solid {
       startRoadBorderWidth 0.5
       bottom TRUE
       appearance Asphalt {
-        colorOverride 0.5 0.5 0
+        colorOverride 0 0 0
+        IBLStrength 0
       }
+    }
+    Solid {
+      translation 53 0 53
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 6
+          }
+        }
+      ]
+      name "solid(12)"
+    }
+    Solid {
+      translation 53 0 53
+      rotation 0 1 0 -1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 6
+          }
+        }
+      ]
+      name "solid(16)"
+    }
+    Solid {
+      translation 51 0 51
+      rotation 0 1 0 -0.785
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 5.8
+          }
+        }
+      ]
+      name "solid(45)"
+    }
+    Solid {
+      translation 55 0 55
+      rotation 0 1 0 -0.785
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 5.8
+          }
+        }
+      ]
+      name "solid(46)"
     }
     RoadIntersection {
       translation 53 0 -53
@@ -1355,8 +1483,72 @@ DEF environment Solid {
       startRoadBorderWidth 0.5
       bottom TRUE
       appearance Asphalt {
-        colorOverride 0.5 0.5 0
+        colorOverride 0 0 0
+        IBLStrength 0
       }
+    }
+    Solid {
+      translation 53 0 -53
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 6
+          }
+        }
+      ]
+      name "solid(13)"
+    }
+    Solid {
+      translation 53 0 -53
+      rotation 0 1 0 -1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 6
+          }
+        }
+      ]
+      name "solid(17)"
+    }
+    Solid {
+      translation 51 0 -51
+      rotation 0 1 0 0.785
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 5.8
+          }
+        }
+      ]
+      name "solid(47)"
+    }
+    Solid {
+      translation 55 0 -55
+      rotation 0 1 0 0.785
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 5.8
+          }
+        }
+      ]
+      name "solid(48)"
     }
     RoadIntersection {
       translation -53 0 -53
@@ -1379,8 +1571,72 @@ DEF environment Solid {
       startRoadBorderWidth 0.5
       bottom TRUE
       appearance Asphalt {
-        colorOverride 0.5 0.5 0
+        colorOverride 0 0 0
+        IBLStrength 0
       }
+    }
+    Solid {
+      translation -53 0 -53
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 6
+          }
+        }
+      ]
+      name "solid(14)"
+    }
+    Solid {
+      translation -53 0 -53
+      rotation 0 1 0 -1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 6
+          }
+        }
+      ]
+      name "solid(18)"
+    }
+    Solid {
+      translation -51 0 -51
+      rotation 0 1 0 -0.785
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 5.8
+          }
+        }
+      ]
+      name "solid(49)"
+    }
+    Solid {
+      translation -55 0 -55
+      rotation 0 1 0 -0.785
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 5.8
+          }
+        }
+      ]
+      name "solid(50)"
     }
     StraightRoadSegment {
       translation -53 0 20
@@ -1444,6 +1700,22 @@ DEF environment Solid {
         }
       ]
       name "solid(1)"
+    }
+    Solid {
+      translation -50 0 15.5
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.021 9
+          }
+        }
+      ]
+      name "solid(19)"
     }
     StraightRoadSegment {
       translation -51.5 0 -10
@@ -1511,6 +1783,22 @@ DEF environment Solid {
         }
       ]
       name "solid(2)"
+    }
+    Solid {
+      translation -50 0 -15.5
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.021 9
+          }
+        }
+      ]
+      name "solid(20)"
     }
     StraightRoadSegment {
       translation -53 0 -50
@@ -1604,6 +1892,23 @@ DEF environment Solid {
       ]
       name "solid(3)"
     }
+    Solid {
+      translation 14.5 0 -47
+      rotation 0 1 0 1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.021 8
+          }
+        }
+      ]
+      name "solid(21)"
+    }
     StraightRoadSegment {
       translation -10 0 -51.5
       rotation 0 1 0 1.571
@@ -1678,6 +1983,23 @@ DEF environment Solid {
         }
       ]
       name "solid(4)"
+    }
+    Solid {
+      translation -14.5 0 -47
+      rotation 0 1 0 1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.021 8
+          }
+        }
+      ]
+      name "solid(22)"
     }
     CurvedRoadSegment {
       translation 20 0 -36.8
@@ -1846,6 +2168,22 @@ DEF environment Solid {
       ]
       name "solid(5)"
     }
+    Solid {
+      translation 50 0 -15.5
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.021 9
+          }
+        }
+      ]
+      name "solid(23)"
+    }
     StraightRoadSegment {
       translation 51.5 0 -10
       name "road(24)"
@@ -1913,6 +2251,22 @@ DEF environment Solid {
         }
       ]
       name "solid(6)"
+    }
+    Solid {
+      translation 50 0 15.5
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.021 9
+          }
+        }
+      ]
+      name "solid(24)"
     }
     StraightRoadSegment {
       translation 53 0 20
@@ -2002,6 +2356,23 @@ DEF environment Solid {
       ]
       name "solid(7)"
     }
+    Solid {
+      translation 15.5 0 50
+      rotation 0 1 0 1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.021 9
+          }
+        }
+      ]
+      name "solid(25)"
+    }
     StraightRoadSegment {
       translation -10 0 51.5
       rotation 0 1 0 1.57
@@ -2071,6 +2442,23 @@ DEF environment Solid {
       ]
       name "solid(8)"
     }
+    Solid {
+      translation -15.5 0 50
+      rotation 0 1 0 1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.021 9
+          }
+        }
+      ]
+      name "solid(26)"
+    }
     StraightRoadSegment {
       translation -50 0 53
       rotation 0 1 0 1.57
@@ -2119,8 +2507,8 @@ DEF environment Solid {
       }
     }
     StraightRoadSegment {
-      translation -76 0 -33
-      name "road(6)"
+      translation -76 0 20
+      name "road(44)"
       width 6
       numberOfForwardLanes 2
       lines [
@@ -2132,7 +2520,170 @@ DEF environment Solid {
       rightBarrier TRUE
       leftBarrier TRUE
       bottom TRUE
-      length 66
+      length 13
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    AddLanesRoadSegment {
+      translation -76 0 20
+      rotation 0 1 0 3.14
+      name "road(6)"
+      width 6
+      length 10
+      numberOfNewLanes 1
+      newLaneLeft FALSE
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    Solid {
+      translation -74.48 0 15.5
+      rotation 0 1 0 -0.2617996938995747
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(35)"
+    }
+    Solid {
+      translation -73 0 15.5
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.021 9
+          }
+        }
+      ]
+      name "solid(36)"
+    }
+    StraightRoadSegment {
+      translation -74.5 0 -10
+      name "road(45)"
+      width 9
+      numberOfLanes 3
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 20
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    AddLanesRoadSegment {
+      translation -76 0 -20
+      name "road(46)"
+      width 6
+      length 10
+      numberOfNewLanes 1
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    Solid {
+      translation -74.48 0 -15.5
+      rotation 0 1 0 0.2618
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(37)"
+    }
+    Solid {
+      translation -73 0 -15.5
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.021 9
+          }
+        }
+      ]
+      name "solid(38)"
+    }
+    StraightRoadSegment {
+      translation -76 0 -33
+      name "road(47)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 13
       appearance Asphalt {
         colorOverride 0 0 0
         IBLStrength 0
@@ -2144,7 +2695,7 @@ DEF environment Solid {
     StraightRoadSegment {
       translation -33 0 -76
       rotation 0 1 0 1.57
-      name "road(14)"
+      name "road(48)"
       width 6
       numberOfForwardLanes 2
       lines [
@@ -2156,7 +2707,179 @@ DEF environment Solid {
       rightBarrier TRUE
       leftBarrier TRUE
       bottom TRUE
-      length 66
+      length 13
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    AddLanesRoadSegment {
+      translation -20 0 -76
+      rotation 0 1 0 1.57
+      name "road(14)"
+      width 6
+      length 10
+      numberOfNewLanes 1
+      newLaneLeft FALSE
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    Solid {
+      translation -15.5 0 -74.48
+      rotation 0 1 0 -1.8326
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(41)"
+    }
+    Solid {
+      translation -15 0 -73
+      rotation 0 1 0 1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.021 8
+          }
+        }
+      ]
+      name "solid(42)"
+    }
+    StraightRoadSegment {
+      translation -10 0 -74.5
+      rotation 0 1 0 1.571
+      name "road(49)"
+      width 9
+      numberOfLanes 3
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 20
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    AddLanesRoadSegment {
+      translation 20 0 -76
+      rotation 0 1 0 -1.57
+      name "road(50)"
+      width 6
+      length 10
+      numberOfNewLanes 1
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+        RoadLine {
+          type "continuous"
+          width -1.73472e-18
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    Solid {
+      translation 15.5 0 -74.48
+      rotation 0 1 0 1.8326
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(39)"
+    }
+    Solid {
+      translation 15 0 -73
+      rotation 0 1 0 1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.021 8
+          }
+        }
+      ]
+      name "solid(40)"
+    }
+    StraightRoadSegment {
+      translation 20 0 -76
+      rotation 0 1 0 1.57
+      name "road(51)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 13
       appearance Asphalt {
         colorOverride 0 0 0
         IBLStrength 0
@@ -2167,7 +2890,7 @@ DEF environment Solid {
     }
     StraightRoadSegment {
       translation 76 0 -33
-      name "road(15)"
+      name "road(40)"
       width 6
       numberOfForwardLanes 2
       lines [
@@ -2179,7 +2902,170 @@ DEF environment Solid {
       rightBarrier TRUE
       leftBarrier TRUE
       bottom TRUE
-      length 66
+      length 13
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    AddLanesRoadSegment {
+      translation 76 0 -20
+      name "road(15)"
+      width 6
+      length 10
+      numberOfNewLanes 1
+      newLaneLeft FALSE
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    Solid {
+      translation 74.48 0 -15.5
+      rotation 0 1 0 -0.2617996938995747
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(31)"
+    }
+    Solid {
+      translation 73 0 -15.5
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.021 9
+          }
+        }
+      ]
+      name "solid(32)"
+    }
+    StraightRoadSegment {
+      translation 74.5 0 -10
+      name "road(41)"
+      width 9
+      numberOfLanes 3
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 20
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    AddLanesRoadSegment {
+      translation 76 0 20
+      rotation 0 1 0 3.14
+      name "road(42)"
+      width 6
+      length 10
+      numberOfNewLanes 1
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    Solid {
+      translation 74.48 0 15.5
+      rotation 0 1 0 0.2618
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(33)"
+    }
+    Solid {
+      translation 73 0 15.5
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.021 9
+          }
+        }
+      ]
+      name "solid(34)"
+    }
+    StraightRoadSegment {
+      translation 76 0 20
+      name "road(43)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 13
       appearance Asphalt {
         colorOverride 0 0 0
         IBLStrength 0
@@ -2189,7 +3075,7 @@ DEF environment Solid {
       }
     }
     StraightRoadSegment {
-      translation -33 0 76
+      translation 20 0 76
       rotation 0 1 0 1.57
       name "road(16)"
       width 6
@@ -2203,7 +3089,175 @@ DEF environment Solid {
       rightBarrier TRUE
       leftBarrier TRUE
       bottom TRUE
-      length 66
+      length 13
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    AddLanesRoadSegment {
+      translation 20 0 76
+      rotation 0 1 0 -1.57
+      name "road(36)"
+      width 6
+      length 10
+      numberOfNewLanes 1
+      newLaneLeft FALSE
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    Solid {
+      translation 15.5 0 74.48
+      rotation 0 1 0 -1.8326
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(27)"
+    }
+    Solid {
+      translation 15.5 0 73
+      rotation 0 1 0 1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.021 9
+          }
+        }
+      ]
+      name "solid(28)"
+    }
+    StraightRoadSegment {
+      translation -10 0 74.5
+      rotation 0 1 0 1.57
+      name "road(37)"
+      width 9
+      numberOfLanes 3
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 20
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    AddLanesRoadSegment {
+      translation -20 0 76
+      rotation 0 1 0 1.57
+      name "road(38)"
+      width 6
+      length 10
+      numberOfNewLanes 1
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      appearance Asphalt {
+        colorOverride 0 0 0
+        IBLStrength 0
+      }
+      pavementAppearance StonePavement {
+        colorOverride 0 0 0
+      }
+    }
+    Solid {
+      translation -15.5 0 74.48
+      rotation 0 1 0 1.8326
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 11.6
+          }
+        }
+      ]
+      name "solid(29)"
+    }
+    Solid {
+      translation -15.5 0 73
+      rotation 0 1 0 1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.021 9
+          }
+        }
+      ]
+      name "solid(30)"
+    }
+    StraightRoadSegment {
+      translation -33 0 76
+      rotation 0 1 0 1.57
+      name "road(39)"
+      width 6
+      numberOfForwardLanes 2
+      lines [
+        RoadLine {
+          type "continuous"
+          width 0.3
+        }
+      ]
+      rightBarrier TRUE
+      leftBarrier TRUE
+      bottom TRUE
+      length 13
       appearance Asphalt {
         colorOverride 0 0 0
         IBLStrength 0

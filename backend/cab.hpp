@@ -8,15 +8,17 @@
 
 #include "road_network.hpp"
 #include "request.hpp"
+#include "id_type.hpp"
 
-class road_network;
+class cab_manager;
+class cab_session;
 
 class cab
 {
     public:
-        cab(std::uint32_t id, std::shared_ptr<road_network> rnet);
+        cab(std::weak_ptr<cab_session> cab_session, cab_manager& cab_manager, id_type id, road_network* rnet);
 
-        std::uint32_t id() const;
+        id_type id() const;
         std::uint32_t passengers();
         std::vector<node_id> route();
         std::uint32_t costs();
@@ -33,14 +35,16 @@ class cab
         void update_position(node_id position);
 
     private:
-        std::uint32_t _id = 0;
+        id_type _id = 0;
         std::uint32_t _passengers = 0;
         node_id _position;
+        std::uint32_t _costs;
 
-        std::shared_ptr<road_network> _rnet;
+        road_network* _rnet;
 
         std::vector<node_id> _route;
         std::vector<request> _requests;
 
-        std::uint32_t _costs;
+        std::weak_ptr<cab_session> _cab_session;
+        cab_manager* _cab_manager;
 };

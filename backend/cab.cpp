@@ -6,12 +6,20 @@
 
 #include <boost/uuid/uuid_generators.hpp>
 
-cab::cab(std::uint32_t id, std::shared_ptr<road_network> rnet):
-    _id(id), _position(node_id::D), _rnet(rnet), _costs(0)
+#include "cab_manager.hpp"
+#include "cab_session.hpp"
+
+cab::cab(std::weak_ptr<cab_session> cab_session, cab_manager& cab_manager, id_type id, road_network* rnet) :
+    _cab_session(cab_session),
+    _cab_manager(&cab_manager),
+    _id(id),
+    _costs(0),
+    _rnet(rnet),
+    _position(node_id::D)
 {
 }
 
-std::uint32_t cab::id() const
+id_type cab::id() const
 {
     return _id;
 }
@@ -119,7 +127,7 @@ std::int32_t cab::calculate_costs(node_id src, node_id dst)
 void cab::add_request(node_id src, node_id dst, std::uint32_t passengers)
 {
     for(std::size_t i = 0; i < _requests.size(); ++i)
-    {   
+    {
         if(_requests[i].src() == src && _requests[i].dst() == dst)
         {
             _requests[i].add_passengers(passengers);
@@ -160,6 +168,7 @@ void cab::add_request(node_id src, node_id dst, std::uint32_t passengers)
 
 void cab::update_position(node_id position)
 {
+    _cab_manager->update_cab(_id, _position, position);
     _position = position;
     for(std::size_t i = 0; i < _requests.size(); ++i)
     {

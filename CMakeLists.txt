@@ -4,11 +4,11 @@ project(autonomouscabs)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED COMPONENTS system program_options)
 
 include_directories(${Boost_INCLUDE_DIR})
 
-add_executable(backend.bin backend/main.cpp backend/application.cpp backend/cab_session.cpp backend/web_session.cpp backend/cab.cpp backend/cab_manager.cpp shared/buffer_reader.cpp shared/buffer_writer.cpp shared/buffer.cpp shared/message.cpp)
+add_executable(backend.bin backend/main.cpp backend/application.cpp backend/cab_server.cpp backend/cab_session.cpp backend/cab.cpp backend/cab_manager.cpp shared/buffer_reader.cpp shared/buffer_writer.cpp shared/buffer.cpp shared/message.cpp)
 target_include_directories(backend.bin PRIVATE ${Boost_INCLUDE_DIR})
 target_link_libraries(backend.bin ${Boost_LIBRARIES} pthread)
 

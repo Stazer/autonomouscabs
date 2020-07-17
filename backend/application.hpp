@@ -2,10 +2,8 @@
 
 #include <boost/asio.hpp>
 
-#include "tcp_server.hpp"
-#include "cab_session.hpp"
+#include "cab_server.hpp"
 #include "cab_manager.hpp"
-#include "web_session.hpp"
 
 class application
 {
@@ -21,6 +19,12 @@ class application
         class cab_manager _cab_manager;
 
         boost::asio::io_context _io_context;
-        tcp_server<cab_session> _cab_session_server;
-        tcp_server<web_session> _web_session_server;
+        std::unique_ptr<cab_server> _cab_server;
+
+        boost::asio::signal_set _signals;
+
+        boost::asio::posix::stream_descriptor _command_descriptor;
+        boost::asio::streambuf _command_buffer;
+
+        void handle_command();
 };

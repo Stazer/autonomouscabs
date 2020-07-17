@@ -37,9 +37,7 @@ procedure Main is
    V_Path : Messages.Velocity_Message;
    V_Collision : Messages.Velocity_Message;
 
-   -- D : Messages.Distance_Sensor_   Out_Buffer : Byte_Buffer.Buffer;
-
-   is_object_collision: Boolean := False;
+   Is_Object_Collision: Boolean := False;
 begin
 
    -- threads have started here
@@ -53,63 +51,12 @@ begin
       Mailbox.check_mailbox (Backend_Thread.Backend_Mailbox, Webots_Thread.Webots_Mailbox, Current_Mail, alternator);
       Mailbox.update_alternator (alternator);
 
-     -- Put_Line (Current_Mail.Message.Id'Image);
 
-      -- do calculations with current packet
---  <<<<<<< HEAD
---        --Ada.Text_IO.Put_Line(Integer'Image(Integer(current_packet.package_ID)));
---
---        send_packet_path_following.payload_length := 0;
---        -- Path following
---       if current_packet.package_ID = 67 then
---           send_packet_path_following := pathfollowing.path_following(current_packet);
---       end if;
---
---        -- Object collision
---        if current_packet.package_ID = 66 then
---           for J in uint32 range 0..8 loop
---              for I in uint32 range 0..7 loop
---                 dist(I) := current_packet.local_payload(I+J*8);
---              end loop;
---              distance_sensor_data(Integer(J)) := Types.uint64_to_float64(octets_to_uint64(dist));
---           end loop;
---           send_packet_collision_avoidance := detect(distance_sensor_data);
---        end if;
---        if send_packet_collision_avoidance.payload_length = 0 then
---           if send_packet_path_following.payload_length /= 0 then
---              send_bytes(Webots_Channel, send_packet_path_following);
---           end if;
---        else
---           send_bytes(Webots_Channel, send_packet_collision_avoidance);
---  =======
-
---        if Current_Mail.Message.Id = Messages.EXTERNAL_IMAGE_DATA then
---           V_Path := Path_Following.Main (Messages.ID_Message_Ptr (Current_Mail.Message), DS_Data);
---        elsif Current_Mail.Message.Id = Messages.EXTERNAL_DISTANCE_SENSOR then
---           DS_Data := Messages.DS_Message_Ptr (Current_Mail.Message).Payload;
---           V_Collision := Collision_Detection.Main(DS_Data);
---        end if;
---        declare Out_Buffer : Byte_Buffer.Buffer;
---        begin
---         --  if (V_Collision.Left_Speed = 0.0) and (V_Collision.Right_Speed = 0.0) then
---              Out_Buffer.Write_Message(V_Path);
---  --           else
---  --              Out_Buffer.Write_Message(V_Collision);
---  --           end if;
---           Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
---        end;
-
-
-
-      -- do calculations with current packet
-      --Ada.Text_IO.Put_Line(Integer'Image(Integer(.package_ID)));
       if Current_Mail.Message.Id = Messages.EXTERNAL_DISTANCE_SENSOR then
          DS_Data := Messages.DS_Message_Ptr (Current_Mail.Message).Payload;
          V_Collision := Collision_Detection.Main(DS_Data);
---           ADA.Float_Text_IO.Put(Float(V_Collision.Left_Speed));
---           ADA.Text_IO.Put_Line("");
+         -- Sending 0 as velocity if object collision is over
          if V_Collision.Left_Speed /= 0.0 and V_Collision.Right_Speed /= 0.0 then
-            --ada.Text_IO.Put_Line("collision");
             is_object_collision := True;
             Declare Out_Buffer: Byte_Buffer.Buffer;
             begin
@@ -119,11 +66,6 @@ begin
          else
             is_object_collision := False;
          end if;
---           if V_Collision.Left_Speed = 4.0 and V_Collision.Right_Speed = 1.0 then
---              is_object_collision := False;
---           end if;
-
-
       elsif Current_Mail.Message.Id = Messages.EXTERNAL_IMAGE_DATA and is_object_collision = False then
          ada.Text_IO.Put_Line("image data");
          V_Path := Path_Following.Main (Messages.ID_Message_Ptr (Current_Mail.Message), DS_Data);
@@ -133,9 +75,6 @@ begin
             Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Channel, Out_Buffer);
          end;
       end if;
-      --Put_Line("loop ended");
-
-
    end loop;
 
 end Main;

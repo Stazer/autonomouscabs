@@ -5,22 +5,22 @@ with Tcp_Client;
 with Byte_Buffer;
 with Types;
 with Mailbox;
+with Messages;
 
 package Backend_Thread is
-   Socket: Socket_Type;
-   Stream: Stream_Access;
-   Address: Sock_Addr_Type;
+   Backend_Socket : Socket_Type;
+   Backend_Stream : Stream_Access;
+   Backend_Address : Sock_Addr_Type;
 
-   Backend_Mailbox: Mailbox(Size => 5);
+   Backend_Mailbox : Mailbox.Mailbox (Size => 5);
 
-   Buffer: Byte_buffer;
-   Receive_Buffer_Size : Ada.Streams.Stream_Element_Count;
-   Receive_Buffer_Data : Ada.Streams.Stream_Element_Array(1 .. 256);
+   Backend_Buffer : Byte_buffer.Buffer;
 
    procedure Handle_Join_Challenge;
    procedure Handle_Join;
 
    procedure Main;
+   procedure Join;
 
    type Handle_Buffer_Type is access procedure;
    Handle_Buffer : Handle_Buffer_Type;

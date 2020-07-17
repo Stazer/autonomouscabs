@@ -1,35 +1,41 @@
+with Ada.Text_IO; use Ada.Text_IO;
+
 package body Backend_Thread is
    procedure Main is
-      New_Byte : types.uint8;
    begin
       Handle_Buffer := Handle_Join_Challenge'Access;
 
-      Address.Addr := Inet_Addr("10.0.0.2");
-      Address.Port := 9875;
-      Stream := Connect(Socket, Address);
-      Ada.Text_IO.Put_Line("Connection to backend (10.0.0.2:9875) established");
+      Backend_Address.Addr := Inet_Addr ("127.0.0.1");
+      Backend_Address.Port := 9876;
 
-      Handle_Buffer.all;
+      Backend_Stream := Tcp_Client.Connect (Backend_Socket, Backend_Address);
+      Put_Line ("Connection to backend (127.0.0.1:9875) established");
+
+      Join;
 
       loop
-         Ada.Streams.Read(Stream.all, Receive_Buffer_Data, Receive_Buffer_Size);
-
-         exit when Receive_Buffer_Size = 0;
-
-         for I in 1 .. Receive_Buffer_Size loop
-            types.uint8'Read(Receive_Buffer_Data(I), New_Byte);
-         end loop;
-
-         Handle_Buffer.all;
+         Tcp_Client.Read_Packet (Backend_Stream, Backend_Buffer, Backend_Mailbox);
       end loop;
    end Main;
 
+   procedure Join
+   is
+      Join : Messages.Join_Challenge_Message := Messages.Join_Challenge_Message_Create;
+      Out_Buffer : Byte_Buffer.Buffer;
+   begin
+      Out_Buffer.Write_Message (Join);
+      Byte_Buffer.Buffer'Write (Backend_Stream, Out_Buffer);
+
+      Handle_Buffer := Handle_Join'Access;
+   end Join;
+
    procedure Handle_Join_Challenge
    is
-      Command : Types.Communication_Packet;
+      Join : Messages.Join_Challenge_Message := Messages.Join_Challenge_Message_Create;
+      Out_Buffer : Byte_Buffer.Buffer;
    begin
-      Command.package_ID := 193;
-      send_bytes(Stream, Command);
+      Out_Buffer.Write_Message (Join);
+      Byte_Buffer.Buffer'Write (Backend_Stream, Out_Buffer);
 
       Handle_Buffer := Handle_Join'Access;
    end Handle_Join_Challenge;

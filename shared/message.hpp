@@ -28,6 +28,7 @@ enum class message_id : message_id_base
     EXTERNAL_DISTANCE_SENSOR,
     EXTERNAL_IMAGE_DATA,
     EXTERNAL_JOIN_SUCCESS,
+    EXTERNAL_ADD_REQUEST,
     EXTERNAL_LAST,
 
     WEBOTS_FIRST = 0x80,
@@ -128,13 +129,20 @@ struct external_image_data_message final : public basic_message<external_image_d
     }
 };
 
-struct backend_join_challenge_message final : public empty_message<message_id::BACKEND_JOIN_CHALLENGE>
-{
-};
-
 struct external_join_success_message final : public basic_message<external_join_success_message, message_id::EXTERNAL_JOIN_SUCCESS>
 {
     std::uint32_t id;
+};
+
+struct external_add_request_message final : public basic_message<external_add_request_message, message_id::EXTERNAL_ADD_REQUEST>
+{
+    std::uint8_t src;
+    std::uint8_t dst;
+    std::uint32_t passengers;
+};
+
+struct backend_join_challenge_message final : public empty_message<message_id::BACKEND_JOIN_CHALLENGE>
+{
 };
 
 struct backend_position_update_message final : public basic_message<backend_position_update_message, message_id::BACKEND_POSITION_UPDATE>

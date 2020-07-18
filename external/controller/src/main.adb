@@ -48,14 +48,14 @@ begin
       Mailbox.Check_Mailbox (Backend_Thread.Backend_Mailbox, Webots_Thread.Webots_Mailbox, Message, Alternator);
 
       -- do calculations with current packet
-      --Put_Line (Message.Id'Image);
+      Put_Line (Message.Id'Image);
 
       declare
          Out_Buffer : Byte_Buffer.Buffer;
       begin
          case Message.Id is
             when Messages.EXTERNAL_JOIN_SUCCESS =>
-               Put_Line (Messages.JS_Message_Ptr (Message).Cab_Id'Image);
+               Put_Line ("Cab id: " & Messages.JS_Message_Ptr (Message).Cab_Id'Image);
                Memory.Handle_Join (Messages.JS_Message_Ptr (Message));
             when Messages.EXTERNAL_ADD_REQUEST =>
                Route_Update := Memory.Add_Request (Messages.AR_Message_Ptr (Message));
@@ -70,8 +70,6 @@ begin
                if V_Collision.Left_Speed /= 0.0 and V_Collision.Right_Speed /= 0.0 then
                   Is_Object_Collision := True;
 
-                  Put_Line (V_Collision.Left_Speed'Image & " " & V_Collision.Right_Speed'Image);
-
                   Out_Buffer.Write_Message (V_Collision);
                   Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Stream, Out_Buffer);
                else
@@ -80,7 +78,6 @@ begin
             when Messages.EXTERNAL_IMAGE_DATA =>
                if Is_Object_Collision = False then
                   V_Path := Path_Following.Main (Messages.ID_Message_Ptr (Message), DS_Data);
-                  --Put_Line (V_Path.Left_Speed'Image & " " & V_Path.Right_Speed'Image);
 
                   Out_Buffer.Write_Message (V_Path);
                   Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Stream, Out_Buffer);

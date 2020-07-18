@@ -20,14 +20,8 @@ package body Messages is
 
    function Route_Update_Message_Create (Route : Types.Payload_Ptr)
                                          return Route_Update_Message is
-      M : Route_Update_Message := (Size => 5 + Route'Length,
-                                   Id => BACKEND_ROUTE_UPDATE, Route => null);
    begin
-      M.Route := new Types.Payload (0 .. Route'Length - 1);
-      for I in Route'Range loop
-         M.Route (I) := Route (I);
-      end loop;
-      return M;
+      return (Size => 5 + Route'Length, Id => BACKEND_ROUTE_UPDATE, Route => Route);
    end Route_Update_Message_Create;
 
 end Messages;

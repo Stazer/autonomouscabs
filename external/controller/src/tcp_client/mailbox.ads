@@ -1,5 +1,5 @@
 with Ada.Real_Time; use Ada.Real_Time;
-with Ada.Text_IO;
+--with Ada.Text_IO;
 
 with Types; use Types;
 with Messages;
@@ -24,7 +24,7 @@ package Mailbox is
       Last : Types.Uint8 := 0;
    end Mailbox;
 
-   procedure Check_Mailbox (First : in out Mailbox; Second : in out Mailbox; Message : out Messages.Message_Ptr; Alternator: Types.Uint8);
+   procedure Check_Mailbox (First : in out Mailbox; Second : in out Mailbox; Message : out Messages.Message_Ptr; Alternator: in out Types.Uint8);
    
    procedure Update_Alternator (Alternator: in out Types.Uint8);
       

@@ -14,7 +14,12 @@ package body Tcp_Client is
                           Local_Mailbox : in out Mailbox.Mailbox) is
    begin
       --  read message
-      Byte_Buffer.Buffer'Read (Stream, Buffer);
+      begin
+         Byte_Buffer.Buffer'Read (Stream, Buffer);
+      exception
+         when E : Byte_Buffer.Connection_Closed =>
+            raise;
+      end;
 
       declare Mail : Mailbox.Mail;
       begin

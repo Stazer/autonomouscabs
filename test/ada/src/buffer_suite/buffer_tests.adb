@@ -194,7 +194,6 @@ package body buffer_tests is
       
       Free_Payload (M3.Payload);
       Free_Payload (MP3.Payload);
-      Free_Payload (Route);
       Free_Payload (M8.Route);
       Free_Payload (MP8.Route);
       

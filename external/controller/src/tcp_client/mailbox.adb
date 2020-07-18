@@ -37,26 +37,32 @@ package body Mailbox is
       end Empty;
    end Mailbox;
    
-   procedure Check_Mailbox (First : in out Mailbox; Second : in out Mailbox; Message : out Messages.Message_Ptr; Alternator: Types.Uint8 ) is
+   procedure Check_Mailbox (First : in out Mailbox; Second : in out Mailbox; Message : out Messages.Message_Ptr; Alternator: in out Types.Uint8) is
       M : Mail;
+      Collected : Boolean := False;
    begin
-      if alternator = 1 then
-         select
-            First.Collect(M);
-            Message := M.Message;
+      while not Collected loop
+         if alternator = 1 then
+            select
+               First.Collect(M);
+               Message := M.Message;
+               Collected := True;
+            or
+               delay(0.0000005);
+               --Check_Mailbox (Second, First, Message, Alternator);
+            end select;
          else
-            delay(0.0000005);
-            Check_Mailbox (Second, First, Message, Alternator);
-         end select;
-      else
-         select
-            Second.Collect(M);
-            Message := M.Message;
-         else
-            delay(0.0000005);
-            Check_Mailbox (Second, First, Message, Alternator);
-         end select;
-      end if;
+            select
+               Second.Collect(M);
+               Message := M.Message;
+               Collected := True;
+            or
+               delay(0.0000005);
+               --Check_Mailbox (Second, First, Message, Alternator);
+            end select;
+         end if;
+         Update_Alternator (Alternator);
+      end loop;
    end Check_Mailbox;
    
    procedure Update_Alternator (Alternator: in out Types.Uint8) is

@@ -391,7 +391,7 @@ package body Graph is
       R.Delete (C_End);
    end Replace_All;
    
-   procedure Put_Route (R : in Route) is
+   procedure Put_Route (R : in Route; Position : VID) is
    begin
       Put_Line ("current position: " & Position'Image);
       for E of R loop
@@ -404,7 +404,7 @@ package body Graph is
    -- inserts Src and Dst into A and preserves the ordering
    -- uses Dijkstra to calculate the shortest path between each i and i+1 in A
    -- starting with i is the current position
-   procedure Add (R, A : in out Route; Src, Dst : VID) is
+   procedure Add_To_Route (R, A : in out Route; Src, Dst, Position : VID) is
       Contains_Src : Boolean := A.Contains (Src);
       Contains_Dst : Boolean := A.Contains (Dst);
       
@@ -480,53 +480,6 @@ package body Graph is
          Next (C);
       end loop;
       
-   end Add;
-   
-   function Next_Action (R : in Route) return Action is
-      First : VID := R.First_Element;
-   begin
-      if Vertex_Is_Intersection (Position) then
-         if Vertex_Is_Intersection (First) then
-            return RIGHT;
-         end if;
-         
-         if Turned_Right then
-            Turned_Right := False;
-            return STOP;
-         end if;
-                  
-         if Is_Behind_Inter then
-            Is_Behind_Inter := False;
-            Turned_Right := True;
-            return RIGHT;
-         else
-            Is_Behind_Inter := True;
-            if Vertex_Is_Inner (First) then
-               return RIGHT;
-            elsif Vertex_Is_Outer (First) then
-               return STRAIGHT;
-            end if;
-         end if;
-         
-      elsif Vertex_Is_Pickup (Position) then
-         if Turned_Left then
-            Turned_Left := False;
-            return STRAIGHT;
-         end if;
-         
-         Turned_Left := True;
-         return LEFT;
-      elsif Position = D then
-         return LEFT;
-      end if;
-            
-      return NOTHING;
-   end Next_Action;
-   
-   procedure Update_Position (R : in out Route) is
-   begin
-      Position := R.First_Element;
-      R.Delete_First;
-   end Update_Position;
+   end Add_To_Route;
    
 end Graph;

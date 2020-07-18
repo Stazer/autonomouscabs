@@ -193,6 +193,7 @@ package body Byte_Buffer is
       
       Val.Size := Size;
       Val.Id := M_Id;
+      Self.Delete_Bytes (Size);
    end Read_Message;
    
    procedure Write_Message (Self : in out Buffer; Val : in Messages.Light_Sensor_Message) is
@@ -301,7 +302,6 @@ package body Byte_Buffer is
       for I in Stream_Buffer'Range loop
          B.Read_Uint8 (Types.Uint8 (Stream_Buffer (I)));
       end loop;
-      
       Stream.Write (Stream_Buffer);
    end Write_Stream;
    
@@ -311,8 +311,13 @@ package body Byte_Buffer is
       O4 : Types.Octets_4;
       Stream_Buffer1 : Ada.Streams.Stream_Element_Array (0 .. 3);
       Last : Ada.Streams.Stream_Element_Offset;
+      use type Ada.Streams.Stream_Element_Offset;
    begin
       Stream.Read (Stream_Buffer1, Last);
+      
+      if Last = -1 then
+         raise Connection_Closed;
+      end if;
       
       for I in Stream_Buffer1'Range loop
          O4 (Types.Uint32 (I)) := Types.Uint8 (Stream_Buffer1 (I));
@@ -324,6 +329,10 @@ package body Byte_Buffer is
          Stream_Buffer2 : Ada.Streams.Stream_Element_Array (0 .. Ada.Streams.Stream_Element_Offset (Size - 5));
       begin
          Stream.Read (Stream_Buffer2, Last);
+         
+         if Last = -1 then
+            raise Connection_Closed;
+         end if;
          
          B.Write_Uint32 (Size);
          for I in Stream_Buffer2'Range loop

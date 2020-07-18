@@ -28,13 +28,13 @@ class robot_container
 
         boost::asio::io_service _io_service;
         boost::asio::ip::tcp::socket _external;
-        buffer _in;
-        buffer_reader _reader;
-        buffer_writer _writer;
+        buffer _buffer;
 
-        void fill_distance_sensor_message(buffer_writer& writer);
-        void fill_light_sensor_message(buffer_writer& writer);
-        void fill_image_data_message(buffer_writer& writer);
+        std::array<std::uint8_t, 256> _receive_buffer;
+
+        void fill_distance_sensor_message(external_distance_sensor_message& message);
+        void fill_light_sensor_message(external_light_sensor_message& message);
+        void fill_image_data_message(external_image_data_message& message);
     public:
         robot_container();
         void setup_robot();

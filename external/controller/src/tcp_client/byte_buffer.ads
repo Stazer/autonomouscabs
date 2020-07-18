@@ -13,6 +13,7 @@ package Byte_Buffer is
    Wrong_Message_Id : exception;
    Not_Enough_Data : exception;
    Unknown_Message_Id : exception;
+   Connection_Closed : exception;
    
    -- procedures to read a Uintx/Payload from the buffer, raises Not_Enough_Data exception
    procedure Read_Uint8 (Self : in out Buffer; Val : out Types.Uint8);

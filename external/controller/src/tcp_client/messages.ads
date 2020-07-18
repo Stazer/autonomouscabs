@@ -13,7 +13,9 @@ package Messages is
                        WEBOTS_VELOCITY,
                        BACKEND_JOIN_CHALLENGE,
                        BACKEND_POSITION_UPDATE,
-                       BACKEND_ROUTE_UPDATE);
+                       BACKEND_ROUTE_UPDATE,
+                       ERROR_BACKEND_DISCONNECTED,
+                       ERROR_WEBOTS_DISCONNECTED);
 
    for Message_Id use (UNDEFINED => 16#1#, NOP => 16#2#, Ping => 16#3#,
                        EXTERNAL_LIGHT_SENSOR => 16#41#,
@@ -24,7 +26,9 @@ package Messages is
                        WEBOTS_VELOCITY => 16#81#,
                        BACKEND_JOIN_CHALLENGE => 16#C1#,
                        BACKEND_POSITION_UPDATE => 16#C2#,
-                       BACKEND_ROUTE_UPDATE => 16#C3#);
+                       BACKEND_ROUTE_UPDATE => 16#C3#,
+                       ERROR_BACKEND_DISCONNECTED => 16#D1#,
+                       ERROR_WEBOTS_DISCONNECTED => 16#D2#);
 
    for Message_Id'Size use Types.Uint8'Size;
    

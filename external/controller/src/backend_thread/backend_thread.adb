@@ -9,7 +9,7 @@ package body Backend_Thread is
       Backend_Address.Port := 9876;
 
       Backend_Stream := Tcp_Client.Connect (Backend_Socket, Backend_Address);
-      Put_Line ("Connection to backend (127.0.0.1:9876) established");
+      Put_Line ("Connection to backend (127.0.0.1:" & Backend_Address.Port'Image & ") established.");
 
       Join;
 

@@ -1,3 +1,5 @@
+with Ada.Text_IO; use Ada.Text_IO;
+
 package body Webots_Thread is
 
    procedure Main is
@@ -7,6 +9,8 @@ package body Webots_Thread is
       Webots_Address.Addr := Inet_Addr ("127.0.0.1");
       Webots_Address.Port := 9999;
       Webots_Stream := Tcp_Client.Connect (Webots_Socket, Webots_Address);
+
+      Put_Line ("Connection to webots (127.0.0.1:" & Webots_Address.Port'Image & ") established.");
 
       loop
          begin

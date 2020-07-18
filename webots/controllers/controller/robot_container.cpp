@@ -5,16 +5,18 @@
 #include "robot_container.hpp"
 #include "../../../shared/message.hpp"
 
-robot_container::robot_container() 
-    : _external(_io_service)
+robot_container::robot_container()
+    : _external(_io_service), _reader(_in), _writer(_in)
 {
     _basic_time_step = (int) _robot.getBasicTimeStep();
+    _last = std::chrono::duration_cast<std::chrono::milliseconds>
+                (std::chrono::system_clock::now().time_since_epoch());
 }
 
-void robot_container::setup_robot()
+void robot_container::setup_robot(int n_images)
 {
     std::cout << "setting up distance sensors" << '\n';
-    std::vector<std::string> ds_names = {"ds_fc", "ds_fcr", "ds_fr", "ds_rf", "ds_rc", 
+    std::vector<std::string> ds_names = {"ds_fc", "ds_fcr", "ds_fr", "ds_rf", "ds_rc",
                                          "ds_lc", "ds_lf", "ds_fl", "ds_fcl"};
     for(std::size_t i = 0; i<ds_names.size(); ++i)
     {
@@ -32,8 +34,17 @@ void robot_container::setup_robot()
 
     std::cout << "setting up camera" << '\n';
     _camera = _robot.getCamera("camera");
-    _camera->enable(_basic_time_step);
     _image_size =  _camera->getHeight() * _camera->getWidth() * 4  * sizeof(unsigned char);
+
+    // limiting the number if image messages send per second
+    // standart value is 10
+    if((n_images * 16) > 1000 || n_images == -1)
+    {
+        n_images = 10;
+    }
+    // calculate wait time in milliseconds in steps of _basic_time_step
+    _wait_time = static_cast<int>(1000 / (n_images * _basic_time_step)) * _basic_time_step;
+    std::cout << "wait time: " << _wait_time << '\n';
 
     std::cout << "setting up motor" << '\n';
     std::vector<std::string> m_names = {"wheelFR", "wheelRR", "wheelRL", "wheelFL"};
@@ -46,7 +57,7 @@ void robot_container::setup_robot()
 }
 
 int robot_container::wait_for_connection(char *port)
-{   
+{
     std::cout << "waiting for external controller" << '\n';
     using boost::asio::ip::tcp;
     try
@@ -62,52 +73,71 @@ int robot_container::wait_for_connection(char *port)
     }
 }
 
-void robot_container::fill_distance_sensor_message(external_distance_sensor_message& message)
+void robot_container::fill_distance_sensor_message(buffer_writer& writer)
 {
+    external_distance_sensor_message message;
     for(std::size_t i = 0; i<_distance_sensors.size(); ++i)
     {
       message.data[i] = _distance_sensors[i]->getValue();
     }
+    writer << message;
 }
 
-void robot_container::fill_light_sensor_message(external_light_sensor_message& message)
+void robot_container::fill_light_sensor_message(buffer_writer& writer)
 {
+    external_light_sensor_message message;
     for(std::size_t i = 0; i<_light_sensors.size(); ++i)
     {
       message.data[i] = _light_sensors[i]->getValue();
     }
+    writer << message;
 }
 
-void robot_container::fill_image_data_message(external_image_data_message& message)
+void robot_container::fill_image_data_message(buffer_writer& writer)
 {
+    std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds>
+                (std::chrono::system_clock::now().time_since_epoch());
+    // turn on camera at least _basic_time_step millieconds before _wait_time
+    if((now - _last).count() > (_wait_time - (_basic_time_step + 4))){
+        _camera->enable(_basic_time_step);
+    }
+
+    if((now - _last).count() < _wait_time){
+        return;
+    }
+    // std::cout << (now - _last).count()  << '\n';
+
     const unsigned char *image = _camera->getImage();
     std::vector<unsigned char> vec(image, image + _image_size);
+    external_image_data_message message;
     message.pixel = vec;
+    writer << message;
+
+    _last = now;
+    _camera->disable();
 }
 
 void robot_container::run()
 {
-    while (_robot.step(_basic_time_step) != -1) 
+    while (_robot.step(_basic_time_step) != -1)
     {
-        external_distance_sensor_message ds_message;
-        external_light_sensor_message ls_message;
-        external_image_data_message id_message;
-        fill_distance_sensor_message(ds_message);
-        fill_light_sensor_message(ls_message);
-        fill_image_data_message(id_message);
+        buffer out;
+        buffer_writer out_writer(out);
+        fill_distance_sensor_message(out_writer);
+        fill_light_sensor_message(out_writer);
+        fill_image_data_message(out_writer);
 
         try
         {
-            boost::asio::write(_external, boost::asio::buffer(ds_message.to_buffer()));
-            boost::asio::write(_external, boost::asio::buffer(ls_message.to_buffer()));
-            boost::asio::write(_external, boost::asio::buffer(id_message.to_buffer()));
+            std::size_t t = boost::asio::write(_external, boost::asio::buffer(out));
             if(_external.available() < 1)
             {
                 continue;
             }
 
+            std::array<std::uint8_t, 256> data;
             boost::system::error_code error;
-            std::size_t length = _external.read_some(boost::asio::buffer(_receive_buffer), error);
+            std::size_t length = _external.read_some(boost::asio::buffer(data), error);
             if(error == boost::asio::error::eof)
             {
                 std::cerr << "external controller has disconected" << std::endl;
@@ -119,15 +149,18 @@ void robot_container::run()
                 break;
             }
 
-            _buffer.insert(_buffer.end(), _receive_buffer.begin(), _receive_buffer.begin() + length);
+            for(std::size_t i = 0; i<length; i++)
+            {
+                _writer << data[i];
+            }
 
             webots_velocity_message vl_msg;
-            if(!vl_msg.readable(_buffer))
+            if(_writer.written() - _reader.read() < vl_msg.size())
             {
                 continue;
             }
 
-            vl_msg.from_buffer(_buffer);
+            _reader >> vl_msg;
             _motors[0]->setVelocity(vl_msg.right_speed);
             _motors[1]->setVelocity(vl_msg.right_speed);
             _motors[2]->setVelocity(vl_msg.left_speed);

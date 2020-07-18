@@ -1,10 +1,23 @@
 #VRML_SIM R2020a utf8
 WorldInfo {
   basicTimeStep 16
+  contactProperties [
+    ContactProperties {
+      material2 "rear_wheel"
+      coulombFriction [
+        0.5
+      ]
+    }
+    ContactProperties {
+      coulombFriction [
+        50
+      ]
+    }
+  ]
 }
 Viewpoint {
-  orientation -0.3969146367254591 -0.8876999025655062 -0.23334021114734474 1.707611991187905
-  position -266.7560735479514 210.6433685147553 -10.482221554771922
+  orientation -0.9871321469915756 -0.023649296507454624 0.15814814305108077 1.296184961844421
+  position -16.38985347855769 229.44387900017156 16.431810143685414
 }
 TexturedBackground {
   luminosity 2
@@ -36,8 +49,7 @@ DEF Cab1 Robot {
         density 1
       }
       fieldOfView 0.75
-      width 18
-      height 10
+      height 5
       far 10
     }
     DEF ls_f LightSensor {
@@ -408,6 +420,7 @@ DEF Cab1 Robot {
           }
         ]
         name "wheelRL"
+        contactMaterial "rear_wheel"
         boundingObject USE wheel
         physics DEF physics_wheel Physics {
           density 10
@@ -440,6 +453,7 @@ DEF Cab1 Robot {
           }
         ]
         name "wheelRR"
+        contactMaterial "rear_wheel"
         boundingObject USE wheel
         physics DEF physics_wheel Physics {
           density 10
@@ -488,6 +502,7 @@ DEF Cab1 Robot {
     }
   ]
   name "Cab1"
+  contactMaterial "rear_wheel"
   boundingObject USE car_body
   physics Physics {
     density 10
@@ -895,6 +910,7 @@ DEF Cab2 Robot {
           }
         ]
         name "wheelRL"
+        contactMaterial "rear_wheel"
         boundingObject USE wheel
         physics DEF physics_wheel Physics {
           density 10
@@ -927,6 +943,7 @@ DEF Cab2 Robot {
           }
         ]
         name "wheelRR"
+        contactMaterial "rear_wheel"
         boundingObject USE wheel
         physics DEF physics_wheel Physics {
           density 10

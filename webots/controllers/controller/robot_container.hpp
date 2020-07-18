@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <chrono>
 
 #include <webots/Robot.hpp>
 #include <webots/Motor.hpp>
@@ -25,19 +26,22 @@ class robot_container
         std::array<webots::LightSensor *, 1> _light_sensors;
         webots::Camera *_camera;
         int _image_size;
+        int _wait_time;
+
+        std::chrono::milliseconds _last;
 
         boost::asio::io_service _io_service;
         boost::asio::ip::tcp::socket _external;
-        buffer _buffer;
+        buffer _in;
+        buffer_reader _reader;
+        buffer_writer _writer;
 
-        std::array<std::uint8_t, 256> _receive_buffer;
-
-        void fill_distance_sensor_message(external_distance_sensor_message& message);
-        void fill_light_sensor_message(external_light_sensor_message& message);
-        void fill_image_data_message(external_image_data_message& message);
+        void fill_distance_sensor_message(buffer_writer& writer);
+        void fill_light_sensor_message(buffer_writer& writer);
+        void fill_image_data_message(buffer_writer& writer);
     public:
         robot_container();
-        void setup_robot();
+        void setup_robot(int n_images);
         int wait_for_connection(char *port);
         void run();
 };

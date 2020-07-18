@@ -9,6 +9,7 @@ projectionMode: PERSPECTIVE
 selectionDisabled: 0
 viewpointLocked: 0
 orthographicViewHeight: 1
-textFiles: 0 "controllers/controller/controller.cpp" "../shared/buffer_reader.cpp" "../shared/buffer_writer.cpp" "controllers/controller/robot_container.cpp"
+textFiles: 0 "controllers/controller/controller.cpp" "../shared/buffer_reader.cpp" "../shared/buffer_writer.cpp" "robot_container.cpp"
 globalOptionalRendering: DistanceSensorRays::CameraFrustums
 renderingDevicePerspectives: Cab1:camera;1;6.4;0;0
+renderingDevicePerspectives: Cab2:camera;1;3.2;0;0

@@ -3,507 +3,20 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation -0.3969146367254591 -0.8876999025655062 -0.23334021114734474 1.707611991187905
-  position -266.7560735479514 210.6433685147553 -10.482221554771922
+  orientation -0.3695297107905847 -0.9151549730283057 -0.16105641305017343 1.5473510943449185
+  position 22.661092602212143 22.8523531193517 -54.33198557266896
 }
 TexturedBackground {
   luminosity 2
   reflections FALSE
 }
-DEF Cab1 Robot {
-  translation 0.4 0.4 -29.1
-  rotation 0 -1 0 1.57239
-  children [
-    DEF cam_f Camera {
-      translation 0 0.1 1
-      rotation 0 1 0 3.14
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.4 0 0
-          }
-          geometry Cylinder {
-            height 0.1
-            radius 0.05
-          }
-        }
-      ]
-      boundingObject Cylinder {
-        height 0.1
-        radius 0.05
-      }
-      physics Physics {
-        density 1
-      }
-      fieldOfView 0.75
-      width 18
-      height 10
-      far 10
-    }
-    DEF ls_f LightSensor {
-      translation 0 0 1
-      rotation 0 1 0 -1.57
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0 0 0
-            metalness 0
-          }
-          geometry Box {
-            size 0.1 0.1 0.1
-          }
-        }
-      ]
-      name "ls_front"
-      boundingObject Shape {
-        appearance PBRAppearance {
-        }
-        geometry Cylinder {
-          height 0.1
-          radius 0.05
-        }
-      }
-      physics Physics {
-        density 1
-      }
-      lookupTable [
-        0 0 0
-        5 1000 0
-      ]
-    }
-    DEF ds_fl DistanceSensor {
-      translation 0.45 0.2 1
-      rotation 0 1 0 -1.047
-      children [
-        Shape {
-          appearance PBRAppearance {
-          }
-          geometry Box {
-            size 0.1 0.1 0.1
-          }
-        }
-      ]
-      name "ds_fl"
-      boundingObject Shape {
-        appearance PBRAppearance {
-        }
-        geometry Box {
-          size 0.1 0.1 0.1
-        }
-      }
-      physics Physics {
-        density 1
-      }
-      lookupTable [
-        0 0 0
-        5 1000 0
-      ]
-    }
-    DEF ds_lf DistanceSensor {
-      translation 0.5 0.2 0.95
-      children [
-        Shape {
-          appearance PBRAppearance {
-          }
-          geometry Box {
-            size 0.1 0.1 0.1
-          }
-        }
-      ]
-      name "ds_lf"
-      boundingObject Shape {
-        appearance PBRAppearance {
-        }
-        geometry Box {
-          size 0.1 0.1 0.1
-        }
-      }
-      physics Physics {
-        density 1
-      }
-      lookupTable [
-        0 0 0
-        5 1000 0
-      ]
-    }
-    DEF ds_lc DistanceSensor {
-      translation 0.5 0.2 0
-      children [
-        Shape {
-          appearance PBRAppearance {
-          }
-          geometry Box {
-            size 0.1 0.1 0.1
-          }
-        }
-      ]
-      name "ds_lc"
-      boundingObject Shape {
-        appearance PBRAppearance {
-        }
-        geometry Box {
-          size 0.1 0.1 0.1
-        }
-      }
-      physics Physics {
-        density 1
-      }
-      lookupTable [
-        0 0 0
-        5 1000 0
-      ]
-    }
-    DEF ds_fr DistanceSensor {
-      translation -0.45 0.2 1
-      rotation 0 1 0 -2.09
-      children [
-        Shape {
-          appearance PBRAppearance {
-          }
-          geometry Box {
-            size 0.1 0.1 0.1
-          }
-        }
-      ]
-      name "ds_fr"
-      boundingObject Shape {
-        appearance PBRAppearance {
-        }
-        geometry Box {
-          size 0.1 0.1 0.1
-        }
-      }
-      physics Physics {
-        density 1
-      }
-      lookupTable [
-        0 0 0
-        5 1000 0
-      ]
-    }
-    DEF ds_rf DistanceSensor {
-      translation -0.5 0.2 0.95
-      rotation 0 1 0 -3.14
-      children [
-        Shape {
-          appearance PBRAppearance {
-          }
-          geometry Box {
-            size 0.1 0.1 0.1
-          }
-        }
-      ]
-      name "ds_rf"
-      boundingObject Shape {
-        appearance PBRAppearance {
-        }
-        geometry Box {
-          size 0.1 0.1 0.1
-        }
-      }
-      physics Physics {
-        density 1
-      }
-      lookupTable [
-        0 0 0
-        5 1000 0
-      ]
-    }
-    DEF ds_rc DistanceSensor {
-      translation -0.5 0.2 0
-      rotation 0 1 0 -3.14
-      children [
-        Shape {
-          appearance PBRAppearance {
-          }
-          geometry Box {
-            size 0.1 0.1 0.1
-          }
-        }
-      ]
-      name "ds_rc"
-      boundingObject Shape {
-        appearance PBRAppearance {
-        }
-        geometry Box {
-          size 0.1 0.1 0.1
-        }
-      }
-      physics Physics {
-        density 1
-      }
-      lookupTable [
-        0 0 0
-        5 1000 0
-      ]
-    }
-    DEF ds_fc DistanceSensor {
-      translation 0 0.2 1
-      rotation 0 1 0 -1.57
-      children [
-        Shape {
-          appearance PBRAppearance {
-          }
-          geometry Box {
-            size 0.1 0.1 0.1
-          }
-        }
-      ]
-      name "ds_fc"
-      boundingObject Shape {
-        appearance PBRAppearance {
-        }
-        geometry Box {
-          size 0.1 0.1 0.1
-        }
-      }
-      physics Physics {
-        density 1
-      }
-      lookupTable [
-        0 0 0
-        5 1000 0
-      ]
-    }
-    DEF ds_fcr DistanceSensor {
-      translation -0.225 0.2 1
-      rotation 0 1 0 -1.833
-      children [
-        Shape {
-          appearance PBRAppearance {
-          }
-          geometry Box {
-            size 0.1 0.1 0.1
-          }
-        }
-      ]
-      name "ds_fcr"
-      boundingObject Shape {
-        appearance PBRAppearance {
-        }
-        geometry Box {
-          size 0.1 0.1 0.1
-        }
-      }
-      physics Physics {
-        density 1
-      }
-      lookupTable [
-        0 0 0
-        5 1000 0
-      ]
-    }
-    DEF ds_fcl DistanceSensor {
-      translation 0.225 0.2 1
-      rotation 0 1 0 -1.309
-      children [
-        Shape {
-          appearance PBRAppearance {
-          }
-          geometry Box {
-            size 0.1 0.1 0.1
-          }
-        }
-      ]
-      name "ds_fcl"
-      boundingObject Shape {
-        appearance PBRAppearance {
-        }
-        geometry Box {
-          size 0.1 0.1 0.1
-        }
-      }
-      physics Physics {
-        density 1
-      }
-      lookupTable [
-        0 0 0
-        5 1000 0
-      ]
-    }
-    Transform {
-      translation 0 0.5 -0.3
-      rotation 1 0 0 0
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.5 0.5 0.5
-            transparency 0.3
-          }
-          geometry Box {
-            size 0.9 0.5 1.2
-          }
-        }
-      ]
-    }
-    Transform {
-      translation 0 0.8 -0.3
-      rotation 1 0 0 0
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0 0 0
-          }
-          geometry Box {
-            size 1 0.1 1.3
-          }
-        }
-      ]
-    }
-    DEF wheelFL HingeJoint {
-      jointParameters HingeJointParameters {
-        anchor 0.55 -0.1 0.55
-      }
-      device [
-        DEF wheelFL RotationalMotor {
-          name "wheelFL"
-          maxTorque 30
-        }
-      ]
-      endPoint DEF wheelFL Solid {
-        translation 0.55 -0.1 0.55
-        rotation 0 0 1 1.5699999999999963
-        children [
-          DEF wheel Shape {
-            appearance PBRAppearance {
-              baseColor 0 0 0
-              metalness 0
-            }
-            geometry Cylinder {
-              height 0.1
-              radius 0.3
-            }
-          }
-        ]
-        name "wheelFL"
-        boundingObject USE wheel
-        physics DEF physics_wheel Physics {
-          density 10
-        }
-      }
-    }
-    DEF wheelRL HingeJoint {
-      jointParameters HingeJointParameters {
-        anchor 0.55 -0.1 -0.7
-      }
-      device [
-        DEF wheelRL RotationalMotor {
-          name "wheelRL"
-          maxTorque 30
-        }
-      ]
-      endPoint DEF wheelRL Solid {
-        translation 0.55 -0.1 -0.7
-        rotation 0 0 1 1.5699999999999963
-        children [
-          DEF wheel Shape {
-            appearance PBRAppearance {
-              baseColor 0 0 0
-              metalness 0
-            }
-            geometry Cylinder {
-              height 0.1
-              radius 0.3
-            }
-          }
-        ]
-        name "wheelRL"
-        boundingObject USE wheel
-        physics DEF physics_wheel Physics {
-          density 10
-        }
-      }
-    }
-    DEF wheelRR HingeJoint {
-      jointParameters HingeJointParameters {
-        anchor -0.55 -0.1 -0.7
-      }
-      device [
-        DEF wheelRR RotationalMotor {
-          name "wheelRR"
-          maxTorque 30
-        }
-      ]
-      endPoint DEF wheelRR Solid {
-        translation -0.55 -0.1 -0.7
-        rotation 0 0 1 1.5699999999999963
-        children [
-          DEF wheel Shape {
-            appearance PBRAppearance {
-              baseColor 0 0 0
-              metalness 0
-            }
-            geometry Cylinder {
-              height 0.1
-              radius 0.3
-            }
-          }
-        ]
-        name "wheelRR"
-        boundingObject USE wheel
-        physics DEF physics_wheel Physics {
-          density 10
-        }
-      }
-    }
-    DEF wheelFR HingeJoint {
-      jointParameters HingeJointParameters {
-        anchor -0.55 -0.1 0.55
-      }
-      device [
-        DEF wheelFR RotationalMotor {
-          name "wheelFR"
-          maxTorque 30
-        }
-      ]
-      endPoint DEF wheelFR Solid {
-        translation -0.55 -0.1 0.55
-        rotation 0 0 1 1.5699999999999956
-        children [
-          DEF wheel Shape {
-            appearance PBRAppearance {
-              baseColor 0 0 0
-              metalness 0
-            }
-            geometry Cylinder {
-              height 0.1
-              radius 0.3
-            }
-          }
-        ]
-        name "wheelFR"
-        boundingObject USE wheel
-        physics DEF physics_wheel Physics {
-          density 10
-        }
-      }
-    }
-    DEF car_body Shape {
-      appearance PBRAppearance {
-        baseColor 1 1 0
-      }
-      geometry Box {
-        size 1 0.6 2
-      }
-    }
-  ]
-  name "Cab1"
-  boundingObject USE car_body
-  physics Physics {
-    density 10
-  }
-  recognitionColors [
-    0 0 0
-  ]
-  controller "controller"
-}
 DEF Cab2 Robot {
-  translation 10 0.4 -29.1
-  rotation 0 1 0 -1.5723853071795864
+  translation 40.1329 0.40141 -58.1231
+  rotation 0.00011563964089540521 0.9999999864500092 -0.00011716422043708882 1.570756651368497
   children [
     DEF cam_f Camera {
       translation 0 0.1 1
-      rotation 0 1 0 3.14
+      rotation 0.00010394198776057495 -0.9914448832549232 -0.13052598463024384 -3.140015307179586
       children [
         Shape {
           appearance PBRAppearance {
@@ -523,8 +36,7 @@ DEF Cab2 Robot {
         density 1
       }
       fieldOfView 0.75
-      width 18
-      height 10
+      height 5
       far 10
     }
     DEF ls_f LightSensor {
@@ -839,6 +351,7 @@ DEF Cab2 Robot {
     }
     DEF wheelFL HingeJoint {
       jointParameters HingeJointParameters {
+        position 808.2338854774397
         anchor 0.55 -0.1 0.55
       }
       device [
@@ -849,7 +362,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelFL Solid {
         translation 0.55 -0.1 0.55
-        rotation 0 0 1 1.5699999999999963
+        rotation 0.6742038262218544 -0.6736671533049622 -0.30269087740762873 3.7298817344269573
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -871,6 +384,7 @@ DEF Cab2 Robot {
     }
     DEF wheelRL HingeJoint {
       jointParameters HingeJointParameters {
+        position 808.5047815400841
         anchor 0.55 -0.1 -0.7
       }
       device [
@@ -881,7 +395,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelRL Solid {
         translation 0.55 -0.1 -0.7
-        rotation 0 0 1 1.5699999999999963
+        rotation 0.6472642645215412 -0.6467490357623265 -0.4034410199941119 3.909083909104638
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -903,6 +417,7 @@ DEF Cab2 Robot {
     }
     DEF wheelRR HingeJoint {
       jointParameters HingeJointParameters {
+        position 714.8072406423137
         anchor -0.55 -0.1 -0.7
       }
       device [
@@ -913,7 +428,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelRR Solid {
         translation -0.55 -0.1 -0.7
-        rotation 0 0 1 1.5699999999999963
+        rotation -0.5585053159551597 0.5580607401972709 0.6137100474167759 2.0400035684410316
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -935,6 +450,7 @@ DEF Cab2 Robot {
     }
     DEF wheelFR HingeJoint {
       jointParameters HingeJointParameters {
+        position 714.8384302928733
         anchor -0.55 -0.1 0.55
       }
       device [
@@ -945,7 +461,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelFR Solid {
         translation -0.55 -0.1 0.55
-        rotation 0 0 1 1.5699999999999956
+        rotation -0.551814474492544 0.5513752247106639 0.6256885385843203 2.0226878024038815
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -983,6 +499,7 @@ DEF Cab2 Robot {
     0 0 0
   ]
   controller "controller"
+  controllerArgs "9999"
 }
 DEF environment Solid {
   scale 1.09819 1.09819 1.09819
@@ -1519,8 +1036,8 @@ DEF environment Solid {
       name "solid(17)"
     }
     Solid {
-      translation 51 0 -51
-      rotation 0 1 0 0.785
+      translation 50.2778 0 -51.3544
+      rotation 0 1 0 1.3086
       children [
         Shape {
           appearance PBRAppearance {
@@ -3309,4 +2826,52 @@ Floor {
     transparency 0.9
     metalness 0
   }
+}
+Solid {
+  translation 47.0011 0 -57.9602
+  rotation 0 1 0 1.5704
+  children [
+    Shape {
+      appearance PBRAppearance {
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.2 0.01 5.8
+      }
+    }
+  ]
+  name "solid(2)"
+}
+Solid {
+  translation 47.0011 0 -58.0702
+  rotation 0 1 0 1.5704
+  children [
+    Shape {
+      appearance PBRAppearance {
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.2 0.01 5.8
+      }
+    }
+  ]
+  name "solid(1)"
+}
+Solid {
+  translation 50.4547 0 -57.6864
+  rotation 0 -1 0 -1.3086053071795867
+  children [
+    Shape {
+      appearance PBRAppearance {
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.2 0.01 4
+      }
+    }
+  ]
+  name "solid(47)"
 }

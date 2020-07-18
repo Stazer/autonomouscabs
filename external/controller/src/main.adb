@@ -55,10 +55,10 @@ begin
       Mailbox.Update_Alternator (Alternator);
 
       -- do calculations with current packet
-      Put_Line (Message.Id'Image);
+      --Put_Line (Message.Id'Image);
 
       if Message.Id = Messages.EXTERNAL_JOIN_SUCCESS then
-         Put_Line (Messages.JS_Message_Ptr (Message).Cab_Id'Image);
+         --Put_Line (Messages.JS_Message_Ptr (Message).Cab_Id'Image);
 
          declare
             O : Byte_Buffer.Buffer;
@@ -96,6 +96,7 @@ begin
          -- Sending 0 as velocity if object collision is over
          if V_Collision.Left_Speed /= 0.0 and V_Collision.Right_Speed /= 0.0 then
             is_object_collision := True;
+            --Put_Line("collision");
             Declare Out_Buffer: Byte_Buffer.Buffer;
             begin
                Out_Buffer.Write_Message (V_Collision);
@@ -105,7 +106,7 @@ begin
             is_object_collision := False;
          end if;
       elsif Message.Id = Messages.EXTERNAL_IMAGE_DATA and is_object_collision = False then
-         ada.Text_IO.Put_Line("image data");
+         --ada.Text_IO.Put_Line("image data");
          V_Path := Path_Following.Main (Messages.ID_Message_Ptr (Message), DS_Data);
          Declare Out_Buffer: Byte_Buffer.Buffer;
          begin

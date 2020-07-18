@@ -21,12 +21,13 @@ package Path_Following is
    type Colour_Column is array(Column_Index) of uint8;
    type Colour_Matrix is array(Row_Index) of Colour_Column;
    type Velocity_Array is array(0..1) of Float64;
+   type Command is (turnLeft, turnRight, goStraight);
 
    function Main (Data_Input : in Messages.ID_Message_Ptr; d_sensor : in Messages.Distance_Sensor_Array) return Messages.Velocity_Message;
    function Binarize (grey : in Colour_Matrix) return Colour_Matrix;
    function Find_Line (binarizedImage : in Colour_Matrix) return Integer;
    function Wheel_Velocity (whiteLine : in Integer; d_sensor : in Messages.Distance_Sensor_Array) return Velocity_Array;
 
-   procedure Check_For_Fork (pick_up_location_reached : in Boolean; bottomPoint : in out Integer; bottomPoint1 : in out Integer );
+   procedure Check_For_Fork (Command_Value : in Command; left_bottomPoint : in out Integer; right_bottomPoint : in out Integer );
 
 end Path_Following;

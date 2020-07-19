@@ -22,7 +22,13 @@ Justus Flerlage
 
 Felix Heimann
 	Functions and concepts contributed:
-	Actions taken to fulfill the management role:
+	- Environment and robot design in webots
+	- Cab provison algorithm in the backend
+	- Written tests for said algorithm
+	Actions taken to fulfill the management role (time manager):
+	- Setup time schedule
+	- Adjusting the time schedule
+	- Moderated internal meetings
 
 Luyanda Mlangeni
 	Functions and concepts contributed:
@@ -35,8 +41,12 @@ Luyanda Mlangeni
 
 Gerda Zsejke Móré
 	Functions and concepts contributed:
-	Actions taken to fulfill the management role:
+	- Collision avoidance algorithm in the external controler
+	Actions taken to fulfill the management role (technical manager):
+	- Setup slack
 
 Yue Wang
 	Functions and concepts contributed:
-	Actions taken to fulfill the management role:
+	- Path following algorithm in the external controler
+	Actions taken to fulfill the management role (time manager):
+	- Setup time schedule

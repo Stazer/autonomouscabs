@@ -1,22 +1,17 @@
 package body Tcp_Client is
 
    function Connect (Client : in out Socket_Type; Address : in out Sock_Addr_Type) return Stream_Access is
-      Connected : Boolean;
    begin
       GNAT.Sockets.Initialize;
       Create_Socket (Client);
-      loop
-         Connected := True;
-         begin
-            Connect_Socket (Client, Address);
-         exception
-            when E : Socket_Error =>
-               Connected := False;
-         end;
-         exit when Connected = True;
-      end loop;
 
-      return Stream (Client);
+      begin
+         Connect_Socket (Client, Address);
+         return Stream (Client);
+      exception
+         when E : Socket_Error =>
+            return null;
+      end;
    end Connect;
 
    procedure Read_Packet (Stream : Stream_Access;

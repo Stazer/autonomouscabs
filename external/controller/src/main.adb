@@ -34,6 +34,7 @@ procedure Main is
    Is_Object_Collision: Boolean := False;
 
    Route_Update : Messages.Route_Update_Message;
+   Position_Update : Messages.Position_Update_Message;
 
 begin
    -- threads have started here
@@ -86,12 +87,13 @@ begin
                Put_Line ("Backend disconnected, returning to depot after last request... ");
                Memory.Handle_Disconnect;
             when Messages.ERROR_WEBOTS_DISCONNECTED =>
-               Put_Line ("Webots disconnecetd, exiting... ");
+               Put_Line ("Webots disconnected, exiting... ");
                exit;
             when others => null;
          end case;
       end;
-
    end loop;
-
+   Put_Line ("done loop");
+   Webots_Thread.Webots_Stop := True;
+   Backend_Thread.Backend_Stop := True;
 end Main;

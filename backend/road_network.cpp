@@ -97,7 +97,7 @@ bool road_network::in_between(node_type start, node_type stop, node_type q)
     return false;
 }
 
-// returns wether two node are located next to each other on the inner and outer
+// returns wether two nodes are located next to each other on the inner and outer
 bool road_network::are_twins(node_type n1, node_type n2)
 {
     switch (n1)

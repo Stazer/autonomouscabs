@@ -27,6 +27,7 @@ std::pair<bool, node_type> string_to_node(std::string string)
         {"P6", P6},
         {"P7", P7},
     };
+
     std::pair<bool, node_type> pair;
     if(table.find(string) == table.end())
     {
@@ -37,5 +38,6 @@ std::pair<bool, node_type> string_to_node(std::string string)
         pair.first = true;
         pair.second = table[string];
     }
+    
     return pair;
 }

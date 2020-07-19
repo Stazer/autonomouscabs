@@ -15,7 +15,9 @@ package Messages is
                        BACKEND_POSITION_UPDATE,
                        BACKEND_ROUTE_UPDATE,
                        ERROR_BACKEND_DISCONNECTED,
-                       ERROR_WEBOTS_DISCONNECTED);
+                       ERROR_WEBOTS_DISCONNECTED,
+                       ERROR_WEBOTS_PORT_NOT_SET,
+                       ERROR_BACKEND_PORT_NOT_SET);
 
    for Message_Id use (UNDEFINED => 16#1#, NOP => 16#2#, Ping => 16#3#,
                        EXTERNAL_LIGHT_SENSOR => 16#41#,
@@ -28,7 +30,9 @@ package Messages is
                        BACKEND_POSITION_UPDATE => 16#C2#,
                        BACKEND_ROUTE_UPDATE => 16#C3#,
                        ERROR_BACKEND_DISCONNECTED => 16#D1#,
-                       ERROR_WEBOTS_DISCONNECTED => 16#D2#);
+                       ERROR_WEBOTS_DISCONNECTED => 16#D2#,
+                       ERROR_WEBOTS_PORT_NOT_SET => 16#D3#,
+                       ERROR_BACKEND_PORT_NOT_SET => 16#D4#);
 
    for Message_Id'Size use Types.Uint8'Size;
    

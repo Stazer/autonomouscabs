@@ -4,12 +4,15 @@ with Ada.Float_Text_Io; use Ada.Float_Text_Io;
 with Types; use Types;
 with Mailbox;
 with Messages;
+with Memory; use type Memory.Action;
 
 package Path_Following is
 
    width : constant Integer := 64;
    height : constant Integer := 5;
    size : constant Integer := width * height * 4;
+
+   Changed_Position : Boolean := False;
 
    type Pixel is array(0 .. 3) of uint8;
    type Column_Index is range 0 .. width - 1;
@@ -28,6 +31,6 @@ package Path_Following is
    function Find_Line (binarizedImage : in Colour_Matrix) return Integer;
    function Wheel_Velocity (whiteLine : in Integer; d_sensor : in Messages.Distance_Sensor_Array) return Velocity_Array;
 
-   procedure Check_For_Fork (Command_value : in Command; bottomPoint : in out Integer; bottomPoint1 : in out Integer );
+   procedure Check_For_Fork (Action : in Memory.Action; Bottom_Point : in out Integer; Bottom_Point1 : in out Integer );
 
 end Path_Following;

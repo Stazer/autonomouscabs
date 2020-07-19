@@ -9,9 +9,9 @@ package body Collision_Detection is
    function Main(Distance: Messages.Distance_Sensor_Array) return Messages.Velocity_Message is
       Threshold: float64 := 700.0;
    begin
+
       case Car_State is
          when Forward =>
-            Left_Obstacle := False;
 
             -- Oobstacle in front of car
             if Distance(0) < 800.0 then
@@ -30,58 +30,92 @@ package body Collision_Detection is
 
             -- Obstacle on slightly right side
             if Distance(1) < Threshold or Distance(2) < Threshold then
-               Ls := 1.0;
-               Rs := 6.0;
+               Ls := -3.0;
+               Rs := 2.5;
                Car_State := Left;
             end if;
             -- Obstacle on slightly left side
             if Distance(7) < Threshold or Distance(8) < Threshold then
-               ls := 6.0;
-               rs := 1.0;
+               ls := 4.0;
+               rs := -3.0;
                Car_State := Right;
             end if;
 
          when Left =>
             if Distance(2) < Threshold and Distance(1) > Threshold then
-               ls := 4.0;
+               ls := 3.0;
                rs := 4.0;
             end if;
             -- Mostly taken on object, returning to path
             if Distance(3) < 200.0 then
+               Passing_Obstacle := False;
                Car_State := Passing_Left;
             end if;
 
          when Passing_Left =>
             if Distance(3) < 200.0 then
-               ls := 4.0;
-               rs := 1.0;
+               ls := 3.0;
+               rs := 2.5;
             end if;
-            if Distance(3) > 300.0  then
+
+            if Distance(4) < 300.0 then
+               ls := 3.0;
+               rs := 2.0;
+               Passing_Obstacle := True;
+            end if;
+
+            if Distance(4) < 600.0 and Passing_Obstacle = True then
+               ls := 3.0;
+               rs := 1.0;
+               Obstacle_Passed := True;
+            end if;
+
+            if Distance(3) > 300.0 and Distance(4) > 300.0 and Obstacle_Passed = True then
                ls := 0.0;
                rs := 0.0;
+               Obstacle_Passed := False;
+               Passing_Obstacle := False;
                Car_State := Forward;
             end if;
 
          when Right =>
             if Distance(7) < Threshold and Distance(8) > Threshold then
                ls := 4.0;
-               rs := 4.0;
+               rs := 3.0;
             end if;
+
             -- Mostly taken on object, returning to line
             if Distance(6) < 200.0 then
+               Passing_Obstacle := False;
                Car_State := Passing_Right;
             end if;
 
          when Passing_Right=>
             if Distance(6) < 200.0 then
-               Ls := 1.0;
-               Rs := 4.0;
+               Ls := 2.5;
+               Rs := 3.0;
             end if;
-            if Distance(6) > 300.0 then
-               Ls := 0.0;
-               Rs := 0.0;
+
+            if Distance(6) < 300.0 then
+               ls := 2.0;
+               rs := 3.0;
+               Passing_Obstacle := True;
+            end if;
+
+            if Distance(5) < 600.0 and Passing_Obstacle = True then
+               ls := 1.0;
+               rs := 3.0;
+               Obstacle_Passed := True;
+            end if;
+
+            if Distance(6) > 300.0 and Distance(5) > 300.0 and Obstacle_Passed = True then
+               ls := 0.0;
+               rs := 0.0;
+               Obstacle_Passed := False;
+               Passing_Obstacle := False;
                Car_State := Forward;
             end if;
+
       end case;
 
       declare

@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <iostream>
+#include <string>
 
 using node_type_base = std::uint8_t;
 
@@ -23,3 +24,5 @@ enum node_type : node_type_base
 };
 
 std::ostream& operator<<(std::ostream& stream, node_type id);
+
+std::pair<bool, node_type> string_to_node(std::string string);

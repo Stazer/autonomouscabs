@@ -16,10 +16,12 @@ package Backend_Thread is
 
    Backend_Buffer : Byte_buffer.Buffer;
 
+   Backend_Stop : Boolean := False;
+
    procedure Handle_Join_Challenge;
    procedure Handle_Join;
 
-   procedure Main;
+   procedure Main (Backend_Port : Integer);
    procedure Join;
 
    type Handle_Buffer_Type is access procedure;

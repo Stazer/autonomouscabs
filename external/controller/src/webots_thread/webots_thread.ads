@@ -15,7 +15,8 @@ package Webots_Thread is
    Webots_Address : Sock_Addr_Type; -- stores the server address
    Webots_Buffer : Byte_buffer.Buffer;
    Webots_Mailbox : Mailbox.Mailbox (Size => 5);
+   Webots_Stop : Boolean := False;
 
-   procedure Main;
+   procedure Main (Webots_Port : Integer);
 
 end Webots_Thread;

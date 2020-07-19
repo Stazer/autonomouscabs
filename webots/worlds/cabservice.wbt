@@ -139,7 +139,7 @@ DEF Cab1 Robot {
       ]
     }
     DEF ds_lc DistanceSensor {
-      translation 0.5 0.2 0
+      translation 0.5 0.2 -0.7
       children [
         Shape {
           appearance PBRAppearance {
@@ -222,7 +222,7 @@ DEF Cab1 Robot {
       ]
     }
     DEF ds_rc DistanceSensor {
-      translation -0.5 0.2 0
+      translation -0.5 0.2 -0.7
       rotation 0 1 0 -3.14
       children [
         Shape {
@@ -523,7 +523,7 @@ DEF Cab2 Robot {
   children [
     DEF cam_f Camera {
       translation 0 0.1 1
-      rotation 0 1 0 3.14
+      rotation 0 0.9986470946821755 0.051999810411670476 3.14
       children [
         Shape {
           appearance PBRAppearance {
@@ -543,8 +543,7 @@ DEF Cab2 Robot {
         density 1
       }
       fieldOfView 0.75
-      width 18
-      height 10
+      height 5
       far 10
     }
     DEF ls_f LightSensor {
@@ -634,7 +633,7 @@ DEF Cab2 Robot {
       ]
     }
     DEF ds_lc DistanceSensor {
-      translation 0.5 0.2 0
+      translation 0.5 0.2 -0.7
       children [
         Shape {
           appearance PBRAppearance {
@@ -717,7 +716,7 @@ DEF Cab2 Robot {
       ]
     }
     DEF ds_rc DistanceSensor {
-      translation -0.5 0.2 0
+      translation -0.5 0.2 -0.7
       rotation 0 1 0 -3.14
       children [
         Shape {

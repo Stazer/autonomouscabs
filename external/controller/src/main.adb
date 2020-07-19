@@ -41,7 +41,6 @@ procedure Main is
             end if;
          end;
       else
-         Put_Line("webots no");
          declare
             Mail : Mailbox.Mail;
          begin
@@ -76,7 +75,6 @@ procedure Main is
             end if;
          end;
       else
-         Put_Line("backend no");
          declare
             Mail : Mailbox.Mail;
          begin

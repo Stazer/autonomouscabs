@@ -1,6 +1,9 @@
+with Ada.Text_IO;
+
 package body Mailbox is
 
    protected body Mailbox is
+      
       procedure Clear is -- throws out all the old items and updates Last
       begin
          if Last > 0 then
@@ -31,6 +34,7 @@ package body Mailbox is
       begin
          Remaining_Items:= Last;
       end View_Inbox;
+      
       procedure Empty is
       begin
          Last := 0;

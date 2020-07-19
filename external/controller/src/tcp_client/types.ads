@@ -41,4 +41,6 @@ package Types is
    function Hton64 (X : Uint64) return Uint64;
    function Ntoh64 (X : Uint64) return Uint64;
    
+   function Is_Numeric (Item : in String) return Boolean;
+   
 end Types;

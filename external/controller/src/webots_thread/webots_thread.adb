@@ -1,11 +1,11 @@
 package body Webots_Thread is
 
-   procedure Main is
+   procedure Main (Webots_Port : Integer) is
 
    begin
 
       Webots_Address.Addr := Inet_Addr ("127.0.0.1");
-      Webots_Address.Port := 9999;
+      Webots_Address.Port := Port_Type(Webots_Port);
       Webots_Stream := Tcp_Client.Connect (Webots_Socket, Webots_Address);
 
       loop

@@ -1,15 +1,16 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body Backend_Thread is
-   procedure Main is
+   procedure Main (Backend_Port : Integer) is
    begin
       Handle_Buffer := Handle_Join_Challenge'Access;
 
       Backend_Address.Addr := Inet_Addr ("127.0.0.1");
-      Backend_Address.Port := 9876;
+
+      Backend_Address.Port := Port_Type(Backend_Port);
 
       Backend_Stream := Tcp_Client.Connect (Backend_Socket, Backend_Address);
-      Put_Line ("Connection to backend (127.0.0.1:9876) established");
+      Put_Line ("Connection to backend (127.0.0.1:" & Integer'Image(Backend_Port) & ") established");
 
       Join;
 
@@ -28,6 +29,7 @@ package body Backend_Thread is
                exit;
          end;
       end loop;
+
    end Main;
 
    procedure Join
@@ -54,4 +56,5 @@ package body Backend_Thread is
    begin
       Ada.Text_IO.Put_Line("Hello");
    end Handle_Join;
+
 end Backend_Thread;

@@ -129,4 +129,14 @@ package body Types is
       return X;
    end Ntoh64;
    
+   function Is_Numeric (Item : in String) return Boolean is
+      Check : Float;
+   begin
+      Check := Float'Value (Item);
+      return True;
+   exception
+      when others =>
+         return False;
+   end Is_Numeric;
+   
 end types;

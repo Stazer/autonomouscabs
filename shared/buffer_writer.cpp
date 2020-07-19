@@ -56,7 +56,7 @@ buffer_writer& buffer_writer::operator<<(double data)
 
     return *this;
 }
-
+/*
 buffer_writer& buffer_writer::operator<<(const std::string& string)
 {
     *this << string.size();
@@ -66,4 +66,4 @@ buffer_writer& buffer_writer::operator<<(const std::string& string)
     }
 
     return *this;
-}
+}*/

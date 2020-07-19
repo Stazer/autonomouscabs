@@ -16,6 +16,6 @@ package Webots_Thread is
    Webots_Buffer : Byte_buffer.Buffer;
    Webots_Mailbox : Mailbox.Mailbox (Size => 5);
 
-   procedure Main;
+   procedure Main (Webots_Port : Integer);
 
 end Webots_Thread;

@@ -1,4 +1,5 @@
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 
 with Tcp_Client;
 with Backend_Thread;
@@ -10,6 +11,7 @@ with Byte_Buffer;
 with Memory;
 with Collision_Detection;
 with Path_Following;
+with Ada.Command_Line;
 
 procedure Main is
    task webots_task;
@@ -17,12 +19,73 @@ procedure Main is
 
    task body webots_task is
    begin
-      Webots_Thread.Main;
+      -- check if port string is usable
+      if Ada.Command_Line.Argument_Count >= 2 then
+         declare
+            Webots_Port : String := Ada.Command_Line.Argument (1);
+         begin
+            if
+              types.Is_Numeric(Webots_Port) = True
+              and then Integer'Value(Webots_Port) > 1024
+              and then Integer'Value(Webots_Port) <= 65535
+            then
+               Webots_Thread.Main(Integer'Value(Webots_Port));
+            else
+               declare
+                  Mail : Mailbox.Mail;
+               begin
+                  Mail.Message := new Messages.Message;
+                  Mail.Message.Id := Messages.ERROR_PORTS_NOT_SET;
+                  Webots_Thread.Webots_Mailbox.Deposit (Mail);
+               end;
+            end if;
+         end;
+      else
+         Put_Line("webots no");
+         declare
+            Mail : Mailbox.Mail;
+         begin
+            Mail.Message := new Messages.Message;
+            Mail.Message.Id := Messages.ERROR_PORTS_NOT_SET;
+            Webots_Thread.Webots_Mailbox.Deposit (Mail);
+         end;
+      end if;
    end webots_task;
 
    task body backend_task is
    begin
-      Backend_Thread.Main;
+      -- check if port string is usable
+      if Ada.Command_Line.Argument_Count >= 2 then
+         declare
+            Backend_Port : String := Ada.Command_Line.Argument (2);
+         begin
+            if
+              types.Is_Numeric(Backend_Port) = True
+              and then Integer'Value(Backend_Port) > 1024
+              and then Integer'Value(Backend_Port) <= 65535
+            then
+               Backend_Thread.Main(Integer'Value(Backend_Port));
+            else
+               declare
+                  Mail : Mailbox.Mail;
+               begin
+                  Mail.Message := new Messages.Message;
+                  Mail.Message.Id := Messages.ERROR_PORTS_NOT_SET;
+                  Backend_Thread.Backend_Mailbox.Deposit (Mail);
+               end;
+            end if;
+         end;
+      else
+         Put_Line("backend no");
+         declare
+            Mail : Mailbox.Mail;
+         begin
+            Mail.Message := new Messages.Message;
+            Mail.Message.Id := Messages.ERROR_PORTS_NOT_SET;
+            Backend_Thread.Backend_Mailbox.Deposit (Mail);
+         end;
+      end if;
+
    end backend_task;
 
    Message : Messages.Message_Ptr;
@@ -48,7 +111,7 @@ begin
       Mailbox.Check_Mailbox (Backend_Thread.Backend_Mailbox, Webots_Thread.Webots_Mailbox, Message, Alternator);
 
       -- do calculations with current packet
-      --Put_Line (Message.Id'Image);
+      Put_Line (Message.Id'Image);
 
       declare
          Out_Buffer : Byte_Buffer.Buffer;
@@ -80,7 +143,7 @@ begin
             when Messages.EXTERNAL_IMAGE_DATA =>
                if Is_Object_Collision = False then
                   V_Path := Path_Following.Main (Messages.ID_Message_Ptr (Message), DS_Data);
-                  --Put_Line (V_Path.Left_Speed'Image & " " & V_Path.Right_Speed'Image);
+                  Put_Line (V_Path.Left_Speed'Image & " " & V_Path.Right_Speed'Image);
 
                   Out_Buffer.Write_Message (V_Path);
                   Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Stream, Out_Buffer);
@@ -89,7 +152,10 @@ begin
                Put_Line ("Backend disconnected, returning to depot after last request... ");
                Memory.Handle_Disconnect;
             when Messages.ERROR_WEBOTS_DISCONNECTED =>
-               Put_Line ("Webots disconnecetd, exiting... ");
+               Put_Line ("Webots disconnected, exiting... ");
+               exit;
+            when Messages.ERROR_PORTS_NOT_SET =>
+               Put_Line ("Port numbers not provided or incorrect, exiting... ");
                exit;
             when others => null;
          end case;

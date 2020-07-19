@@ -19,7 +19,7 @@ package Backend_Thread is
    procedure Handle_Join_Challenge;
    procedure Handle_Join;
 
-   procedure Main;
+   procedure Main (Backend_Port : Integer);
    procedure Join;
 
    type Handle_Buffer_Type is access procedure;

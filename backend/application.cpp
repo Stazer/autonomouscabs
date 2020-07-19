@@ -7,7 +7,7 @@
 #include <boost/program_options.hpp>
 
 #include "application.hpp"
-// #include "cab_manager.hpp"
+#include "node_type.hpp"
 
 application::application():
     _cab_manager(),
@@ -70,7 +70,27 @@ void application::handle_command()
 {
     boost::asio::async_read_until(_command_descriptor, _command_buffer, '\n', [this](const boost::system::error_code& error_code, std::size_t length)
     {
-        _cab_manager.add_request(node_type::P1, node_type::P3, 4);
+        std::istream is(&_command_buffer);
+        std::string in;
+        is >> in;
+        std::string src_string, dst_string;
+
+        for(auto c : in)
+        {
+            if(c == ' ')
+            {
+                break;
+            }
+            src_string += c;
+        }
+
+        std::pair<bool, node_type> pair = string_to_node(src_string);
+        if(pair.first == false)
+        {
+            std::cout << "wrong input, only D, P0, ..., P7, I1, ..., I4 allowed\n";
+            
+        }
+
         _command_buffer.consume(length);
         handle_command();
     });

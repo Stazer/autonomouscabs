@@ -4,7 +4,13 @@ Henrik Claßen
 	
 Justus Flerlage
 	Functions and concepts contributed:
+	- Protocol and communication structure
+	- Backend architecture and implementation (except cab provisioning)
+	- Continuous integration
 	Actions taken to fulfill the management role:
+	- Created the CI pipeline
+	- Reviewed pull requests
+	- Wrote tests for very important protocol related abstractions
 
 Felix Heimann
 	Functions and concepts contributed:

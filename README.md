@@ -8,11 +8,11 @@
 #### FreeBSD 12, FreeBSD 13 (backend only)
     `cmake boost-libs`
 ### Note
-    Unfortunately, Ubuntu 18.10 (Bionic Beaver) is not supported due
-    to outdated boost packages. Compiling boost is an alternative, but
-    not covered in this README. 
-    For the following `make` calls, feel free to add `-jX` (where X is the amount of CPU cores + 1)
-    for using multiple cores for compiling.
+Unfortunately, Ubuntu 18.10 (Bionic Beaver) is not supported due
+to outdated boost packages. Compiling boost is an alternative, but not covered in this README.
+For the following `make` calls, feel free to add `-jX` (where X is the amount of CPU cores + 1)
+for using multiple cores for compiling.  
+Also the Boost library is used in the backend and the webots controller.
 ### Create backend Makefile
     `mkdir build`
     `cd build`
@@ -23,6 +23,18 @@
 ### Build external controller
     `cd external`
     `make`
+### Build webots controller
+    `cd webots/controllers/controller`
+    `make`
+    or
+    compile in webots directly
 ## Run
 ### backend
     `./backend.bin --help`
+### external_controller
+    for each cab: `./main {webots_port} {backend_port}`
+### webots controller
+    For each robot note specify the port in controllerArgs.
+#### Note
+    The simulation will only start if every robot has a connection with an external controller.
+    If a robot is not needed for a test just leave the controllerArgs field empty.

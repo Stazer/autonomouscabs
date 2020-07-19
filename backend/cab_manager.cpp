@@ -30,6 +30,10 @@ void cab_manager::remove(id_type id)
     _cabs.erase(id);
 }
 
+// walk through the graph backwards, begin at src
+// loop through all cabs which are currently at the node
+// for every cab calculate the costs for including the new request
+// select the cab with the smallest cost increase
 std::shared_ptr<cab> cab_manager::find_cab(node_type src, node_type dst, std::uint32_t passengers)
 {
     bool cycle = false;
@@ -93,6 +97,7 @@ std::shared_ptr<cab> cab_manager::find_cab(node_type src, node_type dst, std::ui
     return nullptr;
 }
 
+// changes the current cab location according to the detected node
 void cab_manager::update_cab(id_type id, node_type from, node_type to)
 {
     auto it = std::find_if(_cabs_at_node[from].begin(), _cabs_at_node[from].end(), 
@@ -104,6 +109,8 @@ void cab_manager::update_cab(id_type id, node_type from, node_type to)
     _cabs_at_node[to].push_back(_cabs[id]);
 }
 
+// try to assign a cab to a new passenger request
+// if a cb is found inform that cab
 void cab_manager::add_request(node_type src, node_type dst, std::uint32_t passengers)
 {
     std::shared_ptr<cab> cab = find_cab(src, dst, passengers);

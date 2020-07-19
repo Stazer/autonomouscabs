@@ -1,12 +1,13 @@
-with ada.Integer_Text_IO;
+with Ada.Integer_Text_IO;
+
 package body Path_Following is
    colour : Integer := 0;
    r : Integer := 0;
    g : Integer := 0;
    b : Integer := 0;
 
-   bottomPoint : Integer := 0;
-   bottomPoint1 : Integer := 0;
+   Bottom_Point : Integer := 0;
+   Bottom_Point1 : Integer := 0;
    white_Line : Integer := 0;
 
    red : Colour_Matrix := (others => (others => 0));
@@ -40,31 +41,32 @@ package body Path_Following is
    function Find_Line (binarizedImage : in Colour_Matrix) return Integer is
 
       --pick_up_location_reached :  Boolean := False;
-      Command_value : Command := turnRight;
+      Action : Memory.Action := Memory.Next_Action;
 
    begin
       for J in Column_Index loop
-         if binaImage(Row_Index(height-1))(J) = 255 then
-            bottomPoint := Integer(J);
+         if binaImage (Row_Index (height-1))(J) = 255 then
+            Bottom_Point := Integer (J);
          end if;
       end loop;
 
       for J in reverse Column_Index loop
-         if binaImage(Row_Index(height-1))(J) = 255 then
-            bottomPoint1 := Integer(J);
+         if binaImage (Row_Index (height-1))(J) = 255 then
+            Bottom_Point1 := Integer(J);
          end if;
       end loop;
 
       -- check for fork here
-      if bottomPoint /= 0 or bottomPoint1 /= 0 then
-         Check_For_Fork(Command_value,bottomPoint,bottomPoint1);
+      if Bottom_Point /= 0 or Bottom_Point1 /= 0 then
+         Check_For_Fork (Action, Bottom_Point, Bottom_Point1);
+         Changed_Position := True;
       end if;
 
-      bottomPoint := (bottomPoint + bottomPoint1) / 2;
-      return bottomPoint;
+      Bottom_Point := (Bottom_Point + Bottom_Point1) / 2;
+      return Bottom_Point;
    end Find_Line;
 
-   procedure Check_For_Fork (Command_value : in Command; bottomPoint : in out Integer; bottomPoint1 : in out Integer ) is
+   procedure Check_For_Fork (Action : in Memory.Action; Bottom_Point : in out Integer; Bottom_Point1 : in out Integer ) is
 
       old_value : Integer;
 
@@ -73,28 +75,28 @@ package body Path_Following is
       -- careful: bottomPoint might be right point and bottomPoint1 might be the left point
 
       -- save old value
-      if Command_value = turnRight then
-         old_value := bottomPoint1;
+      if Action = Memory.RIGHT then
+         old_value := Bottom_Point1;
          -- check right side
-         for J in reverse Integer range bottomPoint1..bottomPoint loop
+         for J in reverse Integer range Bottom_Point1 .. Bottom_Point loop
             -- if black pixel found, update bottomPoint
-            if binaImage(Row_Index(height-5))(Column_Index(J)) /= 255 then
-               bottomPoint1 := Integer(J) + 1;
+            if binaImage (Row_Index (height-5))(Column_Index(J)) /= 255 then
+               Bottom_Point1 := Integer (J) + 1;
             end if;
 
             -- if the value changed then exit
-            exit when old_value /= bottomPoint1;
+            exit when old_value /= Bottom_Point1;
          end loop;
-      elsif Command_value = turnLeft then
-         old_value := bottomPoint;
+      elsif Action = Memory.STRAIGHT then
+         old_value := Bottom_Point;
          -- check left side
-         for J in Integer range bottomPoint1..bottomPoint loop
+         for J in Integer range Bottom_Point1 .. Bottom_Point loop
             -- if black pixel found, update bottomPoint1
             if binaImage(Row_Index(height-5))(Column_Index(J)) /= 255 then
-               bottomPoint := Integer(J) - 1;
+               Bottom_Point := Integer (J) - 1;
             end if;
             -- if the value changed then exit
-            exit when old_value /= bottomPoint;
+            exit when old_value /= Bottom_Point;
          end loop;
       end if;
 
@@ -113,7 +115,7 @@ package body Path_Following is
          steering_zones_array(I) := Long_Float(I)*steering_zones_size;
       end loop;
 
-      ada.Integer_Text_IO.put(whiteLine);
+      -- Ada.Integer_Text_IO.put(whiteLine);
       if whiteLine = 0 then
          if d_sensor (6) < 500.0 then
             V_turn := 1.0;

@@ -1,0 +1,37 @@
+Henrik Claßen
+	Functions and concepts contributed:
+	- Protocol and communication structure
+	- Message handling in the external controler
+	- General structure of the external controler
+	- Graph functions and route building/updating in the external controler
+	- Webots controller
+	- Cab provison algorithm in the backend
+	Actions taken to fulfill the management role (integration manager):
+	- Defining protocol and communication structure
+	- Defining an interface to read and write messages in the external controller
+	
+Justus Flerlage
+	Functions and concepts contributed:
+	- Protocol and communication structure
+	- Backend architecture and implementation (except cab provisioning)
+	- Continuous integration
+	Actions taken to fulfill the management role (quality manager):
+	- Created the CI pipeline
+	- Reviewed pull requests
+	- Wrote tests for very important protocol related abstractions
+
+Felix Heimann
+	Functions and concepts contributed:
+	Actions taken to fulfill the management role:
+
+Luyanda Mlangeni
+	Functions and concepts contributed:
+	Actions taken to fulfill the management role:
+
+Gerda Zsejke Móré
+	Functions and concepts contributed:
+	Actions taken to fulfill the management role:
+
+Yue Wang
+	Functions and concepts contributed:
+	Actions taken to fulfill the management role:

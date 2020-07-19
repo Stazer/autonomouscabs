@@ -9,6 +9,7 @@
 
 #include "road_network.hpp"
 
+// define the inverted environment graph for the find_cab alogrithm
 typedef std::pair<node_type, node_type> Edge;
 std::array<Edge, 17> edge_array{
     Edge(node_type::P0, node_type::I4),
@@ -55,18 +56,14 @@ std::vector<node_type> road_network::get_predecessors(node_type node)
     return pre;
 }
 
-
+// returns wether a specific node is located on the route between start and stop
+// return also true if start == q or stop == q or start == stop (because the form a whole cycle)
 bool road_network::in_between(node_type start, node_type stop, node_type q)
 {
     if(are_twins(start, q) || are_twins(stop, q))
     {
         return false;
     }
-
-    /* if((start == node_type::D && q == node_type::P4) || (start == node_type::P4 && q == node_type::D))
-    {
-        return false;
-    } */
 
     if(are_twins(start, stop) || start == q || stop == q)
     {
@@ -100,6 +97,7 @@ bool road_network::in_between(node_type start, node_type stop, node_type q)
     return false;
 }
 
+// returns wether two nodes are located next to each other on the inner and outer
 bool road_network::are_twins(node_type n1, node_type n2)
 {
     switch (n1)

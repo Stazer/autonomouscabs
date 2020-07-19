@@ -1,4 +1,5 @@
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 
 with Tcp_Client;
 with Backend_Thread;
@@ -10,6 +11,7 @@ with Byte_Buffer;
 with Memory;
 with Collision_Detection;
 with Path_Following;
+with Ada.Command_Line;
 
 procedure Main is
    task webots_task;
@@ -17,12 +19,66 @@ procedure Main is
 
    task body webots_task is
    begin
-      Webots_Thread.Main;
+      -- check if port string is usable
+      if Ada.Command_Line.Argument_Count >= 2 then
+         declare
+            Webots_Port : String := Ada.Command_Line.Argument (1);
+         begin
+            if
+              types.Is_Numeric(Webots_Port) = True
+              and then Integer'Value(Webots_Port) > 1024
+              and then Integer'Value(Webots_Port) <= 65535
+            then
+               Webots_Thread.Main(Integer'Value(Webots_Port));
+            else
+               declare
+                  Message : Messages.Message_Ptr :=
+                    new Messages.Message'(0, Messages.ERROR_WEBOTS_PORT_NOT_SET);
+                  Mail : Mailbox.Mail := Mailbox.Create_Mail (Message);
+               begin
+                  Webots_Thread.Webots_Mailbox.Deposit (Mail);
+               end;
+            end if;
+         end;
+      else
+         declare
+            Message : Messages.Message_Ptr :=
+              new Messages.Message'(0, Messages.ERROR_WEBOTS_PORT_NOT_SET);
+            Mail : Mailbox.Mail := Mailbox.Create_Mail (Message);
+         begin
+            Webots_Thread.Webots_Mailbox.Deposit (Mail);
+         end;
+      end if;
    end webots_task;
 
    task body backend_task is
    begin
-      Backend_Thread.Main;
+      -- check if port string is usable
+      if Ada.Command_Line.Argument_Count >= 2 then
+         declare
+            Backend_Port : String := Ada.Command_Line.Argument (2);
+         begin
+            if
+              types.Is_Numeric(Backend_Port) = True
+              and then Integer'Value(Backend_Port) > 1024
+              and then Integer'Value(Backend_Port) <= 65535
+            then
+               Backend_Thread.Main(Integer'Value(Backend_Port));
+            else
+               declare
+                  Message : Messages.Message_Ptr :=
+                    new Messages.Message'(0, Messages.ERROR_BACKEND_PORT_NOT_SET);
+                  Mail : Mailbox.Mail := Mailbox.Create_Mail (Message);
+               begin
+                  Backend_Thread.Backend_Mailbox.Deposit (Mail);
+               end;
+            end if;
+         end;
+      else
+         Put_Line ("using default backend port 9876");
+         Backend_Thread.Main (9876);
+      end if;
+
    end backend_task;
 
    Message : Messages.Message_Ptr;
@@ -34,6 +90,7 @@ procedure Main is
    Is_Object_Collision: Boolean := False;
 
    Route_Update : Messages.Route_Update_Message;
+   Position_Update : Messages.Position_Update_Message;
 
 begin
    -- threads have started here
@@ -43,19 +100,18 @@ begin
       -- clear out both mailboxes
       Backend_Thread.Backend_Mailbox.Clear;
       Webots_Thread.Webots_Mailbox.Clear;
-
       -- alternate between checking webots and backend mailbox first, then update alternator
       Mailbox.Check_Mailbox (Backend_Thread.Backend_Mailbox, Webots_Thread.Webots_Mailbox, Message, Alternator);
 
       -- do calculations with current packet
-      --Put_Line (Message.Id'Image);
+      Put_Line (Message.Id'Image);
 
       declare
          Out_Buffer : Byte_Buffer.Buffer;
       begin
          case Message.Id is
             when Messages.EXTERNAL_JOIN_SUCCESS =>
-               --Put_Line (Messages.JS_Message_Ptr (Message).Cab_Id'Image);
+               Put_Line ("Cab id: " & Messages.JS_Message_Ptr (Message).Cab_Id'Image);
                Memory.Handle_Join (Messages.JS_Message_Ptr (Message));
             when Messages.EXTERNAL_ADD_REQUEST =>
                Route_Update := Memory.Add_Request (Messages.AR_Message_Ptr (Message));
@@ -70,7 +126,6 @@ begin
                --if V_Collision.Left_Speed /= 0.0 and V_Collision.Right_Speed /= 0.0 then
                if DS_Data(0) < 800.0 or DS_Data(1) < 500.0 or DS_Data(2) < 400.0 then
                   Is_Object_Collision := True;
-                  Put_Line("collision");
                   --Put_Line (V_Collision.Left_Speed'Image & " " & V_Collision.Right_Speed'Image);
 
                   Out_Buffer.Write_Message (V_Collision);
@@ -81,22 +136,34 @@ begin
             when Messages.EXTERNAL_IMAGE_DATA =>
                if Is_Object_Collision = False then
                   V_Path := Path_Following.Main (Messages.ID_Message_Ptr (Message), DS_Data);
-                  Put_Line("image");
                   --Put_Line (V_Path.Left_Speed'Image & " " & V_Path.Right_Speed'Image);
 
                   Out_Buffer.Write_Message (V_Path);
+
+                  if Path_Following.Changed_Position then
+                     Position_Update := Memory.Update_Position;
+                     Out_Buffer.Write_Message (Position_Update);
+                  end if;
+
                   Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Stream, Out_Buffer);
                end if;
             when Messages.ERROR_BACKEND_DISCONNECTED =>
                Put_Line ("Backend disconnected, returning to depot after last request... ");
                Memory.Handle_Disconnect;
             when Messages.ERROR_WEBOTS_DISCONNECTED =>
-               Put_Line ("Webots disconnecetd, exiting... ");
+               Put_Line ("Webots disconnected, exiting... ");
+               exit;
+            when Messages.ERROR_WEBOTS_PORT_NOT_SET =>
+               Put_Line ("Webots Port numbes not provided or incorrect, exiting... ");
+               exit;
+            when Messages.ERROR_BACKEND_PORT_NOT_SET =>
+               Put_Line ("Backend Port numbes not provided or incorrect, exiting... ");
                exit;
             when others => null;
          end case;
       end;
-
    end loop;
 
+   Webots_Thread.Webots_Stop := True;
+   Backend_Thread.Backend_Stop := True;
 end Main;

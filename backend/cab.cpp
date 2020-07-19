@@ -40,11 +40,14 @@ node_type cab::position()
     return _position;
 }
 
+// passengers_at_node counts/calculates the current number of passengers at a specific node in the environment
 std::uint32_t cab::passengers_at_node(node_type node)
 {
     std::uint32_t passengers = 0;
     for(auto r : _requests)
     {
+        // add to passengers either if r.src() -> node -> r.dst() and _position -> r.src() -> r.dst()
+        // or r.src() -> _position -> r.dst() and cab has picked up passengers at position and _position -> node -> r.dst()
         if(_rnet->in_between(_position, r.dst(), r.src()) &&
                 _rnet->in_between(r.src(), r.dst(), node))
         {
@@ -55,6 +58,7 @@ std::uint32_t cab::passengers_at_node(node_type node)
             passengers += r.passengers();
         }
 
+        // if r.dst() == node it still gets counted above
         if(r.dst() == node)
         {
             passengers -= r.passengers();
@@ -70,6 +74,8 @@ bool cab::route_contains(node_type node)
     return it != _route.end();
 }
 
+// returns if route contins src and dst, if both elements in pair are true
+// src and dst are in order
 std::pair<bool, bool> cab::route_contains_ordered(node_type src, node_type dst)
 {
     bool found_src = false, found_dst = false;
@@ -99,12 +105,15 @@ std::int32_t cab::calculate_costs(node_type src, node_type dst)
         return _costs;
     }
 
-    // calculate max detour costs and return the difference between max and current _costs
+    // calculate and return max detour costs
     std::uint32_t max = 0;
     for(auto r : _requests)
     {
         std::uint32_t cost = r.detours();
         bool is_inner = _rnet->is_inner(src); 
+        // if cab stops at src before r.src() add 1 to r.detours() if src is on a inner edge
+        // add 2 to r.detours() if src is on a outer edge
+        // this accounts for the longer drive
         if(!found_src && (_rnet->in_between(_position, r.src(), src) || 
                 _rnet->in_between(r.src(), r.dst(), src)))
         {
@@ -112,6 +121,7 @@ std::int32_t cab::calculate_costs(node_type src, node_type dst)
         }
 
         is_inner = _rnet->is_inner(dst); 
+        // same as above but with dst
         if(!found_dst && (_rnet->in_between(_position, r.src(), dst) || 
                 _rnet->in_between(r.src(), r.dst(), dst)))
         {
@@ -124,6 +134,7 @@ std::int32_t cab::calculate_costs(node_type src, node_type dst)
     return max;
 }
 
+// adds a new passenger request to this cab
 void cab::add_request(node_type src, node_type dst, std::uint32_t passengers)
 {
     for(std::size_t i = 0; i < _requests.size(); ++i)
@@ -140,6 +151,7 @@ void cab::add_request(node_type src, node_type dst, std::uint32_t passengers)
     bool found_dst = pair.second;
 
     // add detours to all requests
+    // does the sme as calculate costs
     std::uint32_t max = 0;
     for(std::size_t i = 0; i < _requests.size(); ++i)
     {
@@ -165,12 +177,14 @@ void cab::add_request(node_type src, node_type dst, std::uint32_t passengers)
 
     _requests.push_back(request(src, dst, passengers));
 
+    // inform external controller
     if(auto shared = _cab_session.lock())
     {
         shared->send_request(_requests.back());
     }
 }
 
+// updates the postion and requests of the cab according to the detected node
 void cab::update_position(node_type position)
 {
     _cab_manager->update_cab(_id, _position, position);

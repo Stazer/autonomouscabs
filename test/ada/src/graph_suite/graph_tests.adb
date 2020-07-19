@@ -167,7 +167,7 @@ package body graph_tests is
    begin
       Graph.Create_Graph;
       
-      Add (R, A, P0, P7);
+      Add_To_Route (R, A, P0, P7, D);
       Assert (Integer (R.Length) = 5, "Route has the wrong Length");
       
       E := R.First_Element;
@@ -187,7 +187,7 @@ package body graph_tests is
       R.Delete_First;   
       
       A.Clear;
-      Add (R, A, P1, P2);
+      Add_To_Route (R, A, P1, P2, D);
       Assert (Integer (R.Length) = 5, "Route has the wrong Length");
       
       E := R.First_Element;
@@ -207,7 +207,7 @@ package body graph_tests is
       R.Delete_First;   
       
       A.Clear;
-      Add (R, A, P1, D);
+      Add_To_Route (R, A, P1, D, D);
       Assert (Integer (R.Length) = 8, "Route has the wrong Length");
       
       E := R.First_Element;
@@ -244,10 +244,10 @@ package body graph_tests is
    begin
       Graph.Create_Graph;
       
-      Add (R, A, P0, P2);
+      Add_To_Route (R, A, P0, P2, D);
       Assert (Integer (R.Length) = 4, "Route has the wrong Length");
       
-      Add (R, A, P3, P4);
+      Add_To_Route (R, A, P3, P4, D);
       Assert (Integer (R.Length) = 8, "Route has the wrong Length");
       
       E := R.First_Element;
@@ -276,10 +276,10 @@ package body graph_tests is
       R.Delete_First;
       
       A.Clear;
-      Add (R, A, P0, P3);
+      Add_To_Route (R, A, P0, P3, D);
       Assert (Integer (R.Length) = 5, "Route has the wrong Length");
       
-      Add (R, A, P1, P0);
+      Add_To_Route (R, A, P1, P0, D);
       Assert (Integer (R.Length) = 8, "Route has the wrong Length");
       
       E := R.First_Element;

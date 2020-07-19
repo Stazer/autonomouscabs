@@ -157,7 +157,7 @@ begin
          end case;
       end;
    end loop;
-   Put_Line ("done loop");
+
    Webots_Thread.Webots_Stop := True;
    Backend_Thread.Backend_Stop := True;
 end Main;

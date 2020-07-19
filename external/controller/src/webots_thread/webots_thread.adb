@@ -9,7 +9,6 @@ package body Webots_Thread is
       Webots_Address.Addr := Inet_Addr ("127.0.0.1");
 
       Webots_Address.Port := Port_Type(Webots_Port);
-      Webots_Stream := Tcp_Client.Connect (Webots_Socket, Webots_Address);
 
       loop
          Webots_Stream := Tcp_Client.Connect (Webots_Socket, Webots_Address);

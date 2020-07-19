@@ -1,18 +1,31 @@
 #VRML_SIM R2020a utf8
 WorldInfo {
   basicTimeStep 16
+  contactProperties [
+    ContactProperties {
+      material2 "rear_wheel"
+      coulombFriction [
+        0.5
+      ]
+    }
+    ContactProperties {
+      coulombFriction [
+        50
+      ]
+    }
+  ]
 }
 Viewpoint {
-  orientation -0.3695297107905847 -0.9151549730283057 -0.16105641305017343 1.5473510943449185
-  position 22.661092602212143 22.8523531193517 -54.33198557266896
+  orientation -0.4674318321538642 -0.82895553062998 -0.30714851542413485 1.78391662996413
+  position -54.50989492774821 51.34009664041401 -35.242877345907694
 }
 TexturedBackground {
   luminosity 2
   reflections FALSE
 }
-DEF Cab2 Robot {
-  translation 40.1329 0.40141 -58.1231
-  rotation 0.00011563964089540521 0.9999999864500092 -0.00011716422043708882 1.570756651368497
+DEF Cab1 Robot {
+  translation -5.04295 0.394162 -29.4224
+  rotation -0.00013105589874909862 0.9999999853117669 -0.00011045730798978177 -1.5545214180515847
   children [
     DEF cam_f Camera {
       translation 0 0.1 1
@@ -351,7 +364,7 @@ DEF Cab2 Robot {
     }
     DEF wheelFL HingeJoint {
       jointParameters HingeJointParameters {
-        position 808.2338854774397
+        position 900.9139575348365
         anchor 0.55 -0.1 0.55
       }
       device [
@@ -362,7 +375,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelFL Solid {
         translation 0.55 -0.1 0.55
-        rotation 0.6742038262218544 -0.6736671533049622 -0.30269087740762873 3.7298817344269573
+        rotation -0.6833926081519769 0.6828486208737443 -0.25824853163970496 3.647431960599746
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -384,7 +397,7 @@ DEF Cab2 Robot {
     }
     DEF wheelRL HingeJoint {
       jointParameters HingeJointParameters {
-        position 808.5047815400841
+        position 1075.900978723191
         anchor 0.55 -0.1 -0.7
       }
       device [
@@ -395,7 +408,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelRL Solid {
         translation 0.55 -0.1 -0.7
-        rotation 0.6472642645215412 -0.6467490357623265 -0.4034410199941119 3.909083909104638
+        rotation -0.5585912625739814 0.5581466184017337 -0.6135537089307788 4.242954510500782
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -409,6 +422,7 @@ DEF Cab2 Robot {
           }
         ]
         name "wheelRL"
+        contactMaterial "rear_wheel"
         boundingObject USE wheel
         physics DEF physics_wheel Physics {
           density 10
@@ -417,7 +431,7 @@ DEF Cab2 Robot {
     }
     DEF wheelRR HingeJoint {
       jointParameters HingeJointParameters {
-        position 714.8072406423137
+        position 690.242590638783
         anchor -0.55 -0.1 -0.7
       }
       device [
@@ -428,7 +442,7 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelRR Solid {
         translation -0.55 -0.1 -0.7
-        rotation -0.5585053159551597 0.5580607401972709 0.6137100474167759 2.0400035684410316
+        rotation -0.401833282806917 0.4015134195376774 0.8229927015227884 1.7636021598523817
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -442,6 +456,7 @@ DEF Cab2 Robot {
           }
         ]
         name "wheelRR"
+        contactMaterial "rear_wheel"
         boundingObject USE wheel
         physics DEF physics_wheel Physics {
           density 10
@@ -450,7 +465,7 @@ DEF Cab2 Robot {
     }
     DEF wheelFR HingeJoint {
       jointParameters HingeJointParameters {
-        position 714.8384302928733
+        position 877.7583570566645
         anchor -0.55 -0.1 0.55
       }
       device [
@@ -461,7 +476,502 @@ DEF Cab2 Robot {
       ]
       endPoint DEF wheelFR Solid {
         translation -0.55 -0.1 0.55
-        rotation -0.551814474492544 0.5513752247106639 0.6256885385843203 2.0226878024038815
+        rotation -0.6296255265577895 0.6291243384085289 0.45582262244085375 2.285620500762848
+        children [
+          DEF wheel Shape {
+            appearance PBRAppearance {
+              baseColor 0 0 0
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.1
+              radius 0.3
+            }
+          }
+        ]
+        name "wheelFR"
+        boundingObject USE wheel
+        physics DEF physics_wheel Physics {
+          density 10
+        }
+      }
+    }
+    DEF car_body Shape {
+      appearance PBRAppearance {
+        baseColor 1 1 0
+      }
+      geometry Box {
+        size 1 0.6 2
+      }
+    }
+  ]
+  name "Cab1"
+  contactMaterial "rear_wheel"
+  boundingObject USE car_body
+  physics Physics {
+    density 10
+  }
+  recognitionColors [
+    0 0 0
+  ]
+  controller "controller"
+  controllerArgs "9999"
+}
+DEF Cab2 Robot {
+  translation 6.9708 0.397962 -29.6849
+  rotation -0.00011349060949433764 0.9999999864427928 -0.00011930756886303737 -1.5723852276348578
+  children [
+    DEF cam_f Camera {
+      translation 0 0.1 1
+      rotation 0 1 0 3.14
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.4 0 0
+          }
+          geometry Cylinder {
+            height 0.1
+            radius 0.05
+          }
+        }
+      ]
+      boundingObject Cylinder {
+        height 0.1
+        radius 0.05
+      }
+      physics Physics {
+        density 1
+      }
+      fieldOfView 0.75
+      width 18
+      height 10
+      far 10
+    }
+    DEF ls_f LightSensor {
+      translation 0 0 1
+      rotation 0 1 0 -1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            metalness 0
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ls_front"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Cylinder {
+          height 0.1
+          radius 0.05
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_fl DistanceSensor {
+      translation 0.45 0.2 1
+      rotation 0 1 0 -1.047
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_fl"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_lf DistanceSensor {
+      translation 0.5 0.2 0.95
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_lf"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_lc DistanceSensor {
+      translation 0.5 0.2 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_lc"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_fr DistanceSensor {
+      translation -0.45 0.2 1
+      rotation 0 1 0 -2.09
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_fr"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_rf DistanceSensor {
+      translation -0.5 0.2 0.95
+      rotation 0 1 0 -3.14
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_rf"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_rc DistanceSensor {
+      translation -0.5 0.2 0
+      rotation 0 1 0 -3.14
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_rc"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_fc DistanceSensor {
+      translation 0 0.2 1
+      rotation 0 1 0 -1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_fc"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_fcr DistanceSensor {
+      translation -0.225 0.2 1
+      rotation 0 1 0 -1.833
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_fcr"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    DEF ds_fcl DistanceSensor {
+      translation 0.225 0.2 1
+      rotation 0 1 0 -1.309
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "ds_fcl"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.1 0.1 0.1
+        }
+      }
+      physics Physics {
+        density 1
+      }
+      lookupTable [
+        0 0 0
+        5 1000 0
+      ]
+    }
+    Transform {
+      translation 0 0.5 -0.3
+      rotation 1 0 0 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.5 0.5 0.5
+            transparency 0.3
+          }
+          geometry Box {
+            size 0.9 0.5 1.2
+          }
+        }
+      ]
+    }
+    Transform {
+      translation 0 0.8 -0.3
+      rotation 1 0 0 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+          }
+          geometry Box {
+            size 1 0.1 1.3
+          }
+        }
+      ]
+    }
+    DEF wheelFL HingeJoint {
+      jointParameters HingeJointParameters {
+        position 3.080895555331839e-08
+        anchor 0.55 -0.1 0.55
+      }
+      device [
+        DEF wheelFL RotationalMotor {
+          name "wheelFL"
+          maxTorque 30
+        }
+      ]
+      endPoint DEF wheelFL Solid {
+        translation 0.55 -0.1 0.55
+        rotation 1.5416749661938237e-08 -1.5404477776659193e-08 0.9999999999999998 1.5699999999999965
+        children [
+          DEF wheel Shape {
+            appearance PBRAppearance {
+              baseColor 0 0 0
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.1
+              radius 0.3
+            }
+          }
+        ]
+        name "wheelFL"
+        boundingObject USE wheel
+        physics DEF physics_wheel Physics {
+          density 10
+        }
+      }
+    }
+    DEF wheelRL HingeJoint {
+      jointParameters HingeJointParameters {
+        position 3.1694682162974835e-08
+        anchor 0.55 -0.1 -0.7
+      }
+      device [
+        DEF wheelRL RotationalMotor {
+          name "wheelRL"
+          maxTorque 30
+        }
+      ]
+      endPoint DEF wheelRL Solid {
+        translation 0.55 -0.1 -0.7
+        rotation 1.5859965771175022e-08 -1.5847341081487394e-08 0.9999999999999998 1.5699999999999972
+        children [
+          DEF wheel Shape {
+            appearance PBRAppearance {
+              baseColor 0 0 0
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.1
+              radius 0.3
+            }
+          }
+        ]
+        name "wheelRL"
+        contactMaterial "rear_wheel"
+        boundingObject USE wheel
+        physics DEF physics_wheel Physics {
+          density 10
+        }
+      }
+    }
+    DEF wheelRR HingeJoint {
+      jointParameters HingeJointParameters {
+        position 3.600197074872742e-08
+        anchor -0.55 -0.1 -0.7
+      }
+      device [
+        DEF wheelRR RotationalMotor {
+          name "wheelRR"
+          maxTorque 30
+        }
+      ]
+      endPoint DEF wheelRR Solid {
+        translation -0.55 -0.1 -0.7
+        rotation 1.838799333310511e-08 -1.8373356308462717e-08 0.9999999999999998 1.5699999999999965
+        children [
+          DEF wheel Shape {
+            appearance PBRAppearance {
+              baseColor 0 0 0
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.1
+              radius 0.3
+            }
+          }
+        ]
+        name "wheelRR"
+        contactMaterial "rear_wheel"
+        boundingObject USE wheel
+        physics DEF physics_wheel Physics {
+          density 10
+        }
+      }
+    }
+    DEF wheelFR HingeJoint {
+      jointParameters HingeJointParameters {
+        position 3.450549613310195e-08
+        anchor -0.55 -0.1 0.55
+      }
+      device [
+        DEF wheelFR RotationalMotor {
+          name "wheelFR"
+          maxTorque 30
+        }
+      ]
+      endPoint DEF wheelFR Solid {
+        translation -0.55 -0.1 0.55
+        rotation 1.7044934739868642e-08 -1.7031366989796145e-08 0.9999999999999998 1.5699999999999958
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -498,12 +1008,43 @@ DEF Cab2 Robot {
   recognitionColors [
     0 0 0
   ]
-  controller "controller"
-  controllerArgs "9999"
+  controller ""
 }
 DEF environment Solid {
   scale 1.09819 1.09819 1.09819
   children [
+    Solid {
+      translation 57.3258 0 -53.2037
+      rotation 0 -1 0 -1.1
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1.2
+          }
+        }
+      ]
+      name "solid(66)"
+    }
+    Solid {
+      translation 56.4128 0 -53.733
+      rotation 0 -1 0 -1
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(64)"
+    }
     DEF PickUp0 BusStop {
       translation 0 0 -45
       rotation 0 1 0 3.14159
@@ -710,6 +1251,22 @@ DEF environment Solid {
         colorOverride 0 0 0
       }
     }
+    Solid {
+      translation 53.8442 0 -56.4064
+      rotation 0 -1 0 -0.5
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(57)"
+    }
     CurvedRoadSegment {
       translation 56 0 -33
       rotation 0 1 0 1.57
@@ -829,6 +1386,118 @@ DEF environment Solid {
       }
     }
     Solid {
+      translation -53.8982 0 57.2763
+      rotation 0 1 0 0.5
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(86)"
+    }
+    Solid {
+      translation -54.4266 0 56.4197
+      rotation 0 1 0 0.6
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(87)"
+    }
+    Solid {
+      translation -55.0238 0 55.6348
+      rotation 0 1 0 0.7
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(88)"
+    }
+    Solid {
+      translation -55.6843 0 54.9287
+      rotation 0 1 0 0.8
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(89)"
+    }
+    Solid {
+      translation -56.4251 0 54.2931
+      rotation 0 1 0 0.9
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(90)"
+    }
+    Solid {
+      translation -57.194 0 53.7592
+      rotation 0 1 0 1
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(91)"
+    }
+    Solid {
+      translation -58.3726 0 53.108
+      rotation 0 1 0 1.1
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1.8
+          }
+        }
+      ]
+      name "solid(92)"
+    }
+    Solid {
       translation -53 0 53
       children [
         Shape {
@@ -860,8 +1529,8 @@ DEF environment Solid {
       name "solid(15)"
     }
     Solid {
-      translation -51 0 51
-      rotation 0 1 0 0.785
+      translation -47.1972 0 52.4786
+      rotation 0 1 0 1.2
       children [
         Shape {
           appearance PBRAppearance {
@@ -869,15 +1538,15 @@ DEF environment Solid {
             metalness 0
           }
           geometry Box {
-            size 0.2 0.01 5.8
+            size 0.2 0.01 3
           }
         }
       ]
       name "solid(43)"
     }
     Solid {
-      translation -55 0 55
-      rotation 0 1 0 0.785
+      translation -48.9375 0 51.7054
+      rotation 0 1 0 1
       children [
         Shape {
           appearance PBRAppearance {
@@ -885,7 +1554,87 @@ DEF environment Solid {
             metalness 0
           }
           geometry Box {
-            size 0.2 0.01 5.8
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(79)"
+    }
+    Solid {
+      translation -49.741 0 51.1314
+      rotation 0 1 0 0.9
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(80)"
+    }
+    Solid {
+      translation -50.4959 0 50.4949
+      rotation 0 1 0 0.8
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(81)"
+    }
+    Solid {
+      translation -51.1489 0 49.7968
+      rotation 0 1 0 0.7
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(82)"
+    }
+    Solid {
+      translation -51.7301 0 49.0255
+      rotation 0 1 0 0.6
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(83)"
+    }
+    Solid {
+      translation -53.0919 0 59.0245
+      rotation 0 1 0 0.4
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 3
           }
         }
       ]
@@ -948,8 +1697,8 @@ DEF environment Solid {
       name "solid(16)"
     }
     Solid {
-      translation 51 0 51
-      rotation 0 1 0 -0.785
+      translation 52.4055 0 47.2856
+      rotation 0 1 0 -0.4
       children [
         Shape {
           appearance PBRAppearance {
@@ -957,15 +1706,15 @@ DEF environment Solid {
             metalness 0
           }
           geometry Box {
-            size 0.2 0.01 5.8
+            size 0.2 0.01 3
           }
         }
       ]
       name "solid(45)"
     }
     Solid {
-      translation 55 0 55
-      rotation 0 1 0 -0.785
+      translation 51.3206 0 49.4001
+      rotation 0 1 0 -0.6
       children [
         Shape {
           appearance PBRAppearance {
@@ -973,11 +1722,203 @@ DEF environment Solid {
             metalness 0
           }
           geometry Box {
-            size 0.2 0.01 5.8
+            size 0.2 0.01 2
+          }
+        }
+      ]
+      name "solid(67)"
+    }
+    Solid {
+      translation 50.4607 0 50.5357
+      rotation 0 1 0 -0.75
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(70)"
+    }
+    Solid {
+      translation 49.7874 0 51.1475
+      rotation 0 1 0 -0.9
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(71)"
+    }
+    Solid {
+      translation 48.9815 0 51.7347
+      rotation 0 1 0 -1
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(72)"
+    }
+    Solid {
+      translation 48.1801 0 52.2103
+      rotation 0 1 0 -1.1
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(68)"
+    }
+    Solid {
+      translation 46.6758 0 52.7178
+      rotation 0 1 0 -1.3
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 2.5
+          }
+        }
+      ]
+      name "solid(69)"
+    }
+    Solid {
+      translation 58.5505 0 53.096
+      rotation 0 1 0 -1.2
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 3
           }
         }
       ]
       name "solid(46)"
+    }
+    Solid {
+      translation 56.3752 0 54.1502
+      rotation 0 1 0 -1
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 2
+          }
+        }
+      ]
+      name "solid(73)"
+    }
+    Solid {
+      translation 55.2475 0 54.9889
+      rotation 0 1 0 -0.8
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(74)"
+    }
+    Solid {
+      translation 54.6194 0 55.6399
+      rotation 0 1 0 -0.7
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(75)"
+    }
+    Solid {
+      translation 54.0413 0 56.4316
+      rotation 0 1 0 -0.6
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(76)"
+    }
+    Solid {
+      translation 53.5558 0 57.2376
+      rotation 0 1 0 -0.5
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(77)"
+    }
+    Solid {
+      translation 53.0812 0 58.2599
+      rotation 0 1 0 -0.4
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1.5
+          }
+        }
+      ]
+      name "solid(78)"
     }
     RoadIntersection {
       translation 53 0 -53
@@ -1003,6 +1944,150 @@ DEF environment Solid {
         colorOverride 0 0 0
         IBLStrength 0
       }
+    }
+    Solid {
+      translation 49.9348 0 -50.882
+      rotation 0 1 0 1
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(60)"
+    }
+    Solid {
+      translation 54.3414 0 -55.6004
+      rotation 0 -1 0 -0.6
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(58)"
+    }
+    Solid {
+      translation 54.916 0 -54.9134
+      rotation 0 -1 0 -0.8
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(59)"
+    }
+    Solid {
+      translation 51.3416 0 -49.71
+      rotation 0 1 0 0.7
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(55)"
+    }
+    Solid {
+      translation 51.8733 0 -48.9899
+      rotation 0 1 0 0.6
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(56)"
+    }
+    Solid {
+      translation 52.457 0 -47.9275
+      rotation 0 1 0 0.45
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1.5
+          }
+        }
+      ]
+      name "solid(61)"
+    }
+    Solid {
+      translation 52.8762 0 -46.946
+      rotation 0 1 0 0.3
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 0.8
+          }
+        }
+      ]
+      name "solid(63)"
+    }
+    Solid {
+      translation 50.6665 0 -50.3624
+      rotation 0 1 0 0.9
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(54)"
+    }
+    Solid {
+      translation 49.4751 0 -51.1762
+      rotation 0 1 0 1
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(53)"
     }
     Solid {
       translation 53 0 -53
@@ -1036,8 +2121,8 @@ DEF environment Solid {
       name "solid(17)"
     }
     Solid {
-      translation 50.2778 0 -51.3544
-      rotation 0 1 0 1.3086
+      translation 46.5082 0 -52.6317
+      rotation 0 1 0 1.2
       children [
         Shape {
           appearance PBRAppearance {
@@ -1045,15 +2130,15 @@ DEF environment Solid {
             metalness 0
           }
           geometry Box {
-            size 0.2 0.01 5.8
+            size 0.2 0.01 2
           }
         }
       ]
       name "solid(47)"
     }
     Solid {
-      translation 55 0 -55
-      rotation 0 1 0 0.785
+      translation 53.2138 0 -57.7507
+      rotation 0 -1 0 -0.4
       children [
         Shape {
           appearance PBRAppearance {
@@ -1061,7 +2146,7 @@ DEF environment Solid {
             metalness 0
           }
           geometry Box {
-            size 0.2 0.01 5.8
+            size 0.2 0.01 2
           }
         }
       ]
@@ -1124,8 +2209,8 @@ DEF environment Solid {
       name "solid(18)"
     }
     Solid {
-      translation -51 0 -51
-      rotation 0 1 0 -0.785
+      translation -52.5772 0 -47.2697
+      rotation 0 1 0 -0.4
       children [
         Shape {
           appearance PBRAppearance {
@@ -1133,15 +2218,15 @@ DEF environment Solid {
             metalness 0
           }
           geometry Box {
-            size 0.2 0.01 5.8
+            size 0.2 0.01 2
           }
         }
       ]
       name "solid(49)"
     }
     Solid {
-      translation -55 0 -55
-      rotation 0 1 0 -0.785
+      translation -51.9743 0 -48.5593
+      rotation 0 1 0 -0.5
       children [
         Shape {
           appearance PBRAppearance {
@@ -1149,11 +2234,267 @@ DEF environment Solid {
             metalness 0
           }
           geometry Box {
-            size 0.2 0.01 5.8
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(101)"
+    }
+    Solid {
+      translation -51.4721 0 -49.3732
+      rotation 0 1 0 -0.6
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(102)"
+    }
+    Solid {
+      translation -50.8939 0 -50.1481
+      rotation 0 1 0 -0.7
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(103)"
+    }
+    Solid {
+      translation -50.2402 0 -50.8469
+      rotation 0 1 0 -0.8
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(104)"
+    }
+    Solid {
+      translation -49.5002 0 -51.4991
+      rotation 0 1 0 -0.9
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(105)"
+    }
+    Solid {
+      translation -48.7183 0 -52.0496
+      rotation 0 1 0 -1
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(106)"
+    }
+    Solid {
+      translation -47.8622 0 -52.5398
+      rotation 0 1 0 -1.1
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(107)"
+    }
+    Solid {
+      translation -47.1652 0 -52.8619
+      rotation 0 1 0 -1.2
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 0.6
+          }
+        }
+      ]
+      name "solid(108)"
+    }
+    Solid {
+      translation -59.5111 0 -52.9139
+      rotation 0 1 0 -1.2
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 3
           }
         }
       ]
       name "solid(50)"
+    }
+    Solid {
+      translation -57.6978 0 -53.6634
+      rotation 0 1 0 -1.1
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(93)"
+    }
+    Solid {
+      translation -56.8516 0 -54.1506
+      rotation 0 1 0 -1
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(94)"
+    }
+    Solid {
+      translation -56.0764 0 -54.7022
+      rotation 0 1 0 -0.9
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(95)"
+    }
+    Solid {
+      translation -55.3363 0 -55.3543
+      rotation 0 1 0 -0.8
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(96)"
+    }
+    Solid {
+      translation -54.6935 0 -56.0614
+      rotation 0 1 0 -0.7
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(97)"
+    }
+    Solid {
+      translation -54.0934 0 -56.8585
+      rotation 0 1 0 -0.6
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(98)"
+    }
+    Solid {
+      translation -53.5878 0 -57.7051
+      rotation 0 1 0 -0.5
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(99)"
+    }
+    Solid {
+      translation -53.0313 0 -58.9307
+      rotation 0 1 0 -0.4
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 2
+          }
+        }
+      ]
+      name "solid(100)"
     }
     StraightRoadSegment {
       translation -53 0 20
@@ -1177,6 +2518,38 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+    }
+    Solid {
+      translation -52.7124 0 47.178
+      rotation 0 1 0 0.4
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1.5
+          }
+        }
+      ]
+      name "solid(84)"
+    }
+    Solid {
+      translation -52.2005 0 48.2666
+      rotation 0 1 0 0.5
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(85)"
     }
     AddLanesRoadSegment {
       translation -53 0 20
@@ -1621,6 +2994,54 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+    }
+    Solid {
+      translation 47.8468 0 -52.0648
+      rotation 0 1 0 1.1
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(62)"
+    }
+    Solid {
+      translation 46.6171 0 -49.6854
+      rotation 0 1 0 1.25
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(51)"
+    }
+    Solid {
+      translation 48.6516 0 -51.6468
+      rotation 0 1 0 1.1
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(52)"
     }
     StraightRoadSegment {
       translation 53 0 -50
@@ -2815,6 +4236,22 @@ DEF environment Solid {
       ]
       name "solid(10)"
     }
+    Solid {
+      translation 55.6439 0 -54.27
+      rotation 0 -1 0 -0.9
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.2 0.01 1
+          }
+        }
+      ]
+      name "solid(65)"
+    }
   ]
   name "environment"
 }
@@ -2826,52 +4263,4 @@ Floor {
     transparency 0.9
     metalness 0
   }
-}
-Solid {
-  translation 47.0011 0 -57.9602
-  rotation 0 1 0 1.5704
-  children [
-    Shape {
-      appearance PBRAppearance {
-        roughness 1
-        metalness 0
-      }
-      geometry Box {
-        size 0.2 0.01 5.8
-      }
-    }
-  ]
-  name "solid(2)"
-}
-Solid {
-  translation 47.0011 0 -58.0702
-  rotation 0 1 0 1.5704
-  children [
-    Shape {
-      appearance PBRAppearance {
-        roughness 1
-        metalness 0
-      }
-      geometry Box {
-        size 0.2 0.01 5.8
-      }
-    }
-  ]
-  name "solid(1)"
-}
-Solid {
-  translation 50.4547 0 -57.6864
-  rotation 0 -1 0 -1.3086053071795867
-  children [
-    Shape {
-      appearance PBRAppearance {
-        roughness 1
-        metalness 0
-      }
-      geometry Box {
-        size 0.2 0.01 4
-      }
-    }
-  ]
-  name "solid(47)"
 }

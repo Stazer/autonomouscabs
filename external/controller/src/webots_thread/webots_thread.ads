@@ -5,6 +5,7 @@ with Tcp_Client;
 with Types;
 with Byte_buffer;
 with Mailbox;
+with Messages;
 
 package Webots_Thread is
 

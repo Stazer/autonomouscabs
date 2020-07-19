@@ -15,8 +15,6 @@ package Graph is
                 EI4P4, EP5I2, EI1P5, EP6I3, EI2P6, EP7I4, EI3P7, EI1I2, EI2I3, 
                 EI3I4, EI4I1, EDP0, EP0D);
    
-   type Action is (NOTHING, STOP, LEFT, RIGHT, STRAIGHT);
-   
    -- set up the graph and all data structures according to our environment
    procedure Create_Graph;
    
@@ -47,11 +45,11 @@ package Graph is
                       F,L : VID) return Boolean;
    
    -- print out route
-   procedure Put_Route (R : in Route);
+   procedure Put_Route (R : in Route; Position : VID);
    
    -- add stops at Src and Dst to route, R is the actual route, A contains only the stops
    -- R = {e | e in VID}, A = {e | e in VID and e > EV and e < I1}
-   procedure Add (R, A : in out Route; Src, Dst : VID);
+   procedure Add_To_Route (R, A : in out Route; Src, Dst, Position : VID);
    
    -- Dijkstra algorithm, puts shortest path between Src and Dst in R
    procedure Dijkstra (Src, Dst : VID; R : out Route);
@@ -70,12 +68,6 @@ package Graph is
    
    -- return wether V comes before W given position Start
    function Vertex_Comes_Before (V, W, Start : VID) return Boolean;
-   
-   -- returns the next action to take
-   function Next_Action (R : in Route) return Action;
-   
-   -- updates the internal position
-   procedure Update_Position (R : in out Route);
       
 private
    
@@ -123,11 +115,5 @@ private
       Default_Capacity => 23,
       Default_Ceiling  => 1);
    use Priotity_Q;
-   
-   Position : VID := D;
-   
-   Is_Behind_Inter : Boolean := False;
-   Turned_Right : Boolean := False;
-   Turned_Left : Boolean := False;
    
 end Graph;

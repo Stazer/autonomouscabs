@@ -17,13 +17,13 @@ package body Collision_Detection is
             if Distance(0) < 800.0 then
                -- Checking if there is space on left side
                if Distance(7) = 1000.0 and Distance(8) = 1000.0 then
-                  Ls := 1.0;
-                  Rs := 7.0;
+                  Ls := -4.0;
+                  Rs := 2.0;
                   Car_State := Left;
                   -- Checking if there is space on right side
                elsif Distance(1) = 1000.0 and Distance(2) = 1000.0 then
-                  Ls := 7.0;
-                  Rs := 1.0;
+                  Ls := 2.0;
+                  Rs := -4.0;
                   Car_State := Right;
                end if;
             end if;

@@ -6,8 +6,7 @@ package body Path_Following is
    b : Integer := 0;
 
    bottomPoint : Integer := 0;
-   left_bottomPoint : Integer := 0;
-   right_bottomPoint : Integer := 0;
+   bottomPoint1 : Integer := 0;
    white_Line : Integer := 0;
 
    red : Colour_Matrix := (others => (others => 0));
@@ -15,7 +14,7 @@ package body Path_Following is
    green : Colour_Matrix := (others => (others => 0));
    grey : Colour_Matrix := (others => (others => 0));
    binaImage : Colour_Matrix := (others => (others => 0));
-   --Command_Value : Command;
+   --Command_value : Command;
 
    wheehlvelocity : Velocity_Array := (others => 0.0);
    basicVelocity : Float64 :=4.0 ;
@@ -40,82 +39,64 @@ package body Path_Following is
 
    function Find_Line (binarizedImage : in Colour_Matrix) return Integer is
 
-      Command_Value : Command := turnRight;
+      --pick_up_location_reached :  Boolean := False;
+      Command_value : Command := turnRight;
+
    begin
       for J in Column_Index loop
          if binaImage(Row_Index(height-1))(J) = 255 then
-            right_bottomPoint := Integer(J);
+            bottomPoint := Integer(J);
          end if;
       end loop;
 
       for J in reverse Column_Index loop
          if binaImage(Row_Index(height-1))(J) = 255 then
-            left_bottomPoint := Integer(J);
+            bottomPoint1 := Integer(J);
          end if;
       end loop;
 
       -- check for fork here
-      Check_For_Fork(Command_Value, left_bottomPoint,right_bottomPoint);
+      if bottomPoint /= 0 or bottomPoint1 /= 0 then
+         Check_For_Fork(Command_value,bottomPoint,bottomPoint1);
+      end if;
 
-      bottomPoint := (left_bottomPoint + right_bottomPoint) / 2;
+      bottomPoint := (bottomPoint + bottomPoint1) / 2;
       return bottomPoint;
    end Find_Line;
 
-   procedure Check_For_Fork (Command_Value : in Command; left_bottomPoint : in out Integer; right_bottomPoint : in out Integer ) is
+   procedure Check_For_Fork (Command_value : in Command; bottomPoint : in out Integer; bottomPoint1 : in out Integer ) is
 
-      --old_value : Integer;
+      old_value : Integer;
 
-   --begin
-      -- current assumption: bottomPoint: right, bottomPoint1: left careful:
-      -- bottomPoint might be right point and bottomPoint1 might be the left
-      -- point
+   begin
+      -- current assumption: bottomPoint: right, bottomPoint1: left
+      -- careful: bottomPoint might be right point and bottomPoint1 might be the left point
 
       -- save old value
-      --if pick_up_location_reached = True then
-         --old_value := bottomPoint1;
+      if Command_value = turnRight then
+         old_value := bottomPoint1;
          -- check right side
-         --for J in reverse Integer range bottomPoint1..bottomPoint loop
+         for J in reverse Integer range bottomPoint1..bottomPoint loop
             -- if black pixel found, update bottomPoint
-            --if binaImage(Row_Index(height-5))(Column_Index(J)) /= 255 then
-               --bottomPoint1 := Integer(J) + 1;
-            --end if;
+            if binaImage(Row_Index(height-5))(Column_Index(J)) /= 255 then
+               bottomPoint1 := Integer(J) + 1;
+            end if;
 
             -- if the value changed then exit
-            --exit when old_value /= bottomPoint1;
-         --end loop;
-      --else
-         --old_value := bottomPoint;
+            exit when old_value /= bottomPoint1;
+         end loop;
+      elsif Command_value = turnLeft then
+         old_value := bottomPoint;
          -- check left side
-         --for J in Integer range bottomPoint1..bottomPoint loop
+         for J in Integer range bottomPoint1..bottomPoint loop
             -- if black pixel found, update bottomPoint1
-            --if binaImage(Row_Index(height-5))(Column_Index(J)) /= 255 then
-              -- bottomPoint := Integer(J) - 1;
-            --end if;
+            if binaImage(Row_Index(height-5))(Column_Index(J)) /= 255 then
+               bottomPoint := Integer(J) - 1;
+            end if;
             -- if the value changed then exit
-            --exit when old_value /= bottomPoint;
-         --end loop;
-            --end if;
-      forks_reached :  Boolean := False;
-      line_width :Integer := 0;
-   begin
-      line_width := right_bottomPoint-left_bottomPoint;
-      --Put_Line("rp:" & right_bottomPoint'Image & " lp:" & left_bottomPoint'Image);
-      Put_Line("width: " & line_width'Image);
-      if  line_width > 20 then
-         forks_reached := True;
-         if Command_Value = turnLeft then
-            right_bottomPoint := left_bottomPoint;
-         end if;
-         if Command_Value = turnRight then
-            left_bottomPoint := right_bottomPoint;
-         end if;
-         if Command_Value = goStraight then
-            Put_Line(Command_Value'Image);
-         end if;
-
+            exit when old_value /= bottomPoint;
+         end loop;
       end if;
-      Put_Line(forks_reached'Image);
-
 
    end Check_For_Fork;
 
@@ -142,31 +123,31 @@ package body Path_Following is
          end if;
       else
          if Long_Float(whiteLine) < steering_zones_array(1) then
-            V_turn := -3.0;
+            V_turn := -6.0;
          elsif Long_Float(whiteLine) < steering_zones_array(2) then
-            V_turn := -2.0;
+            V_turn := -6.0;
          elsif Long_Float(whiteLine) < steering_zones_array(3) then
-            V_turn := -1.75;
+            V_turn := -5.0;
          elsif Long_Float(whiteLine) < steering_zones_array(4) then
-            V_turn := -1.25;
+            V_turn := -5.0;
          elsif Long_Float(whiteLine) < steering_zones_array(5) then
-            V_turn := -0.75;
+            V_turn := -5.0;
          elsif Long_Float(whiteLine) < steering_zones_array(6) then
-            V_turn := -0.5;
+            V_turn := -1.0;
          elsif Long_Float(whiteLine) < steering_zones_array(7) then-- straight
             V_turn := 0.0;
          elsif Long_Float(whiteLine) < steering_zones_array(8) then
-            V_turn := 0.5;
+            V_turn := 1.0;
          elsif Long_Float(whiteLine) < steering_zones_array(9) then
-            V_turn := 0.75;
+            V_turn := 5.0;
          elsif Long_Float(whiteLine) < steering_zones_array(10) then
-            V_turn := 1.25;
+            V_turn := 5.0;
          elsif Long_Float(whiteLine) < steering_zones_array(11) then
-            V_turn := 1.75;
+            V_turn := 5.0;
          elsif Long_Float(whiteLine) < steering_zones_array(12) then
-            V_turn := 2.0;
+            V_turn := 6.0;
          else
-            V_turn := 3.0;
+            V_turn := 6.0;
          end if;
       end if;
 

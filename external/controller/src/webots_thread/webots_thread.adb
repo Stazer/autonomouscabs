@@ -9,7 +9,19 @@ package body Webots_Thread is
       Webots_Stream := Tcp_Client.Connect (Webots_Socket, Webots_Address);
 
       loop
-         Tcp_Client.Read_Packet (Webots_Stream, Webots_Buffer, Webots_Mailbox);
+         begin
+            Tcp_Client.Read_Packet (Webots_Stream, Webots_Buffer, Webots_Mailbox);
+         exception
+            when E : Byte_Buffer.Connection_Closed =>
+               declare
+                  Mail : Mailbox.Mail;
+               begin
+                  Mail.Message := new Messages.Message;
+                  Mail.Message.Id := Messages.ERROR_WEBOTS_DISCONNECTED;
+                  Webots_Mailbox.Deposit (Mail);
+               end;
+               exit;
+         end;
       end loop;
 
    end Main;

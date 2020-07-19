@@ -3,11 +3,11 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Tcp_Client;
 with Backend_Thread;
 with Webots_Thread;
-with Types; use type Types.Float64; use Types;
+with Types; use type Types.Float64;
 with Mailbox;
-with Messages; use Messages; use type Messages.Velocity_Message;
+with Messages;
 with Byte_Buffer;
-with Graph; use Graph;
+with Memory;
 with Collision_Detection;
 with Path_Following;
 
@@ -33,18 +33,12 @@ procedure Main is
    V_Collision : Messages.Velocity_Message;
    Is_Object_Collision: Boolean := False;
 
-   Out_Buffer : Byte_Buffer.Buffer;
+   Route_Update : Messages.Route_Update_Message;
 
-   R : Graph.Route;
-   A : Graph.Route;
-
-   S, D : Graph.VID;
 begin
-   Graph.Create_Graph;
-
    -- threads have started here
 
-   while true loop
+   loop
 
       -- clear out both mailboxes
       Backend_Thread.Backend_Mailbox.Clear;
@@ -52,70 +46,57 @@ begin
 
       -- alternate between checking webots and backend mailbox first, then update alternator
       Mailbox.Check_Mailbox (Backend_Thread.Backend_Mailbox, Webots_Thread.Webots_Mailbox, Message, Alternator);
-      Mailbox.Update_Alternator (Alternator);
 
       -- do calculations with current packet
       --Put_Line (Message.Id'Image);
 
-      if Message.Id = Messages.EXTERNAL_JOIN_SUCCESS then
-         --Put_Line (Messages.JS_Message_Ptr (Message).Cab_Id'Image);
+      declare
+         Out_Buffer : Byte_Buffer.Buffer;
+      begin
+         case Message.Id is
+            when Messages.EXTERNAL_JOIN_SUCCESS =>
+               --Put_Line (Messages.JS_Message_Ptr (Message).Cab_Id'Image);
+               Memory.Handle_Join (Messages.JS_Message_Ptr (Message));
+            when Messages.EXTERNAL_ADD_REQUEST =>
+               Route_Update := Memory.Add_Request (Messages.AR_Message_Ptr (Message));
 
-         declare
-            O : Byte_Buffer.Buffer;
-            K : Messages.Position_Update_Message := Messages.Position_Update_Message_Create (2);
-         begin
-            O.Write_Message (K);
-            Byte_Buffer.Buffer'Write (Backend_Thread.Backend_Stream, O);
-         end;
-      elsif Message.Id = Messages.EXTERNAL_ADD_REQUEST then
-         S := Graph.VID'Enum_Val (Messages.AR_Message_Ptr (Message).Src);
-         D := Graph.VID'Enum_Val (Messages.AR_Message_Ptr (Message).Dst);
-         Put (S'Image & " ");
-         Put (D'Image);
-         New_Line;
+               Out_Buffer.Write_Message (Route_Update);
+               Byte_Buffer.Buffer'Write (Backend_Thread.Backend_Stream, Out_Buffer);
+            when Messages.EXTERNAL_DISTANCE_SENSOR =>
+               DS_Data := Messages.DS_Message_Ptr (Message).Payload;
+               V_Collision := Collision_Detection.Main (DS_Data);
 
-         Graph.Add (R, A, S, D);
+               -- Sending 0 as velocity if object collision is over
+               --if V_Collision.Left_Speed /= 0.0 and V_Collision.Right_Speed /= 0.0 then
+               if DS_Data(0) < 800.0 or DS_Data(1) < 500.0 or DS_Data(2) < 400.0 then
+                  Is_Object_Collision := True;
+                  Put_Line("collision");
+                  --Put_Line (V_Collision.Left_Speed'Image & " " & V_Collision.Right_Speed'Image);
 
-         declare
-            O : Byte_Buffer.Buffer;
-            P : Types.Payload_Ptr := new Types.Payload (0 .. Types.Uint32 (R.Length) - 1);
-            K : Messages.Route_Update_Message;
-            Index : Types.Uint32 := 0;
-         begin
-            for I of R loop
-               P (Index) := Types.Uint8 (Graph.VID'Enum_Rep(I));
-               Index := Index + 1;
-            end loop;
-            K := Messages.Route_Update_Message_Create (P);
-            O.Write_Message (K);
-            Byte_Buffer.Buffer'Write (Backend_Thread.Backend_Stream, O);
-         end;
-      elsif Message.Id = Messages.EXTERNAL_DISTANCE_SENSOR then
-         DS_Data := Messages.DS_Message_Ptr (Message).Payload;
-         V_Collision := Collision_Detection.Main(DS_Data);
-         -- Sending 0 as velocity if object collision is over
-         if V_Collision.Left_Speed /= 0.0 and V_Collision.Right_Speed /= 0.0 then
-            is_object_collision := True;
-            --Put_Line("collision");
-            Declare Out_Buffer: Byte_Buffer.Buffer;
-            begin
-               Out_Buffer.Write_Message (V_Collision);
-               Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Stream, Out_Buffer);
-            end;
-         else
-            is_object_collision := False;
-         end if;
-      elsif Message.Id = Messages.EXTERNAL_IMAGE_DATA and is_object_collision = False then
-         --ada.Text_IO.Put_Line("image data");
-         V_Path := Path_Following.Main (Messages.ID_Message_Ptr (Message), DS_Data);
-         Declare Out_Buffer: Byte_Buffer.Buffer;
-         begin
-            Out_Buffer.Write_Message (V_Path);
-            Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Stream, Out_Buffer);
-         end;
-      end if;
+                  Out_Buffer.Write_Message (V_Collision);
+                  Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Stream, Out_Buffer);
+               else
+                  Is_Object_Collision := False;
+               end if;
+            when Messages.EXTERNAL_IMAGE_DATA =>
+               if Is_Object_Collision = False then
+                  V_Path := Path_Following.Main (Messages.ID_Message_Ptr (Message), DS_Data);
+                  Put_Line("image");
+                  --Put_Line (V_Path.Left_Speed'Image & " " & V_Path.Right_Speed'Image);
+
+                  Out_Buffer.Write_Message (V_Path);
+                  Byte_Buffer.Buffer'Write (Webots_Thread.Webots_Stream, Out_Buffer);
+               end if;
+            when Messages.ERROR_BACKEND_DISCONNECTED =>
+               Put_Line ("Backend disconnected, returning to depot after last request... ");
+               Memory.Handle_Disconnect;
+            when Messages.ERROR_WEBOTS_DISCONNECTED =>
+               Put_Line ("Webots disconnecetd, exiting... ");
+               exit;
+            when others => null;
+         end case;
+      end;
+
    end loop;
-
-   Graph.Destroy_Graph;
 
 end Main;

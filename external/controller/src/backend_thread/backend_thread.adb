@@ -9,12 +9,24 @@ package body Backend_Thread is
       Backend_Address.Port := 9876;
 
       Backend_Stream := Tcp_Client.Connect (Backend_Socket, Backend_Address);
-      Put_Line ("Connection to backend (127.0.0.1:9875) established");
+      Put_Line ("Connection to backend (127.0.0.1:9876) established");
 
       Join;
 
       loop
-         Tcp_Client.Read_Packet (Backend_Stream, Backend_Buffer, Backend_Mailbox);
+         begin
+            Tcp_Client.Read_Packet (Backend_Stream, Backend_Buffer, Backend_Mailbox);
+         exception
+            when E : Byte_Buffer.Connection_Closed =>
+               declare
+                  Mail : Mailbox.Mail;
+               begin
+                  Mail.Message := new Messages.Message;
+                  Mail.Message.Id := Messages.ERROR_BACKEND_DISCONNECTED;
+                  Backend_Mailbox.Deposit (Mail);
+               end;
+               exit;
+         end;
       end loop;
    end Main;
 
@@ -25,8 +37,6 @@ package body Backend_Thread is
    begin
       Out_Buffer.Write_Message (Join);
       Byte_Buffer.Buffer'Write (Backend_Stream, Out_Buffer);
-
-      Handle_Buffer := Handle_Join'Access;
    end Join;
 
    procedure Handle_Join_Challenge

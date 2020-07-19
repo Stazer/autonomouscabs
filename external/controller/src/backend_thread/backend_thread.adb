@@ -9,12 +9,18 @@ package body Backend_Thread is
 
       Backend_Address.Port := Port_Type(Backend_Port);
 
-      Backend_Stream := Tcp_Client.Connect (Backend_Socket, Backend_Address);
-      Put_Line ("Connection to backend (127.0.0.1:" & Integer'Image(Backend_Port) & ") established");
+      loop
+         Backend_Stream := Tcp_Client.Connect (Backend_Socket, Backend_Address);
+         exit when Backend_Stream /= null or Backend_Stop;
+      end loop;
+
+      if not Backend_Stop then
+         Put_Line ("Connection to backend (127.0.0.1:" & Backend_Address.Port'Image & ") established.");
+      end if;
 
       Join;
 
-      loop
+      while not Backend_Stop loop
          begin
             Tcp_Client.Read_Packet (Backend_Stream, Backend_Buffer, Backend_Mailbox);
          exception

@@ -16,6 +16,8 @@ package Backend_Thread is
 
    Backend_Buffer : Byte_buffer.Buffer;
 
+   Backend_Stop : Boolean := False;
+
    procedure Handle_Join_Challenge;
    procedure Handle_Join;
 

@@ -10,7 +10,7 @@
 ### Note
     Unfortunately, Ubuntu 18.10 (Bionic Beaver) is not supported due
     to outdated boost packages. Compiling boost is an alternative, but
-    not covered in this README. 
+    not covered in this README.
     For the following `make` calls, feel free to add `-jX` (where X is the amount of CPU cores + 1)
     for using multiple cores for compiling.
 ### Create backend Makefile
@@ -26,3 +26,5 @@
 ## Run
 ### backend
     `./backend.bin --help`
+### external_controller
+    for each cab: `./main {webots_port} {backend_port}`

@@ -16,8 +16,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation -0.07515558325208266 -0.9615636514908588 -0.26409653999552085 3.2365049619486332
-  position 8.695965755095601 53.744826115406354 -107.40474780851915
+  orientation -0.08231028699685466 -0.9851515625674601 -0.15066988891410005 3.1890790636870943
+  position 1.4425786949737092 31.259982421827782 -107.30364875915635
 }
 TexturedBackground {
   luminosity 2
@@ -139,7 +139,7 @@ DEF Cab1 Robot {
       ]
     }
     DEF ds_lc DistanceSensor {
-      translation 0.5 0.2 0
+      translation 0.5 0.2 -0.7
       children [
         Shape {
           appearance PBRAppearance {
@@ -222,7 +222,7 @@ DEF Cab1 Robot {
       ]
     }
     DEF ds_rc DistanceSensor {
-      translation -0.5 0.2 0
+      translation -0.5 0.2 -0.7
       rotation 0 1 0 -3.14
       children [
         Shape {
@@ -628,7 +628,7 @@ DEF Cab2 Robot {
       ]
     }
     DEF ds_lc DistanceSensor {
-      translation 0.5 0.2 0
+      translation 0.5 0.2 -0.7
       children [
         Shape {
           appearance PBRAppearance {
@@ -711,7 +711,7 @@ DEF Cab2 Robot {
       ]
     }
     DEF ds_rc DistanceSensor {
-      translation -0.5 0.2 0
+      translation -0.5 0.2 -0.7
       rotation 0 1 0 -3.14
       children [
         Shape {

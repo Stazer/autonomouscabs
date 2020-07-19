@@ -30,11 +30,16 @@ Alternatively compile in webots directly.
 ## Run
 ### backend
     `./backend.bin --help`
+To add a new request write to the console: 
+
+    `P<x> P<y> <k>`
+where `P<x>` is the source and `P<y>` the destination pickup location and `<k>` the amount of passengers.
+`<k>` is limited to 4.
 ### external_controller
 For each cab run
 
     `./main {webots_address} {webots_port} {backend_address} ({backend_port})`
-    Backend port is optional. If not set the default port is used.
+Backend port is optional. If not set the default port is used.
 ### webots controller
 For each robot node specify the port in controllerArgs.
 #### Note

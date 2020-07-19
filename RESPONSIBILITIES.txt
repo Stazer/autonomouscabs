@@ -1,9 +1,9 @@
 Henrik Claßen
 	Functions and concepts contributed:
 	- Protocol and communication structure
-	- Message handling in the external controler
-	- General structure of the external controler
-	- Graph functions and route building/updating in the external controler
+	- Message handling in the external controller
+	- General structure of the external controller
+	- Graph functions and route building/updating in the external controller
 	- Webots controller
 	- Cab provison algorithm in the backend
 	Actions taken to fulfill the management role (integration manager):
@@ -32,8 +32,8 @@ Felix Heimann
 
 Luyanda Mlangeni
 	Functions and concepts contributed:
-	- Message handling in the external controler
-	- General structure of the external controler
+	- Message handling in the external controller
+	- General structure of the external controller
 	- later on: helped with path following and collision avoidance
 	Actions taken to fulfill the management role:
 	- reviewed pull requests
@@ -41,12 +41,13 @@ Luyanda Mlangeni
 
 Gerda Zsejke Móré
 	Functions and concepts contributed:
-	- Collision avoidance algorithm in the external controler
+	- Collision avoidance algorithm in the external controller
+	- later on; helped with the path following and merged the two feature together
 	Actions taken to fulfill the management role (technical manager):
 	- Setup slack
 
 Yue Wang
 	Functions and concepts contributed:
-	- Path following algorithm in the external controler
+	- Path following algorithm in the external controller
 	Actions taken to fulfill the management role (time manager):
 	- Setup time schedule

@@ -11,8 +11,18 @@ package Memory is
    
    function Add_Request (Message : Messages.AR_Message_Ptr) 
                          return Messages.Route_Update_Message;
+   
+   -- call every time the cab detects a fork but after Next_Action
    function Update_Position return Messages.Position_Update_Message;
+   
+   -- can be called every time the wheel velocity is to be set
+   -- return the direction the cab should go if it can
+   -- that means the function my return right even if it is not 
+   -- yet possible to do so
+   -- does not tell the caller when to stop the cab
    function Next_Action return Action;
+   
+   procedure Put_Route;
    
 private
    
@@ -23,6 +33,7 @@ private
    
    My_Route : Graph.Route;
    My_Pickups : Graph.Route;
+   Route_To_Depot : Graph.Route;
    Position : Graph.VID := Graph.D;
    
    Behind_Intersection : Boolean := False;

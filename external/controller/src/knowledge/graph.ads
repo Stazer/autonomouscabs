@@ -44,9 +44,6 @@ package Graph is
    function In_Order (R : in Route; 
                       F,L : VID) return Boolean;
    
-   -- print out route
-   procedure Put_Route (R : in Route; Position : VID);
-   
    -- add stops at Src and Dst to route, R is the actual route, A contains only the stops
    -- R = {e | e in VID}, A = {e | e in VID and e > EV and e < I1}
    procedure Add_To_Route (R, A : in out Route; Src, Dst, Position : VID);

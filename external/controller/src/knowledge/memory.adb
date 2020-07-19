@@ -1,3 +1,4 @@
+with Ada.Text_IO; use Ada.Text_IO;
 with Types; use Types;
 
 package body Memory is
@@ -30,6 +31,7 @@ package body Memory is
       Index : Types.Uint32 := 1;
       Src, Dst : Graph.VID;
       Success : Boolean := Join_Successful;
+      Dummy : Graph.Route;
    begin
       begin
          Src := Graph.VID'Enum_Val(Message.Src);
@@ -41,6 +43,7 @@ package body Memory is
       
       if Success then
          Graph.Add_To_Route (My_Route, My_Pickups, Src, Dst, Position);
+         Graph.Add_To_Route (Route_To_Depot, Dummy, My_Route.Last_Element, Graph.D, Position); 
       end if;
       
       Payload := new Types.Payload (1 .. Types.Uint32 (My_Route.Length));
@@ -54,55 +57,63 @@ package body Memory is
    
    function Update_Position return Messages.Position_Update_Message is
       Update : Messages.Position_Update_Message;
+      Next : Graph.VID;
    begin
-      Position := My_Route.First_Element;
-      My_Route.Delete_First;
+      if Integer (My_Route.Length) > 0 then
+         Position := My_Route.First_Element;
+         My_Route.Delete_First;
+      end if;
       
+      if Integer (My_Route.Length) > 0 then
+         Next := My_Route.First_Element;
+      else
+         My_Route := Route_To_Depot;
+      end if;
+            
       Update := Messages.Position_Update_Message_Create 
-        (Types.Uint8 (Graph.VID'Enum_Rep (My_Route.First_Element)));
+        (Types.Uint8 (Graph.VID'Enum_Rep (Next)));
       return Update;
    end Update_Position;
    
    function Next_Action return Action is
-      First : Graph.VID := My_Route.First_Element;
+      First : Graph.VID := (if Integer (My_Route.Length) > 0 then My_Route.First_Element else Position);
    begin
       if Graph.Vertex_Is_Intersection (Position) then
-         if Graph.Vertex_Is_Intersection (First) then
-            return RIGHT;
-         end if;
-         
-         if Turned_Right then
-            Turned_Right := False;
-            return STOP;
-         end if;
-                  
          if Behind_Intersection then
-            Behind_Intersection := False;
-            Turned_Right := True;
-            return RIGHT;
+            if Graph.Vertex_Is_Inner (First) then
+               return RIGHT;
+            else
+               return STRAIGHT;
+            end if;
          else
             Behind_Intersection := True;
-            if Graph.Vertex_Is_Inner (First) then
+            if Graph.Vertex_Is_Intersection (First) or
+              Graph.Vertex_Is_Inner (First) then
                return RIGHT;
             elsif Graph.Vertex_Is_Outer (First) then
                return STRAIGHT;
             end if;
          end if;
-         
       elsif Graph.Vertex_Is_Pickup (Position) then
-         if Turned_Left then
-            Turned_Left := False;
+         Behind_Intersection := False;
+         if First = Graph.D then
+            return RIGHT;
+         elsif Position /= First then
             return STRAIGHT;
          end if;
-         
-         Turned_Left := True;
-         return LEFT;
       elsif Position = Graph.D then
-         return LEFT;
+         return STRAIGHT;
       end if;
             
       return NOTHING;
    end Next_Action;
    
+   procedure Put_Route is
+   begin
+      Put_Line ("current position: " & Position'Image);
+      for E of My_Route loop
+         Put_Line ("next: " & E'Image);
+      end loop;
+   end Put_Route;
 
 end Memory;

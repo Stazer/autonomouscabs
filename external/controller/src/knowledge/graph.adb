@@ -391,14 +391,6 @@ package body Graph is
       R.Delete (C_End);
    end Replace_All;
    
-   procedure Put_Route (R : in Route; Position : VID) is
-   begin
-      Put_Line ("current position: " & Position'Image);
-      for E of R loop
-         Put_Line ("next: " & E'Image);
-      end loop;
-   end Put_Route;
-   
    -- expects A to be list of only pickup locations which the cab drives to
    -- expects A to be ordered
    -- inserts Src and Dst into A and preserves the ordering

@@ -30,4 +30,6 @@ package Mailbox is
       
    function Is_Expired (Time_In_Question: in Time) return Boolean;
    
+   function Create_Mail (Message : Messages.Message_Ptr) return Mail;
+   
 end Mailbox;

@@ -121,29 +121,29 @@ package body Path_Following is
          end if;
       else
          if Long_Float(whiteLine) < steering_zones_array(1) then
-            V_turn := -2.5;
+            V_turn := -5.0;
          elsif Long_Float(whiteLine) < steering_zones_array(2) then
-            V_turn := -2.0;
+            V_turn := -4.0;
          elsif Long_Float(whiteLine) < steering_zones_array(3) then
-            V_turn := -1.75;
+            V_turn := -3.75;
          elsif Long_Float(whiteLine) < steering_zones_array(4) then
-            V_turn := -1.25;
+            V_turn := -2.5;
          elsif Long_Float(whiteLine) < steering_zones_array(5) then
-            V_turn := -0.75;
+            V_turn := -1.75;
          elsif Long_Float(whiteLine) < steering_zones_array(6) then
-            V_turn := -0.5;
+            V_turn := -1.25;
          elsif Long_Float(whiteLine) < steering_zones_array(7) then-- straight
             V_turn := 0.0;
          elsif Long_Float(whiteLine) < steering_zones_array(8) then
-            V_turn := 0.5;
-         elsif Long_Float(whiteLine) < steering_zones_array(9) then
-            V_turn := 0.75;
-         elsif Long_Float(whiteLine) < steering_zones_array(10) then
             V_turn := 1.25;
-         elsif Long_Float(whiteLine) < steering_zones_array(11) then
+         elsif Long_Float(whiteLine) < steering_zones_array(9) then
             V_turn := 1.75;
+         elsif Long_Float(whiteLine) < steering_zones_array(10) then
+            V_turn := 2.5;
+         elsif Long_Float(whiteLine) < steering_zones_array(11) then
+            V_turn := 3.75;
          elsif Long_Float(whiteLine) < steering_zones_array(12) then
-            V_turn := 2.0;
+            V_turn := 5.0;
          else
             V_turn := 2.5;
          end if;

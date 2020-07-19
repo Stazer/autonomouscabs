@@ -72,7 +72,7 @@ buffer_reader& buffer_reader::operator>>(double& data)
 
     return *this;
 }
-
+/*
 buffer_reader& buffer_reader::operator>>(std::string& string)
 {
     std::size_t size = 0;
@@ -86,3 +86,4 @@ buffer_reader& buffer_reader::operator>>(std::string& string)
 
     return *this;
 }
+*/

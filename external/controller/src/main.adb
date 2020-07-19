@@ -1,4 +1,5 @@
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 
 with Tcp_Client;
 with Backend_Thread;
@@ -10,6 +11,7 @@ with Byte_Buffer;
 with Memory;
 with Collision_Detection;
 with Path_Following;
+with Ada.Command_Line;
 
 procedure Main is
    task webots_task;
@@ -17,12 +19,66 @@ procedure Main is
 
    task body webots_task is
    begin
-      Webots_Thread.Main;
+      -- check if port string is usable
+      if Ada.Command_Line.Argument_Count >= 2 then
+         declare
+            Webots_Port : String := Ada.Command_Line.Argument (1);
+         begin
+            if
+              types.Is_Numeric(Webots_Port) = True
+              and then Integer'Value(Webots_Port) > 1024
+              and then Integer'Value(Webots_Port) <= 65535
+            then
+               Webots_Thread.Main(Integer'Value(Webots_Port));
+            else
+               declare
+                  Message : Messages.Message_Ptr :=
+                    new Messages.Message'(0, Messages.ERROR_WEBOTS_PORT_NOT_SET);
+                  Mail : Mailbox.Mail := Mailbox.Create_Mail (Message);
+               begin
+                  Webots_Thread.Webots_Mailbox.Deposit (Mail);
+               end;
+            end if;
+         end;
+      else
+         declare
+            Message : Messages.Message_Ptr :=
+              new Messages.Message'(0, Messages.ERROR_WEBOTS_PORT_NOT_SET);
+            Mail : Mailbox.Mail := Mailbox.Create_Mail (Message);
+         begin
+            Webots_Thread.Webots_Mailbox.Deposit (Mail);
+         end;
+      end if;
    end webots_task;
 
    task body backend_task is
    begin
-      Backend_Thread.Main;
+      -- check if port string is usable
+      if Ada.Command_Line.Argument_Count >= 2 then
+         declare
+            Backend_Port : String := Ada.Command_Line.Argument (2);
+         begin
+            if
+              types.Is_Numeric(Backend_Port) = True
+              and then Integer'Value(Backend_Port) > 1024
+              and then Integer'Value(Backend_Port) <= 65535
+            then
+               Backend_Thread.Main(Integer'Value(Backend_Port));
+            else
+               declare
+                  Message : Messages.Message_Ptr :=
+                    new Messages.Message'(0, Messages.ERROR_BACKEND_PORT_NOT_SET);
+                  Mail : Mailbox.Mail := Mailbox.Create_Mail (Message);
+               begin
+                  Backend_Thread.Backend_Mailbox.Deposit (Mail);
+               end;
+            end if;
+         end;
+      else
+         Put_Line ("using default backend port 9876");
+         Backend_Thread.Main (9876);
+      end if;
+
    end backend_task;
 
    Message : Messages.Message_Ptr;
@@ -44,9 +100,10 @@ begin
       -- clear out both mailboxes
       Backend_Thread.Backend_Mailbox.Clear;
       Webots_Thread.Webots_Mailbox.Clear;
-
+      Put_Line ("before");
       -- alternate between checking webots and backend mailbox first, then update alternator
       Mailbox.Check_Mailbox (Backend_Thread.Backend_Mailbox, Webots_Thread.Webots_Mailbox, Message, Alternator);
+      Put_Line ("after");
 
       -- do calculations with current packet
       Put_Line (Message.Id'Image);
@@ -89,11 +146,17 @@ begin
             when Messages.ERROR_WEBOTS_DISCONNECTED =>
                Put_Line ("Webots disconnected, exiting... ");
                exit;
+            when Messages.ERROR_WEBOTS_PORT_NOT_SET =>
+               Put_Line ("Webots Port numbes not provided or incorrect, exiting... ");
+               exit;
+            when Messages.ERROR_BACKEND_PORT_NOT_SET =>
+               Put_Line ("Backend Port numbes not provided or incorrect, exiting... ");
+               exit;
             when others => null;
          end case;
       end;
    end loop;
-   Put_Line ("done loop");
+
    Webots_Thread.Webots_Stop := True;
    Backend_Thread.Backend_Stop := True;
 end Main;

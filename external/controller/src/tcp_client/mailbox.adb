@@ -1,6 +1,9 @@
+with Ada.Text_IO;
+
 package body Mailbox is
 
    protected body Mailbox is
+      
       procedure Clear is -- throws out all the old items and updates Last
       begin
          if Last > 0 then
@@ -31,6 +34,7 @@ package body Mailbox is
       begin
          Remaining_Items:= Last;
       end View_Inbox;
+      
       procedure Empty is
       begin
          Last := 0;
@@ -82,5 +86,13 @@ package body Mailbox is
          return False;
       end if;  
    end Is_Expired;
+   
+   function Create_Mail (Message : Messages.Message_Ptr) return Mail is
+      M : Mail;
+   begin
+      M.Message := Message;
+      M.TTL := Ada.Real_Time.Clock;
+      return M;
+   end Create_Mail;
 
 end Mailbox;

@@ -26,8 +26,7 @@ Also the Boost library is used in the backend and the webots controller.
 ### Build webots controller
     `cd webots/controllers/controller`
     `make`
-    or
-    compile in webots directly
+Alternatively compile in webots directly.
 ## Run
 ### backend
     `./backend.bin --help`

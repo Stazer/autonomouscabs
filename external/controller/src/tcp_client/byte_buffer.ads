@@ -23,7 +23,7 @@ package Byte_Buffer is
    procedure Read_Float64 (Self : in out Buffer; Val : out Types.Float64);
    procedure Read_Payload (Self : in out Buffer; Val : access Types.Payload);
    
-   -- procedures to write a Uintx/Payload from the buffer, raises Not_Enough_Data exception
+   -- procedures to write a Uintx/Payload to the buffer, raises Not_Enough_Data exception
    procedure Write_Uint8 (Self : in out Buffer; Val : in Types.Uint8);
    procedure Write_Uint16 (Self : in out Buffer; Val : in Types.Uint16);
    procedure Write_Uint32 (Self : in out Buffer; Val : in Types.Uint32);
@@ -34,6 +34,7 @@ package Byte_Buffer is
    -- try to read and parse a message in the buffer, raises Not_Enough_Data and Unknown_Message_Id exception
    procedure Read_Message (Self : in out Buffer; Val : out Messages.Message_Ptr);
    
+   -- procedures to write a message to the buffer
    procedure Write_Message (Self : in out Buffer; Val : in Messages.Light_Sensor_Message);
    procedure Write_Message (Self : in out Buffer; Val : in Messages.Distance_Sensor_Message);
    procedure Write_Message (Self : in out Buffer; Val : in Messages.Image_Data_Message);
@@ -66,7 +67,7 @@ private
       Written : Types.Uint32 := 0;
    end record;
    
-   -- write Bytes_Remaining of In_Buffer to Stream
+   -- write the entire In_Buffer to Stream
    procedure Write_Stream (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
                            In_Buffer : in Buffer);
    

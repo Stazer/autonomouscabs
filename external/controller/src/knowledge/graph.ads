@@ -48,7 +48,7 @@ package Graph is
    procedure Put_Route (R : in Route; Position : VID);
    
    -- add stops at Src and Dst to route, R is the actual route, A contains only the stops
-   -- R = {e | e in VID}, A = {e | e in VID and e > EV and e < I1}
+   -- R = {e | e in VID}, A = {e | e in {P0, P1, ..., P7}}
    procedure Add_To_Route (R, A : in out Route; Src, Dst, Position : VID);
    
    -- Dijkstra algorithm, puts shortest path between Src and Dst in R
@@ -57,7 +57,7 @@ package Graph is
    -- returns wether V is a pickup location
    function Vertex_Is_Pickup (V : VID) return Boolean;
    
-   -- returns wether V is a intersection
+   -- returns wether V is an intersection
    function Vertex_Is_Intersection (V : VID) return Boolean;
    
    -- returns wether V is on the outer edge

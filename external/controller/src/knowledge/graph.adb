@@ -2,6 +2,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body Graph is
    
+   -- functions needed for graph and priority queue package
    function Get_Priority (V : VID) return Float is
    begin
       return Vertices (V).Cost;
@@ -403,7 +404,7 @@ package body Graph is
    -- expects A to be ordered
    -- inserts Src and Dst into A and preserves the ordering
    -- uses Dijkstra to calculate the shortest path between each i and i+1 in A
-   -- starting with i is the current position
+   -- starting with the current position
    procedure Add_To_Route (R, A : in out Route; Src, Dst, Position : VID) is
       Contains_Src : Boolean := A.Contains (Src);
       Contains_Dst : Boolean := A.Contains (Dst);

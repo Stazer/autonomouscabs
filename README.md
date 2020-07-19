@@ -34,7 +34,7 @@ Also the Boost library is used in the backend and the webots controller.
 ### external_controller
     for each cab: `./main {webots_port} {backend_port}`
 ### webots controller
-    For each robot note specify the port in controllerArgs.
+    For each robot node specify the port in controllerArgs.
 #### Note
     The simulation will only start if every robot has a connection with an external controller.
     If a robot is not needed for a test just leave the controllerArgs field empty.

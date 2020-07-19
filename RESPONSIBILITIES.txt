@@ -26,7 +26,12 @@ Felix Heimann
 
 Luyanda Mlangeni
 	Functions and concepts contributed:
+	- Message handling in the external controler
+	- General structure of the external controler
+	- later on: helped with path following and collision avoidance
 	Actions taken to fulfill the management role:
+	- reviewed pull requests
+	- created AUnit test harness
 
 Gerda Zsejke Móré
 	Functions and concepts contributed:

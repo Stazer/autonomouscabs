@@ -49,5 +49,6 @@ Gerda Zsejke Móré
 Yue Wang
 	Functions and concepts contributed:
 	- Path following algorithm in the external controller
+	- later on : Adapt the environment according to the path following and help with the detetion of forks and intersections
 	Actions taken to fulfill the management role (time manager):
 	- Setup time schedule

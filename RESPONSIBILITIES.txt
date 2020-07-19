@@ -42,7 +42,7 @@ Luyanda Mlangeni
 Gerda Zsejke Móré
 	Functions and concepts contributed:
 	- Collision avoidance algorithm in the external controller
-	- later on; helped with the path following and merged the two feature together
+	- later on: helped with the path following and merged the two features ( collision avoidance and path following) together
 	Actions taken to fulfill the management role (technical manager):
 	- Setup slack
 

@@ -140,10 +140,6 @@ void robot_container::run()
             break;
         }
     }
-
-    for(int i = 0; i<4; i++)
-    {
-        _motors[i]->setVelocity(0);
-    }
+    
     _external.close();
 }

@@ -2,12 +2,10 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body Webots_Thread is
 
-   procedure Main (Webots_Port : Integer) is
+   procedure Main (Webots_Addr : String; Webots_Port : Integer) is
 
    begin
-
-      Webots_Address.Addr := Inet_Addr ("127.0.0.1");
-
+      Webots_Address.Addr := Inet_Addr (Webots_Addr);
       Webots_Address.Port := Port_Type(Webots_Port);
 
       loop
@@ -16,7 +14,8 @@ package body Webots_Thread is
       end loop;
 
       if not Webots_Stop then
-         Put_Line ("Connection to webots (127.0.0.1:" & Webots_Address.Port'Image & ") established.");
+         Put_Line ("Connection to webots (" & Webots_Addr &
+                     ":" & Webots_Address.Port'Image & ") established.");
       end if;
 
       while not Webots_Stop loop

@@ -33,7 +33,8 @@ Alternatively compile in webots directly.
 ### external_controller
 For each cab run
 
-    `./main {webots_port} {backend_port}`
+    `./main {webots_address} {webots_port} {backend_address} ({backend_port})`
+    Backend port is optional. If not set the default port is used.
 ### webots controller
 For each robot node specify the port in controllerArgs.
 #### Note

@@ -7,6 +7,7 @@ package Collision_Detection is
    Car_State: State;
    function Main(Distance: Messages.Distance_Sensor_Array) return Messages.Velocity_Message;
    Ls, Rs : types.float64 := 0.0;
-   Left_Obstacle : Boolean := False;
+   Obstacle_Passed : Boolean := False;
+   Passing_Obstacle : Boolean := False;
 
 end Collision_Detection;

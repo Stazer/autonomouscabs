@@ -1,3 +1,5 @@
+with Ada.Text_IO; use Ada.Text_IO;
+
 with Types; use Types;
 
 package body Memory is
@@ -7,6 +9,7 @@ package body Memory is
       if Join_Successful = True then
          return;
       end if;
+      Put_Line ("Cab id: " & Message.Cab_Id'Image);
       
       Join_Successful := True;
       Id := Message.Cab_Id;
@@ -34,6 +37,7 @@ package body Memory is
       begin
          Src := Graph.VID'Enum_Val(Message.Src);
          Dst := Graph.VID'Enum_Val(Message.Dst);
+         Put_Line ("New request " & Src'Image & " -> " & Dst'Image);
       exception 
          when E : Constraint_Error => 
             Success := Success and False;

@@ -16,16 +16,16 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation -0.4674318321538642 -0.82895553062998 -0.30714851542413485 1.78391662996413
-  position -54.50989492774821 51.34009664041401 -35.242877345907694
+  orientation -0.7572600514313454 -0.6485298275647781 -0.07724168087888385 1.022582621709242
+  position -83.10517769448298 68.07189617388457 37.16500709660756
 }
 TexturedBackground {
   luminosity 2
   reflections FALSE
 }
 DEF Cab1 Robot {
-  translation -5.04295 0.394162 -29.4224
-  rotation -0.00013105589874909862 0.9999999853117669 -0.00011045730798978177 -1.5545214180515847
+  translation -57.3626 0.381607 -28.2677
+  rotation -0.00012124899910686637 0.9999999926338887 -5.559009959051714e-06 -2.8635153071795862
   children [
     DEF cam_f Camera {
       translation 0 0.1 1
@@ -1168,7 +1168,6 @@ DEF environment Solid {
         }
       ]
       rightBarrier TRUE
-      leftBarrier TRUE
       bottom TRUE
       curvatureRadius 20
       appearance Asphalt {
@@ -1192,7 +1191,6 @@ DEF environment Solid {
         }
       ]
       rightBarrier TRUE
-      leftBarrier TRUE
       bottom TRUE
       curvatureRadius 20
       appearance Asphalt {
@@ -1216,7 +1214,6 @@ DEF environment Solid {
         }
       ]
       rightBarrier TRUE
-      leftBarrier TRUE
       bottom TRUE
       curvatureRadius 20
       appearance Asphalt {
@@ -1240,7 +1237,6 @@ DEF environment Solid {
         }
       ]
       rightBarrier TRUE
-      leftBarrier TRUE
       bottom TRUE
       curvatureRadius 20
       appearance Asphalt {
@@ -1280,7 +1276,6 @@ DEF environment Solid {
         }
       ]
       rightBarrier TRUE
-      leftBarrier TRUE
       bottom TRUE
       curvatureRadius 20
       appearance Asphalt {
@@ -1303,7 +1298,6 @@ DEF environment Solid {
         }
       ]
       rightBarrier TRUE
-      leftBarrier TRUE
       bottom TRUE
       curvatureRadius 20
       appearance Asphalt {
@@ -1326,7 +1320,6 @@ DEF environment Solid {
         }
       ]
       rightBarrier TRUE
-      leftBarrier TRUE
       bottom TRUE
       curvatureRadius 20
       appearance Asphalt {
@@ -1350,7 +1343,6 @@ DEF environment Solid {
         }
       ]
       rightBarrier TRUE
-      leftBarrier TRUE
       bottom TRUE
       curvatureRadius 20
       appearance Asphalt {
@@ -2508,7 +2500,6 @@ DEF environment Solid {
         }
       ]
       rightBarrier TRUE
-      leftBarrier TRUE
       bottom TRUE
       length 30
       appearance Asphalt {
@@ -2702,7 +2693,6 @@ DEF environment Solid {
         }
       ]
       rightBarrier TRUE
-      leftBarrier TRUE
       bottom TRUE
       length 30
       appearance Asphalt {
@@ -2712,6 +2702,143 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+    }
+    CrashBarrier {
+      translation -49.66 0 -44.89
+      rotation 0 1 0 -1.5707953071795862
+      path [
+        0 0 0
+        25 0 0
+      ]
+    }
+    CrashBarrier {
+      translation -19.97 0 -50.03
+      rotation 0 1 0 3.14159
+      name "crash barrier(1)"
+      path [
+        0 0 0
+        25 0 0
+      ]
+    }
+    CrashBarrier {
+      translation -79.3603 0 -33.0988
+      rotation 0 -1 0 -1.45
+      name "crash barrier(8)"
+      path [
+        0 0 0
+        2.5 0 -0.25
+        5 0 0
+      ]
+    }
+    CrashBarrier {
+      translation -78.7487 0 -38.1418
+      rotation 0 -1 0 -1.25
+      name "crash barrier(9)"
+      path [
+        0 0 0
+        2.5 0 -0.25
+        5 0 0
+      ]
+    }
+    CrashBarrier {
+      translation -77.2042 0 -42.9133
+      rotation 0 1 0 1.05
+      name "crash barrier(10)"
+      path [
+        0 0 0
+        2.5 0 -0.25
+        5 0 0
+      ]
+    }
+    CrashBarrier {
+      translation -74.6714 0 -47.2797
+      rotation 0 1 0 0.8
+      name "crash barrier(11)"
+      path [
+        0 0 0
+        2.5 0 -0.25
+        5 0 0
+      ]
+    }
+    CrashBarrier {
+      translation -71.1882 0 -50.866
+      rotation 0 1 0 0.58
+      name "crash barrier(12)"
+      path [
+        0 0 0
+        2.5 0 -0.25
+        5 0 0
+      ]
+    }
+    CrashBarrier {
+      translation -66.9433 0 -53.6362
+      rotation 0 1 0 0.4
+      name "crash barrier(13)"
+      path [
+        0 0 0
+        2.5 0 -0.25
+        5 0 0
+      ]
+    }
+    CrashBarrier {
+      translation -37.9681 0 -78.7084
+      rotation 0 -1 0 -0.13819530717958628
+      name "crash barrier(14)"
+      path [
+        0 0 0
+        2.5 0 -0.25
+        5 0 0
+      ]
+    }
+    CrashBarrier {
+      translation -42.7577 0 -77.0955
+      rotation 0 -1 0 -0.32
+      name "crash barrier(15)"
+      path [
+        0 0 0
+        2.5 0 -0.25
+        5 0 0
+      ]
+    }
+    CrashBarrier {
+      translation -47.0434 0 -74.5186
+      rotation 0 -1 0 -0.54
+      name "crash barrier(16)"
+      path [
+        0 0 0
+        2.5 0 -0.25
+        5 0 0
+      ]
+    }
+    CrashBarrier {
+      translation -50.9254 0 -70.809
+      rotation 0 -1 0 -0.78
+      name "crash barrier(17)"
+      path [
+        0 0 0
+        2.5 0 -0.25
+        5 0 0
+      ]
+    }
+    CrashBarrier {
+      translation -53.6213 0 -66.5583
+      rotation 0 -1 0 -1
+      name "crash barrier(18)"
+      path [
+        0 0 0
+        2.5 0 -0.25
+        5 0 0
+      ]
+    }
+    CrashBarrier {
+      translation -55.4327 0 -61.9789
+      rotation 0 -1 0 -1.2
+      name "crash barrier(19)"
+      path [
+        0 0 0
+        2.5 0 -0.25
+        5 0 0
+      ]
     }
     StraightRoadSegment {
       translation -50 0 -53
@@ -2725,7 +2852,6 @@ DEF environment Solid {
           width 0.3
         }
       ]
-      rightBarrier TRUE
       leftBarrier TRUE
       bottom TRUE
       length 30
@@ -2983,7 +3109,6 @@ DEF environment Solid {
           width 0.3
         }
       ]
-      rightBarrier TRUE
       leftBarrier TRUE
       bottom TRUE
       length 30
@@ -2994,6 +3119,24 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+    }
+    CrashBarrier {
+      translation 49.74 0 -44.89
+      rotation 0 1 0 -1.5707953071795862
+      name "crash barrier(2)"
+      path [
+        0 0 0
+        25 0 0
+      ]
+    }
+    CrashBarrier {
+      translation 45.21 0 -49.89
+      rotation 0 1 0 3.14159
+      name "crash barrier(3)"
+      path [
+        0 0 0
+        25 0 0
+      ]
     }
     Solid {
       translation 47.8468 0 -52.0648
@@ -3054,7 +3197,6 @@ DEF environment Solid {
           width 0.3
         }
       ]
-      rightBarrier TRUE
       leftBarrier TRUE
       bottom TRUE
       length 30
@@ -3217,7 +3359,6 @@ DEF environment Solid {
           width 0.3
         }
       ]
-      rightBarrier TRUE
       leftBarrier TRUE
       bottom TRUE
       length 30
@@ -3228,6 +3369,42 @@ DEF environment Solid {
       pavementAppearance StonePavement {
         colorOverride 0 0 0
       }
+    }
+    CrashBarrier {
+      translation 49.63 0 44.86
+      rotation 0 -1 0 -1.5707953071795862
+      name "crash barrier(4)"
+      path [
+        0 0 0
+        25 0 0
+      ]
+    }
+    CrashBarrier {
+      translation -49.71 0 20.12
+      rotation 0 -1 0 1.5708
+      name "crash barrier(6)"
+      path [
+        0 0 0
+        25 0 0
+      ]
+    }
+    CrashBarrier {
+      translation -45.02 0 49.56
+      rotation 0 1 0 -5.307179586466759e-06
+      name "crash barrier(7)"
+      path [
+        0 0 0
+        25 0 0
+      ]
+    }
+    CrashBarrier {
+      translation 44.98 0 49.77
+      rotation 0 1 0 3.14159
+      name "crash barrier(5)"
+      path [
+        0 0 0
+        25 0 0
+      ]
     }
     StraightRoadSegment {
       translation 20 0 53
@@ -3242,7 +3419,6 @@ DEF environment Solid {
         }
       ]
       rightBarrier TRUE
-      leftBarrier TRUE
       bottom TRUE
       length 30
       appearance Asphalt {
@@ -3410,7 +3586,6 @@ DEF environment Solid {
         }
       ]
       rightBarrier TRUE
-      leftBarrier TRUE
       bottom TRUE
       length 30
       appearance Asphalt {
@@ -3432,7 +3607,6 @@ DEF environment Solid {
           width 0.3
         }
       ]
-      rightBarrier TRUE
       leftBarrier TRUE
       bottom TRUE
       length 30

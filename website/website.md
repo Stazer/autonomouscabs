@@ -54,27 +54,29 @@ the external controller.
 
 ### Software design
 #### General
-The communication between the webots controller and the external controller, and the external controller and the backend
-is done by using the Transmission Control Protocol (TCP), as it is reliable and still fast enough for our purposes. For this,
-we introduced a binary protocol on top of TCP for exchanging data between all parties.
+The communication between all three componets is done by using the Transmission Control Protocol (TCP), 
+as it is reliable and still fast enough for our purposes. For this, we introduced a binary protocol 
+on top of TCP for exchanging data between all parties.
 
 #### Webots Controller
-The webots controller is written in C++17, utilizing the webots API for the interaction with the webots environment, and Boost
-for asynchronous networking. A single class is implemented, which consists of all functionality for the data exchange and
-the command execution.
+A single class is implemented, which handles the data exchange and command execution:
+- Written in C++17
+- Utilizing the [webots API](https://www.cyberbotics.com/doc/reference/index) for the interaction with the environment
+- Asynchronous networking with [Boost](https://www.boost.org/)
 
 #### External Controller
-Since the external controller is the most important application, as it controls and manages a cab, it is developed with ADA.
-This makes it easier to verify program code and to proof its correctness. In overall, the external controller makes use of
-three different modules, each running in its own thread. Two of those manage the communication with the backend and the webots
-controller. The third one does calculations.
+Since the external controller is the most important application, as it controls and manages a cab, it is written in Ada:
+- Ada makes it easier to verify program code and to proof its correctness
+- Makes use of three different modules each running in its own thread:  
+    - Two manage the communication with the backend and the webots controller
+    - The third one does calculation
 
 #### Backend
-While running, the external controller communicates with the backend, since it sends important data for the cab movement.
-The backend is written in C++17 as well, using the Boost library for asynchronous networking, graph abstraction and
-command line parsing. The backend retrieves any passenger requests and distributes those onto the cabs.
-
-![diagram](./images/diagram.png)
+The backend is a simple TCP server:
+- written in C++17
+- Uses [Boost](https://www.boost.org/) for asynchronous networking, graph abstraction and command line parsing
+- Receives position and route data from the external controllers
+- Retrieves any passenger requests and distributes those onto the cabs
 
 ### Robot design
 The cab hast two sensor types: a camera and several distance sensors

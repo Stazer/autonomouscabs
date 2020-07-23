@@ -73,23 +73,35 @@ the external controller.</p>
 <p><img src="./images/architecture.svg" alt="diagram" /></p>
 <h3>Software design</h3>
 <h4>General</h4>
-<p>The communication between the webots controller and the external controller, and the external controller and the backend
-is done by using the Transmission Control Protocol (TCP), as it is reliable and still fast enough for our purposes. For this,
-we introduced a binary protocol on top of TCP for exchanging data between all parties.</p>
+<p>The communication between all three componets is done by using the Transmission Control Protocol (TCP),
+as it is reliable and still fast enough for our purposes. For this, we introduced a binary protocol
+on top of TCP for exchanging data between all parties.</p>
 <h4>Webots Controller</h4>
-<p>The webots controller is written in C++17, utilizing the webots API for the interaction with the webots environment, and Boost
-for asynchronous networking. A single class is implemented, which consists of all functionality for the data exchange and
-the command execution.</p>
+<p>A single class is implemented, which handles the data exchange and command execution:</p>
+<ul>
+<li>Written in C++17</li>
+<li>Utilizing the <a rel="nofollow" href="https://www.cyberbotics.com/doc/reference/index">webots API</a> for the interaction with the environment</li>
+<li>Asynchronous networking with <a rel="nofollow" href="https://www.boost.org/">Boost</a></li>
+</ul>
 <h4>External Controller</h4>
-<p>Since the external controller is the most important application, as it controls and manages a cab, it is developed with ADA.
-This makes it easier to verify program code and to proof its correctness. In overall, the external controller makes use of
-three different modules, each running in its own thread. Two of those manage the communication with the backend and the webots
-controller. The third one does calculations.</p>
+<p>Since the external controller is the most important application, as it controls and manages a cab, it is written in Ada:</p>
+<ul>
+<li>Ada makes it easier to verify program code and to proof its correctness</li>
+<li>Makes use of three different modules each running in its own thread:
+<ul>
+<li>Two manage the communication with the backend and the webots controller</li>
+<li>The third one does calculation</li>
+</ul>
+</li>
+</ul>
 <h4>Backend</h4>
-<p>While running, the external controller communicates with the backend, since it sends important data for the cab movement.
-The backend is written in C++17 as well, using the Boost library for asynchronous networking, graph abstraction and
-command line parsing. The backend retrieves any passenger requests and distributes those onto the cabs.</p>
-<p><img src="./images/diagram.png" alt="diagram" /></p>
+<p>The backend is a simple TCP server:</p>
+<ul>
+<li>written in C++17</li>
+<li>Uses <a rel="nofollow" href="https://www.boost.org/">Boost</a> for asynchronous networking, graph abstraction and command line parsing</li>
+<li>Receives position and route data from the external controllers</li>
+<li>Retrieves any passenger requests and distributes those onto the cabs</li>
+</ul>
 <h3>Robot design</h3>
 <p>The cab hast two sensor types: a camera and several distance sensors</p>
 <ul>

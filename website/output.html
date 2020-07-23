@@ -6,49 +6,94 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script>
     <script charset="UTF-8"
             src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/ada.min.js"></script>
+    <script charset="UTF-8"
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/ada.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-
-    <link rel="stylesheet" type="text/css"
-          href="https://www.sese.tu-berlin.de/fileadmin/Aperto_design/css/style-mittig.css"/>
-    <title>Markdown Preview</title>
 </head>
 <body>
-<div id="content">
-    <div id="main">
-        <h1>Group name</h1>
-<p><strong>Group members</strong>: <em>Your names</em></p>
+<h1>Cab Service 3</h1>
+<p><strong>Group members</strong>: <em>Henrik Claßen</em>, <em>Justus Flerlage</em>, <em>Felix Heimann</em>, <em>Luyanda Mlangeni</em>, <em>Gerda Zsejke Móré</em>, <em>Yue Wang</em></p>
 <h2>Project overview</h2>
-<p>A <strong>short</strong> summary of your project topic.</p>
+<p>Cities like Copenhagen in Denmark show how modern transportation will look like.
+Here computers control the metro fully automated without any human driving interaction.
+We want to take this a step further by creating an autonomous cab-on-demand service for transporting
+passengers from their predefined locations to their destinations.</p>
 <h3>Goals</h3>
-<p>What were your main goals?</p>
+<p>Our main goal is to have a working prototype, meeting given requirements. The project is very challenging,
+so problems with algorithms are expected. Therefor, related issues are still within our goal set.</p>
 <h3>Requirements</h3>
-<p>List the <strong>necessary</strong> and <strong>optional</strong> requirements that were set for your project.</p>
+<h4>General</h4>
 <ul>
-<li>Requirement 1</li>
-<li>Requirement 2</li>
-<li>Requirement 3</li>
+<li>Pick up passengers at predefined locations</li>
+<li>Transport passengers quickly to their destination</li>
+<li>Use available cabs efficiently</li>
+<li>Avoid collisions</li>
+</ul>
+<h4>Environment</h4>
+<ul>
+<li>All roads should be one-way(exception: connection to the depot)</li>
+<li>There should be at least two passing sections</li>
+<li>There should be at least one depot, where you can park unused cabs</li>
+<li>There should be at least four pick-up locations</li>
+</ul>
+<h4>Robot</h4>
+<ul>
+<li>Only use the following types of sensors: ultrasonic distance sensor, camera, light sensor</li>
+<li>Place at least two robots in your environment</li>
+<li>Each robot has room for at least two passengers</li>
+</ul>
+<h4>Control</h4>
+<ul>
+<li>Use the general architecture from the overview presentation</li>
+<li>Coordinate your robots to achieve your mission</li>
+<li>Make the operation safe: robust to communication failure, ...</li>
+<li>Verify/validate the operation</li>
+<li>Optimize cab efficiency: average travel time, load, ...</li>
 </ul>
 <h3>Approach</h3>
-<p>How have you tried to meet the above requirements? What were your ideas?</p>
+<p>Creating an autonomous service is related to a lot of problems. Especially, things
+like collision avoidance and general path following are very difficult problems, even in more simpler environments.
+How have you tried to meet the above requirements? What were your ideas?</p>
 <ul>
 <li>Approach 1</li>
 <li>Approach 2</li>
 <li>Approach 3</li>
 </ul>
 <h2>System architecture</h2>
-<p>Some <strong>general</strong> information about your ideas to the overall system architecture.</p>
-<h3>Software design</h3>
-<p><strong>Short</strong> overview of your software design. Maybe a diagram that illustrates the connections between the individual components.</p>
-<p>Please <strong>do not</strong> use the diagram from our project description.</p>
+<p>The overall system architecture consists of three different applications. For each cab there is a single instance
+of the webots controller and a single instance of the external controller. Here the webots controller is responsible
+for the interaction with our simulated environment, while the external controller manages and controls the cab by using
+provided data. It is like the brain of a cab, while the webots controller is more like muscles and senses. The third application
+is the backend, which controls passenger requests and the cab provisioning and distribution by communicating with
+the external controller.</p>
 <p><img src="./images/architecture.svg" alt="diagram" /></p>
+<h3>Software design</h3>
+<h4>General</h4>
+<p>The communication between the webots controller and the external controller, and the external controller and the backend
+is done by using the Transmission Control Protocol (TCP), as it is reliable and still fast enough for our purposes. For this,
+we introduced a binary protocol on top of TCP for exchanging data between all parties.</p>
+<h4>Webots Controller</h4>
+<p>The webots controller is written in C++17, utilizing the webots API for the interaction with the webots environment, and Boost
+for asynchronous networking. A single class is implemented, which consists of all functionality for the data exchange and
+the command execution.</p>
+<h4>External Controller</h4>
+<p>Since the external controller is the most important application, as it controls and manages a cab, it is developed with ADA.
+This makes it easier to verify program code and to proof its correctness. In overall, the external controller makes use of
+three different modules, each running in its own thread. Two of those manage the communication with the backend and the webots
+controller. The third one does calculations.</p>
+<h4>Backend</h4>
+<p>While running, the external controller communicates with the backend, since it sends important data for the cab movement.
+The backend is written in C++17 as well, using the Boost library for asynchronous networking, graph abstraction and
+command line parsing. The backend retrieves any passenger requests and distributes those onto the cabs.</p>
+<p><img src="./images/diagram.png" alt="diagram" /></p>
 <h3>Robot design</h3>
 <p>What does your robot look like, and what functionality does it contain.
 But most of all: <strong>Why</strong> did you choose this design?</p>
-<p>&lt;!-- ![robot](./images/robot.png) --&gt;</p>
+<p><img src="./images/robot.png" alt="robot" /></p>
 <h3>Environment design</h3>
 <p>What does the environment look like in which your robot operates?
 The same: <strong>Why</strong> did you choose this environment?</p>
-<p>&lt;!-- ![evironment](./images/environment.png) --&gt;</p>
+<p><img src="./images/environment.png" alt="evironment" /></p>
 <h3>Algorithms</h3>
 <p>Write an introduction to the <strong>most essential</strong> algorithms or technologies in general that you have chosen for your project.</p>
 <p>Maybe with <strong>short</strong> code examples.</p>
@@ -57,13 +102,15 @@ The same: <strong>Why</strong> did you choose this environment?</p>
     return {'x': x, 'y': y}
 </code></pre>
 <h2>Summary</h2>
-<p>Overview of the achieved <strong>and</strong> not attained goals. Why were some goals not reached? Too difficult or wrong time management?</p>
+<p>Although all subsystems work quite well, the integration of the overall system is still lacking. This is mainly due to
+wrong time management. The project topic itself is very interesting, but even in simple environments very complicated, since
+it introduces topics like collision avoidance and path following. We think that a little bit more time for the project would have
+resolved the integration issue.</p>
 <h3>Lessions learned</h3>
-<p>What did you learn from the project? What decisions would you have made differently from your current perspective?</p>
+<p>We did not reach our overall goal, but everyone in our group did a good job and gave its best. For the future, we can tell,
+that time management, management in general and communication are the very most important things for a project.</p>
 <h3>Future work</h3>
 <p>What problems would you tackle if you would continue to work on the project? Are there things you might actually take up and work on in the future? This part is <strong>optional</strong>.</p>
 
-    </div>
-</div>
 </body>
 </html>

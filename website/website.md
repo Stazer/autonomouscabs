@@ -77,14 +77,17 @@ command line parsing. The backend retrieves any passenger requests and distribut
 ![diagram](./images/diagram.png)
 
 ### Robot design
-What does your robot look like, and what functionality does it contain. 
-But most of all: **Why** did you choose this design?
+The cab hast two sensor types: a camera and several distance sensors
+- The camera placed in front is used to detect the white line on the road
+- The distance sensors are places at the front and both sides of the cab to detect the road barriers as well as
+obstacles on the road.
 
-![robot](./images/robot.png)
+![robot](./images/cab.png)
 
 ### Environment design
-What does the environment look like in which your robot operates? 
-The same: **Why** did you choose this environment?
+The environment consists of eight pickup locations and a depot for the unused cabs.
+Pickup locations on the outer roads (P4 - P7) take a longer time to arrive at, which
+allows for a more complex cab provision algorithm.
 
 ![evironment](./images/environment.png)
 

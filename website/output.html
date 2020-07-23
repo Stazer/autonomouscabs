@@ -6,12 +6,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script>
     <script charset="UTF-8"
             src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/ada.min.js"></script>
-    <script charset="UTF-8"
-            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/ada.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" type="text/css"
+          href="https://www.sese.tu-berlin.de/fileadmin/Aperto_design/css/style-mittig.css"/>
+    <title>Markdown Preview</title>
 </head>
 <body>
-<h1>Cab Service 3</h1>
+<div id="content">
+    <div id="main">
+        <h1>Cab Service 3</h1>
 <p><strong>Group members</strong>: <em>Henrik Claßen</em>, <em>Justus Flerlage</em>, <em>Felix Heimann</em>, <em>Luyanda Mlangeni</em>, <em>Gerda Zsejke Móré</em>, <em>Yue Wang</em></p>
 <h2>Project overview</h2>
 <p>Cities like Copenhagen in Denmark show how modern transportation will look like.
@@ -87,12 +91,17 @@ The backend is written in C++17 as well, using the Boost library for asynchronou
 command line parsing. The backend retrieves any passenger requests and distributes those onto the cabs.</p>
 <p><img src="./images/diagram.png" alt="diagram" /></p>
 <h3>Robot design</h3>
-<p>What does your robot look like, and what functionality does it contain.
-But most of all: <strong>Why</strong> did you choose this design?</p>
-<p><img src="./images/robot.png" alt="robot" /></p>
+<p>The cab hast two sensor types: a camera and several distance sensors</p>
+<ul>
+<li>The camera placed in front is used to detect the white line on the road</li>
+<li>The distance sensors are places at the front and both sides of the cab to detect the road barriers as well as
+obstacles on the road.</li>
+</ul>
+<p><img src="./images/cab.png" alt="robot" /></p>
 <h3>Environment design</h3>
-<p>What does the environment look like in which your robot operates?
-The same: <strong>Why</strong> did you choose this environment?</p>
+<p>The environment consists of eight pickup locations and a depot for the unused cabs.
+Pickup locations on the outer roads (P4 - P7) take a longer time to arrive at, which
+allows for a more complex cab provision algorithm.</p>
 <p><img src="./images/environment.png" alt="evironment" /></p>
 <h3>Algorithms</h3>
 <p>Write an introduction to the <strong>most essential</strong> algorithms or technologies in general that you have chosen for your project.</p>
@@ -112,5 +121,7 @@ that time management, management in general and communication are the very most 
 <h3>Future work</h3>
 <p>What problems would you tackle if you would continue to work on the project? Are there things you might actually take up and work on in the future? This part is <strong>optional</strong>.</p>
 
+    </div>
+</div>
 </body>
 </html>

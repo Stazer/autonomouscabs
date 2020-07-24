@@ -109,7 +109,7 @@ on top of TCP for exchanging data between all parties.</p>
 <li>The distance sensors are places at the front and both sides of the cab to detect the road barriers as well as
 obstacles on the road.</li>
 </ul>
-<p><img src="./images/cab.png" alt="robot" /></p>
+<p><img src="./images/cab.png" alt="cab" /></p>
 <h3>Environment design</h3>
 <p>The environment consists of eight pickup locations and a depot for the unused cabs.
 Pickup locations on the outer roads (P4 - P7) take a longer time to arrive at, which
@@ -118,13 +118,31 @@ allows for a more complex cab provision algorithm.</p>
 <h3>Algorithms</h3>
 <p>To fulfill our goals we implemented three main algorithms: pathfollowing, collision avoidance and cab provision.</p>
 <h4>Pathfollowing</h4>
+<p>The pathfollowing algorithm can be broken down into 5 steps:</p>
+<ol>
+<li>Reading the  BGRA image from a webots message and removing the alpha channel</li>
+<li>Convert the BGR image to a grey scale image</li>
+<li>From the grey scale image create a black and white image
+<ul>
+<li>If the grey value of a pixel is above a certain threshold mark it as white otherwise as black</li>
+</ul>
+</li>
+<li>Find the white line at the bottom of the image
+<ul>
+<li>If the line was found: calculate the velocity for the wheels on the right and on the left side to return to the white line</li>
+<li>Else: use distance sensor data to return to the middle of the road</li>
+</ul>
+</li>
+</ol>
+<p>To calculate the velocity in step five the image is divided in 13 zones. The difference in velocity between
+the right and left wheels increases the farther away the white line was detected from the center.</p>
 <h4>Collision avoidance</h4>
 <h4>Cab provision</h4>
-<p>The following pseudo code explains the basic workings of the algorithm.</p>
+<p>The following pseudo code explains the basic workings of the cab provision algorithm:</p>
 <pre><code class="language-python">Graph G
 Map Cabs_At_Node
 
-cab_provision(src, dst, N_passengers)
+cab_provision(src, dst, passengers)
     Queue Q
     Q.push(src)
 
@@ -135,7 +153,7 @@ cab_provision(src, dst, N_passengers)
         min &lt;- Infinity
         choosen_cab &lt;- null
         for(cab in cabs)
-            if(cab.passengers_at(src) + N_passengers &gt;= 4)
+            if(cab.passengers_at(src) + passengers &gt;= CAB_CAPACITY)
                 continue
 
             cost &lt;- calculate_costs(cab, src, dst)
@@ -163,10 +181,9 @@ resolved the integration issue.</p>
 <p>We did not reach our overall goal, but everyone in our group did a good job and gave its best. For the future, we can tell,
 that time management, management in general and communication are the very most important things for a project.</p>
 <h3>Future work</h3>
-<p>As stated in the summary if we would continue to work on this project the next step would be the proper integration of all subsystems.
-Furthermore the cost calculation in the cab provision algorithm should be reworked. At the current state it only takes into account
-how much a new requests influences the already existing requests this cab has. This should be expanded so that also the waiting time of
-the new passenger is taken into account and weighs more heavily the further away the current node is from src.</p>
+<p>As stated in the summary if we would continue to work on this project the next step would be the proper integration of all subsystems.<br />
+Furthermore the cost calculation in the cab provision algorithm should be reworked. The calculation should be expanded so that the
+waiting time of the new passenger is taken into account as well and weighs more heavily the further away <code>current</code> is from <code>src</code>.</p>
 
     </div>
 </div>

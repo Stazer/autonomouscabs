@@ -84,7 +84,7 @@ The cab hast two sensor types: a camera and several distance sensors
 - The distance sensors are places at the front and both sides of the cab to detect the road barriers as well as
 obstacles on the road.
 
-![robot](./images/cab.png)
+![cab](./images/cab.png)
 
 ### Environment design
 The environment consists of eight pickup locations and a depot for the unused cabs.
@@ -97,16 +97,27 @@ allows for a more complex cab provision algorithm.
 To fulfill our goals we implemented three main algorithms: pathfollowing, collision avoidance and cab provision.
 
 #### Pathfollowing
+The pathfollowing algorithm can be broken down into 5 steps:
+1. Reading the  BGRA image from a webots message and removing the alpha channel
+2. Convert the BGR image to a grey scale image
+3. From the grey scale image create a black and white image
+    - If the grey value of a pixel is above a certain threshold mark it as white otherwise as black
+4. Find the white line at the bottom of the image
+    - If the line was found: calculate the velocity for the wheels on the right and on the left side to return to the white line
+    - Else: use distance sensor data to return to the middle of the road
+  
+To calculate the velocity in step five the image is divided in 13 zones. The difference in velocity between 
+the right and left wheels increases the farther away the white line was detected from the center.
 
 #### Collision avoidance
 
 #### Cab provision
-The following pseudo code explains the basic workings of the algorithm.
+The following pseudo code explains the basic workings of the cab provision algorithm:
 ```python
 Graph G
 Map Cabs_At_Node
 
-cab_provision(src, dst, N_passengers)
+cab_provision(src, dst, passengers)
     Queue Q
     Q.push(src)
 
@@ -117,7 +128,7 @@ cab_provision(src, dst, N_passengers)
         min <- Infinity
         choosen_cab <- null
         for(cab in cabs)
-            if(cab.passengers_at(src) + N_passengers >= 4)
+            if(cab.passengers_at(src) + passengers >= CAB_CAPACITY)
                 continue
 
             cost <- calculate_costs(cab, src, dst)
@@ -147,7 +158,6 @@ We did not reach our overall goal, but everyone in our group did a good job and 
 that time management, management in general and communication are the very most important things for a project.
 
 ### Future work
-As stated in the summary if we would continue to work on this project the next step would be the proper integration of all subsystems.
-Furthermore the cost calculation in the cab provision algorithm should be reworked. At the current state it only takes into account 
-how much a new requests influences the already existing requests this cab has. This should be expanded so that also the waiting time of
-the new passenger is taken into account and weighs more heavily the further away the current node is from src.   
+As stated in the summary if we would continue to work on this project the next step would be the proper integration of all subsystems.  
+Furthermore the cost calculation in the cab provision algorithm should be reworked. The calculation should be expanded so that the 
+waiting time of the new passenger is taken into account as well and weighs more heavily the further away `current` is from `src`.   

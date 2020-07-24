@@ -94,15 +94,47 @@ allows for a more complex cab provision algorithm.
 ![evironment](./images/environment.png)
 
 ### Algorithms
-Write an introduction to the **most essential** algorithms or technologies in general that you have chosen for your project. 
+To fulfill our goals we implemented three main algorithms: pathfollowing, collision avoidance and cab provision.
 
-Maybe with **short** code examples.
+#### Pathfollowing
 
+#### Collision avoidance
+
+#### Cab provision
+The following pseudo code explains the basic workings of the algorithm.
 ```python
-def our_algorithm(x, y):
-    # Do fancy stuff here
-    return {'x': x, 'y': y}
+Graph G
+Map Cabs_At_Node
+
+cab_provision(src, dst, N_passengers)
+    Queue Q
+    Q.push(src)
+
+    while(Q not empty)
+        current <- Q.pop
+        cabs <- Cabs_At_Node[current]
+
+        min <- Infinity
+        choosen_cab <- null
+        for(cab in cabs)
+            if(cab.passengers_at(src) + N_passengers >= 4)
+                continue
+
+            cost <- calculate_costs(cab, src, dst)
+            if(cost < min)
+                min <- cost
+                choosen_cab <- cab
+        
+        if(min != Infinty)
+            return choosen_cab
+
+        Q.push(G.predecessors(current))
+
+    return null
 ```
+
+- `G` is a graph representation of the environment
+- `calculate_costs` returns how much the requests the cab already has are influenced (in terms of detours) by taking the new request
 
 ## Summary
 Although all subsystems work quite well, the integration of the overall system is still lacking. This is mainly due to
@@ -115,4 +147,7 @@ We did not reach our overall goal, but everyone in our group did a good job and 
 that time management, management in general and communication are the very most important things for a project.
 
 ### Future work
-What problems would you tackle if you would continue to work on the project? Are there things you might actually take up and work on in the future? This part is **optional**.
+As stated in the summary if we would continue to work on this project the next step would be the proper integration of all subsystems.
+Furthermore the cost calculation in the cab provision algorithm should be reworked. At the current state it only takes into account 
+how much a new requests influences the already existing requests this cab has. This should be expanded so that also the waiting time of
+the new passenger is taken into account and weighs more heavily the further away the current node is from src.   

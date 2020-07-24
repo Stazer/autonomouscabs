@@ -116,12 +116,44 @@ Pickup locations on the outer roads (P4 - P7) take a longer time to arrive at, w
 allows for a more complex cab provision algorithm.</p>
 <p><img src="./images/environment.png" alt="evironment" /></p>
 <h3>Algorithms</h3>
-<p>Write an introduction to the <strong>most essential</strong> algorithms or technologies in general that you have chosen for your project.</p>
-<p>Maybe with <strong>short</strong> code examples.</p>
-<pre><code class="language-python">def our_algorithm(x, y):
-    # Do fancy stuff here
-    return {'x': x, 'y': y}
+<p>To fulfill our goals we implemented three main algorithms: pathfollowing, collision avoidance and cab provision.</p>
+<h4>Pathfollowing</h4>
+<h4>Collision avoidance</h4>
+<h4>Cab provision</h4>
+<p>The following pseudo code explains the basic workings of the algorithm.</p>
+<pre><code class="language-python">Graph G
+Map Cabs_At_Node
+
+cab_provision(src, dst, N_passengers)
+    Queue Q
+    Q.push(src)
+
+    while(Q not empty)
+        current &lt;- Q.pop
+        cabs &lt;- Cabs_At_Node[current]
+
+        min &lt;- Infinity
+        choosen_cab &lt;- null
+        for(cab in cabs)
+            if(cab.passengers_at(src) + N_passengers &gt;= 4)
+                continue
+
+            cost &lt;- calculate_costs(cab, src, dst)
+            if(cost &lt; min)
+                min &lt;- cost
+                choosen_cab &lt;- cab
+        
+        if(min != Infinty)
+            return choosen_cab
+
+        Q.push(G.predecessors(current))
+
+    return null
 </code></pre>
+<ul>
+<li><code>G</code> is a graph representation of the environment</li>
+<li><code>calculate_costs</code> returns how much the requests the cab already has are influenced (in terms of detours) by taking the new request</li>
+</ul>
 <h2>Summary</h2>
 <p>Although all subsystems work quite well, the integration of the overall system is still lacking. This is mainly due to
 wrong time management. The project topic itself is very interesting, but even in simple environments very complicated, since
@@ -131,7 +163,10 @@ resolved the integration issue.</p>
 <p>We did not reach our overall goal, but everyone in our group did a good job and gave its best. For the future, we can tell,
 that time management, management in general and communication are the very most important things for a project.</p>
 <h3>Future work</h3>
-<p>What problems would you tackle if you would continue to work on the project? Are there things you might actually take up and work on in the future? This part is <strong>optional</strong>.</p>
+<p>As stated in the summary if we would continue to work on this project the next step would be the proper integration of all subsystems.
+Furthermore the cost calculation in the cab provision algorithm should be reworked. At the current state it only takes into account
+how much a new requests influences the already existing requests this cab has. This should be expanded so that also the waiting time of
+the new passenger is taken into account and weighs more heavily the further away the current node is from src.</p>
 
     </div>
 </div>

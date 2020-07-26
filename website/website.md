@@ -108,6 +108,10 @@ To calculate the velocity in step five the image is divided in 13 zones. The dif
 the right and left wheels increases the farther away the white line was detected from the center.
 
 #### Collision avoidance
+The collision avoidance algorithm works by checking if any distance sensor registered an object close enough to the car. These
+sensors report the distance to the object they registered. If a distance passes a specific threshold, appropriate steps are taken
+to move the car in the opposite direction. That way collisions are avoided.
+
 
 #### Cab provision
 To find a cab for a new request the algorithm walks backwards (beginning at `src`) and tries to find the cab with the minimal cost 

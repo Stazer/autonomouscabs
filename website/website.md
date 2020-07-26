@@ -95,8 +95,8 @@ allows for a more complex cab provision algorithm.
 To fulfill our goals we implemented three main algorithms: path following, collision avoidance and cab provision.
 
 #### Path following
-The pathfollowing algorithm can be broken down into 5 steps:
-1. Reading the  BGRA image from a webots message and removing the alpha channel
+The path following algorithm can be broken down into 5 steps:
+1. Reading the BGRA image from a webots message and removing the alpha channel
 2. Convert the BGR image to a grey scale image
 3. From the grey scale image create a black and white image
     - If the grey value of a pixel is above a certain threshold mark it as white otherwise as black
@@ -110,17 +110,19 @@ the right and left wheels increases the farther away the white line was detected
 #### Collision avoidance
 
 #### Cab provision
-The following pseudo code explains the basic workings of the cab provision algorithm:
+To find a cab for a new request the algorithm walks backwards (beginning at `src`) and tries to find the cab with the minimal cost 
+increase.   
+The following pseudo code explains the basic workings of the algorithm:
 ```python
-Graph G
-Map Cabs_At_Node
+Graph G           #graph representation of the environment
+Map Cabs_At_Node  #node => cab[]
 
 cab_provision(src, dst, passengers)
     Queue Q
     Q.push(src)
 
     while(Q not empty)
-        current <- Q.pop
+        current <- Q.pop()
         cabs <- Cabs_At_Node[current]
 
         min <- Infinity
@@ -139,10 +141,11 @@ cab_provision(src, dst, passengers)
 
         Q.push(G.predecessors(current))
 
+        if(Q.peek() == src)
+            break
+
     return null
 ```
-
-- `G` is a graph representation of the environment
 - `calculate_costs` returns how much the requests the cab already has are influenced (in terms of detours) by taking the new request
 
 ## Summary
@@ -157,5 +160,5 @@ that time management, management in general and communication are the very most 
 
 ### Future work
 As stated in the summary if we would continue to work on this project the next step would be the proper integration of all subsystems.  
-Furthermore the cost calculation in the cab provision algorithm should be reworked. The calculation should be expanded so that the 
-waiting time of the new passenger is taken into account as well and weighs more heavily the further away `current` is from `src`.   
+Furthermore the cost calculation in the cab provision algorithm should be reworked so that the waiting time of the new passenger is taken 
+into account as well.   

@@ -56,21 +56,19 @@ so problems with algorithms are expected. Therefor, related issues are still wit
 </ul>
 <h3>Approach</h3>
 <p>Creating an autonomous service is related to a lot of problems. Especially, things
-like collision avoidance and general path following are very difficult problems, even in more simpler environments.
-How have you tried to meet the above requirements? What were your ideas?</p>
-<ul>
-<li>Approach 1</li>
-<li>Approach 2</li>
-<li>Approach 3</li>
-</ul>
+like collision avoidance and general path following are very difficult problems, even in simple environments.<br />
+Nevertheless, we tried to satisfy given requirements by introducing three separate applications. In average
+two weekly meetings were held in order to distribute tasks for solving issues.</p>
 <h2>System architecture</h2>
-<p>The overall system architecture consists of three different applications. For each cab there is a single instance
-of the webots controller and a single instance of the external controller. Here the webots controller is responsible
-for the interaction with our simulated environment, while the external controller manages and controls the cab by using
-provided data. It is like the brain of a cab, while the webots controller is more like muscles and senses. The third application
-is the backend, which controls passenger requests and the cab provisioning and distribution by communicating with
-the external controller.</p>
-<p><img src="./images/architecture.svg" alt="diagram" /></p>
+<p>The overall system architecture consists of three different applications:</p>
+<p><img src="./images/architecture.png" alt="diagram" /></p>
+<ul>
+<li>Each cab has a single instance of the webots controller and a single instance of the external controller</li>
+<li>The webots controller interacts with our simulated environment (muscles and senses of the cab)</li>
+<li>The external controller manages and controls the cab by using sensor data (brain of the cab)</li>
+<li>The backend controls passenger requests and the cab provisioning and distribution by communicating with
+the external controller</li>
+</ul>
 <h3>Software design</h3>
 <h4>General</h4>
 <p>The communication between all three componets is done by using the Transmission Control Protocol (TCP),
@@ -97,7 +95,7 @@ on top of TCP for exchanging data between all parties.</p>
 <h4>Backend</h4>
 <p>The backend is a simple TCP server:</p>
 <ul>
-<li>written in C++17</li>
+<li>Written in C++17</li>
 <li>Uses <a rel="nofollow" href="https://www.boost.org/">Boost</a> for asynchronous networking, graph abstraction and command line parsing</li>
 <li>Receives position and route data from the external controllers</li>
 <li>Retrieves any passenger requests and distributes those onto the cabs</li>
@@ -116,11 +114,11 @@ Pickup locations on the outer roads (P4 - P7) take a longer time to arrive at, w
 allows for a more complex cab provision algorithm.</p>
 <p><img src="./images/environment.png" alt="evironment" /></p>
 <h3>Algorithms</h3>
-<p>To fulfill our goals we implemented three main algorithms: pathfollowing, collision avoidance and cab provision.</p>
-<h4>Pathfollowing</h4>
-<p>The pathfollowing algorithm can be broken down into 5 steps:</p>
+<p>To fulfill our goals we implemented three main algorithms: path following, collision avoidance and cab provision.</p>
+<h4>Path following</h4>
+<p>The path following algorithm can be broken down into 5 steps:</p>
 <ol>
-<li>Reading the  BGRA image from a webots message and removing the alpha channel</li>
+<li>Reading the BGRA image from a webots message and removing the alpha channel</li>
 <li>Convert the BGR image to a grey scale image</li>
 <li>From the grey scale image create a black and white image
 <ul>
@@ -137,17 +135,25 @@ allows for a more complex cab provision algorithm.</p>
 <p>To calculate the velocity in step five the image is divided in 13 zones. The difference in velocity between
 the right and left wheels increases the farther away the white line was detected from the center.</p>
 <h4>Collision avoidance</h4>
+<p>The collision avoidances uses the data from from the distance sensors around the cab to switch states on a state machine.</p>
+<ul>
+<li>The cab can be in one of the following states: Forward, Right, Left, Passing_Left, Passing_Right</li>
+<li>If the distance between the cab and an obstacle falls below a certain threshold an evasive maneuver is performed/continued</li>
+</ul>
+<p><img src="./images/statemachine.png" alt="statemachine" /></p>
 <h4>Cab provision</h4>
-<p>The following pseudo code explains the basic workings of the cab provision algorithm:</p>
-<pre><code class="language-python">Graph G
-Map Cabs_At_Node
+<p>To find a cab for a new request the algorithm walks backwards (beginning at <code>src</code>) and tries to find the cab with the minimal cost
+increase.<br />
+The following pseudo code explains the basic workings of the algorithm:</p>
+<pre><code class="language-python">Graph G           #graph representation of the environment
+Map Cabs_At_Node  #node =&gt; cab[]
 
 cab_provision(src, dst, passengers)
     Queue Q
     Q.push(src)
 
     while(Q not empty)
-        current &lt;- Q.pop
+        current &lt;- Q.pop()
         cabs &lt;- Cabs_At_Node[current]
 
         min &lt;- Infinity
@@ -166,10 +172,12 @@ cab_provision(src, dst, passengers)
 
         Q.push(G.predecessors(current))
 
+        if(Q.peek() == src)
+            break
+
     return null
 </code></pre>
 <ul>
-<li><code>G</code> is a graph representation of the environment</li>
 <li><code>calculate_costs</code> returns how much the requests the cab already has are influenced (in terms of detours) by taking the new request</li>
 </ul>
 <h2>Summary</h2>
@@ -182,8 +190,8 @@ resolved the integration issue.</p>
 that time management, management in general and communication are the very most important things for a project.</p>
 <h3>Future work</h3>
 <p>As stated in the summary if we would continue to work on this project the next step would be the proper integration of all subsystems.<br />
-Furthermore the cost calculation in the cab provision algorithm should be reworked. The calculation should be expanded so that the
-waiting time of the new passenger is taken into account as well and weighs more heavily the further away <code>current</code> is from <code>src</code>.</p>
+Furthermore the cost calculation in the cab provision algorithm should be reworked so that the waiting time of the new passenger is taken
+into account as well.</p>
 
     </div>
 </div>

@@ -35,20 +35,20 @@ so problems with algorithms are expected. Therefor, related issues are still wit
 
 ### Approach
 Creating an autonomous service is related to a lot of problems. Especially, things
-like collision avoidance and general path following are very difficult problems, even in more simpler environments.
-Nevertheless, we tried to satisfy given requirements by introducing three separated applications. That way
-work distribution is easier. In average two weekly meetings were held, in order to distribute tasks for solving
-issues.
+like collision avoidance and general path following are very difficult problems, even in simple environments.  
+Nevertheless, we tried to satisfy given requirements by introducing three separate applications. In average 
+two weekly meetings were held in order to distribute tasks for solving issues.
 
 ## System architecture
-The overall system architecture consists of three different applications. For each cab there is a single instance
-of the webots controller and a single instance of the external controller. Here the webots controller is responsible
-for the interaction with our simulated environment, while the external controller manages and controls the cab by using
-provided data. It is like the brain of a cab, while the webots controller is more like muscles and senses. The third application
-is the backend, which controls passenger requests and the cab provisioning and distribution by communicating with
-the external controller. 
+The overall system architecture consists of three different applications:
 
 ![diagram](./images/architecture.png)
+
+- Each cab has a single instance of the webots controller and a single instance of the external controller 
+- The webots controller interacts with our simulated environment (muscles and senses of the cab) 
+- The external controller manages and controls the cab by using sensor data (brain of the cab)
+- The backend controls passenger requests and the cab provisioning and distribution by communicating with
+the external controller
 
 ### Software design
 #### General
@@ -108,6 +108,11 @@ To calculate the velocity in step five the image is divided in 13 zones. The dif
 the right and left wheels increases the farther away the white line was detected from the center.
 
 #### Collision avoidance
+The collision avoidances uses the data from from the distance sensors around the cab to switch states on a state machine.
+- The cab can be in one of the following states: Forward, Right, Left, Passing_Left, Passing_Right
+- If the distance between the cab and an obstacle falls below a certain threshold an evasive maneuver is performed/continued
+
+![statemachine](./images/statemachine.png)
 
 #### Cab provision
 To find a cab for a new request the algorithm walks backwards (beginning at `src`) and tries to find the cab with the minimal cost 

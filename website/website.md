@@ -36,11 +36,9 @@ so problems with algorithms are expected. Therefor, related issues are still wit
 ### Approach
 Creating an autonomous service is related to a lot of problems. Especially, things
 like collision avoidance and general path following are very difficult problems, even in more simpler environments.
-How have you tried to meet the above requirements? What were your ideas?
-
-- Approach 1
-- Approach 2
-- Approach 3
+Nevertheless, we tried to satisfy given requirements by introducing three separated applications. That way
+work distribution is easier. In average two weekly meetings were held, in order to distribute tasks for solving
+issues.
 
 ## System architecture
 The overall system architecture consists of three different applications. For each cab there is a single instance
@@ -73,7 +71,7 @@ Since the external controller is the most important application, as it controls 
 
 #### Backend
 The backend is a simple TCP server:
-- written in C++17
+- Written in C++17
 - Uses [Boost](https://www.boost.org/) for asynchronous networking, graph abstraction and command line parsing
 - Receives position and route data from the external controllers
 - Retrieves any passenger requests and distributes those onto the cabs
@@ -94,9 +92,9 @@ allows for a more complex cab provision algorithm.
 ![evironment](./images/environment.png)
 
 ### Algorithms
-To fulfill our goals we implemented three main algorithms: pathfollowing, collision avoidance and cab provision.
+To fulfill our goals we implemented three main algorithms: path following, collision avoidance and cab provision.
 
-#### Pathfollowing
+#### Path following
 The pathfollowing algorithm can be broken down into 5 steps:
 1. Reading the  BGRA image from a webots message and removing the alpha channel
 2. Convert the BGR image to a grey scale image

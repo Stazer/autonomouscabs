@@ -48,7 +48,7 @@ provided data. It is like the brain of a cab, while the webots controller is mor
 is the backend, which controls passenger requests and the cab provisioning and distribution by communicating with
 the external controller. 
 
-![diagram](./images/architecture.svg)
+![diagram](./images/architecture.png)
 
 ### Software design
 #### General
